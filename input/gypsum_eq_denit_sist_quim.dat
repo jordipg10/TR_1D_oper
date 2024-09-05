@@ -1,0 +1,34 @@
+'TITLE OF THE PROBLEM: Gypsum in equilibrium + denitrification '
+'-----------------------------------------------------------------------------'
+'DEFINITION OF THE GEOCHEMICAL SYSTEM'
+25.0			!initial temp. of the system
+'PRIMARY AQUEOUS SPECIES'
+'h2o'
+'h+'
+'ca+2'
+'hco3-'
+'o2(aq)'
+'ch2o(aq)'
+'n2(aq)'
+'no3-'
+'so4-2'
+'*'
+'AQUEOUS COMPLEXES'
+'*'
+'MINERALS'
+'gypsum' .true. .true.
+'*' .true. .true.        
+'GASES'
+'*'  .true. .true.
+'SURFACE COMPLEXES'
+'*'
+'REDOX REACTIONS'
+'aerobic oxidation of DOC' .false.
+'denitrification' .false.
+'*' .true.
+'----------------------------------------------------------------------------'
+'end'
+
+
+
+

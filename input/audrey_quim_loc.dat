@@ -1,0 +1,39 @@
+'TITLE OF THE PROBLEM: Audrey '
+'-----------------------------------------------------------------------------'
+'INITIAL AND BOUNDARY WATER TYPES'
+3						! Davies
+2						! number of water types
+1     25.0					! iwtype initial, temp (C)
+'entrada'				! name
+'       icon        guess         ctot          constrain'
+'h+'		3	1d-7		1d-7		''
+'h2o'		1	5.555555555d1	5.555555555d1		''
+'hco3-'		4	1d-3		1d-2		'co2(g)'
+'o2(aq)'		4	1d-3	1d-2		'o2(g)'
+'ch2o(aq)'	1	1d-2		1d-2		''
+'*'      0         0.0           0.0              ' '
+2     25.0					!iwtype initial, temp (C)
+'inicial'			! name
+'       icon        guess         ctot          constrain'
+'h+'		3	1d-8		1d-8		''
+'h2o'		1	5.555555555d1	5.555555555d1		''
+'hco3-'		4	1d-4		1d-3		'co2(g)'
+'o2(aq)'		4	1d-4	1d-3		'o2(g)'
+'ch2o(aq)'	1	1d-3		1d-3		''
+'*'      0         0.0           0.0              ' '
+'----------------------------------------------------------------------------'
+'INITIAL GAS ZONES'
+1                       			!ngtype= number of gas zones
+1	25.0		1                	!igtype, temp (C), volume
+'gas				partial pressure'
+'co2(g)'                   		5d-1
+'o2(g)'					5d-1
+'*'		0.00
+'----------------------------------------------------------------------------'
+'end'
+
+
+
+
+
+

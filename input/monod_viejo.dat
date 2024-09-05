@@ -1,0 +1,15 @@
+'especies catalizadoras'
+'NO3'
+'*'
+'especias inhibidoras'
+'02'
+'*'
+'concentraciones especies catalizadoras cuando r=r_max'
+1.0
+'concentraciones especies inhibidoras cuando r=r_max'
+1.0
+'constantes especies catalizadoras'
+1.0
+
+'end'
+

@@ -1,0 +1,7 @@
+'aerobic oxidation of DOC'
+1.0  1.0			! rate constant, k_A (o2), k_D (nh4+)
+'denitrification'
+1.0 1.0 1.0			! rate constant, k_cat (no3-), k_inh (O2)
+'nitrification'
+1.0 1.0 1.0			! rate constant, k_A (o2), k_D (nh4+)
+'end'

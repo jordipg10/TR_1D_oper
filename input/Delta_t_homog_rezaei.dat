@@ -1,0 +1,3 @@
+2			! Integration method (1: EE, 2: EfI, 3: C-N, 4: RKF45)
+1d1			! Time step (d)
+730			! Final time (d)

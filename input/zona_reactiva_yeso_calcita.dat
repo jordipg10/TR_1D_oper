@@ -1,0 +1,23 @@
+'TITLE OF THE PROBLEM: Gypsum and calcite in equilibrium '
+'----------------------------------------------------------------------------'
+'DEFINITION OF THE REACTIVE ZONE'
+25.0			!initial temp. of the system
+'----------------------------------------------------------------------------'
+'CHEMICAL SYSTEM'
+'yeso_calcita_eq_sist_quim.dat'		! name of file containing chemical system information
+'*'
+'----------------------------------------------------------------------------'
+'REACTIVE ZONES'
+1					! number of reactive zones
+1					! ind_rz = index of reactive zone
+'gypsum'				! species that define equilibrium reactions
+'calcite'
+'*'
+'----------------------------------------------------------------------------'
+'end'
+
+
+
+
+
+

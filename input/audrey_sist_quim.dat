@@ -1,0 +1,29 @@
+'TITLE OF THE PROBLEM: Audrey '
+'-----------------------------------------------------------------------------'
+'PRIMARY AQUEOUS SPECIES'
+'h2o'
+'h+'
+'ch2o(aq)'
+'hco3-'
+'o2(aq)'
+'*'
+'AQUEOUS COMPLEXES'
+'co2(aq)'
+'*'
+'MINERALS'
+'*' .true. .true.         		! name of mineral, flag equilibrium, flag constant activity 
+'GASES'
+'co2(g)' .true. .false.			! name of gas, flag equilibrium, flag constant activity
+'o2(g)' .true. .false.
+'*'  .true. .true.
+'SURFACE COMPLEXES'
+'*'
+'REDOX REACTIONS'
+'aerobic oxidation of DOC' .false.
+'*' .true.
+'----------------------------------------------------------------------------'
+'end'
+
+
+
+

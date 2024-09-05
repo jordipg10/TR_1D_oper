@@ -1,0 +1,44 @@
+'TITLE OF THE PROBLEM: Denitrification paper Jingjing 2023 '
+'-----------------------------------------------------------------------------'
+'INITIAL AND BOUNDARY WATER TYPES'
+2   0   0   					! niwtype, nbwtype, nrwtype = number of ini, bound, rech waters
+1     25.0					! iwtype initial, temp (C)
+12						! n_p = number of primary aqueous species (same order as chemical system file)
+'       icon            conc[mol/L]   '
+'h+'      1               1.05d-9		
+'no3-'   1                4.18d-5
+'no2-'	1		1d-11
+'n2o'	1		7.54d-11		
+'ch2o'   1             1.16d-6				
+'n2'   1                 5.08d-6
+'o2'   1       	   2.66d-6
+'so4-2'	1		7.74d-5
+'h2s'	1		1d-10	
+'c5h7o2n'	1	1d-3
+'hco3-'	1		1.77d-5
+'nh3'	1		1.5d-7	! en realidad es 'nh4+'	
+'*'      0         0.0           
+2     25.0					! iwtype initial, temp (C)
+12						! n_p = number of primary aqueous species (same order as chemical system file)
+'       icon            conc[mol/L]   '
+'h+'      1               1.05d-8		
+'no3-'   1                4.18d-4
+'no2-'	1		1d-10
+'n2o'	1		7.54d-10		
+'ch2o'   1             1.16d-5				
+'n2'   1                 5.08d-5
+'o2'   1       	   2.66d-5
+'so4-2'	1		7.74d-4
+'h2s'	1		1d-9	
+'c5h7o2n'	1	5d-3
+'hco3-'	1		1.77d-4
+'nh3'	1		1.5d-6	! en realidad es 'nh4+'	
+'*'      0         0.0    		
+'----------------------------------------------------------------------------'
+'end'
+
+
+
+
+
+

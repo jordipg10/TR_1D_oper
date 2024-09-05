@@ -1,0 +1,77 @@
+'TITLE OF THE PROBLEM: Appelo and Postma, Problem 58 '
+'-----------------------------------------------------------------------------'
+'DEFINITION OF THE GEOCHEMICAL SYSTEM'
+25.0			!initial temp. of the system
+'PRIMARY AQUEOUS SPECIES'
+'h2o'
+'h+'
+'na+'
+'co3-2'
+'mg+2'
+'ca+2'
+'cl-'
+'*'
+'AQUEOUS COMPLEXES'
+'oh-'
+'hco3-'
+'co2(aq)'
+'*'
+'MINERALS'
+'calcite' 0 
+'*' 0         
+'GASES'
+'co2(g)'
+'*'  
+'SURFACE COMPLEXES'
+'EX'
+'x-'
+'x-na'
+'x2-mg'
+'x2-ca'
+'*'
+'----------------------------------------------------------------------------'
+'INITIAL AND BOUNDARY WATER TYPES'
+1   1   0   !niwtype, nbwtype, nrwtype= number of ini, bound, rech waters
+1     25.0					!iwtype initial, temp (C)
+'       icon        guess         ctot          constrain'
+'h2o'     1         1.00          1.00              ' '
+'h+'      3         8.07d-9       8.07d-9           ' '
+'na+'     1         4.79d-1       4.79d-1           ' '
+'co3-2'   4         3.75d-5       3.75d-5           'calcite '
+'mg+2'    1         4.75d-2       4.75d-2           ' '
+'ca+2'    1         9.51d-3       9.51d-3          ' '
+'cl-'     1         5.66d-1       5.66d-1          ' '
+'*'      0         0.0           0.0              ' '
+1     25.0					!itype boundary, temp (C)
+'       icon        guess         ctot          constrain'
+'h2o'     1         1.00          1.00              ' '
+'h+'      4         5.07d-8       5.07d-8           'calcite '
+'na+'     1         1.00d-7       1.00d-7           ' '
+'co3-2'   5         3.75d-5       1.00d-2           'co2(g) '
+'mg+2'    1         1.00d-7       1.00d-7           ' '
+'ca+2'    1         1.70d-3       1.70d-3          ' '
+'cl-'     1         2.00d-7       2.00d-7           ' '
+'*'      0         0.0           0.0              ' '
+'----------------------------------------------------------------------------'
+'INITIAL MINERAL ZONES'
+1					!nmtype= number of mineral zones 
+1					!imtype= weathered pelites
+'mineral         vol.frac.    area(m2/m3rock) 
+'calcite'          0.50         0.1d+3 
+'*'                0.00          0.00
+'----------------------------------------------------------------------------'
+'INITIAL SURFACE ADSORPTION ZONES'
+1                       !ndtype= number of sorption zones
+1                       !idtype
+'C int (F/m2)'                  0.00 
+'C ext (F/m2)'                  0.00
+'sorbent surf. (m2/kg)'         0.00 
+'total sorp. sites (mol/dm3)'  60.7d-3    ! or exchange capacity (eq/dm3)
+'----------------------------------------------------------------------------'
+'end'
+
+
+
+
+
+

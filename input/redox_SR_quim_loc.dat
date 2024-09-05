@@ -1,0 +1,42 @@
+'TITLE OF THE PROBLEM: Audrey con semi-reacciones'
+'-----------------------------------------------------------------------------'
+'INITIAL AND BOUNDARY WATER TYPES'
+3						! Davies
+2						! number of water types
+1     25.0					! iwtype initial, temp (C)
+'entrada'				! name
+'       icon        guess         ctot          constrain'
+'h+'		3	1d-7		1d-7		''
+'h2o'		1	5.555555555d1	5.555555555d1		''
+'hco3-'		4	1d-1		1d-4		'co2(g)'
+'o2(aq)'	1	1d-9		1d-9		''
+'no3-'	4	1d-9		1d-16		'n2(g)'
+'ch2o(aq)'	1	1d-2		1d-2		''
+'*'      0         0.0           0.0              ' '
+2     25.0					!iwtype initial, temp (C)
+'inicial'			! name
+'       icon        guess         ctot          constrain'
+'h+'		3	1d-7		1d-7		''
+'h2o'		1	5.555555555d1	5.555555555d1		''
+'hco3-'		4	1d-1		1d-4		'co2(g)'
+'o2(aq)'	1	1d-9		1d-9		''
+'no3-'	4	1d-9		1d-16		'n2(g)'
+'ch2o(aq)'	1	1d-1		1d-1		''
+'*'      0         0.0           0.0              ' '
+'----------------------------------------------------------------------------'
+'INITIAL GAS ZONES'
+1                       		!ngtype= number of initial gas zones
+1	25	1d0			!igtype, temp (ºC), volume
+'gas	       		partial pressure'	! pressure in atm
+'co2(g)'             	  	3.5d-4
+'o2(g)'				2d-1
+'n2(g)'				7.99965d-1
+'*'				0.00
+'----------------------------------------------------------------------------'
+'end'
+
+
+
+
+
+

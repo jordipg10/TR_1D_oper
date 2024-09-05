@@ -1,0 +1,57 @@
+'DEFINITION OF THE CHEMICAL SYSTEM'
+25.0			!initial temp. of the system
+'*'
+'AQUEOUS SPECIES'
+'ca+2'
+'so4-2'
+'o2'
+'hco3-'
+'h+'
+'ch2o'
+'*'
+'PRIMARY SPECIES'
+'ca+2'
+'o2'
+'hco3-'
+'h+'
+'ch2o'
+'*'
+'MINERALS'
+'gypsum'		
+'*'
+'OTHER SOLID SPECIES'
+'*'
+'----------------------------------------------------------------------------'
+'EQUILIBRIUM REACTIONS'
+'gypsum'
+'*'
+'KINETIC REACTIONS'
+'Monod' 1 'aerobic oxidation (PAE)'
+'*'
+'---------------------------------------------------------------------------'
+'INITIAL AND BOUNDARY WATER TYPES'
+2   0   0   !niwtype, nbwtype, nrwtype= number of ini, bound, rech waters
+3     25.0					! number of targets, temp (C)
+''               'ctot'          'constrain'
+'ca+2'          1000.00          'gypsum'
+'o2'		900.00			''
+'hco3-'		600.00			''
+'h+'		500.00			''
+'ch2o'		400.00			''
+'*'              0.0              ' '
+2     25.0					! number of targets, temp (C)
+''                 'ctot'           'constrain'
+'ca+2'            5000.00          'gypsum'
+'o2'		4000.00			''
+'hco3-'		1000.00			''
+'h+'		500.00			''
+'ch2o'		250.00			''
+'*'                0.0              ' '
+'---------------------------------------------------------------------------'
+'end'
+
+
+
+
+
+

@@ -1,0 +1,43 @@
+'TITLE OF THE PROBLEM: Denitrification paper Jingjing 2023 '
+'-----------------------------------------------------------------------------'
+'DEFINITION OF THE GEOCHEMICAL SYSTEM'
+25.0				! initial temp. of the system
+'PRIMARY AQUEOUS SPECIES'	! first primary, then secondary variable activity
+'h+'     		
+'no3-'  
+'no2-'	
+'n2o'		
+'ch2o'  			
+'n2'  			
+'o2'  
+'so4-2'	
+'h2s'	
+'c5h7o2n'	! biomasa (NO VA AQUI)
+'hco3-'
+'nh3'
+'oh-'
+'*'
+'AQUEOUS COMPLEXES'
+'h2co3'
+'co3-2'
+'nh4+'
+'h2o'
+'*'
+'REDOX REACTIONS'
+'aerobic oxidation of DOC (JW)'
+'nitrification (JW)'
+'denitrification 1 (JW)'
+'denitrification 2 (JW)'
+'denitrification 3 (JW)'
+'DNRA (JW)'
+'anammox (JW)'
+'sulfammox (JW)'
+'*'
+'----------------------------------------------------------------------------'
+'end'
+
+
+
+
+
+

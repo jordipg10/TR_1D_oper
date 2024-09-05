@@ -1,0 +1,31 @@
+'TITLE OF THE PROBLEM: Rezaei et al, 2005 '
+'-----------------------------------------------------------------------------'
+'DEFINITION OF THE GEOCHEMICAL SYSTEM'
+25.0			!initial temp. of the system
+'PRIMARY AQUEOUS SPECIES'
+'ca+2'
+'h+'
+'cl-'
+'hco3-'
+'oh-'
+'*'
+'AQUEOUS COMPLEXES'
+'h2o'
+'co3-2'
+'*'
+'MINERALS'
+'calcite' .true. 
+'*' .true.         
+'GASES'
+'co2(g)' .true.
+'*'  .true.
+'SURFACE COMPLEXES'
+'*'
+'----------------------------------------------------------------------------'
+'end'
+
+
+
+
+
+

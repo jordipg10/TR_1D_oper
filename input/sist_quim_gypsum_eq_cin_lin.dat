@@ -1,0 +1,29 @@
+'-----------------------------------------------------------------------------'
+'DEFINITION OF THE GEOCHEMICAL SYSTEM'
+25.0			!initial temp. of the system
+'*'
+'PRIMARY AQUEOUS SPECIES'
+A 1 0.3
+B 1 0.4
+'ca+2' 2 0.1
+'*' 0 0
+'AQUEOUS COMPLEXES'		
+'so4-2' -2 0.242 	
+'*' 0 0
+'MINERALS'
+'gypsum' 0
+'*' 0         
+'GASES'
+'*'
+'SURFACE'
+'*'
+'EXCHANGE'
+'*'
+'----------------------------------------------------------------------------'
+'end'
+
+
+
+
+
+

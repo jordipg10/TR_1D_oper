@@ -1,0 +1,32 @@
+'DEFINITION OF THE CHEMICAL SYSTEM'
+25.0			!initial temp. of the system
+'*'
+'AQUEOUS SPECIES'
+'ca+2'
+'so4-2'
+'*'
+'PRIMARY SPECIES'
+'ca+2'
+'*'
+'MINERALS'
+'gypsum'  0 
+'*' 0
+'---------------------------------------------------------------------------'
+'INITIAL AND BOUNDARY WATER TYPES'
+2   0   0   !niwtype, nbwtype, nrwtype= number of ini, bound, rech waters
+3     25.0					! number of targets, temp (C)
+''               'ctot'          'constrain'
+'ca+2'          1000.00          'gypsum'
+'*'              0.0              ' '
+2     25.0					! number of targets, temp (C)
+''                 'ctot'           'constrain'
+'ca+2'            5000.00          'gypsum'
+'*'                0.0              ' '
+'---------------------------------------------------------------------------'
+'end'
+
+
+
+
+
+

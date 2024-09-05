@@ -1,0 +1,32 @@
+'TITLE OF THE PROBLEM: Gypsum and calcite in equilibrium '
+'-----------------------------------------------------------------------------'
+'INITIAL AND BOUNDARY WATER TYPES'
+2   0   0   					! niwtype, nbwtype, nrwtype = number of ini, bound, rech waters
+1     25.0					! iwtype initial, temp (C)
+2						! n_p = number of primary species (same order as chemical system file)
+'       icon        guess         ctot          constrain'
+'h+'      1         8.07d-9       8.07d-9           ' '
+'so4-2'   1         9.51d-3       9.51d-3          ' '
+'*'      0         0.0           0.0              ' '
+2     25.0					! itype initial, temp (C)
+2						! n_p = number of primary species (same order as chemical system file)
+'       icon        guess         ctot          constrain'
+'h+'      1         5.07d-8       5.07d-8           ' '
+'so4-2'   1         1.70d-3       1.70d-3          ' '
+'*'      0         0.0           0.0              ' '
+'----------------------------------------------------------------------------'
+'INITIAL MINERAL ZONES'
+1						! nmtype = number of mineral zones 
+1	25.0					! imtype initial, temp(C)
+'mineral         vol.frac.    area(m2/m3rock)	conc'
+'calcite'          0.50         0.1d+3		1.00
+'gypsum'           0.40         0.2d+3 		1.50
+'*'                0.00          0.00		0.00
+'----------------------------------------------------------------------------'
+'end'
+
+
+
+
+
+

@@ -1,0 +1,28 @@
+'TITLE OF THE PROBLEM: Gypsum and calcite in equilibrium '
+'-----------------------------------------------------------------------------'
+'DEFINITION OF THE GEOCHEMICAL SYSTEM'
+25.0			! initial temp. of the system
+'AQUEOUS SPECIES'	! first primary, then secondary
+'h+'
+'so4-2'
+'ca+2'
+'hco3-'
+'*'
+'AQUEOUS COMPLEXES'
+'*'
+'MINERALS'
+'gypsum' .true. .true.		! mineral name, equilibrium flag, constant activity flag
+'calcite' .true. .true.
+'*' .true. .true.         
+'GASES'
+'*' .true. .true.		! gas name, equilibrium flag, constant activity flag
+'SURFACE COMPLEXES'
+'*'
+'----------------------------------------------------------------------------'
+'end'
+
+
+
+
+
+

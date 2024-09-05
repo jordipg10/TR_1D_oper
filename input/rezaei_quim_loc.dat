@@ -1,0 +1,49 @@
+'TITLE OF THE PROBLEM: Rezaei et al, 2005 '
+'-----------------------------------------------------------------------------'
+'INITIAL AND BOUNDARY WATER TYPES'
+3						! activity coefficients model (if 0, ideal)
+2						! number of water types
+1     25.0					!iwtype , temp (C)
+'freshwater'					! name
+'       icon        guess         ctot          constrain'
+'ca+2'      4         6.5d-3       1d0           'calcite'
+'hco3-'    4         3.29d-3       1d-2          'co2(g)'
+'cl-'     1         1d-16       1d-16           ''
+'h+'      3         5.01187d-05       5.01187d-08           ''
+'h2o'		1	5.555555555d1		5.555555555d1		''
+'*'      0         0.0           0.0              ' '
+2     25.0					!iwtype , temp (C)
+'saline GW in eq. calcite'			! name
+'       icon        guess         ctot          constrain'
+'ca+2'      4         8.6d-2       1d0           'calcite'
+'hco3-'    4         4.18d-3       1.09648d-2          'co2(g)'
+'cl-'     1         5.66d-1       5.66d-1          ' '
+'h+'      3         6.91831d-06       6.91831d-08           ' '
+'h2o'		1	5.555555555d1		5.555555555d1		''
+'*'      0         0.0           0.0              ' '
+'----------------------------------------------------------------------------'
+'INITIAL MINERAL ZONES'
+1					!nmtype= number of mineral zones 
+1	25.0				!imtype= weathered pelites
+'mineral         vol.frac.    area(m2/m3rock)'
+'calcite'          0.70         0.1d+3 
+'*'                0.00          0.00
+'----------------------------------------------------------------------------'
+'INITIAL GAS ZONES'
+2                       		!ngtype= number of gas zones
+1	25.0		1d0             !igtype, temp(C), volume
+'gas				partial pressure'
+'co2(g)'                   		1d-2
+'*'		0.00
+2	25.0		1d0             !igtype, temp(C), volume
+'gas				partial pressure'
+'co2(g)'                   		1.09648d-2
+'*'		0.00
+'----------------------------------------------------------------------------'
+'end'
+
+
+
+
+
+

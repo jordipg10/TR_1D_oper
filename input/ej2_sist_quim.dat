@@ -1,0 +1,18 @@
+'TITLE OF THE PROBLEM: Ejemplo 2'
+'-----------------------------------------------------------------------------'
+'DEFINITION OF THE GEOCHEMICAL SYSTEM'
+'PRIMARY AQUEOUS SPECIES'
+'ca+2'
+'so4-2'
+'*'
+'AQUEOUS COMPLEXES'
+'*'
+'MINERALS'
+'gypsum' .true. 		! true=equilibrium, false=kinetic
+'*' .true.         
+'----------------------------------------------------------------------------'
+'end'
+
+
+
+

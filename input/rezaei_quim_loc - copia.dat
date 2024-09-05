@@ -1,0 +1,50 @@
+'TITLE OF THE PROBLEM: Rezaei et al, 2005 '
+'-----------------------------------------------------------------------------'
+'INITIAL AND BOUNDARY WATER TYPES'
+1   2   0   !niwtype, nbwtype, nrwtype= number of ini, bound, rech waters
+1     25.0					!iwtype initial, temp (C)
+'freshwater no. 1'				! name
+3						! nº primary species
+'       icon        guess         ctot          constrain'
+'ca+2'      1         1.65d-3       1.65d-3           ''
+'h+'    3         5.01187d-08       5.01187d-08          ' '
+'cl-'	1		0d0		0d0	''
+'*'      0         0.0           0.0              ' '
+1     25.0					!itype boundary, temp (C)
+'freshwater no. 1'				! name
+3						! nº primary species
+'       icon        guess         ctot          constrain'
+'ca+2'      1         1.65d-3       1.65d-3           ''
+'h+'    3         5.01187d-08       5.01187d-08          ' '
+'cl-'	1		0d0		0d0	''
+'*'      0         0.0           0.0              ' '
+2     25.0					!itype boundary, temp (C)
+'saline GW in eq. calcite'			! name
+3						! nº primary species
+'       icon        guess         ctot          constrain'
+'ca+2'      1         9.6d-3       9.6d-3           ''
+'h+'    3         6.91831d-08       6.91831d-08          ' '
+'cl-'	1		5.6413d-1	5.6413d-1	''
+'*'      0         0.0           0.0              ' '
+'----------------------------------------------------------------------------'
+'INITIAL MINERAL ZONES'
+1					!nmtype= number of mineral zones 
+1	25.0				!imtype= weathered pelites
+'mineral         vol.frac.    area(m2/m3rock)'
+'calcite'          0.50         0.1d+3 
+'*'                0.00          0.00
+'----------------------------------------------------------------------------'
+'INITIAL GAS BOUNDARY ZONES'
+1                       !ngtype= number of gas boundary zones
+1                       !igtype
+'gas				partial pressure'
+'co2(g)'                   		0.010964782
+'*'		0.00
+'----------------------------------------------------------------------------'
+'end'
+
+
+
+
+
+

@@ -1,0 +1,44 @@
+'DEFINITION OF THE CHEMICAL SYSTEM'
+25.0			!initial temp. of the system
+'*'
+'AQUEOUS SPECIES'
+'o2'
+'ch2o'
+'hco3-'
+'h+'
+'h2o'
+'no3-'
+'n2'
+'*'
+'MINERALS'
+'*' 0
+'OTHER SOLID SPECIES'
+'*'
+'----------------------------------------------------------------------------'
+'EQUILIBRIUM REACTIONS'
+'*'
+'----------------------------------------------------------------------------'
+'KINETIC REACTIONS'
+'Monod' 2 'aerobic oxidation (PAE)' 'denitrification (PAE)'
+'*'
+'---------------------------------------------------------------------------'
+'INITIAL AND BOUNDARY WATER TYPES'
+1   0   0   !niwtype, nbwtype, nrwtype= number of ini, bound, rech waters
+1     25.0					! number of targets, temp (C)
+''               'ctot'          'constrain'
+'o2'          	3.0e-04         	''
+'ch2o'		3.0e-05			''
+'hco3-'		1.0e-03			''
+'h+'		1.0e-03			''
+'no3-'		5.0e-05			''
+'n2'		1.0e-03			''
+'h2o'		1.0e-03			''
+'*'              0.0              ' '
+'---------------------------------------------------------------------------'
+'end'
+
+
+
+
+
+
