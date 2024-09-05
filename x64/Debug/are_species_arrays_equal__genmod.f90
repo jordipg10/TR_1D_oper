@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Thu Sep  5 11:53:56 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Sep  5 17:35:34 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE ARE_SPECIES_ARRAYS_EQUAL__genmod

@@ -18,6 +18,7 @@ program main
     integer(kind=4) :: unit_loc_chem !> local chemistry file unit
     integer(kind=4) :: unit_tw !> target waters file unit
     character(len=256) :: path !> path for reading files
+    character(len=256) :: path_py !> path for Python
     character(len=256) :: file_out !> output file name
     character(len=256) :: file_chem_syst !> chemical system file name
     character(len=256) :: file_loc_chem !> local chemistry file name
@@ -31,6 +32,7 @@ program main
 !**************************************************************************************************
 !> Name of path containing chemical and transport information
     path = 'C:\Users\user2319\source\repos\jordipg10\RT_Lagr_borr\input\' !> must be written by the user
+    path_py='C:\Users\user2319\OneDrive\Documentos\trabajo\python\' !> path for unit tests in Python (optional)
 !> File units (arbitrary)
     unit_chem_syst=1
     unit_loc_chem=2
@@ -118,5 +120,5 @@ program main
 !> We call the main solver
     call my_RT_trans%chemistry%solve_reactive_mixing(my_RT_trans%transport%mixing_ratios,my_RT_trans%transport%mixing_waters_indices,my_RT_trans%transport%F_mat,my_RT_trans%transport%time_discr,my_RT_trans%int_method_chem_reacts)
 !> We write data and results
-    call my_RT_trans%write_RT_1D(unit_out,file_out)
+    call my_RT_trans%write_RT_1D(unit_out,file_out,path_py)
 end program
