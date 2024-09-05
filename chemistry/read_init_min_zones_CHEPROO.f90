@@ -7,17 +7,27 @@ subroutine read_init_min_zones_CHEPROO(this,unit,init_min_zones,reactive_zones)
     type(reactive_zone_c), intent(inout), allocatable, optional :: reactive_zones(:)
     
     integer(kind=4) :: i,j,k,nmtype,nrwtype,icon,num_min_zones,num_mins_rz,num_mins_glob,num_mins_loc,ind_rz,imtype,num_rz,min_ind,num_mins_var,num_mins_cst
-    integer(kind=4), allocatable :: init_min_zones_indices(:),min_indices(:)
+    integer(kind=4), allocatable :: init_min_zones_indices(:),min_indices(:,:)
     character(len=256) :: str,constrain,label,min_name
-    real(kind=8) :: guess,c_tot,temp,vol_frac,react_surf,conc
+    real(kind=8) :: guess,c_tot,temp,vol_frac,react_surf,conc 
     logical :: min_flag
     type(mineral_c) :: mineral
-    type(reactive_zone_c) :: reactive_zone
-    type(reactive_zone_c), allocatable :: init_min_zones_old(:)
+    type(reactive_zone_c) :: react_zone
+    type(reactive_zone_c), allocatable :: react_zones(:)
     
-    allocate(min_indices(this%chem_syst%num_minerals))
 
-    read(unit,*) nmtype !> number of mineral zones ( we assume bijection between mineral zones and reactive zones )
+    allocate(react_zones(this%chem_syst%num_minerals)) !> chapuza
+
+    read(unit,*) nmtype
+    
+    allocate(min_indices(this%chem_syst%num_minerals,nmtype))
+    
+    call react_zone%set_chem_syst_react_zone(this%chem_syst)
+    call react_zone%allocate_minerals_react_zone(this%chem_syst%num_minerals)
+    call react_zone%allocate_non_flowing_species()
+    call react_zone%set_num_solids()
+    call react_zone%set_minerals_react_zone()
+    
     if (nmtype>0) then
         num_rz=nmtype
         allocate(init_min_zones(nmtype))
@@ -40,27 +50,28 @@ subroutine read_init_min_zones_CHEPROO(this,unit,init_min_zones,reactive_zones)
                     do
                         read(unit,*) mineral%name
                         if (mineral%name=='*') then
-                            call reactive_zone%set_chem_syst_react_zone(this%chem_syst)
-                            call reactive_zone%allocate_minerals_react_zone(num_mins_loc)
-                            call reactive_zone%set_num_solids()
-                            call reactive_zone%set_num_mins_cst_act(num_mins_cst)
-                            call reactive_zone%set_num_mins_var_act(num_mins_var)
+                            !call react_zone%set_chem_syst_react_zone(this%chem_syst)
+                            !call react_zone%allocate_minerals_react_zone(num_mins_loc)
+                            !call react_zone%allocate_non_flowing_species()
+                            !call react_zone%set_num_solids()
+                            !call react_zone%set_num_mins_cst_act(num_mins_cst)
+                            !call react_zone%set_num_mins_var_act(num_mins_var)
                             !> aqui habria que comprobar si se estan repitiendo zonas reactivas
-                            call init_min_zones(imtype)%solid_chem%set_reactive_zone(reactive_zone)
+                            call init_min_zones(imtype)%solid_chem%set_reactive_zone(react_zone)
                             call init_min_zones(imtype)%solid_chem%allocate_vol_fracts()
                             call init_min_zones(imtype)%solid_chem%allocate_react_surfaces()
                             call init_min_zones(imtype)%solid_chem%allocate_conc_solids()
                             call init_min_zones(imtype)%solid_chem%allocate_activities()
                             call init_min_zones(imtype)%solid_chem%set_temp(temp)
-                            call init_min_zones(imtype)%solid_chem%allocate_var_act_species_indices(num_mins_var)
-                            call init_min_zones(imtype)%solid_chem%allocate_cst_act_species_indices(num_mins_cst)
+                            call init_min_zones(imtype)%solid_chem%allocate_var_act_species_indices(react_zone%num_minerals_var_act)
+                            call init_min_zones(imtype)%solid_chem%allocate_cst_act_species_indices(react_zone%num_minerals_cst_act)
                             call init_min_zones(imtype)%solid_chem%set_indices_solids()
                             exit
                         else
                             call this%chem_syst%is_mineral_in_chem_syst(mineral,min_flag,min_ind)
                             if (min_flag==.true.) then
                                 num_mins_loc=num_mins_loc+1
-                                min_indices(num_mins_loc)=min_ind
+                                min_indices(num_mins_loc,num_min_zones)=min_ind
                                 if (this%chem_syst%minerals(min_ind)%mineral%cst_act_flag==.true.) then
                                     num_mins_cst=num_mins_cst+1
                                 else
@@ -94,16 +105,16 @@ subroutine read_init_min_zones_CHEPROO(this,unit,init_min_zones,reactive_zones)
                         do
                             read(unit,*) mineral%name, vol_frac, react_surf !> react_surf: [m^2 min./m^3 rock]
                             if (mineral%name=='*') then
-                                !call init_min_zones(imtype)%solid_chem%reactive_zone%set_eq_reactions()
-                                !call init_min_zones(imtype)%solid_chem%reactive_zone%set_stoich_mat_react_zone()
+                                !call init_min_zones(imtype)%solid_chem%react_zones(imtype)%set_eq_reactions()
+                                !call init_min_zones(imtype)%solid_chem%react_zones(imtype)%set_stoich_mat_react_zone()
                                 exit
                             else
                                 num_mins_loc=num_mins_loc+1
-                                init_min_zones(imtype)%solid_chem%reactive_zone%minerals(num_mins_loc)=this%chem_syst%minerals(min_indices(num_mins_loc)) !> we set mineral
-                                init_min_zones(imtype)%solid_chem%vol_fracts(num_mins_loc)=vol_frac !> we set volumetric fraction
-                                init_min_zones(imtype)%solid_chem%react_surfaces(num_mins_loc)=react_surf !> we set reactive surface
-                                init_min_zones(imtype)%solid_chem%concentrations(num_mins_loc)=1d0 !> we assume minerals are pure phases
-                                init_min_zones(imtype)%solid_chem%activities(num_mins_loc)=1d0 !> we assume minerals are pure phases
+                                init_min_zones(imtype)%solid_chem%reactive_zone%minerals(min_indices(num_mins_loc,num_min_zones))=this%chem_syst%minerals(min_indices(num_mins_loc,num_min_zones)) !> we set mineral
+                                init_min_zones(imtype)%solid_chem%vol_fracts(min_indices(num_mins_loc,num_min_zones))=vol_frac !> we set volumetric fraction
+                                init_min_zones(imtype)%solid_chem%react_surfaces(min_indices(num_mins_loc,num_min_zones))=react_surf !> we set reactive surface
+                                init_min_zones(imtype)%solid_chem%concentrations(min_indices(num_mins_loc,num_min_zones))=1d0 !> we assume minerals are pure phases
+                                init_min_zones(imtype)%solid_chem%activities(min_indices(num_mins_loc,num_min_zones))=1d0 !> we assume minerals are pure phases
                             end if
                         end do
                         if (num_min_zones==nmtype) then

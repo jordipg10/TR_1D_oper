@@ -103,7 +103,7 @@ module aqueous_chemistry_m
         procedure, public :: get_conc
         procedure, public :: get_log_gamma2nc
         procedure, public :: get_log_gamma2
-        
+        procedure, public :: get_react_zone
     !> Speciation
         procedure, public :: compute_c2nc_aq_from_c1_aq_expl
         procedure, public :: compute_c2_from_c1_aq_ideal
@@ -2057,5 +2057,18 @@ module aqueous_chemistry_m
             this%concentrations(this%speciation_alg%num_prim_species+1:this%speciation_alg%num_aq_var_act_species+1)=c_nc(this%speciation_alg%num_prim_species+1:this%speciation_alg%num_aq_var_act_species+1)
             this%solid_chemistry%concentrations(this%solid_chemistry%reactive_zone%num_minerals+2:this%solid_chemistry%reactive_zone%num_solids)=c_nc(this%speciation_alg%num_aq_var_act_species+2:this%speciation_alg%num_var_act_species)
         end subroutine
+        
+        function get_react_zone(this) result(react_zone)
+            implicit none
+            class(aqueous_chemistry_c) :: this
+            type(reactive_zone_c) :: react_zone
+            if (associated(this%solid_chemistry)) then
+                react_zone=this%solid_chemistry%reactive_zone
+            else if (associated(this%gas_chemistry)) then
+                react_zone=this%gas_chemistry%reactive_zone
+            else
+                continue
+            end if
+        end function
 end module 
         

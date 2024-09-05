@@ -3,7 +3,7 @@
 module phase_m
     implicit none
     save
-    type, public, abstract :: phase_c !> phase abstract superclass
+    type, public, abstract :: phase_c !> phase abstract superclass 
         integer(kind=4) :: num_species=0 !> number of species
         integer(kind=4) :: num_var_act_species=0 !> number of variable activity species
         integer(kind=4) :: num_cst_act_species=0 !> number of constant activity species

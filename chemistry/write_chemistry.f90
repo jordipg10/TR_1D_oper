@@ -155,7 +155,7 @@ subroutine write_chemistry(this,unit,file_out)
             !end do
             write(unit,"(/,10x,'Initial volumetric fractions of minerals:'/)")
             do i=1,this%reactive_zones(l)%num_minerals
-                write(unit,"(10x,*(ES15.5))") (this%target_waters_init(tar_wat_indices(j))%solid_chemistry%vol_fracts(i), j=1,size(tar_wat_indices))
+                write(unit,"(10x,*(ES15.5))") (this%target_solids(tar_wat_indices(j))%vol_fracts(i), j=1,size(tar_wat_indices))
             end do
             write(unit,"(/,10x,'Volumetric fractions of minerals:'/)")
             do i=1,this%reactive_zones(l)%num_minerals
@@ -163,7 +163,7 @@ subroutine write_chemistry(this,unit,file_out)
             end do
             write(unit,"(/,10x,'Initial concentration of minerals:'/)")
             do i=1,this%reactive_zones(l)%num_minerals
-                write(unit,"(10x,*(ES15.5))") (this%target_waters_init(tar_wat_indices(j))%solid_chemistry%concentrations(i), j=1,size(tar_wat_indices))
+                write(unit,"(10x,*(ES15.5))") (this%target_solids(tar_wat_indices(j))%concentrations(i), j=1,size(tar_wat_indices))
             end do
             write(unit,"(/,10x,'Concentration of minerals:'/)")
             do i=1,this%reactive_zones(l)%num_minerals
@@ -183,7 +183,7 @@ subroutine write_chemistry(this,unit,file_out)
             end do
             write(unit,"(/,10x,'Initial partial pressures of gases:'/)")
             do i=1,this%reactive_zones(l)%gas_phase%num_species
-                write(unit,"(10x,*(ES15.5))") (this%target_waters_init(tar_wat_indices(j))%gas_chemistry%activities(i), j=1,size(tar_wat_indices))
+                write(unit,"(10x,*(ES15.5))") (this%target_gases(tar_wat_indices(j))%activities(i), j=1,size(tar_wat_indices))
             end do
             write(unit,"(/,10x,'Partial pressures of gases:'/)")
             do i=1,this%reactive_zones(l)%gas_phase%num_species
@@ -191,7 +191,7 @@ subroutine write_chemistry(this,unit,file_out)
             end do
             write(unit,"(/,10x,'Initial volume of gas:'/)")
             if (this%reactive_zones(l)%gas_phase%num_species>0) then
-                write(unit,"(10x,*(ES15.5))") (this%target_waters_init(tar_wat_indices(j))%gas_chemistry%volume, j=1,size(tar_wat_indices))
+                write(unit,"(10x,*(ES15.5))") (this%target_gases(tar_wat_indices(j))%volume, j=1,size(tar_wat_indices))
             end if
             write(unit,"(/,10x,'Volume of gas:'/)")
             if (this%reactive_zones(l)%gas_phase%num_species>0) then

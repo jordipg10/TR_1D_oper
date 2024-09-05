@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Thu Sep  5 11:23:11 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Sep  5 15:04:18 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPUTE_DRK_DC_MONOD__genmod

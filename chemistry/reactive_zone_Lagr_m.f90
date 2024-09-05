@@ -40,10 +40,11 @@ module reactive_zone_Lagr_m
         procedure, public :: set_num_mins_cst_act
         procedure, public :: set_num_mins_var_act
         procedure, public :: set_gas_phase
-    !> Allocate
+    !> Allocate/deallocate
         procedure, public :: allocate_non_flowing_species
         procedure, public :: allocate_minerals_react_zone
         procedure, public :: allocate_eq_reactions
+        procedure, public :: deallocate_react_zone
     !> Update
         procedure, public :: update_num_eq_reacts
         procedure, public :: update_reactive_zone
@@ -461,10 +462,23 @@ module reactive_zone_Lagr_m
         subroutine set_minerals_react_zone(this,mineral_indices)
             implicit none
             class(reactive_zone_c) :: this
-            integer(kind=4), intent(in) :: mineral_indices(:) !> in chemical system
-            if (size(mineral_indices)>this%chem_syst%num_minerals) error stop
-            this%num_minerals=size(mineral_indices)
-            this%minerals=this%chem_syst%minerals(mineral_indices)
+            integer(kind=4), intent(in), optional :: mineral_indices(:) !> in chemical system
+            integer(kind=4) :: i
+            if (present(mineral_indices)) then
+                if (size(mineral_indices)>this%chem_syst%num_minerals) error stop
+                this%num_minerals=size(mineral_indices)
+                this%minerals=this%chem_syst%minerals(mineral_indices)
+            else
+                this%num_minerals=this%chem_syst%num_minerals_eq
+                this%minerals=this%chem_syst%minerals(this%chem_syst%num_min_kin_reacts+1:this%chem_syst%num_minerals)
+                do i=1,this%num_minerals
+                    if (this%minerals(i)%mineral%cst_act_flag==.true.) then
+                        this%num_minerals_cst_act=this%num_minerals_cst_act+1
+                    else
+                        this%num_minerals_var_act=this%num_minerals_var_act+1
+                    end if
+                end do
+            end if
         end subroutine
         
         subroutine allocate_minerals_react_zone(this,num_minerals)
@@ -634,5 +648,12 @@ module reactive_zone_Lagr_m
             else
                 this%cat_exch_zone=this%chem_syst%cat_exch
             end if
+        end subroutine
+        
+        subroutine deallocate_react_zone(this)
+            implicit none
+            class(reactive_zone_c) :: this
+            deallocate(this%minerals)
+            deallocate(this%non_flowing_species)
         end subroutine
 end module

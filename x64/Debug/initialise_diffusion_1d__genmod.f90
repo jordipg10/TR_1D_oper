@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Thu Sep  5 11:23:17 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Sep  5 11:53:46 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE INITIALISE_DIFFUSION_1D__genmod

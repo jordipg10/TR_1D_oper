@@ -99,6 +99,7 @@ module solid_chemistry_m
             implicit none
             class(solid_chemistry_c) :: this
             allocate(this%vol_fracts(this%reactive_zone%num_minerals))
+            this%vol_fracts=0d0
         end subroutine
         
         subroutine set_react_surfaces(this,react_surfaces)
@@ -113,18 +114,21 @@ module solid_chemistry_m
             implicit none
             class(solid_chemistry_c) :: this
             allocate(this%react_surfaces(this%reactive_zone%num_minerals))
+            this%react_surfaces=0d0
         end subroutine
         
         subroutine allocate_conc_solids(this)
             implicit none
             class(solid_chemistry_c) :: this
             allocate(this%concentrations(this%reactive_zone%num_solids))
+            this%concentrations=0d0
         end subroutine
         
         subroutine allocate_activities(this)
             implicit none
             class(solid_chemistry_c) :: this
             allocate(this%activities(this%reactive_zone%num_solids))
+            this%activities=0d0
         end subroutine
         
         subroutine allocate_log_act_coeffs_solid_chem(this)

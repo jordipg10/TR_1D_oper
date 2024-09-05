@@ -1,12 +1,12 @@
 'TITLE OF THE PROBLEM: Gypsum and calcite in equilibrium '
 '-----------------------------------------------------------------------------'
 'DEFINITION OF THE GEOCHEMICAL SYSTEM'
-25.0			! initial temp. of the system
-'AQUEOUS SPECIES'	! first primary, then secondary
+'PRIMARY AQUEOUS SPECIES'	! first primary, then secondary
 'h+'
-'so4-2'
+'h2o'
 'ca+2'
 'hco3-'
+'so4-2'
 '*'
 'AQUEOUS COMPLEXES'
 '*'

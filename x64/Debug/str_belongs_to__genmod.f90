@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Mon Sep  2 18:22:26 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Sep  5 11:53:23 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE STR_BELONGS_TO__genmod

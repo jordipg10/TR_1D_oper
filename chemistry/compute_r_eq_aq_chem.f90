@@ -24,7 +24,6 @@ subroutine compute_r_eq_aq_chem(this,c2nc_tilde,Delta_t,porosity)
                     R_eq=0d0
                 else
                     call Gauss_Jordan(A,b,this%CV_params%zero,R_eq,err) !> linear system solver
-                    !call LU_lin_syst(A,b,this%CV_params%zero,R_eq) !> linear system solver
                 end if
                 this%solid_chemistry%r_eq(1:this%solid_chemistry%reactive_zone%num_minerals_cst_act)=R_eq(1:this%solid_chemistry%reactive_zone%num_minerals_cst_act)*porosity/Delta_t !> r_eq_j=R_eq*phi_j/Delta_t
                 this%solid_chemistry%r_eq(this%solid_chemistry%reactive_zone%num_minerals_cst_act+1:this%solid_chemistry%reactive_zone%num_minerals_cst_act+this%solid_chemistry%reactive_zone%cat_exch_zone%num_exch_cats)=R_eq(this%speciation_alg%num_cst_act_species-this%aq_phase%wat_flag+this%aq_phase%num_aq_complexes+this%chem_syst%num_redox_eq_reacts+1:this%solid_chemistry%reactive_zone%num_eq_reactions-this%solid_chemistry%reactive_zone%gas_phase%num_var_act_species)*porosity/Delta_t !> r_eq_j=R_eq*phi_j/Delta_t

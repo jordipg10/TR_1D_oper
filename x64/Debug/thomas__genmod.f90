@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Wed Sep  4 11:59:37 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Sep  5 11:54:07 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE THOMAS__genmod

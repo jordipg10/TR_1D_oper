@@ -30,7 +30,7 @@ program main
     character(len=256) :: file_time !> file name with temporal discretisation to solve transport
 !**************************************************************************************************
 !> Name of path containing chemical and transport information
-    path = 'C:\Users\user2319\source\repos\jordipg10\RT_Lagrange\input\' !> must be written by the user
+    path = 'C:\Users\user2319\source\repos\jordipg10\RT_Lagr_borr\input\' !> must be written by the user
 !> File units (arbitrary)
     unit_chem_syst=1
     unit_loc_chem=2
