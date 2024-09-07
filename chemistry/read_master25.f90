@@ -20,7 +20,7 @@ subroutine read_master25(this,path,unit)
     type(gas_c) :: gas
     type(solid_c) :: surf_compl
     
-    filename=trim(trim(path))//'\master25_modif.dat' 
+    filename=trim(path)//'master25_modif.dat'
 
     open(unit,file=filename,status='old',action='read')
     

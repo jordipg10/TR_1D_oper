@@ -1,5 +1,5 @@
 !> Lectura quimica
-subroutine read_chemistry(this,path,unit_chem_syst_file,chem_syst_file,unit_loc_chem_file,loc_chem_file,unit_target_waters_file,target_waters_file)
+subroutine read_chemistry(this,path,unit_chem_syst_file,chem_syst_file,unit_loc_chem_file,loc_chem_file,unit_target_waters_init_file,target_waters_init_file)
     use chemistry_Lagr_m
     implicit none
     class(chemistry_c) :: this
@@ -8,13 +8,13 @@ subroutine read_chemistry(this,path,unit_chem_syst_file,chem_syst_file,unit_loc_
     character(len=*), intent(in) :: chem_syst_file
     integer(kind=4), intent(in) :: unit_loc_chem_file
     character(len=*), intent(in) :: loc_chem_file
-    integer(kind=4), intent(in) :: unit_target_waters_file
-    character(len=*), intent(in) :: target_waters_file
+    integer(kind=4), intent(in) :: unit_target_waters_init_file
+    character(len=*), intent(in) :: target_waters_init_file
     
     integer(kind=4) :: i
     
     if (this%option==1) then !> CHEPROO
-        call this%read_chemistry_CHEPROO(path,unit_chem_syst_file,chem_syst_file,unit_loc_chem_file,loc_chem_file,unit_target_waters_file,target_waters_file)
+        call this%read_chemistry_CHEPROO(path,unit_chem_syst_file,chem_syst_file,unit_loc_chem_file,loc_chem_file,unit_target_waters_init_file,target_waters_init_file)
     else if (this%option==2) then !> PHREEQC
         !call this%read_chemistry_PHREEQC()
         error stop "PHREEQC data input not fully implemented yet"

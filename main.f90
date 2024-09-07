@@ -31,8 +31,8 @@ program main
     character(len=256) :: file_time !> file name with temporal discretisation to solve transport
 !**************************************************************************************************
 !> Name of path containing chemical and transport information
-    path = 'C:\Users\user2319\source\repos\jordipg10\RT_Lagr_borr\input\' !> must be written by the user
-    path_py='C:\Users\user2319\OneDrive\Documentos\trabajo\python\' !> path for unit tests in Python (optional)
+    path = 'C:\Users\Jordi\source\repos\jordipg10\RT_Lagr_borr\input\' !> must be written by the user
+    path_py='C:\Users\Jordi\OneDrive\Documentos\trabajo\python\' !> path for unit tests in Python (optional)
 !> File units (arbitrary)
     unit_chem_syst=1
     unit_loc_chem=2
@@ -48,12 +48,18 @@ program main
     file_time='discr_temp.dat' 
     file_tpt_props='tpt_props.dat' 
 !> Choose example
-    example=1
+    example=0
     if (example==0) then
     !> Gypsum in equilibrium
         file_chem_syst='gypsum_eq_sist_quim.dat'
         file_loc_chem='gypsum_eq_quim_loc.dat'
         file_tw='gypsum_eq_tar_wat.dat'
+        file_tpt_props='tpt_props_gypsum_eq.dat'
+        file_BCs='BCs_gypsum_eq.dat'
+        file_space='discr_esp_gypsum_eq.dat' 
+        file_time='discr_temp_gypsum_eq.dat'
+        file_discr='WMA_discr_gypsum_eq.dat' 
+        file_tpt='WMA_lambdas_gypsum_eq.dat'
         file_out='gypsum_eq.out'
     else if (example==1) then
     !> Gypsum & calcite in equilibrium
@@ -86,7 +92,7 @@ program main
         error stop "Example not implemented yet"
     end if
 !> Initialise transport
-    option_tpt=0
+    option_tpt=1
     if (option_tpt==0) then
     !> we read transport data, BCs and discretisations
         !> in the explicit case, we also compute stability parameters

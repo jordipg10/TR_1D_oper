@@ -54,6 +54,10 @@ subroutine link_target_waters_reactive_zone(this,i,tw_indices)
                 call append_int_1D_array(tw_indices,j)
                 exit
             end if
+        else if (j<this%num_target_waters) then
+            j=j+1
+        else
+            exit
         end if
     end do
 end subroutine

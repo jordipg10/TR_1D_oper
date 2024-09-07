@@ -23,7 +23,7 @@ subroutine compute_log_act_coeffs_aq_phase(this,ionic_act,params_aq_sol,log_act_
     !p_compute_log_act_coeff=>Davies !> lo impongo (chapuza)
     do i=1,this%num_species-this%wat_flag
         !call p_compute_log_act_coeff(this%aq_species(i),ionic_act,log_act_coeffs(i))
-        log_act_coeffs(this%ind_diss_solids(i))=-(params_aq_sol%A*this%aq_species(this%ind_diss_solids(i))%valence**2)*sqrt(ionic_act)/(1d0+this%aq_species(this%ind_diss_solids(i))%params_act_coeff%alpha*sqrt(ionic_act)) + this%aq_species(this%ind_diss_solids(i))%params_act_coeff%beta*ionic_act
+        log_act_coeffs(this%ind_diss_solids(i))=-this%aq_species(this%ind_diss_solids(i))%params_act_coeff%alpha*(params_aq_sol%A*this%aq_species(this%ind_diss_solids(i))%valence**2)*sqrt(ionic_act)/(1d0+this%aq_species(this%ind_diss_solids(i))%params_act_coeff%beta*sqrt(ionic_act)) + this%aq_species(this%ind_diss_solids(i))%params_act_coeff%gamma*ionic_act
     end do
     !log_act_coeffs(this%ind_wat)
 end subroutine

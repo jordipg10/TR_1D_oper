@@ -1,0 +1,1765 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\solve_reactive_mixing.f90||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\solve_reactive_mixing.f90||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\main.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:main.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|c:\\users\\jordi\\source\\repos\\jordipg10\\rt_lagr_borr\\chemistry\\link_target_waters_reactive_zone.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\link_target_waters_reactive_zone.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|c:\\users\\jordi\\source\\repos\\jordipg10\\rt_lagr_borr\\chemistry\\link_target_waters_init_reactive_zone.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\link_target_waters_init_reactive_zone.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\chemistry_lagr_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\chemistry_lagr_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\write_chemistry.f90||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\write_chemistry.f90||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\link_target_waters_target_solids.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\link_target_waters_target_solids.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\link_target_waters_target_solids.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\link_target_waters_target_solids.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\aqueous_chemistry_lagr_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\aqueous_chemistry_lagr_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\1d_rt\\write_transport_data.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:1d_rt\\write_transport_data.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\1d_rt\\rt_1d_lagr_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:1d_rt\\rt_1d_lagr_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\1d_rt\\write_rt_1d.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:1d_rt\\write_rt_1d.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\transport\\read_transport_data_wma.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:transport\\read_transport_data_wma.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_chemistry_cheproo.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\read_chemistry_cheproo.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_target_waters_init.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\read_target_waters_init.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\transport\\pde_transient_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:transport\\pde_transient_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c_tilde_aq_chem.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\compute_c_tilde_aq_chem.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\link_target_waters_target_solid.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\link_target_waters_target_solid.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\link_target_waters_target_gases.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\link_target_waters_target_gases.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\chemistry_lagr_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\chemistry_lagr_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\numerical_methods\\vectors_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:numerical_methods\\vectors_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\transport\\compute_mixing_ratios_delta_t_homog.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:transport\\compute_mixing_ratios_delta_t_homog.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\numerical_methods\\matrices_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:numerical_methods\\matrices_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\solve_reactive_mixing.f90||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\solve_reactive_mixing.f90||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c2nc_tilde_aq_chem.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\compute_c2nc_tilde_aq_chem.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\transport\\read_transport_data_wma.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:transport\\read_transport_data_wma.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\transport\\transport_transient_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:transport\\transport_transient_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\1d_rt\\read_discretisation.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:1d_rt\\read_discretisation.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\transport\\bcs_subroutines_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:transport\\bcs_subroutines_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\transport\\compute_f_vec.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:transport\\compute_f_vec.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\transport\\compute_source_term_pde.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:transport\\compute_source_term_pde.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\1d_rt\\write_python.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:1d_rt\\write_python.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c2nc_from_c1_picard.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\compute_c2nc_from_c1_picard.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c2nc_from_c1_picard.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\compute_c2nc_from_c1_picard.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c2_from_c1_picard.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\compute_c2_from_c1_picard.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c2_from_c1_picard.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\compute_c2_from_c1_picard.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\initialise_conc_anal.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\initialise_conc_anal.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_wat_type_cheproo.f90||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\read_wat_type_cheproo.f90||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\reactive_zone_lagr_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\reactive_zone_lagr_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_wat_type_cheproo.f90||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\read_wat_type_cheproo.f90||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_chemistry.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\read_chemistry.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\transport_iter_comp_ee_aq_chem.f90||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\transport_iter_comp_ee_aq_chem.f90||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\cv_params_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\cv_params_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\cv_params_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\cv_params_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\transport_iter_comp_ee_aq_chem.f90||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\transport_iter_comp_ee_aq_chem.f90||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_d_log_gamma_d_i_aq_chem.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\compute_d_log_gamma_d_i_aq_chem.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_dfk_dc1_efi_aq_chem.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\compute_dfk_dc1_efi_aq_chem.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c_nc_from_u_newton.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\compute_c_nc_from_u_newton.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c2_from_c1_aq_picard.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\compute_c2_from_c1_aq_picard.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_res_jac_res_incr_coef.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\compute_res_jac_res_incr_coef.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\newton_efi_kin_aq_chem.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\newton_efi_kin_aq_chem.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\transport_iter_species_ee_aq_chem.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\transport_iter_species_ee_aq_chem.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\water_mixing_iter_ee_kin.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\water_mixing_iter_ee_kin.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_log_jacobian_act_coeffs_aq_phase.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\compute_log_jacobian_act_coeffs_aq_phase.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_dc2nc_dc1.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\compute_dc2nc_dc1.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\aq_phase_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\aq_phase_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_log_act_coeffs_aq_phase.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\compute_log_act_coeffs_aq_phase.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\params_act_coeff_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\params_act_coeff_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\chem_type_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\chem_type_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_init_bd_rech_wat_types.f90||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\read_init_bd_rech_wat_types.f90||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\write_chemistry.f90||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\write_chemistry.f90||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_master25.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\read_master25.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_init_gas_zones_cheproo.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\read_init_gas_zones_cheproo.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_init_gas_zones_cheproo.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\read_init_gas_zones_cheproo.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_chemistry_cheproo.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\read_chemistry_cheproo.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_chemistry.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\read_chemistry.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\main.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:main.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_r_eq_aq_chem.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\compute_r_eq_aq_chem.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_conc_minerals_iter_ee.f90||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\compute_conc_minerals_iter_ee.f90||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_mass_bal_mins.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\compute_mass_bal_mins.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_target_waters_init.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\read_target_waters_init.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_init_min_zones_cheproo.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\read_init_min_zones_cheproo.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\reactive_zone_lagr_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\reactive_zone_lagr_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\local_chemistry_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\local_chemistry_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\solid_chemistry_lagr_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\solid_chemistry_lagr_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\mineral_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\mineral_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_chem_system_cheproo.f90||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\read_chem_system_cheproo.f90||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\chem_system_mod.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\chem_system_mod.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\phase_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr_borr.vfproj|solutionrelative:chemistry\\phase_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\aqueous_chemistry_lagr_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\aqueous_chemistry_lagr_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\speciation_algebra_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\speciation_algebra_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c2nc_from_c1_aq_picard.f90||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\compute_c2nc_from_c1_aq_picard.f90||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\numerical_methods\\gauss-jordan.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:numerical_methods\\gauss-jordan.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\newton_efi_rk_eq_kin_aq.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\newton_efi_rk_eq_kin_aq.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\water_mixing_iter_efi_eq_kin.f90||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\water_mixing_iter_efi_eq_kin.f90||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\gas_chemistry_lagr_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\gas_chemistry_lagr_m.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\numerical_methods\\lu_lin_syst.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:numerical_methods\\lu_lin_syst.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\set_stoich_mat_sol.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\set_stoich_mat_sol.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c_nc_from_u_aq_newton.f90||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\compute_c_nc_from_u_aq_newton.f90||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\update_conc_prim_species.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\update_conc_prim_species.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_init_surf_ads_zones_cheproo.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\read_init_surf_ads_zones_cheproo.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\update_conc_aq_prim_species.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\update_conc_aq_prim_species.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\picard_ee_tpt_efi_rk_eq_kin_aq_chem.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\picard_ee_tpt_efi_rk_eq_kin_aq_chem.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\newton_ei_tpt_efi_rk_eq_kin_aq.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\newton_ei_tpt_efi_rk_eq_kin_aq.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\initialise_conc_incr_coeff.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\initialise_conc_incr_coeff.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\set_stoich_mat_react_zone.f90||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\set_stoich_mat_react_zone.f90||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_res_jac_res_anal_exch.f90||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\compute_res_jac_res_anal_exch.f90||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\initialise_conc_anal_exch.f90||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\initialise_conc_anal_exch.f90||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\numerical_methods\\inv_matrix.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:numerical_methods\\inv_matrix.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\check_solid_chemistry.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\check_solid_chemistry.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\initialise_iterative_method.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\initialise_iterative_method.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\initialise_chemistry.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\initialise_chemistry.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_phreeqc_db_opc1.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\read_phreeqc_db_opc1.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_phreeqc_db_opc2.f90||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{39CA3266-8350-42A1-A71A-671C7F4DDA49}|RT_Lagr.vfproj|solutionrelative:chemistry\\read_phreeqc_db_opc2.f90||{8B382828-6202-11D1-8870-0000F87579D2}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 10,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "main.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\main.f90",
+              "RelativeDocumentMoniker": "main.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\main.f90",
+              "RelativeToolTip": "main.f90",
+              "ViewState": "AQIAAC0AAAAAAAAAAAAAADoAAAAtAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T10:02:46.484Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "RT_1D_Lagr_m.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\1D_RT\\RT_1D_Lagr_m.f90",
+              "RelativeDocumentMoniker": "1D_RT\\RT_1D_Lagr_m.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\1D_RT\\RT_1D_Lagr_m.f90",
+              "RelativeToolTip": "1D_RT\\RT_1D_Lagr_m.f90",
+              "ViewState": "AQIAAAcAAAAAAAAAAIAwwBMAAAAxAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T10:02:46.479Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "write_python.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\1D_RT\\write_python.f90",
+              "RelativeDocumentMoniker": "1D_RT\\write_python.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\1D_RT\\write_python.f90",
+              "RelativeToolTip": "1D_RT\\write_python.f90",
+              "ViewState": "AQIAABgAAAAAAAAAAAAiwBwAAAA2AAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T10:02:46.481Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "write_RT_1D.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\1D_RT\\write_RT_1D.f90",
+              "RelativeDocumentMoniker": "1D_RT\\write_RT_1D.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\1D_RT\\write_RT_1D.f90",
+              "RelativeToolTip": "1D_RT\\write_RT_1D.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAiAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T10:02:46.074Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "transport_iter_comp_EE_aq_chem.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\transport_iter_comp_EE_aq_chem.f90",
+              "RelativeDocumentMoniker": "chemistry\\transport_iter_comp_EE_aq_chem.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\transport_iter_comp_EE_aq_chem.f90",
+              "RelativeToolTip": "chemistry\\transport_iter_comp_EE_aq_chem.f90",
+              "ViewState": "AQIAABIAAAAAAAAAAAAAAA4AAAA+AAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T10:11:41.328Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "read_wat_type_CHEPROO.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_wat_type_CHEPROO.f90",
+              "RelativeDocumentMoniker": "chemistry\\read_wat_type_CHEPROO.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_wat_type_CHEPROO.f90",
+              "RelativeToolTip": "chemistry\\read_wat_type_CHEPROO.f90",
+              "ViewState": "AQIAAHIAAAAAAAAAAABDwHQAAABJAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T12:47:40.659Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "initialise_conc_anal.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\initialise_conc_anal.f90",
+              "RelativeDocumentMoniker": "chemistry\\initialise_conc_anal.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\initialise_conc_anal.f90",
+              "RelativeToolTip": "chemistry\\initialise_conc_anal.f90",
+              "ViewState": "AQIAAE8AAAAAAAAAAABEwJEAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T10:02:46.508Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "compute_c2_from_c1_Picard.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c2_from_c1_Picard.f90",
+              "RelativeDocumentMoniker": "chemistry\\compute_c2_from_c1_Picard.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c2_from_c1_Picard.f90",
+              "RelativeToolTip": "chemistry\\compute_c2_from_c1_Picard.f90",
+              "ViewState": "AQIAACYAAAAAAAAAAAAgwC8AAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T12:50:58.181Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "compute_mixing_ratios_Delta_t_homog.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\transport\\compute_mixing_ratios_Delta_t_homog.f90",
+              "RelativeDocumentMoniker": "transport\\compute_mixing_ratios_Delta_t_homog.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\transport\\compute_mixing_ratios_Delta_t_homog.f90",
+              "RelativeToolTip": "transport\\compute_mixing_ratios_Delta_t_homog.f90",
+              "ViewState": "AQIAACUAAAAAAAAAAAAWwDEAAAAwAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T14:30:32.111Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "read_transport_data_WMA.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\transport\\read_transport_data_WMA.f90",
+              "RelativeDocumentMoniker": "transport\\read_transport_data_WMA.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\transport\\read_transport_data_WMA.f90",
+              "RelativeToolTip": "transport\\read_transport_data_WMA.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAsAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T10:11:53.187Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "solve_reactive_mixing.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\solve_reactive_mixing.f90",
+              "RelativeDocumentMoniker": "chemistry\\solve_reactive_mixing.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\solve_reactive_mixing.f90",
+              "RelativeToolTip": "chemistry\\solve_reactive_mixing.f90",
+              "ViewState": "AQIAAIcAAAAAAAAAAAAAAIMAAAA5AAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T16:04:36.14Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "compute_c_tilde_aq_chem.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c_tilde_aq_chem.f90",
+              "RelativeDocumentMoniker": "chemistry\\compute_c_tilde_aq_chem.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c_tilde_aq_chem.f90",
+              "RelativeToolTip": "chemistry\\compute_c_tilde_aq_chem.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T16:03:58.079Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "chemistry_Lagr_m.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\chemistry_Lagr_m.f90",
+              "RelativeDocumentMoniker": "chemistry\\chemistry_Lagr_m.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\chemistry_Lagr_m.f90",
+              "RelativeToolTip": "chemistry\\chemistry_Lagr_m.f90",
+              "ViewState": "AQIAAD4AAAAAAAAAAIAwwCUCAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T10:11:45.264Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "read_target_waters_init.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_target_waters_init.f90",
+              "RelativeDocumentMoniker": "chemistry\\read_target_waters_init.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_target_waters_init.f90",
+              "RelativeToolTip": "chemistry\\read_target_waters_init.f90",
+              "ViewState": "AQIAAHIAAAAAAAAAAIAxwFUBAAAOAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T10:11:44.941Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "aqueous_chemistry_Lagr_m.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\aqueous_chemistry_Lagr_m.f90",
+              "RelativeDocumentMoniker": "chemistry\\aqueous_chemistry_Lagr_m.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\aqueous_chemistry_Lagr_m.f90",
+              "RelativeToolTip": "chemistry\\aqueous_chemistry_Lagr_m.f90",
+              "ViewState": "AQIAAMgFAAAAAAAAAADwv9gFAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T10:11:39.053Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "write_chemistry.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\write_chemistry.f90",
+              "RelativeDocumentMoniker": "chemistry\\write_chemistry.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\write_chemistry.f90",
+              "RelativeToolTip": "chemistry\\write_chemistry.f90",
+              "ViewState": "AQIAAM8AAAAAAAAAAAAAANUAAAAxAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T10:11:45.178Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "link_target_waters_reactive_zone.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\link_target_waters_reactive_zone.f90",
+              "RelativeDocumentMoniker": "chemistry\\link_target_waters_reactive_zone.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\link_target_waters_reactive_zone.f90",
+              "RelativeToolTip": "chemistry\\link_target_waters_reactive_zone.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAoAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-07T09:37:03.91Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "link_target_waters_init_reactive_zone.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\link_target_waters_init_reactive_zone.f90",
+              "RelativeDocumentMoniker": "chemistry\\link_target_waters_init_reactive_zone.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\link_target_waters_init_reactive_zone.f90",
+              "RelativeToolTip": "chemistry\\link_target_waters_init_reactive_zone.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-07T09:36:59.509Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "matrices_m.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\numerical_methods\\matrices_m.f90",
+              "RelativeDocumentMoniker": "numerical_methods\\matrices_m.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\numerical_methods\\matrices_m.f90",
+              "RelativeToolTip": "numerical_methods\\matrices_m.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABIAAAAEAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T16:07:57.921Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "link_target_waters_target_solids.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\link_target_waters_target_solids.f90",
+              "RelativeDocumentMoniker": "chemistry\\link_target_waters_target_solids.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\link_target_waters_target_solids.f90",
+              "RelativeToolTip": "chemistry\\link_target_waters_target_solids.f90",
+              "ViewState": "AQIAABYAAAAAAAAAAAAAABYAAAAiAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.544Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "read_chemistry_CHEPROO.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_chemistry_CHEPROO.f90",
+              "RelativeDocumentMoniker": "chemistry\\read_chemistry_CHEPROO.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_chemistry_CHEPROO.f90",
+              "RelativeToolTip": "chemistry\\read_chemistry_CHEPROO.f90",
+              "ViewState": "AQIAAJEAAAAAAAAAAADgv5sAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T10:11:43.738Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "PDE_transient_m.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\transport\\PDE_transient_m.f90",
+              "RelativeDocumentMoniker": "transport\\PDE_transient_m.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\transport\\PDE_transient_m.f90",
+              "RelativeToolTip": "transport\\PDE_transient_m.f90",
+              "ViewState": "AQIAAOgAAAAAAAAAAIAwwPQAAAAxAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T16:11:00.084Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "link_target_waters_target_gases.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\link_target_waters_target_gases.f90",
+              "RelativeDocumentMoniker": "chemistry\\link_target_waters_target_gases.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\link_target_waters_target_gases.f90",
+              "RelativeToolTip": "chemistry\\link_target_waters_target_gases.f90",
+              "ViewState": "AQIAABkAAAAAAAAAAIAwwCUAAAA3AAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-07T08:15:03.139Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "link_target_waters_target_solids.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\link_target_waters_target_solids.f90",
+              "RelativeDocumentMoniker": "chemistry\\link_target_waters_target_solids.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\link_target_waters_target_solids.f90",
+              "RelativeToolTip": "chemistry\\link_target_waters_target_solids.f90",
+              "ViewState": "AQIAABYAAAAAAAAAAAAAABYAAAAiAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-07T08:02:27.861Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "write_transport_data.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\1D_RT\\write_transport_data.f90",
+              "RelativeDocumentMoniker": "1D_RT\\write_transport_data.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\1D_RT\\write_transport_data.f90",
+              "RelativeToolTip": "1D_RT\\write_transport_data.f90",
+              "ViewState": "AQIAAFMAAAAAAAAAAAAAAFsAAAA6AAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-07T08:48:17.093Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "link_target_waters_target_solid.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\link_target_waters_target_solid.f90",
+              "RelativeDocumentMoniker": "chemistry\\link_target_waters_target_solid.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\link_target_waters_target_solid.f90",
+              "RelativeToolTip": "chemistry\\link_target_waters_target_solid.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAABOAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-07T08:15:09.052Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "chemistry_Lagr_m.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\chemistry_Lagr_m.f90",
+              "RelativeDocumentMoniker": "chemistry\\chemistry_Lagr_m.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\chemistry_Lagr_m.f90",
+              "RelativeToolTip": "chemistry\\chemistry_Lagr_m.f90",
+              "ViewState": "AQIAABYCAAAAAAAAAADgvyUCAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.499Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "read_discretisation.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\1D_RT\\read_discretisation.f90",
+              "RelativeDocumentMoniker": "1D_RT\\read_discretisation.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\1D_RT\\read_discretisation.f90",
+              "RelativeToolTip": "1D_RT\\read_discretisation.f90",
+              "ViewState": "AQIAAFwAAAAAAAAAAAAWwGgAAAAsAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T14:48:34.788Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "compute_f_vec.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\transport\\compute_f_vec.f90",
+              "RelativeDocumentMoniker": "transport\\compute_f_vec.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\transport\\compute_f_vec.f90",
+              "RelativeToolTip": "transport\\compute_f_vec.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAlAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T14:31:28.416Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "compute_c2nc_tilde_aq_chem.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c2nc_tilde_aq_chem.f90",
+              "RelativeDocumentMoniker": "chemistry\\compute_c2nc_tilde_aq_chem.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c2nc_tilde_aq_chem.f90",
+              "RelativeToolTip": "chemistry\\compute_c2nc_tilde_aq_chem.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T16:03:57.262Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "vectors_m.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\numerical_methods\\vectors_m.f90",
+              "RelativeDocumentMoniker": "numerical_methods\\vectors_m.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\numerical_methods\\vectors_m.f90",
+              "RelativeToolTip": "numerical_methods\\vectors_m.f90",
+              "ViewState": "AQIAAE8AAAAAAAAAAAAmwGgAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T16:09:43.242Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "compute_source_term_PDE.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\transport\\compute_source_term_PDE.f90",
+              "RelativeDocumentMoniker": "transport\\compute_source_term_PDE.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\transport\\compute_source_term_PDE.f90",
+              "RelativeToolTip": "transport\\compute_source_term_PDE.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T14:31:54.724Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "BCs_subroutines_m.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\transport\\BCs_subroutines_m.f90",
+              "RelativeDocumentMoniker": "transport\\BCs_subroutines_m.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\transport\\BCs_subroutines_m.f90",
+              "RelativeToolTip": "transport\\BCs_subroutines_m.f90",
+              "ViewState": "AQIAABoAAAAAAAAAAABEwC0AAAA8AAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T14:31:49.39Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "read_transport_data_WMA.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\transport\\read_transport_data_WMA.f90",
+              "RelativeDocumentMoniker": "transport\\read_transport_data_WMA.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\transport\\read_transport_data_WMA.f90",
+              "RelativeToolTip": "transport\\read_transport_data_WMA.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAsAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.607Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "transport_transient_m.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\transport\\transport_transient_m.f90",
+              "RelativeDocumentMoniker": "transport\\transport_transient_m.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\transport\\transport_transient_m.f90",
+              "RelativeToolTip": "transport\\transport_transient_m.f90",
+              "ViewState": "AQIAAHoAAAAAAAAAAAAWwIYAAAAqAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T14:48:58.791Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "compute_c2nc_from_c1_Picard.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c2nc_from_c1_Picard.f90",
+              "RelativeDocumentMoniker": "chemistry\\compute_c2nc_from_c1_Picard.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c2nc_from_c1_Picard.f90",
+              "RelativeToolTip": "chemistry\\compute_c2nc_from_c1_Picard.f90",
+              "ViewState": "AQIAAEgAAAAAAAAAAAAMwE8AAAAwAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T10:11:42.278Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "read_chemistry.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_chemistry.f90",
+              "RelativeDocumentMoniker": "chemistry\\read_chemistry.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_chemistry.f90",
+              "RelativeToolTip": "chemistry\\read_chemistry.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T10:11:43.646Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "CV_params_m.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\CV_params_m.f90",
+              "RelativeDocumentMoniker": "chemistry\\CV_params_m.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\CV_params_m.f90",
+              "RelativeToolTip": "chemistry\\CV_params_m.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAiAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T10:11:32.212Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "compute_c2nc_from_c1_Picard.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c2nc_from_c1_Picard.f90",
+              "RelativeDocumentMoniker": "chemistry\\compute_c2nc_from_c1_Picard.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c2nc_from_c1_Picard.f90",
+              "RelativeToolTip": "chemistry\\compute_c2nc_from_c1_Picard.f90",
+              "ViewState": "AQIAAEgAAAAAAAAAAAAMwE8AAAAwAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.612Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "reactive_zone_Lagr_m.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\reactive_zone_Lagr_m.f90",
+              "RelativeDocumentMoniker": "chemistry\\reactive_zone_Lagr_m.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\reactive_zone_Lagr_m.f90",
+              "RelativeToolTip": "chemistry\\reactive_zone_Lagr_m.f90",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAAA8AAAAvAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T10:11:38.017Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "transport_iter_comp_EE_aq_chem.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\transport_iter_comp_EE_aq_chem.f90",
+              "RelativeDocumentMoniker": "chemistry\\transport_iter_comp_EE_aq_chem.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\transport_iter_comp_EE_aq_chem.f90",
+              "RelativeToolTip": "chemistry\\transport_iter_comp_EE_aq_chem.f90",
+              "ViewState": "AQIAABIAAAAAAAAAAAAAAA4AAAA+AAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:45.792Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 46,
+              "Title": "compute_dfk_dc1_EfI_aq_chem.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_dfk_dc1_EfI_aq_chem.f90",
+              "RelativeDocumentMoniker": "chemistry\\compute_dfk_dc1_EfI_aq_chem.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_dfk_dc1_EfI_aq_chem.f90",
+              "RelativeToolTip": "chemistry\\compute_dfk_dc1_EfI_aq_chem.f90",
+              "ViewState": "AQIAABYAAAAAAAAAAABEwBgAAAAxAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T11:58:53.495Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 45,
+              "Title": "compute_d_log_gamma_d_I_aq_chem.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_d_log_gamma_d_I_aq_chem.f90",
+              "RelativeDocumentMoniker": "chemistry\\compute_d_log_gamma_d_I_aq_chem.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_d_log_gamma_d_I_aq_chem.f90",
+              "RelativeToolTip": "chemistry\\compute_d_log_gamma_d_I_aq_chem.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAACbAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T11:58:56.14Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 47,
+              "Title": "compute_c_nc_from_u_Newton.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c_nc_from_u_Newton.f90",
+              "RelativeDocumentMoniker": "chemistry\\compute_c_nc_from_u_Newton.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c_nc_from_u_Newton.f90",
+              "RelativeToolTip": "chemistry\\compute_c_nc_from_u_Newton.f90",
+              "ViewState": "AQIAACkAAAAAAAAAAAArwDcAAAA1AAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T11:50:00.752Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 48,
+              "Title": "compute_c2_from_c1_aq_Picard.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c2_from_c1_aq_Picard.f90",
+              "RelativeDocumentMoniker": "chemistry\\compute_c2_from_c1_aq_Picard.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c2_from_c1_aq_Picard.f90",
+              "RelativeToolTip": "chemistry\\compute_c2_from_c1_aq_Picard.f90",
+              "ViewState": "AQIAADMAAAAAAAAAAAArwEEAAAAnAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T11:52:52.929Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 49,
+              "Title": "compute_res_Jac_res_incr_coef.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_res_Jac_res_incr_coef.f90",
+              "RelativeDocumentMoniker": "chemistry\\compute_res_Jac_res_incr_coef.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_res_Jac_res_incr_coef.f90",
+              "RelativeToolTip": "chemistry\\compute_res_Jac_res_incr_coef.f90",
+              "ViewState": "AQIAADAAAAAAAAAAAABEwDIAAAAnAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T11:52:54.464Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 50,
+              "Title": "Newton_EfI_kin_aq_chem.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\Newton_EfI_kin_aq_chem.f90",
+              "RelativeDocumentMoniker": "chemistry\\Newton_EfI_kin_aq_chem.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\Newton_EfI_kin_aq_chem.f90",
+              "RelativeToolTip": "chemistry\\Newton_EfI_kin_aq_chem.f90",
+              "ViewState": "AQIAAEAAAAAAAAAAAABEwEIAAAArAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T11:52:55.83Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 51,
+              "Title": "transport_iter_species_EE_aq_chem.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\transport_iter_species_EE_aq_chem.f90",
+              "RelativeDocumentMoniker": "chemistry\\transport_iter_species_EE_aq_chem.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\transport_iter_species_EE_aq_chem.f90",
+              "RelativeToolTip": "chemistry\\transport_iter_species_EE_aq_chem.f90",
+              "ViewState": "AQIAABgAAAAAAAAAAABEwBoAAAArAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T11:52:57.225Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 52,
+              "Title": "water_mixing_iter_EE_kin.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\water_mixing_iter_EE_kin.f90",
+              "RelativeDocumentMoniker": "chemistry\\water_mixing_iter_EE_kin.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\water_mixing_iter_EE_kin.f90",
+              "RelativeToolTip": "chemistry\\water_mixing_iter_EE_kin.f90",
+              "ViewState": "AQIAABkAAAAAAAAAAABEwBsAAAAnAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T11:52:59.208Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 55,
+              "Title": "aq_phase_m.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\aq_phase_m.f90",
+              "RelativeDocumentMoniker": "chemistry\\aq_phase_m.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\aq_phase_m.f90",
+              "RelativeToolTip": "chemistry\\aq_phase_m.f90",
+              "ViewState": "AQIAAB8AAAAAAAAAAABEwDgAAAA7AAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T11:49:59.201Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 53,
+              "Title": "compute_log_Jacobian_act_coeffs_aq_phase.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_log_Jacobian_act_coeffs_aq_phase.f90",
+              "RelativeDocumentMoniker": "chemistry\\compute_log_Jacobian_act_coeffs_aq_phase.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_log_Jacobian_act_coeffs_aq_phase.f90",
+              "RelativeToolTip": "chemistry\\compute_log_Jacobian_act_coeffs_aq_phase.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAABEwAIAAAAzAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T11:50:05.025Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 54,
+              "Title": "compute_dc2nc_dc1.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_dc2nc_dc1.f90",
+              "RelativeDocumentMoniker": "chemistry\\compute_dc2nc_dc1.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_dc2nc_dc1.f90",
+              "RelativeToolTip": "chemistry\\compute_dc2nc_dc1.f90",
+              "ViewState": "AQIAAC0AAAAAAAAAAABEwC8AAABAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T11:50:02.368Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 56,
+              "Title": "compute_log_act_coeffs_aq_phase.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_log_act_coeffs_aq_phase.f90",
+              "RelativeDocumentMoniker": "chemistry\\compute_log_act_coeffs_aq_phase.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_log_act_coeffs_aq_phase.f90",
+              "RelativeToolTip": "chemistry\\compute_log_act_coeffs_aq_phase.f90",
+              "ViewState": "AQIAAAQAAAAAAAAAAABEwBwAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T11:35:47.876Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 58,
+              "Title": "chem_type_m.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\chem_type_m.f90",
+              "RelativeDocumentMoniker": "chemistry\\chem_type_m.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\chem_type_m.f90",
+              "RelativeToolTip": "chemistry\\chem_type_m.f90",
+              "ViewState": "AQIAABIAAAAAAAAAAAAMwB8AAAAoAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T11:29:50.937Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 57,
+              "Title": "params_act_coeff_m.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\params_act_coeff_m.f90",
+              "RelativeDocumentMoniker": "chemistry\\params_act_coeff_m.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\params_act_coeff_m.f90",
+              "RelativeToolTip": "chemistry\\params_act_coeff_m.f90",
+              "ViewState": "AQIAADEAAAAAAAAAAABEwC4AAAAcAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T11:31:10.604Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "read_wat_type_CHEPROO.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_wat_type_CHEPROO.f90",
+              "RelativeDocumentMoniker": "chemistry\\read_wat_type_CHEPROO.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_wat_type_CHEPROO.f90",
+              "RelativeToolTip": "chemistry\\read_wat_type_CHEPROO.f90",
+              "ViewState": "AQIAAHIAAAAAAAAAAABDwHQAAABJAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.631Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 59,
+              "Title": "read_init_bd_rech_wat_types.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_init_bd_rech_wat_types.f90",
+              "RelativeDocumentMoniker": "chemistry\\read_init_bd_rech_wat_types.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_init_bd_rech_wat_types.f90",
+              "RelativeToolTip": "chemistry\\read_init_bd_rech_wat_types.f90",
+              "ViewState": "AQIAAPUAAAAAAAAAAAAMwAIBAABEAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T10:02:45.795Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "CV_params_m.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\CV_params_m.f90",
+              "RelativeDocumentMoniker": "chemistry\\CV_params_m.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\CV_params_m.f90",
+              "RelativeToolTip": "chemistry\\CV_params_m.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAiAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.633Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 60,
+              "Title": "write_chemistry.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\write_chemistry.f90",
+              "RelativeDocumentMoniker": "chemistry\\write_chemistry.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\write_chemistry.f90",
+              "RelativeToolTip": "chemistry\\write_chemistry.f90",
+              "ViewState": "AQIAAM8AAAAAAAAAAAAAANUAAAAxAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:45.814Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 63,
+              "Title": "read_init_gas_zones_CHEPROO.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_init_gas_zones_CHEPROO.f90",
+              "RelativeDocumentMoniker": "chemistry\\read_init_gas_zones_CHEPROO.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_init_gas_zones_CHEPROO.f90",
+              "RelativeToolTip": "chemistry\\read_init_gas_zones_CHEPROO.f90",
+              "ViewState": "AQIAACwAAAAAAAAAAAAAADUAAABUAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.489Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 62,
+              "Title": "read_init_gas_zones_CHEPROO.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_init_gas_zones_CHEPROO.f90",
+              "RelativeDocumentMoniker": "chemistry\\read_init_gas_zones_CHEPROO.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_init_gas_zones_CHEPROO.f90",
+              "RelativeToolTip": "chemistry\\read_init_gas_zones_CHEPROO.f90",
+              "ViewState": "AQIAACwAAAAAAAAAAAAAADUAAABUAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T10:11:44.115Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 61,
+              "Title": "read_master25.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_master25.f90",
+              "RelativeDocumentMoniker": "chemistry\\read_master25.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_master25.f90",
+              "RelativeToolTip": "chemistry\\read_master25.f90",
+              "ViewState": "AQIAAAEAAAAAAAAAAABEwBYAAAAtAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T10:44:17.342Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 64,
+              "Title": "read_chemistry_CHEPROO.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_chemistry_CHEPROO.f90",
+              "RelativeDocumentMoniker": "chemistry\\read_chemistry_CHEPROO.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_chemistry_CHEPROO.f90",
+              "RelativeToolTip": "chemistry\\read_chemistry_CHEPROO.f90",
+              "ViewState": "AQIAAJEAAAAAAAAAAADgv5sAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:45.804Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 65,
+              "Title": "read_chemistry.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_chemistry.f90",
+              "RelativeDocumentMoniker": "chemistry\\read_chemistry.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_chemistry.f90",
+              "RelativeToolTip": "chemistry\\read_chemistry.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.714Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 72,
+              "Title": "reactive_zone_Lagr_m.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\reactive_zone_Lagr_m.f90",
+              "RelativeDocumentMoniker": "chemistry\\reactive_zone_Lagr_m.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\reactive_zone_Lagr_m.f90",
+              "RelativeToolTip": "chemistry\\reactive_zone_Lagr_m.f90",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAAA8AAAAvAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:45.801Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 76,
+              "Title": "read_chem_system_CHEPROO.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_chem_system_CHEPROO.f90",
+              "RelativeDocumentMoniker": "chemistry\\read_chem_system_CHEPROO.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_chem_system_CHEPROO.f90",
+              "RelativeToolTip": "chemistry\\read_chem_system_CHEPROO.f90",
+              "ViewState": "AQIAAPMAAAAAAAAAAAAAAPoAAAAnAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:45.798Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 79,
+              "Title": "aqueous_chemistry_Lagr_m.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\aqueous_chemistry_Lagr_m.f90",
+              "RelativeDocumentMoniker": "chemistry\\aqueous_chemistry_Lagr_m.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\aqueous_chemistry_Lagr_m.f90",
+              "RelativeToolTip": "chemistry\\aqueous_chemistry_Lagr_m.f90",
+              "ViewState": "AQIAAMgFAAAAAAAAAADwv9gFAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:45.789Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 66,
+              "Title": "main.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\main.f90",
+              "RelativeDocumentMoniker": "main.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\main.f90",
+              "RelativeToolTip": "main.f90",
+              "ViewState": "AQIAAC4AAAAAAAAAAAAUwDcAAAAdAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:44.74Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 71,
+              "Title": "read_init_min_zones_CHEPROO.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_init_min_zones_CHEPROO.f90",
+              "RelativeDocumentMoniker": "chemistry\\read_init_min_zones_CHEPROO.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_init_min_zones_CHEPROO.f90",
+              "RelativeToolTip": "chemistry\\read_init_min_zones_CHEPROO.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAABUAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:45.807Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 70,
+              "Title": "read_target_waters_init.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_target_waters_init.f90",
+              "RelativeDocumentMoniker": "chemistry\\read_target_waters_init.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_target_waters_init.f90",
+              "RelativeToolTip": "chemistry\\read_target_waters_init.f90",
+              "ViewState": "AQIAAHIAAAAAAAAAAIAxwFUBAAAOAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:45.81Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 77,
+              "Title": "chem_system_mod.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\chem_system_mod.f90",
+              "RelativeDocumentMoniker": "chemistry\\chem_system_mod.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\chem_system_mod.f90",
+              "RelativeToolTip": "chemistry\\chem_system_mod.f90",
+              "ViewState": "AQIAABEAAAAAAAAAAAAywA8AAAAhAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T10:02:45.816Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 80,
+              "Title": "speciation_algebra_m.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\speciation_algebra_m.f90",
+              "RelativeDocumentMoniker": "chemistry\\speciation_algebra_m.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\speciation_algebra_m.f90",
+              "RelativeToolTip": "chemistry\\speciation_algebra_m.f90",
+              "ViewState": "AQIAAHgAAAAAAAAAAADgv30AAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:45.865Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 74,
+              "Title": "solid_chemistry_Lagr_m.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\solid_chemistry_Lagr_m.f90",
+              "RelativeDocumentMoniker": "chemistry\\solid_chemistry_Lagr_m.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\solid_chemistry_Lagr_m.f90",
+              "RelativeToolTip": "chemistry\\solid_chemistry_Lagr_m.f90",
+              "ViewState": "AQIAAM8AAAAAAAAAAAAnwNoAAAAkAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:45.868Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 69,
+              "Title": "compute_mass_bal_mins.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_mass_bal_mins.f90",
+              "RelativeDocumentMoniker": "chemistry\\compute_mass_bal_mins.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_mass_bal_mins.f90",
+              "RelativeToolTip": "chemistry\\compute_mass_bal_mins.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:45.871Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 68,
+              "Title": "compute_conc_minerals_iter_EE.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_conc_minerals_iter_EE.f90",
+              "RelativeDocumentMoniker": "chemistry\\compute_conc_minerals_iter_EE.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_conc_minerals_iter_EE.f90",
+              "RelativeToolTip": "chemistry\\compute_conc_minerals_iter_EE.f90",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAQwBQAAAAOAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:45.874Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 75,
+              "Title": "mineral_m.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\mineral_m.f90",
+              "RelativeDocumentMoniker": "chemistry\\mineral_m.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\mineral_m.f90",
+              "RelativeToolTip": "chemistry\\mineral_m.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T10:02:46.502Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 67,
+              "Title": "compute_r_eq_aq_chem.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_r_eq_aq_chem.f90",
+              "RelativeDocumentMoniker": "chemistry\\compute_r_eq_aq_chem.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_r_eq_aq_chem.f90",
+              "RelativeToolTip": "chemistry\\compute_r_eq_aq_chem.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAEAAABBAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.505Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 78,
+              "Title": "phase_m.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\phase_m.f90",
+              "RelativeDocumentMoniker": "chemistry\\phase_m.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\phase_m.f90",
+              "RelativeToolTip": "chemistry\\phase_m.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAABDAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T10:02:46.511Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "compute_c2_from_c1_Picard.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c2_from_c1_Picard.f90",
+              "RelativeDocumentMoniker": "chemistry\\compute_c2_from_c1_Picard.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c2_from_c1_Picard.f90",
+              "RelativeToolTip": "chemistry\\compute_c2_from_c1_Picard.f90",
+              "ViewState": "AQIAACYAAAAAAAAAAAAgwC8AAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.514Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 73,
+              "Title": "local_chemistry_m.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\local_chemistry_m.f90",
+              "RelativeDocumentMoniker": "chemistry\\local_chemistry_m.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\local_chemistry_m.f90",
+              "RelativeToolTip": "chemistry\\local_chemistry_m.f90",
+              "ViewState": "AQIAAFEAAAAAAAAAAAAnwFYAAAAnAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADdSURBVFhH7ZZRDsIgDIaLb\u002BNcezIcQj0BR9kJ1EMQnzgXPM6BJZnbahqDYoQvIWvJAn/\u002BloAYxxHmCCEweh/n3POiBLLrYIdxEZz3sHLAe89ST3CVUh6TAzd5jpNb7N0pfnM7cJg2v2DMgnRAKRVzLn3fg9YaswccB7IJCCxFzAWkDZdkLYG1FoZhwIwHywFjDEY0W/9TJUhuTA0rih7DQD0Cgu1pzCnuQLYm5BIaD8PIf/dAcDENinpOAUUT0AQ0AU1A1jfhK9KFVtdlxIEswaf4uRKsHPg2hR0AuAMT1nAQPZIpKAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-09-06T10:02:46.539Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "solve_reactive_mixing.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\solve_reactive_mixing.f90",
+              "RelativeDocumentMoniker": "chemistry\\solve_reactive_mixing.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\solve_reactive_mixing.f90",
+              "RelativeToolTip": "chemistry\\solve_reactive_mixing.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAIEAAAANAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.548Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 97,
+              "Title": "initialise_conc_anal_exch.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\initialise_conc_anal_exch.f90",
+              "RelativeDocumentMoniker": "chemistry\\initialise_conc_anal_exch.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\initialise_conc_anal_exch.f90",
+              "RelativeToolTip": "chemistry\\initialise_conc_anal_exch.f90",
+              "ViewState": "AQIAAHQAAAAAAAAAAABTwIUAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.551Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 88,
+              "Title": "compute_c_nc_from_u_aq_Newton.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c_nc_from_u_aq_Newton.f90",
+              "RelativeDocumentMoniker": "chemistry\\compute_c_nc_from_u_aq_Newton.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c_nc_from_u_aq_Newton.f90",
+              "RelativeToolTip": "chemistry\\compute_c_nc_from_u_aq_Newton.f90",
+              "ViewState": "AQIAACoAAAAAAAAAAAAnwDQAAAArAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.553Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 90,
+              "Title": "read_init_surf_ads_zones_CHEPROO.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_init_surf_ads_zones_CHEPROO.f90",
+              "RelativeDocumentMoniker": "chemistry\\read_init_surf_ads_zones_CHEPROO.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_init_surf_ads_zones_CHEPROO.f90",
+              "RelativeToolTip": "chemistry\\read_init_surf_ads_zones_CHEPROO.f90",
+              "ViewState": "AQIAADgAAAAAAAAAAAAnwEAAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.559Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 87,
+              "Title": "set_stoich_mat_sol.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\set_stoich_mat_sol.f90",
+              "RelativeDocumentMoniker": "chemistry\\set_stoich_mat_sol.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\set_stoich_mat_sol.f90",
+              "RelativeToolTip": "chemistry\\set_stoich_mat_sol.f90",
+              "ViewState": "AQIAACUAAAAAAAAAAABDwDQAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.563Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 84,
+              "Title": "water_mixing_iter_EfI_eq_kin.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\water_mixing_iter_EfI_eq_kin.f90",
+              "RelativeDocumentMoniker": "chemistry\\water_mixing_iter_EfI_eq_kin.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\water_mixing_iter_EfI_eq_kin.f90",
+              "RelativeToolTip": "chemistry\\water_mixing_iter_EfI_eq_kin.f90",
+              "ViewState": "AQIAABMAAAAAAAAAAABDwCEAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.569Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 83,
+              "Title": "Newton_EfI_rk_eq_kin_aq.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\Newton_EfI_rk_eq_kin_aq.f90",
+              "RelativeDocumentMoniker": "chemistry\\Newton_EfI_rk_eq_kin_aq.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\Newton_EfI_rk_eq_kin_aq.f90",
+              "RelativeToolTip": "chemistry\\Newton_EfI_rk_eq_kin_aq.f90",
+              "ViewState": "AQIAADEAAAAAAAAAAABDwDYAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.572Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 81,
+              "Title": "compute_c2nc_from_c1_aq_Picard.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c2nc_from_c1_aq_Picard.f90",
+              "RelativeDocumentMoniker": "chemistry\\compute_c2nc_from_c1_aq_Picard.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_c2nc_from_c1_aq_Picard.f90",
+              "RelativeToolTip": "chemistry\\compute_c2nc_from_c1_aq_Picard.f90",
+              "ViewState": "AQIAACMAAAAAAAAAAAAMwCcAAAAwAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.575Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 85,
+              "Title": "gas_chemistry_Lagr_m.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\gas_chemistry_Lagr_m.f90",
+              "RelativeDocumentMoniker": "chemistry\\gas_chemistry_Lagr_m.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\gas_chemistry_Lagr_m.f90",
+              "RelativeToolTip": "chemistry\\gas_chemistry_Lagr_m.f90",
+              "ViewState": "AQIAAHEAAAAAAAAAAAAAwH0AAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.579Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 82,
+              "Title": "Gauss-Jordan.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\numerical_methods\\Gauss-Jordan.f90",
+              "RelativeDocumentMoniker": "numerical_methods\\Gauss-Jordan.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\numerical_methods\\Gauss-Jordan.f90",
+              "RelativeToolTip": "numerical_methods\\Gauss-Jordan.f90",
+              "ViewState": "AQIAAD0AAAAAAAAAAABDwEQAAAAKAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.626Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 89,
+              "Title": "update_conc_prim_species.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\update_conc_prim_species.f90",
+              "RelativeDocumentMoniker": "chemistry\\update_conc_prim_species.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\update_conc_prim_species.f90",
+              "RelativeToolTip": "chemistry\\update_conc_prim_species.f90",
+              "ViewState": "AQIAABMAAAAAAAAAAAAnwBsAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.628Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 86,
+              "Title": "LU_lin_syst.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\numerical_methods\\LU_lin_syst.f90",
+              "RelativeDocumentMoniker": "numerical_methods\\LU_lin_syst.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\numerical_methods\\LU_lin_syst.f90",
+              "RelativeToolTip": "numerical_methods\\LU_lin_syst.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.636Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 92,
+              "Title": "Picard_EE_tpt_EfI_rk_eq_kin_aq_chem.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\Picard_EE_tpt_EfI_rk_eq_kin_aq_chem.f90",
+              "RelativeDocumentMoniker": "chemistry\\Picard_EE_tpt_EfI_rk_eq_kin_aq_chem.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\Picard_EE_tpt_EfI_rk_eq_kin_aq_chem.f90",
+              "RelativeToolTip": "chemistry\\Picard_EE_tpt_EfI_rk_eq_kin_aq_chem.f90",
+              "ViewState": "AQIAACoAAAAAAAAAAABTwC4AAAAyAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.64Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 91,
+              "Title": "update_conc_aq_prim_species.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\update_conc_aq_prim_species.f90",
+              "RelativeDocumentMoniker": "chemistry\\update_conc_aq_prim_species.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\update_conc_aq_prim_species.f90",
+              "RelativeToolTip": "chemistry\\update_conc_aq_prim_species.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.643Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 93,
+              "Title": "Newton_EI_tpt_EfI_rk_eq_kin_aq.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\Newton_EI_tpt_EfI_rk_eq_kin_aq.f90",
+              "RelativeDocumentMoniker": "chemistry\\Newton_EI_tpt_EfI_rk_eq_kin_aq.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\Newton_EI_tpt_EfI_rk_eq_kin_aq.f90",
+              "RelativeToolTip": "chemistry\\Newton_EI_tpt_EfI_rk_eq_kin_aq.f90",
+              "ViewState": "AQIAADQAAAAAAAAAAABTwDgAAAA2AAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.646Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 94,
+              "Title": "initialise_conc_incr_coeff.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\initialise_conc_incr_coeff.f90",
+              "RelativeDocumentMoniker": "chemistry\\initialise_conc_incr_coeff.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\initialise_conc_incr_coeff.f90",
+              "RelativeToolTip": "chemistry\\initialise_conc_incr_coeff.f90",
+              "ViewState": "AQIAAHIAAAAAAAAAAABTwHYAAAAtAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.649Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 95,
+              "Title": "set_stoich_mat_react_zone.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\set_stoich_mat_react_zone.f90",
+              "RelativeDocumentMoniker": "chemistry\\set_stoich_mat_react_zone.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\set_stoich_mat_react_zone.f90",
+              "RelativeToolTip": "chemistry\\set_stoich_mat_react_zone.f90",
+              "ViewState": "AQIAAAIAAAAAAAAAAABTwA8AAAAlAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.685Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 98,
+              "Title": "inv_matrix.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\numerical_methods\\inv_matrix.f90",
+              "RelativeDocumentMoniker": "numerical_methods\\inv_matrix.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\numerical_methods\\inv_matrix.f90",
+              "RelativeToolTip": "numerical_methods\\inv_matrix.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAADYAAAA+AAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.689Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 96,
+              "Title": "compute_res_Jac_res_anal_exch.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_res_Jac_res_anal_exch.f90",
+              "RelativeDocumentMoniker": "chemistry\\compute_res_Jac_res_anal_exch.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\compute_res_Jac_res_anal_exch.f90",
+              "RelativeToolTip": "chemistry\\compute_res_Jac_res_anal_exch.f90",
+              "ViewState": "AQIAADgAAAAAAAAAAADgv0MAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.692Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 99,
+              "Title": "check_solid_chemistry.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\check_solid_chemistry.f90",
+              "RelativeDocumentMoniker": "chemistry\\check_solid_chemistry.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\check_solid_chemistry.f90",
+              "RelativeToolTip": "chemistry\\check_solid_chemistry.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.696Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 100,
+              "Title": "initialise_iterative_method.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\initialise_iterative_method.f90",
+              "RelativeDocumentMoniker": "chemistry\\initialise_iterative_method.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\initialise_iterative_method.f90",
+              "RelativeToolTip": "chemistry\\initialise_iterative_method.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.699Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 101,
+              "Title": "initialise_chemistry.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\initialise_chemistry.f90",
+              "RelativeDocumentMoniker": "chemistry\\initialise_chemistry.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\initialise_chemistry.f90",
+              "RelativeToolTip": "chemistry\\initialise_chemistry.f90",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.703Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 103,
+              "Title": "read_PHREEQC_DB_opc2.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_PHREEQC_DB_opc2.f90",
+              "RelativeDocumentMoniker": "chemistry\\read_PHREEQC_DB_opc2.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_PHREEQC_DB_opc2.f90",
+              "RelativeToolTip": "chemistry\\read_PHREEQC_DB_opc2.f90",
+              "ViewState": "AQIAAD8BAAAAAAAAAIBcwEUBAAAnAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.707Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 102,
+              "Title": "read_PHREEQC_DB_opc1.f90",
+              "DocumentMoniker": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_PHREEQC_DB_opc1.f90",
+              "RelativeDocumentMoniker": "chemistry\\read_PHREEQC_DB_opc1.f90",
+              "ToolTip": "C:\\Users\\Jordi\\source\\repos\\jordipg10\\RT_Lagr_borr\\chemistry\\read_PHREEQC_DB_opc1.f90",
+              "RelativeToolTip": "chemistry\\read_PHREEQC_DB_opc1.f90",
+              "ViewState": "AQIAAJUBAAAAAAAAAIBcwJsBAAAnAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADrSURBVFhHYxjxgBFKw8G3b9/\u002BQ5kkgf///y8A0dzc3IlgASIBE5QeMIAzBHx8fMB8QsDFxQVMFxQUgGlSQ2Lwh8CWLVvANC4AU0duSAyfEIABUkNiwEOA6g7Ys2cPGE\u002BYMAGMGRkZE0AYKo0Bhm4a2MY1D0x7fUsC0\u002BgAXT8XFxeGXSAw/NIAqWDoOOBS2mEwBsU9LP5BAMaHyZMKhk4I6M2yBWOZGFUwhgEYHyZPKhh6iRDmU3RMLhg6IQAq2ZBrvowVhWAMA\u002BjyxIIBDwGK2wO4ALr\u002BQVsXEAwBSsHQDQFqg0EbAiMdMDAAALY/elvzgGnjAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-09-06T10:02:46.711Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

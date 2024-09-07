@@ -12,9 +12,9 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
     integer(kind=4), intent(out) :: niter !> number of iterations
     logical, intent(out) :: CV_flag !> TRUE if converges, FALSE otherwise
     
-    integer(kind=4) :: ind,i,j,k,m,nwtype,num_tar_wat,tar_wat_ind,wtype,istype,nstype,nbwtype,bwtype,mix_wat_ind,ngzns,igzn
+    integer(kind=4) :: ind,i,j,k,m,nwtype,num_tar_wat,tar_wat_ind,wtype,istype,nstype,nbwtype,bwtype,mix_wat_ind,ngzns,igzn,num_tar_wat_ext
     real(kind=8), allocatable :: c_nc(:),u_init(:,:),c1_init(:,:),c2_init(:),c2_ig(:),gamma_2aq(:)
-    character(len=256) :: label
+    character(len=256) :: label,str
     logical :: flag_comp,flag_surf
     
     nwtype=size(water_types)
@@ -33,21 +33,47 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
         read(unit,*) label
         if (label=='end') then
             exit
-        else if (label=='INITIAL TARGET WATERS') then
+        else if (label=='TARGET WATERS') then
             read(unit,*) num_tar_wat
-            if (num_tar_wat<0) error stop
             call this%allocate_target_waters(num_tar_wat)
-            if (nstype>0) then
-                call this%allocate_target_solids(num_tar_wat) !> we assume bijection with target waters
+            read(unit,*) str
+            if (str=='external waters') then
+                read(unit,*) num_tar_wat_ext
+                call this%set_num_ext_waters(num_tar_wat_ext)
+                allocate(this%ext_waters_indices(num_tar_wat_ext))
+                do i=1,this%num_ext_waters
+                    read(unit,*) tar_wat_ind, wtype
+                    if (tar_wat_ind<1 .or. tar_wat_ind>this%num_ext_waters) then
+                        error stop
+                    else if (wtype<1 .or. wtype>nwtype) then
+                        error stop
+                    else
+                        this%target_waters(tar_wat_ind)=water_types(wtype)%aq_chem
+                        call this%target_waters(tar_wat_ind)%set_chem_syst_aq_chem(this%chem_syst)
+                        call this%target_waters(tar_wat_ind)%set_aq_phase(this%chem_syst%aq_phase)
+                        call this%target_waters(tar_wat_ind)%set_speciation_alg_dimensions(flag_comp)
+                        call this%target_waters(tar_wat_ind)%compute_speciation_alg_arrays()
+                        call this%target_waters(tar_wat_ind)%set_prim_species_indices()
+                        call this%target_waters(tar_wat_ind)%set_sec_var_act_species_indices()
+                        call this%target_waters(tar_wat_ind)%compute_U_SkT_prod()
+                        call this%target_waters(tar_wat_ind)%allocate_reaction_rates_aq_chem()
+                    end if
+                end do
             end if
-            if (ngzns>0) then
-                call this%allocate_target_gases(num_tar_wat) !> we assume bijection with target waters
-            end if
-            call this%allocate_ext_waters()
+            read(unit,*) str
+            if (str=='initial target waters') then
+                call this%allocate_target_waters_init(this%num_target_waters-this%num_ext_waters)
+                if (nstype>0) then
+                    call this%allocate_target_solids(this%num_target_waters_init) !> we assume bijection with target waters
+                end if
+                if (ngzns>0) then
+                    call this%allocate_target_gases(this%num_target_waters_init) !> we assume bijection with target waters
+                end if
+                !call this%allocate_ext_waters()
             !if (nstype>0 .and. nwtype>0) then
             !    read(unit,*) tar_wat_ind, wtype, istype
             !!> El if de abajo deberia estar en una subrutina
-            !    if (tar_wat_ind<1 .or. tar_wat_ind>this%num_target_waters) then
+            !    if (tar_wat_ind<1 .or. tar_wat_ind>this%num_target_waters_init) then
             !        error stop
             !    else if (bwtype<1 .or. wtype>nwtype) then
             !        error stop
@@ -105,7 +131,7 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
             !end if
             if (nstype>0 .or. ngzns>0) then
             !> El do de abajo deberia estar en una subrutina
-                do i=1,this%num_target_waters
+                do i=1,this%num_target_waters_init
                     read(unit,*) tar_wat_ind, wtype, istype, igzn
                     if (tar_wat_ind<1 .or. tar_wat_ind>this%num_target_waters) then
                         error stop
@@ -116,28 +142,28 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
                     else if (igzn<0 .or. igzn>ngzns) then
                         error stop
                     else
-                        this%target_waters_init(tar_wat_ind)=water_types(wtype)%aq_chem
-                        call this%target_waters_init(tar_wat_ind)%set_chem_syst_aq_chem(this%chem_syst)
-                        call this%target_waters_init(tar_wat_ind)%set_aq_phase(this%chem_syst%aq_phase)
+                        this%target_waters_init(tar_wat_ind-this%num_ext_waters)=water_types(wtype)%aq_chem
+                        call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%set_chem_syst_aq_chem(this%chem_syst)
+                        call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%set_aq_phase(this%chem_syst%aq_phase)
                         !> chapuza
                         if (istype>0) then
-                            this%target_solids(tar_wat_ind)=init_sol_types(istype)%solid_chem
-                            call this%target_solids(tar_wat_ind)%set_reactive_zone(init_sol_types(istype)%solid_chem%reactive_zone)
-                            call this%target_waters_init(tar_wat_ind)%set_solid_chemistry(this%target_solids(tar_wat_ind))
+                            this%target_solids(tar_wat_ind-this%num_ext_waters)=init_sol_types(istype)%solid_chem
+                            call this%target_solids(tar_wat_ind-this%num_ext_waters)%set_reactive_zone(init_sol_types(istype)%solid_chem%reactive_zone)
+                            call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%set_solid_chemistry(this%target_solids(tar_wat_ind-this%num_ext_waters))
                             !print *, this%target_waters_init(tar_wat_ind)%solid_chemistry%concentrations
                         end if
                         !> chapuza
                         if (igzn>0) then
-                            this%target_gases(tar_wat_ind)=init_gas_types(igzn)%gas_chem
-                            call this%target_gases(tar_wat_ind)%set_reactive_zone(init_gas_types(igzn)%gas_chem%reactive_zone)
-                            call this%target_waters_init(tar_wat_ind)%set_gas_chemistry(this%target_gases(tar_wat_ind))
+                            this%target_gases(tar_wat_ind-this%num_ext_waters)=init_gas_types(igzn)%gas_chem
+                            call this%target_gases(tar_wat_ind-this%num_ext_waters)%set_reactive_zone(init_gas_types(igzn)%gas_chem%reactive_zone)
+                            call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%set_gas_chemistry(this%target_gases(tar_wat_ind-this%num_ext_waters))
                             !print *, this%target_waters_init(tar_wat_ind)%gas_chemistry%concentrations
                         end if
-                        call this%target_waters_init(tar_wat_ind)%set_speciation_alg_dimensions(flag_comp)
-                        call this%target_waters_init(tar_wat_ind)%compute_speciation_alg_arrays()
-                        call this%target_waters_init(tar_wat_ind)%set_prim_species_indices()
-                        call this%target_waters_init(tar_wat_ind)%set_sec_var_act_species_indices()
-                        call this%target_waters_init(tar_wat_ind)%compute_U_SkT_prod()
+                        call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%set_speciation_alg_dimensions(flag_comp)
+                        call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%compute_speciation_alg_arrays()
+                        call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%set_prim_species_indices()
+                        call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%set_sec_var_act_species_indices()
+                        call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%compute_U_SkT_prod()
                         !call this%target_waters_init(tar_wat_ind)%compute_c_nc_aq_from_c1_aq_expl() !> rezaei
                         !call this%target_waters_init(tar_wat_ind)%compute_c_nc_from_c1_aq_Picard(niter,CV_flag) !> rezaei
                         !call this%target_waters_init(tar_wat_ind)%compute_activities_aq_var_act_species()
@@ -149,18 +175,18 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
                         !call this%target_waters_init(tar_wat_ind)%compute_c_nc_from_u_Newton(tolerance,rel_tolerance,control_factor,niter_max,niter,CV_flag)
                         if (istype>0) then
                             if (init_sol_types(istype)%solid_chem%reactive_zone%cat_exch_zone%num_exch_cats>0) then
-                                allocate(c2_ig(this%target_waters_init(tar_wat_ind)%speciation_alg%num_eq_reactions))
-                                allocate(c2_init(this%target_waters_init(tar_wat_ind)%speciation_alg%num_eq_reactions))
+                                allocate(c2_ig(this%target_waters_init(tar_wat_ind-this%num_ext_waters)%speciation_alg%num_eq_reactions))
+                                allocate(c2_init(this%target_waters_init(tar_wat_ind-this%num_ext_waters)%speciation_alg%num_eq_reactions))
                                 c2_ig=1d-16
-                                call this%target_waters_init(tar_wat_ind)%compute_c2nc_from_c1_Picard(c2_ig,c2_init,niter,CV_flag)
-                                c_nc=this%target_waters_init(tar_wat_ind)%get_conc_nc()
+                                call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%compute_c2nc_from_c1_Picard(c2_ig,c2_init,niter,CV_flag)
+                                c_nc=this%target_waters_init(tar_wat_ind-this%num_ext_waters)%get_conc_nc()
                                 !call this%target_waters_init(tar_wat_ind)%compute_conc_comp(c_nc)
                                 deallocate(c2_ig,c2_init)
                             else
                                 !call this%target_waters_init(tar_wat_ind)%compute_conc_comp_aq()
                             end if
                         end if
-                        call this%target_waters_init(tar_wat_ind)%allocate_reaction_rates_aq_chem()
+                        call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%allocate_reaction_rates_aq_chem()
                         !call this%ext_waters(tar_wat_ind)%set_aq_phase(this%target_waters_init(tar_wat_ind)%aq_phase)
                         !call this%ext_waters(tar_wat_ind)%set_solid_chemistry(this%target_waters_init(tar_wat_ind)%solid_chemistry)
                         !call this%ext_waters(tar_wat_ind)%set_speciation_alg(this%target_waters_init(tar_wat_ind)%speciation_alg)
@@ -180,7 +206,7 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
             !> El if de abajo deberia estar en una subrutina
             !if (nstype>0 .and. nbwtype>0) then
             !!    read(unit,*) tar_wat_ind, bwtype, istype
-            !!    if (tar_wat_ind<1 .or. tar_wat_ind>this%num_target_waters) then
+            !!    if (tar_wat_ind<1 .or. tar_wat_ind>this%num_target_waters_init) then
             !!        error stop
             !!    else if (bwtype<1 .or. bwtype>nbwtype) then
             !!        error stop
@@ -224,25 +250,25 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
             !!        call this%ext_waters(tar_wat_ind)%set_conc_aq_species()
             !!        call this%ext_waters(tar_wat_ind)%compute_conc_comp_aq()
             !!    end if
-            !    this%target_waters=this%target_waters_init
+            !    this%target_waters_init=this%target_waters_init
             !    this%target_solids=this%target_solids_init
-            !    do i=1,this%num_target_waters
-            !        call this%target_waters(i)%set_solid_chemistry(this%target_solids(i))
+            !    do i=1,this%num_target_waters_init
+            !        call this%target_waters_init(i)%set_solid_chemistry(this%target_solids(i))
             !    end do
             !end if
             if (nstype==0 .and. ngzns==0) then
                 read(unit,*) tar_wat_ind, wtype!, istype
             !> El if de abajo deberia estar en una subrutina
-                if (tar_wat_ind<1 .or. tar_wat_ind>this%num_target_waters) then
+                if (tar_wat_ind<1 .or. tar_wat_ind>this%num_target_waters_init) then
                     error stop
                 else if (wtype<1 .or. wtype>nwtype) then
                     error stop
                 !else if (istype<1 .or. istype>nstype) then
                 !    error stop
                 else
-                    this%target_waters_init(tar_wat_ind)=water_types(wtype)%aq_chem
-                    call this%target_waters_init(tar_wat_ind)%set_chem_syst_aq_chem(this%chem_syst) !> chapuza
-                    call this%target_waters_init(tar_wat_ind)%set_aq_phase(this%chem_syst%aq_phase) !> chapuza
+                    this%target_waters_init(tar_wat_ind-this%num_ext_waters)=water_types(wtype)%aq_chem
+                    call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%set_chem_syst_aq_chem(this%chem_syst) !> chapuza
+                    call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%set_aq_phase(this%chem_syst%aq_phase) !> chapuza
                     !this%target_solids_init(tar_wat_ind)=init_sol_types(istype)%solid_chem
                     !call this%target_waters_init(tar_wat_ind)%set_solid_chemistry(init_min_zones(imtype))
                     !print *, init_sol_types(istype)%solid_chem%vol_fracts
@@ -251,11 +277,11 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
                     !call this%target_solids(tar_wat_ind)%allocate_concentrations()
                     !print *, this%target_solids(tar_wat_ind)%reactive_zone%Se
                     !call this%target_waters_init(tar_wat_ind)%set_solid_chemistry(this%target_solids_init(tar_wat_ind))
-                    call this%target_waters_init(tar_wat_ind)%set_speciation_alg_dimensions(flag_comp)
-                    call this%target_waters_init(tar_wat_ind)%compute_speciation_alg_arrays()
-                    call this%target_waters_init(tar_wat_ind)%set_prim_species_indices()
-                    call this%target_waters_init(tar_wat_ind)%set_sec_var_act_species_indices()
-                    call this%target_waters_init(tar_wat_ind)%compute_U_SkT_prod()
+                    call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%set_speciation_alg_dimensions(flag_comp)
+                    call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%compute_speciation_alg_arrays()
+                    call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%set_prim_species_indices()
+                    call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%set_sec_var_act_species_indices()
+                    call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%compute_U_SkT_prod()
                     !call this%target_waters_init(tar_wat_ind)%compute_c_nc_aq_from_c1_aq_expl() !> rezaei
                     !call this%target_waters_init(tar_wat_ind)%compute_c_nc_from_c1_aq_Picard(niter,CV_flag) !> rezaei
                     !call this%target_waters_init(tar_wat_ind)%compute_activities_aq_var_act_species()
@@ -272,7 +298,7 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
                     !else
                     !    call this%target_waters_init(tar_wat_ind)%compute_conc_comp_aq()
                     !end if
-                    call this%target_waters_init(tar_wat_ind)%allocate_reaction_rates_aq_chem()
+                    call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%allocate_reaction_rates_aq_chem()
                     !call this%ext_waters(tar_wat_ind)%set_aq_phase(this%target_waters_init(tar_wat_ind)%aq_phase)
                     !!call this%ext_waters(tar_wat_ind)%set_solid_chemistry(this%target_waters_init(tar_wat_ind)%solid_chemistry)
                     !call this%ext_waters(tar_wat_ind)%set_speciation_alg(this%target_waters_init(tar_wat_ind)%speciation_alg)
@@ -287,9 +313,9 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
                     !    call this%ext_waters(tar_wat_ind)%compute_conc_comp_aq()
                     !end if
                 end if
-                !do i=2,this%num_target_waters
+                !do i=2,this%num_target_waters_init
                 !    read(unit,*) tar_wat_ind, iwtype
-                !    if (tar_wat_ind<1 .or. tar_wat_ind>this%num_target_waters) then
+                !    if (tar_wat_ind<1 .or. tar_wat_ind>this%num_target_waters_init) then
                 !        error stop
                 !    else if (iwtype<1 .or. iwtype>niwtype) then
                 !        error stop
@@ -328,15 +354,16 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
                 !    end if
                 !end do
             end if
+            end if
         else
             continue
         end if
     end do
-    this%target_waters=this%target_waters_init
+    this%target_waters(this%num_ext_waters+1:this%num_target_waters_init)=this%target_waters_init
 !> Cahpuza
     !do i=1,this%num_target_gases
-    !    this%target_waters(i)%gas_chemistry%concentrations=1d-16
+    !    this%target_waters_init(i)%gas_chemistry%concentrations=1d-16
     !end do
-    !print *, this%target_waters(1)%gas_chemistry%concentrations
+    !print *, this%target_waters_init(1)%gas_chemistry%concentrations
     !call this%set_reactive_zones()
 end subroutine

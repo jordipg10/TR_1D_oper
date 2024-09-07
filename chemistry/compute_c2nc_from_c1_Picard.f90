@@ -80,5 +80,6 @@ subroutine compute_c2nc_from_c1_Picard(this,c2nc_ig,c2nc,niter,CV_flag)
         !call this%gas_chemistry%compute_vol_gas() !> we compute total volume of gas
         call this%gas_chemistry%compute_log_act_coeffs_gases() !> we compute log_10 activity coefficients of gases
         call this%gas_chemistry%compute_partial_pressures() !> we compute activities (ie. partial pressures)
+        call this%gas_chemistry%compute_pressure() !> we compute activities (ie. partial pressures)
     end if
  end subroutine

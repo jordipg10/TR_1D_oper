@@ -21,7 +21,7 @@ subroutine link_target_waters_target_solids(this,tar_sol_indices,tar_wat_indices
         do
             if (inf_norm_vec_real(this%target_waters_init(j)%solid_chemistry%concentrations-this%target_solids(tar_sol_indices(i))%concentrations)<eps) then
                 tar_wat_indices(i)=j
-                if (j<this%num_target_waters) then
+                if (j<this%num_target_waters_init) then
                     j=j+1
                 end if
                 if (i<size(tar_sol_indices)) then
@@ -29,7 +29,7 @@ subroutine link_target_waters_target_solids(this,tar_sol_indices,tar_wat_indices
                 else
                     exit
                 end if
-            else if (j<this%num_target_waters) then
+            else if (j<this%num_target_waters_init) then
                 j=j+1
             !else if (i<size(tar_sol_indices)) then
             !>    i=i+1

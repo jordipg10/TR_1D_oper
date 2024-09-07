@@ -412,7 +412,7 @@ subroutine read_PHREEQC_DB_opc1(this,unit,filename)
     !call this%initialise_target_solids(10) !> autentica chapuza ad hoc
     !!print *, this%target_solids(1)%reactive_zone%num_non_flowing_species
     !!print *, this%target_solids(1)%reactive_zone%non_flowing_species(1)%name
-    !call this%initialise_target_waters(initial_waters)
+    !call this%initialise_target_waters_init(initial_waters)
     !call this%initialise_ext_waters()
     !!print *, associated(this%chem_syst%kin_reacts(1)%kin_reaction)
     !!print *, associated(this%reactive_zones(1)%kin_reactions(1)%kin_reaction)

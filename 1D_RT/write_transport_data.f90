@@ -91,7 +91,7 @@ subroutine write_transport_data(this,unit,file_out)
             end do
             write(unit,"(/,2x,'Mixing waters indices:'/)")
             do i=1,this%transport%mixing_waters_indices%num_cols
-                write(unit,"(2x,I5,*(I5))") i, this%transport%mixing_waters_indices%cols(i)%col_1
+                write(unit,"(2x,I5,*(I5))") this%chemistry%num_ext_waters+i, this%transport%mixing_waters_indices%cols(i)%col_1
             end do
             !if (this%transport%time_discr%int_method==1) then
             !    !write(unit,"(10x,'The first column contains the diagonal elements in the mixing ratios matrix'/)")

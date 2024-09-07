@@ -22,10 +22,11 @@ module chemistry_Lagr_m
         type(solid_type_c), allocatable :: init_sol_types(:)
         integer(kind=4) :: num_target_waters=0 !> number of target waters
         type(aqueous_chemistry_c), allocatable :: target_waters(:) !> target waters
+        integer(kind=4) :: num_target_waters_init=0 !> number of initial target waters
         type(aqueous_chemistry_c), allocatable :: target_waters_init(:) !> initial target waters
         integer(kind=4) :: num_ext_waters=0 !> number of external waters
-        type(aqueous_chemistry_c), allocatable :: ext_waters(:) !> external waters
-        integer(kind=4) :: num_target_solids=0 !> number of target solids (<= num_target_waters)
+        integer(kind=4), allocatable :: ext_waters_indices(:) !> external waters incdices
+        integer(kind=4) :: num_target_solids=0 !> number of target solids (<= num_target_waters_init)
         type(solid_chemistry_c), allocatable :: target_solids(:) !> target solids
         type(solid_chemistry_c), allocatable :: target_solids_init(:) !> initial target solids
         integer(kind=4) :: num_target_gases=0 !> number of target gases
@@ -37,10 +38,10 @@ module chemistry_Lagr_m
     contains
     !> Set
         procedure, public :: set_chem_syst
-        procedure, public :: set_num_target_waters
+        procedure, public :: set_num_target_waters_init
         procedure, public :: set_num_target_solids
         procedure, public :: set_num_ext_waters
-        procedure, public :: set_ext_waters
+        !procedure, public :: set_ext_waters
         procedure, public :: set_target_waters
         procedure, public :: set_target_waters_init
         procedure, public :: set_target_solids
@@ -49,7 +50,8 @@ module chemistry_Lagr_m
         procedure, public :: set_Jac_flag
     !> Allocate
         procedure, public :: allocate_target_waters
-        procedure, public :: allocate_ext_waters
+        procedure, public :: allocate_target_waters_init
+        procedure, public :: allocate_ext_waters_indices
         procedure, public :: allocate_target_solids
         procedure, public :: allocate_target_gases
         procedure, public :: allocate_wat_types
@@ -77,6 +79,7 @@ module chemistry_Lagr_m
         procedure, public :: link_target_waters_target_gases
         procedure, public :: link_target_solids_reactive_zone
         procedure, public :: link_target_gases_reactive_zone
+        procedure, public :: link_target_waters_init_reactive_zone
         procedure, public :: link_target_waters_reactive_zone
     !> Check
         procedure, public :: check_new_reactive_zones
@@ -116,7 +119,7 @@ module chemistry_Lagr_m
             character(len=*), intent(in) :: filename
         end subroutine
         
-        subroutine read_chemistry_CHEPROO(this,path,unit_chem_syst_file,chem_syst_file,unit_loc_chem_file,loc_chem_file,unit_target_waters_file,target_waters_file)
+        subroutine read_chemistry_CHEPROO(this,path,unit_chem_syst_file,chem_syst_file,unit_loc_chem_file,loc_chem_file,unit_target_waters_init_file,target_waters_init_file)
             import chemistry_c
             implicit none    
             class(chemistry_c) :: this
@@ -125,11 +128,11 @@ module chemistry_Lagr_m
             character(len=*), intent(in) :: chem_syst_file
             integer(kind=4), intent(in) :: unit_loc_chem_file
             character(len=*), intent(in) :: loc_chem_file
-            integer(kind=4), intent(in) :: unit_target_waters_file
-            character(len=*), intent(in) :: target_waters_file
+            integer(kind=4), intent(in) :: unit_target_waters_init_file
+            character(len=*), intent(in) :: target_waters_init_file
         end subroutine
         
-        subroutine read_chemistry(this,path,unit_chem_syst_file,chem_syst_file,unit_loc_chem_file,loc_chem_file,unit_target_waters_file,target_waters_file)
+        subroutine read_chemistry(this,path,unit_chem_syst_file,chem_syst_file,unit_loc_chem_file,loc_chem_file,unit_target_waters_init_file,target_waters_init_file)
             import chemistry_c
             implicit none    
             class(chemistry_c) :: this
@@ -138,8 +141,8 @@ module chemistry_Lagr_m
             character(len=*), intent(in) :: chem_syst_file
             integer(kind=4), intent(in) :: unit_loc_chem_file
             character(len=*), intent(in) :: loc_chem_file
-            integer(kind=4), intent(in) :: unit_target_waters_file
-            character(len=*), intent(in) :: target_waters_file
+            integer(kind=4), intent(in) :: unit_target_waters_init_file
+            character(len=*), intent(in) :: target_waters_init_file
         end subroutine
         
         !subroutine read_PHREEQC_DB_opc1(this,filename)
@@ -163,6 +166,14 @@ module chemistry_Lagr_m
             integer(kind=4), intent(in) :: unit
             !character(len=*), intent(in) :: filename
             !integer(kind=4), intent(in) :: line
+        end subroutine
+        
+        subroutine link_target_waters_init_reactive_zone(this,i,tar_wat_indices)
+            import chemistry_c
+            implicit none
+            class(chemistry_c) :: this
+            integer(kind=4), intent(in) :: i
+            integer(kind=4), intent(out), allocatable :: tar_wat_indices(:) 
         end subroutine
         
         subroutine link_target_waters_reactive_zone(this,i,tar_wat_indices)
@@ -216,7 +227,7 @@ module chemistry_Lagr_m
        
 
         
-        subroutine initialise_target_waters(this,initial_water_types)
+        subroutine initialise_target_waters_init(this,initial_water_types)
             import chemistry_c
             import aqueous_chemistry_c
             import chem_system_c
@@ -278,7 +289,7 @@ module chemistry_Lagr_m
         
        
         
-        subroutine initialise_chemistry(this,path,unit_chem_syst_file,chem_syst_file,unit_loc_chem_file,loc_chem_file,unit_target_waters_file,target_waters_file)
+        subroutine initialise_chemistry(this,path,unit_chem_syst_file,chem_syst_file,unit_loc_chem_file,loc_chem_file,unit_target_waters_init_file,target_waters_init_file)
             import chemistry_c
             import matrix_real_c
             implicit none
@@ -288,8 +299,8 @@ module chemistry_Lagr_m
             character(len=*), intent(in) :: chem_syst_file
             integer(kind=4), intent(in) :: unit_loc_chem_file
             character(len=*), intent(in) :: loc_chem_file
-            integer(kind=4), intent(in) :: unit_target_waters_file
-            character(len=*), intent(in) :: target_waters_file
+            integer(kind=4), intent(in) :: unit_target_waters_init_file
+            character(len=*), intent(in) :: target_waters_init_file
         end subroutine
         
        
@@ -422,11 +433,11 @@ module chemistry_Lagr_m
         
        
         
-        subroutine set_num_target_waters(this,num_target_waters)
+        subroutine set_num_target_waters_init(this,num_target_waters_init)
             implicit none
             class(chemistry_c) :: this
-            integer(kind=4), intent(in) :: num_target_waters
-            this%num_target_waters=num_target_waters
+            integer(kind=4), intent(in) :: num_target_waters_init
+            this%num_target_waters_init=num_target_waters_init
         end subroutine
         
         subroutine set_num_target_solids(this,num_target_solids)
@@ -443,16 +454,16 @@ module chemistry_Lagr_m
             if (present(num_ext_waters)) then
                 this%num_ext_waters=num_ext_waters
             else
-                this%num_ext_waters=this%num_target_waters
+                this%num_ext_waters=this%num_target_waters_init
             end if
         end subroutine
         
-        subroutine set_ext_waters(this,ext_waters)
-            implicit none
-            class(chemistry_c) :: this
-            class(aqueous_chemistry_c), intent(in) :: ext_waters(:)
-            this%ext_waters=ext_waters
-        end subroutine
+        !subroutine set_ext_waters(this,ext_waters)
+        !    implicit none
+        !    class(chemistry_c) :: this
+        !    class(aqueous_chemistry_c), intent(in) :: ext_waters(:)
+        !    this%ext_waters=ext_waters
+        !end subroutine
         
         subroutine set_target_solids(this,target_solids)
             implicit none
@@ -462,16 +473,24 @@ module chemistry_Lagr_m
             this%num_target_solids=size(target_solids)
         end subroutine
         
-       
-        
-        subroutine allocate_target_waters(this,num_tar_wat)
+       subroutine allocate_target_waters(this,num_tar_wat)
             implicit none
             class(chemistry_c) :: this
             integer(kind=4), intent(in), optional :: num_tar_wat
             if (present(num_tar_wat)) then
                 this%num_target_waters=num_tar_wat
             end if
-            allocate(this%target_waters_init(this%num_target_waters),this%target_waters(this%num_target_waters))
+            allocate(this%target_waters(this%num_target_waters))!,this%target_waters_init(this%num_target_waters_init))
+        end subroutine
+        
+        subroutine allocate_target_waters_init(this,num_tar_wat_init)
+            implicit none
+            class(chemistry_c) :: this
+            integer(kind=4), intent(in), optional :: num_tar_wat_init
+            if (present(num_tar_wat_init)) then
+                this%num_target_waters_init=num_tar_wat_init
+            end if
+            allocate(this%target_waters_init(this%num_target_waters_init))!,this%target_waters_init(this%num_target_waters_init))
         end subroutine
         
         subroutine allocate_target_solids(this,n)
@@ -494,11 +513,11 @@ module chemistry_Lagr_m
             allocate(this%target_gases(this%num_target_gases))
         end subroutine
         
-        subroutine allocate_ext_waters(this)
+        subroutine allocate_ext_waters_indices(this)
             implicit none
             class(chemistry_c) :: this
-            this%num_ext_waters=this%num_target_waters
-            allocate(this%ext_waters(this%num_ext_waters))
+            this%num_ext_waters=this%num_target_waters_init
+            allocate(this%ext_waters_indices(this%num_ext_waters))
         end subroutine
         
        
@@ -516,8 +535,7 @@ module chemistry_Lagr_m
             class(chemistry_c) :: this
             class(aqueous_chemistry_c), intent(in) :: target_waters_init(:)
             this%target_waters_init=target_waters_init
-            this%target_waters=this%target_waters_init
-            this%num_target_waters=size(target_waters_init)
+            this%num_target_waters_init=size(target_waters_init)
         end subroutine
         
        subroutine allocate_reactive_zones(this,num_reactive_zones)

@@ -84,5 +84,6 @@ subroutine compute_c2_from_c1_Picard(this,c1,c2_ig,c2,niter,CV_flag)
         !nullify(this%gas_chemistry)
         call this%gas_chemistry%compute_log_act_coeffs_gases() !> we compute log_10 activity coefficients of gases
         call this%gas_chemistry%compute_partial_pressures() !> we compute activities (ie. partial pressures)
+        call this%gas_chemistry%compute_pressure()
     end if
  end subroutine

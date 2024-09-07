@@ -10,6 +10,7 @@ module params_act_coeff_m
         real(kind=8) :: b_dot !> add-on term b_dot (Helgeson)
         real(kind=8) :: alpha=0d0 !> first term
         real(kind=8) :: beta=0d0 !> second term
+        real(kind=8) :: gamma=0d0 !> third term
     contains
     !> Set
         procedure, public :: set_ion_size_param
@@ -43,21 +44,29 @@ module params_act_coeff_m
             class(params_aq_sol_t), intent(in) :: params_aq_sol
             integer(kind=4), intent(in) :: model
             select case (model)
-            case(1) !> Debye-Hückel restricted
+            case(0) !> ideal
                 this%alpha=0d0
+                this%gamma=0d0
+            case(1) !> Debye-Hückel restricted
+                this%alpha=1d0
                 this%beta=0d0
+                this%gamma=0d0
             case(2) !> Debye-Hückel extended
-                this%alpha=this%ion_size_param*params_aq_sol%B
-                this%beta=0d0
+                this%alpha=1d0
+                this%beta=this%ion_size_param*params_aq_sol%B
+                this%gamma=0d0
             case(3) !> Davies
                 this%alpha=1d0
-                this%beta=0.3*params_aq_sol%A*(z**2)
+                this%beta=1d0
+                this%gamma=0.3*params_aq_sol%A*(z**2)
             case(4) !> Truesdell-Jones
-                this%alpha=params_aq_sol%B*this%a_TJ
-                this%beta=this%b_TJ
+                this%alpha=1d0
+                this%beta=params_aq_sol%B*this%a_TJ
+                this%gamma=this%b_TJ
             case(5) !> b-dot
-                this%alpha=params_aq_sol%B*this%a_TJ
-                this%beta=this%b_dot
+                this%alpha=1d0
+                this%beta=params_aq_sol%B*this%a_TJ
+                this%gamma=this%b_dot
             case default
                 error stop
             end select

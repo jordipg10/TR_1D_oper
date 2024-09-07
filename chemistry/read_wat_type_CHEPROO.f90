@@ -43,15 +43,16 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
             error stop
         else
             allocate(prim_indices(n_p_aq),icons(n_p_aq),ctots(n_p_aq),indices_constrains(num_cstr))
-            call react_zone%set_gas_phase(this%aq_chem%chem_syst%gas_phase)
-            call gas_chem%set_reactive_zone(react_zone)
-            call gas_chem%allocate_partial_pressures()
-            call gas_chem%allocate_conc_gases()
-            call gas_chem%allocate_log_act_coeffs_gases()
-            call gas_chem%set_temp(this%aq_chem%temp)
-            call gas_chem%set_volume(1d0) !> arbitrary
-            call this%aq_chem%set_gas_chemistry(gas_chem)
-            continue
+            if (this%aq_chem%chem_syst%gas_phase%num_species>0) then
+                call react_zone%set_gas_phase(this%aq_chem%chem_syst%gas_phase)
+                call gas_chem%set_reactive_zone(react_zone)
+                call gas_chem%allocate_partial_pressures()
+                call gas_chem%allocate_conc_gases()
+                call gas_chem%allocate_log_act_coeffs_gases()
+                call gas_chem%set_temp(this%aq_chem%temp)
+                call gas_chem%set_volume(1d0) !> arbitrary
+                call this%aq_chem%set_gas_chemistry(gas_chem)
+            end if
         end if
         !call this%aq_chem%allocate_conc_comp(n_p_aq)
         !call this%aq_chem%allocate_log_act_coeffs()
@@ -113,13 +114,13 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
                     end if
                 end if
             end do
-            call this%aq_chem%gas_chemistry%compute_pressure()
+            !call this%aq_chem%gas_chemistry%compute_pressure()
             !call this%aq_chem%gas_chemistry%compute_log_act_coeffs_gases()
         else
             error stop
         end if
     do i=1,this%aq_chem%aq_phase%num_species
-        call this%aq_chem%aq_phase%aq_species(i)%params_act_coeff%compute_csts(this%aq_chem%aq_phase%aq_species(i)%valence,this%aq_chem%params_aq_sol,model) !> Davies
+        call this%aq_chem%aq_phase%aq_species(i)%params_act_coeff%compute_csts(this%aq_chem%aq_phase%aq_species(i)%valence,this%aq_chem%params_aq_sol,model)
     end do
 !> We set speciation algebra
     call this%aq_chem%speciation_alg%set_flag_comp(.false.)
