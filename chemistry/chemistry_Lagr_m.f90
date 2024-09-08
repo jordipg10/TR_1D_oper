@@ -111,19 +111,21 @@ module chemistry_Lagr_m
         
         
         
-        subroutine read_chemistry_PHREEQC(this,path,filename)
+        subroutine read_chemistry_PHREEQC(this,path_inp,path_DB,filename)
             import chemistry_c
             implicit none
             class(chemistry_c) :: this
-            character(len=*), intent(in) :: path
+            character(len=*), intent(in) :: path_inp
+            character(len=*), intent(in) :: path_DB
             character(len=*), intent(in) :: filename
         end subroutine
         
-        subroutine read_chemistry_CHEPROO(this,path,unit_chem_syst_file,chem_syst_file,unit_loc_chem_file,loc_chem_file,unit_target_waters_init_file,target_waters_init_file)
+        subroutine read_chemistry_CHEPROO(this,path_inp,path_DB,unit_chem_syst_file,chem_syst_file,unit_loc_chem_file,loc_chem_file,unit_target_waters_init_file,target_waters_init_file)
             import chemistry_c
             implicit none    
             class(chemistry_c) :: this
-            character(len=*), intent(in) :: path
+            character(len=*), intent(in) :: path_inp
+            character(len=*), intent(in) :: path_DB
             integer(kind=4), intent(in) :: unit_chem_syst_file
             character(len=*), intent(in) :: chem_syst_file
             integer(kind=4), intent(in) :: unit_loc_chem_file
@@ -132,11 +134,12 @@ module chemistry_Lagr_m
             character(len=*), intent(in) :: target_waters_init_file
         end subroutine
         
-        subroutine read_chemistry(this,path,unit_chem_syst_file,chem_syst_file,unit_loc_chem_file,loc_chem_file,unit_target_waters_init_file,target_waters_init_file)
+        subroutine read_chemistry(this,path_inp,path_DB,unit_chem_syst_file,chem_syst_file,unit_loc_chem_file,loc_chem_file,unit_target_waters_init_file,target_waters_init_file)
             import chemistry_c
             implicit none    
             class(chemistry_c) :: this
-            character(len=*), intent(in) :: path
+            character(len=*), intent(in) :: path_inp
+            character(len=*), intent(in) :: path_DB
             integer(kind=4), intent(in) :: unit_chem_syst_file
             character(len=*), intent(in) :: chem_syst_file
             integer(kind=4), intent(in) :: unit_loc_chem_file
@@ -289,12 +292,13 @@ module chemistry_Lagr_m
         
        
         
-        subroutine initialise_chemistry(this,path,unit_chem_syst_file,chem_syst_file,unit_loc_chem_file,loc_chem_file,unit_target_waters_init_file,target_waters_init_file)
+        subroutine initialise_chemistry(this,path_inp,path_DB,unit_chem_syst_file,chem_syst_file,unit_loc_chem_file,loc_chem_file,unit_target_waters_init_file,target_waters_init_file)
             import chemistry_c
             import matrix_real_c
             implicit none
             class(chemistry_c) :: this
-            character(len=*), intent(in) :: path
+            character(len=*), intent(in) :: path_inp
+            character(len=*), intent(in) :: path_DB
             integer(kind=4), intent(in) :: unit_chem_syst_file
             character(len=*), intent(in) :: chem_syst_file
             integer(kind=4), intent(in) :: unit_loc_chem_file

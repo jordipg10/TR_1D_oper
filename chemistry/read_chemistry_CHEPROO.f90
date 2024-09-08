@@ -1,9 +1,10 @@
 !> Lectura quimica CHEPROO
-subroutine read_chemistry_CHEPROO(this,path,unit_chem_syst_file,chem_syst_file,unit_loc_chem_file,loc_chem_file,unit_target_waters_init_file,target_waters_init_file)
+subroutine read_chemistry_CHEPROO(this,path_inp,path_DB,unit_chem_syst_file,chem_syst_file,unit_loc_chem_file,loc_chem_file,unit_target_waters_init_file,target_waters_init_file)
     use chemistry_Lagr_m
     implicit none
     class(chemistry_c) :: this
-    character(len=*), intent(in) :: path
+    character(len=*), intent(in) :: path_inp
+    character(len=*), intent(in) :: path_DB
     integer(kind=4), intent(in) :: unit_chem_syst_file
     character(len=*), intent(in) :: chem_syst_file
     integer(kind=4), intent(in) :: unit_loc_chem_file
@@ -49,11 +50,11 @@ subroutine read_chemistry_CHEPROO(this,path,unit_chem_syst_file,chem_syst_file,u
 
     
 !> Chemical system
-    open(unit_chem_syst_file,file=trim(path)//chem_syst_file,status='old',action='read')
-    call this%chem_syst%read_chem_system_CHEPROO(path,unit_chem_syst_file)
+    open(unit_chem_syst_file,file=trim(path_inp)//chem_syst_file,status='old',action='read')
+    call this%chem_syst%read_chem_system_CHEPROO(path_DB,unit_chem_syst_file)
     close(unit_chem_syst_file)
 !> Local chemistry
-    open(unit_loc_chem_file,file=trim(path)//loc_chem_file,status='old',action='read')
+    open(unit_loc_chem_file,file=trim(path_inp)//loc_chem_file,status='old',action='read')
     do
         read(unit_loc_chem_file,*) label
         if (label=='end') then
@@ -130,7 +131,7 @@ subroutine read_chemistry_CHEPROO(this,path,unit_chem_syst_file,chem_syst_file,u
         call reactive_zones(i)%set_stoich_mat_react_zone()
         call reactive_zones(i)%set_stoich_mat_sol()
     end do
-    open(unit_target_waters_init_file,file=trim(path)//target_waters_init_file,status='old',action='read')
+    open(unit_target_waters_init_file,file=trim(path_inp)//target_waters_init_file,status='old',action='read')
 !> We verify pointers (chapuza)
         do i=1,size(init_sol_zones)
             if (.not. associated(init_sol_zones(i)%solid_chem%reactive_zone%chem_syst)) then

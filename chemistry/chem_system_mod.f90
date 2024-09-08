@@ -106,11 +106,11 @@ module chem_system_m
             character(len=*), intent(in) :: filename
         end subroutine
         
-        subroutine read_chem_system_CHEPROO(this,path,unit)
+        subroutine read_chem_system_CHEPROO(this,path_DB,unit)
             import chem_system_c
             implicit none
             class(chem_system_c) :: this
-            character(len=*), intent(in) :: path
+            character(len=*), intent(in) :: path_DB
             integer(kind=4), intent(in) :: unit
         end subroutine
         

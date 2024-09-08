@@ -67,7 +67,6 @@ subroutine initialise_transport_1D_transient_RT(this,path,file_BCs,file_spatial_
     else if (my_props_tpt%source_term_order>0) then !> flux is polynomic
     !> chapuza
         open(unit=2,file=trim(path)//"flux_coeffs.dat",status='old',action='read')
-        open(unit=2,file=trim(path)//"flux_coeffs.dat",status='old',action='read')
         read(2,*) flux_ord
         allocate(flux_coeffs(flux_ord+1))
         read(2,*) flux_coeffs

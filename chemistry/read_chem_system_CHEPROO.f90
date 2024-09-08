@@ -1,10 +1,10 @@
 !> Lectura sistema quimico basada en CHEPROO
 !> Suponemos que el archivo ya ha sido abierto
-subroutine read_chem_system_CHEPROO(this,path,unit)
+subroutine read_chem_system_CHEPROO(this,path_DB,unit)
     use chem_system_m
     implicit none
     class(chem_system_c) :: this !> chemical system object
-    character(len=*), intent(in) :: path
+    character(len=*), intent(in) :: path_DB
     integer(kind=4), intent(in) :: unit !> file unit
     
     real(kind=8), allocatable :: Sk(:,:),logK(:),gamma_1(:),gamma_2(:)
@@ -336,14 +336,14 @@ subroutine read_chem_system_CHEPROO(this,path,unit)
         end if
     end do
     unit_master_25=2
-    call this%read_master25(path,unit_master_25)
+    call this%read_master25(path_DB,unit_master_25)
     unit_kinetics=3
     if (this%num_min_kin_reacts>0) then
-        call this%read_kinetics_DB(path,unit_kinetics)
+        call this%read_kinetics_DB(path_DB,unit_kinetics)
     end if
     unit_redox=4
     if (this%num_redox_kin_reacts>0 .or. this%num_redox_eq_reacts>0) then
-        call this%read_redox_reacts(path,unit_redox)
+        call this%read_redox_reacts(path_DB,unit_redox)
     end if
     call this%set_stoich_mat()
 end subroutine
