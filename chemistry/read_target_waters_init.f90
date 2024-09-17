@@ -364,6 +364,6 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
     !do i=1,this%num_target_gases
     !    this%target_waters_init(i)%gas_chemistry%concentrations=1d-16
     !end do
-    !print *, this%target_waters_init(1)%gas_chemistry%concentrations
+    print *, this%target_waters(1)%gas_chemistry%reactive_zone%gas_phase%num_species
     !call this%set_reactive_zones()
 end subroutine

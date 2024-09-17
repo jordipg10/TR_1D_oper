@@ -37,8 +37,9 @@ subroutine solve_reactive_mixing(this,mixing_ratios,mixing_waters_indices,F_mat,
     procedure(compute_c_tilde_aq_chem), pointer :: p_c_tilde=>null()
     p_c_tilde=>compute_c_tilde_aq_chem !> by default
 !> We initialise target waters
+    print *, this%target_waters(1)%gas_chemistry%reactive_zone%gas_phase%num_species
     target_waters_old=this%target_waters
-    !print *, target_waters_old(1)%gas_chemistry%concentrations
+    
     target_waters_old_old=target_waters_old
     target_waters_new=target_waters_old
     !print *, target_waters_new(1)%gas_chemistry%concentrations
@@ -49,12 +50,17 @@ subroutine solve_reactive_mixing(this,mixing_ratios,mixing_waters_indices,F_mat,
             !> Target waters loop
                 do i=this%num_ext_waters+1,this%num_target_waters
                     react_zone=this%target_waters(i)%get_react_zone()
+                    if (this%target_waters(i)%speciation_alg%num_aq_prim_species==this%target_waters(i)%speciation_alg%num_prim_species) then
+                        p_prim=>get_c1_aq !> chapuza
+                    else
+                        p_prim=>get_c1
+                    end if
                     if (this%chem_syst%num_kin_reacts>0) then !> equilibrium and kinetic reactions
-                        if (react_zone%cat_exch_zone%num_surf_compl==0) then
-                            p_prim=>get_c1_aq !> chapuza
-                        else
-                            p_prim=>get_c1
-                        end if
+                        !if (react_zone%cat_exch_zone%num_surf_compl==0) then
+                        !    p_prim=>get_c1_aq !> chapuza
+                        !else
+                        !    p_prim=>get_c1
+                        !end if
                         if (int_method_chem_reacts==1) then !> Euler explicit
                             p_solver=>water_mixing_iter_EE_eq_kin
                         else if (int_method_chem_reacts==2 .and. this%Jac_flag==1) then !> Euler fully implicit, analytical Jacobian
@@ -64,10 +70,10 @@ subroutine solve_reactive_mixing(this,mixing_ratios,mixing_waters_indices,F_mat,
                         end if
                     else if (react_zone%cat_exch_zone%num_surf_compl==0) then !> all variable activity species are aqueous
                         p_solver=>transport_iter_comp_EE_aq_chem !> only equilibrium reactions
-                        p_prim=>get_c1_aq
+                        !p_prim=>get_c1_aq
                     else if (react_zone%cat_exch_zone%num_surf_compl>0) then !> variable activity species are aqueous and solid
                         p_solver=>transport_iter_comp_exch_EE_aq_chem !> only equilibrium reactions
-                        p_prim=>get_c1
+                        !p_prim=>get_c1
                     else !> faltan los gases en equilibrio
                         p_solver=>transport_iter_comp_EE_aq_chem !> only equilibrium reactions
                     end if
@@ -133,16 +139,23 @@ subroutine solve_reactive_mixing(this,mixing_ratios,mixing_waters_indices,F_mat,
     !> Time loop
         do k=1,time_discr_tpt%Num_time
         !> Target waters loop
-            do i=1,num_tar_wat
-                allocate(conc_old(target_waters_new(i)%speciation_alg%num_var_act_species,mixing_ratios%cols(i)%dim)) !> chapuza
+            do i=1,this%num_ext_waters+1,this%num_target_waters
+                if (this%target_waters(i)%speciation_alg%num_aq_prim_species==this%target_waters(i)%speciation_alg%num_prim_species) then
+                    p_prim=>get_c1_aq !> chapuza
+                else
+                    p_prim=>get_c1
+                end if
+                allocate(conc_nc(this%target_waters(i)%speciation_alg%num_var_act_species))
+                allocate(conc_comp(this%target_waters(i)%speciation_alg%num_prim_species))
+                allocate(conc_old(this%target_waters(i)%speciation_alg%num_var_act_species,mixing_ratios%cols(i-this%num_ext_waters)%dim)) !> chapuza
                 conc_old(:,1)=target_waters_old(i)%get_conc_nc() !> chapuza
-                do j=1,mixing_waters_indices%cols(i)%dim
-                    conc_old(:,1+j)=target_waters_old(mixing_waters_indices%cols(i)%col_1(j))%get_conc_nc() !> chapuza
+                do j=1,mixing_waters_indices%cols(i-this%num_ext_waters)%dim
+                    conc_old(:,1+j)=target_waters_old(mixing_waters_indices%cols(i-this%num_ext_waters)%col_1(j))%get_conc_nc() !> chapuza
                 end do
             !> We solve mixing caused by transport
                 c_tilde=p_c_tilde(target_waters_old(i),mixing_ratios%cols(i)%col_1,conc_old)
             !> We solve reactive mixing iteration
-                call p_solver(target_waters_new(i),p_prim(target_waters_old_old(i)),target_waters_old(i)%get_c2nc(),c_tilde,conc_nc,conc_comp,F_mat%diag(i),time_discr_tpt%get_Delta_t(k))
+                call p_solver(target_waters_new(i),p_prim(target_waters_old_old(i)),target_waters_old(i)%get_c2nc(),c_tilde,conc_nc,conc_comp,F_mat%diag(i-this%num_ext_waters),time_discr_tpt%get_Delta_t(k))
             end do
         !> We update target waters
             target_waters_old_old=target_waters_old

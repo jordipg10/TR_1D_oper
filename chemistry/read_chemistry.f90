@@ -35,4 +35,5 @@ subroutine read_chemistry(this,path_inp,path_DB,unit_chem_syst_file,chem_syst_fi
             call this%target_gases(i)%set_reactive_zone(this%reactive_zones(1))
         end do
     end if
+    print *, this%target_waters(1)%gas_chemistry%reactive_zone%gas_phase%num_species
 end subroutine
