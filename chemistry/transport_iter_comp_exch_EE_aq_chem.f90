@@ -19,7 +19,7 @@ subroutine transport_iter_comp_exch_EE_aq_chem(this,c1_old,c2nc_ig,c_tilde,conc_
     real(kind=8) :: mu=0d0 !> Newton initialistaion parameter
     real(kind=8), allocatable :: c1(:) !> concentration primary species
 !> Pre-process
-    c1=this%get_c1_exch()
+    c1=this%get_c1()
 !> Process  
     !> We compute component concentrations after mixing
         conc_comp=MATMUL(THIS%speciation_alg%comp_mat,c_tilde)

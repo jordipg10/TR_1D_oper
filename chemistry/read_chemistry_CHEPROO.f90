@@ -66,8 +66,8 @@ subroutine read_chemistry_CHEPROO(this,path_inp,path_DB,unit_chem_syst_file,chem
         !    call this%read_init_min_zones_CHEPROO(unit_loc_chem_file,init_min_zones,rz_mins)
         else if (label=='INITIAL SURFACE ADSORPTION ZONES') then
             call this%read_init_cat_exch_zones_CHEPROO(unit_loc_chem_file,init_cat_exch_zones_bis,reactive_zones)
-        !else if (label=='INITIAL GAS BOUNDARY ZONES') then
-        !    call this%read_gas_bd_zone_CHEPROO(unit_loc_chem_file,init_gas_bd_zones)
+        else if (label=='INITIAL GAS ZONES') then
+            call this%read_init_gas_zones_CHEPROO(unit_loc_chem_file,init_gas_zones,reactive_zones)
         else
             continue
         end if
@@ -77,11 +77,15 @@ subroutine read_chemistry_CHEPROO(this,path_inp,path_DB,unit_chem_syst_file,chem
         if (label=='end') then
             exit
         else if (label=='INITIAL AND BOUNDARY WATER TYPES') then
-            call this%read_init_bd_rech_wat_types_CHEPROO(unit_loc_chem_file,ind_wat_type,num_aq_prim_array,num_cstr_array,init_cat_exch_zones_bis)
+            if (size(init_gas_zones)==1) then
+                call this%read_init_bd_rech_wat_types_CHEPROO(unit_loc_chem_file,ind_wat_type,num_aq_prim_array,num_cstr_array,init_cat_exch_zones_bis,init_gas_zones(1)%gas_chem)
+            else if (size(init_gas_zones)==0) then
+                call this%read_init_bd_rech_wat_types_CHEPROO(unit_loc_chem_file,ind_wat_type,num_aq_prim_array,num_cstr_array,init_cat_exch_zones_bis)
+            end if
         else if (label=='INITIAL MINERAL ZONES') then
             call this%read_init_min_zones_CHEPROO(unit_loc_chem_file,init_min_zones,reactive_zones)
-        else if (label=='INITIAL GAS ZONES') then
-            call this%read_init_gas_zones_CHEPROO(unit_loc_chem_file,init_gas_zones,reactive_zones)
+        !else if (label=='INITIAL GAS ZONES') then
+            !call this%read_init_gas_zones_CHEPROO(unit_loc_chem_file,init_gas_zones,reactive_zones)
         else
             continue
         end if
@@ -151,7 +155,7 @@ subroutine read_chemistry_CHEPROO(this,path_inp,path_DB,unit_chem_syst_file,chem
     call this%read_target_waters_init(unit_target_waters_init_file,this%wat_types,init_sol_zones,init_gas_zones,niter,CV_flag)
     close(unit_target_waters_init_file)
 !> Chapuza
-    if (this%chem_syst%num_eq_reacts>0) then
+    if (this%chem_syst%num_eq_reacts>this%chem_syst%num_eq_reacts_homog) then
         call this%set_reactive_zones()
     end if
 end subroutine

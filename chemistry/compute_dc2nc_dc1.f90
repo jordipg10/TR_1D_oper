@@ -75,7 +75,7 @@ subroutine compute_dc2nc_dc1(this,c1,c2nc,out_prod,dc2nc_dc1)
 !        call LU_lin_syst(mat_lin_syst,indep_term(:,j),this%CV_params%zero,log_Jacobian(:,j))
 !    end do
 !> We apply chain rule to obtain dc2nc_dc1
-    !c1=this%get_c1_exch()
+    !c1=this%get_c1()
     !c2nc=this%get_c2nc_exch()
     !do i=1,this%speciation_alg%num_eq_reactions
     !    do j=1,this%speciation_alg%num_prim_species

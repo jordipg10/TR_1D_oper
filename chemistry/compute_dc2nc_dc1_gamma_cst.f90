@@ -16,7 +16,7 @@ subroutine compute_dc2nc_dc1_gamma_cst(this,dc2nc_dc1)
     n_e=this%speciation_alg%num_eq_reactions
     n_nc_aq=this%speciation_alg%num_var_act_species
 
-    c1=this%get_c1_exch()
+    c1=this%get_c1()
     call id_c1%set_diag_matrix(1d0/c1)
     !id_c1=diag(1d0/c1)
     aux_mat=this%speciation_alg%Se_nc_1_star

@@ -45,7 +45,7 @@ module speciation_algebra_m
     end type
     
     contains
-        subroutine set_dimensions(this,n_sp,n_e,n_c,n_aq,n_nc_aq,num_min_kin)
+        subroutine set_dimensions(this,n_sp,n_e,n_c,n_aq,n_nc_aq,num_min_kin,num_gas_kin)
             implicit none
             class(speciation_algebra_c) :: this
             integer(kind=4), intent(in) :: n_sp !> number of species
@@ -54,11 +54,12 @@ module speciation_algebra_m
             integer(kind=4), intent(in) :: n_aq !> number of aqueous species
             integer(kind=4), intent(in) :: n_nc_aq !> number of aqueous variable activity species
             integer(kind=4), intent(in) :: num_min_kin !> number of mineral kinetic reactions
+            integer(kind=4), intent(in) :: num_gas_kin !> number of gases not in equilibrium
             this%num_species=n_sp
             this%num_eq_reactions=n_e
             this%num_cst_act_species=n_c
             this%num_var_act_species=this%num_species-this%num_cst_act_species
-            call this%compute_num_prim_species(num_min_kin)
+            call this%compute_num_prim_species(num_min_kin,num_gas_kin)
             this%num_sec_aq_species=n_aq-this%num_aq_prim_species
             this%num_aq_var_act_species=n_nc_aq
             call this%compute_num_aq_sec_var_act_species()
@@ -179,10 +180,11 @@ module speciation_algebra_m
             this%logK_tilde=matmul(this%inv_Se_2,log10(K))
         end subroutine
         
-        subroutine compute_num_prim_species(this,num_min_kin)
+        subroutine compute_num_prim_species(this,num_min_kin,num_gas_kin)
             implicit none
             class(speciation_algebra_c) :: this
             integer(kind=4), intent(in) :: num_min_kin
+            integer(kind=4), intent(in) :: num_gas_kin
             if (this%flag_comp==.true.) then
                 this%num_prim_species=this%num_species-this%num_eq_reactions-this%num_cst_act_species
             else
@@ -194,6 +196,9 @@ module speciation_algebra_m
             end if
             if (num_min_kin>0 .and. this%flag_comp==.false.) then
                 this%num_aq_prim_species=this%num_aq_prim_species-num_min_kin
+            end if
+            if (num_gas_kin>0 .and. this%flag_comp==.false.) then
+                this%num_aq_prim_species=this%num_aq_prim_species-num_gas_kin
             end if
         end subroutine
         

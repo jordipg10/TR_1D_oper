@@ -94,7 +94,7 @@ module aqueous_chemistry_m
         procedure, public :: compute_saturation_min
     !> Get
         procedure, public :: get_indices_reaction
-        procedure, public :: get_c1_exch
+        procedure, public :: get_c1
         procedure, public :: get_c1_aq
         procedure, public :: get_c2_exch
         procedure, public :: get_c2nc
@@ -1414,8 +1414,10 @@ module aqueous_chemistry_m
             class(aqueous_chemistry_c) :: this
             logical, intent(in) :: flag_comp !> TRUE if component matrix has no constant activity species (De Simoni et al, 2005), FALSE otherwise
             
-            integer(kind=4) :: i,n_sp,n_c,n_eq
+            integer(kind=4) :: i,n_sp,n_c,n_eq,n_gas_kin
             logical :: flag_cat_exch
+            
+            n_gas_kin=0
             
             if (.not. associated(this%chem_syst)) then
                 error stop
@@ -1432,6 +1434,7 @@ module aqueous_chemistry_m
                         n_c=n_c+1
                     end if
                 end do
+                n_gas_kin=this%solid_chemistry%reactive_zone%gas_phase%num_species-this%solid_chemistry%reactive_zone%gas_phase%num_gases_eq
                 do i=1,this%solid_chemistry%reactive_zone%gas_phase%num_species
                     if (this%solid_chemistry%reactive_zone%gas_phase%gases(i)%cst_act_flag==.true.) then
                         n_c=n_c+1
@@ -1444,7 +1447,8 @@ module aqueous_chemistry_m
                     flag_cat_exch=.false.
                 end if
             else if (associated(this%gas_chemistry)) then !> aqueous chemistry is associated to a gas zone
-                n_sp=this%aq_phase%num_species+this%gas_chemistry%reactive_zone%num_non_flowing_species+this%chem_syst%num_min_kin_reacts
+                n_gas_kin=this%gas_chemistry%reactive_zone%gas_phase%num_species-this%gas_chemistry%reactive_zone%gas_phase%num_gases_eq
+                n_sp=this%aq_phase%num_species+this%gas_chemistry%reactive_zone%num_non_flowing_species+this%chem_syst%num_min_kin_reacts+n_gas_kin
                 n_c=this%aq_phase%wat_flag
                 n_eq=this%gas_chemistry%reactive_zone%num_eq_reactions
                 do i=1,this%chem_syst%num_min_kin_reacts
@@ -1474,7 +1478,7 @@ module aqueous_chemistry_m
             end if
             call this%speciation_alg%set_flag_comp(flag_comp)
             call this%speciation_alg%set_flag_cat_exch(flag_cat_exch)
-            call this%speciation_alg%set_dimensions(n_sp,n_eq,n_c,this%aq_phase%num_species,this%aq_phase%num_species-this%aq_phase%wat_flag,this%chem_syst%num_min_kin_reacts)
+            call this%speciation_alg%set_dimensions(n_sp,n_eq,n_c,this%aq_phase%num_species,this%aq_phase%num_species-this%aq_phase%wat_flag,this%chem_syst%num_min_kin_reacts,n_gas_kin)
         end subroutine
        
         subroutine compute_speciation_alg_arrays(this)
@@ -1628,7 +1632,7 @@ module aqueous_chemistry_m
             this%concentrations(this%aq_phase%ind_wat)=this%concentrations(this%aq_phase%ind_wat)*(1d0-this%salinity)
         end subroutine
         
-        function get_c1_exch(this) result(c1) !> gets primary concentrations
+        function get_c1(this) result(c1) !> gets primary concentrations in molarities
             implicit none
             class(aqueous_chemistry_c), intent(in) :: this
             real(kind=8), allocatable :: c1(:)
@@ -1637,7 +1641,11 @@ module aqueous_chemistry_m
             
             allocate(c1(this%speciation_alg%num_prim_species))
             c1(1:this%speciation_alg%num_aq_prim_species)=this%concentrations(1:this%speciation_alg%num_aq_prim_species)
-            c1(this%speciation_alg%num_prim_species)=this%solid_chemistry%concentrations(this%solid_chemistry%reactive_zone%num_minerals+1)
+            if (associated(this%solid_chemistry)) then
+                c1(this%speciation_alg%num_aq_prim_species+1)=this%solid_chemistry%concentrations(this%solid_chemistry%reactive_zone%num_minerals+1)
+            else if  (associated(this%gas_chemistry)) then
+                c1(this%speciation_alg%num_aq_prim_species+1:this%speciation_alg%num_prim_species)=this%gas_chemistry%concentrations(this%gas_chemistry%reactive_zone%gas_phase%num_gases_eq+1:this%gas_chemistry%reactive_zone%gas_phase%num_species)/this%volume
+            end if
         end function
         
         function get_c1_aq(this) result(c1) !> gets aqueous primary concentrations

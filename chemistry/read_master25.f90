@@ -180,12 +180,14 @@ subroutine read_master25(this,path,unit)
                     call this%cst_act_species(num_cst_act_sp+gas_ind)%assign_species(gas)
                     num_cst_act_gases=num_cst_act_gases+1
                 end if
-                call this%eq_reacts(num_eq_reacts+gas_ind)%allocate_reaction(num_reactants+1)
-                call this%eq_reacts(num_eq_reacts+gas_ind)%set_react_type(6)
-                call this%eq_reacts(num_eq_reacts+gas_ind)%set_react_name(gas%name)
-                call this%eq_reacts(num_eq_reacts+gas_ind)%species(num_reactants+1)%assign_species(this%gas_phase%gases(gas_ind))
-                this%eq_reacts(num_eq_reacts+gas_ind)%stoichiometry(num_reactants+1)=-1d0
-                react_indices(num_reacts+gas_ind)=ind_gases+1
+                if (gas_ind<=this%gas_phase%num_gases_eq) then
+                    call this%eq_reacts(num_eq_reacts+gas_ind)%allocate_reaction(num_reactants+1)
+                    call this%eq_reacts(num_eq_reacts+gas_ind)%set_react_type(6)
+                    call this%eq_reacts(num_eq_reacts+gas_ind)%set_react_name(gas%name)
+                    call this%eq_reacts(num_eq_reacts+gas_ind)%species(num_reactants+1)%assign_species(this%gas_phase%gases(gas_ind))
+                    this%eq_reacts(num_eq_reacts+gas_ind)%stoichiometry(num_reactants+1)=-1d0
+                    react_indices(num_reacts+gas_ind)=ind_gases+1
+                end if
             else
                 continue
             end if

@@ -8,7 +8,7 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
     integer(kind=4), intent(in) :: unit !> file unit
     
     real(kind=8), allocatable :: Sk(:,:),logK(:),gamma_1(:),gamma_2(:)
-    integer(kind=4) :: exch_cat_valence,n_eq_homog,unit_master_25,unit_kinetics,unit_redox,i,j,num_sp,ind_var_act_sp,num_var_act_sp,num_cst_act_sp,k,num_aq_sp,num_sec_aq_sp,exch_cat_ind, n_min_kin, n_gas_kin,index,kin_react_type,n_r,num_mins,num_gases,num_surf_compl,num_exch_cats,n_eq,n_k,num_mins_eq_indices,n_redox,n_lin_kin,num_aq_compl,num_mins_eq,num_cst_act_gases,num_var_act_gases
+    integer(kind=4) :: exch_cat_valence,n_eq_homog,unit_master_25,unit_kinetics,unit_redox,i,j,num_sp,ind_var_act_sp,num_var_act_sp,num_cst_act_sp,k,num_aq_sp,num_sec_aq_sp,exch_cat_ind, n_min_kin, n_gas_eq,index,kin_react_type,n_r,num_mins,num_gases,num_surf_compl,num_exch_cats,n_eq,n_k,num_mins_eq_indices,n_redox,n_lin_kin,num_aq_compl,num_mins_eq,num_cst_act_gases,num_var_act_gases
     integer(kind=4) :: num_cst_act_mins,num_var_act_mins,n_redox_eq,n_redox_kin
     integer(kind=4), allocatable :: n_tar(:),mins_eq_indices(:),gases_eq_indices(:)
     real(kind=8) :: aux,conc,temp,SI
@@ -55,7 +55,7 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
     n_eq_homog=0
     n_k=0
     n_min_kin=0
-    n_gas_kin=0
+    n_gas_eq=0
     n_lin_kin=0
     n_redox_eq=0
     n_redox_kin=0
@@ -133,9 +133,10 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
                 end if
                 if (eq_label==.true.) then
                     n_eq=n_eq+1
+                    n_gas_eq=n_gas_eq+1
                 else
-                    n_k=n_k+1
-                    n_gas_kin=n_gas_kin+1
+                    !n_k=n_k+1
+                    !n_gas_kin=n_gas_kin+1
                 end if
             end do 
         else if (label=='SURFACE COMPLEXES') then
@@ -177,8 +178,9 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
     call this%compute_num_species()
     call this%allocate_species()
     call this%allocate_minerals(num_mins)
-    this%num_minerals_eq=num_mins_eq !> falta un set
+    this%num_minerals_eq=num_mins_eq !> falta un set aquí
     call this%gas_phase%allocate_gases(num_gases)
+    this%gas_phase%num_gases_eq=n_gas_eq !> falta un set aquí
     call this%cat_exch%allocate_surf_compl(num_surf_compl)
     call this%cat_exch%allocate_exch_cats(num_exch_cats)
     this%num_eq_reacts_homog=n_eq_homog !> falta un set aqui
@@ -199,7 +201,7 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
         flag_surf=.false.
     end if
     call this%speciation_alg%set_flag_cat_exch(flag_surf)
-    call this%speciation_alg%set_dimensions(this%num_species,this%num_eq_reacts,this%num_cst_act_species,this%aq_phase%num_species,this%aq_phase%num_species-this%aq_phase%wat_flag,this%num_min_kin_reacts)
+    call this%speciation_alg%set_dimensions(this%num_species,this%num_eq_reacts,this%num_cst_act_species,this%aq_phase%num_species,this%aq_phase%num_species-this%aq_phase%wat_flag,this%num_min_kin_reacts,num_gases-n_gas_eq)
     ind_var_act_sp=0
     do
         read(unit,*) label
@@ -262,15 +264,23 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
             end do
         else if (label=='GASES') then
             allocate(gases_eq_indices(0))
-            i=0 !> gases
+            i=0 !> gases eq
+            j=0 !> gases kin
             do
                 read(unit,*) str, eq_label, cst_act_label
                 if (str=='*') exit
-                i=i+1
                 str_trim=trim(str)
-                call this%gas_phase%gases(i)%set_name(str_trim)
-                call this%gas_phase%gases(i)%set_cst_act_flag(cst_act_label)
-                call this%gas_phase%gases(i)%set_valence(0)
+                if (eq_label==.true.) then
+                    i=i+1
+                    call this%gas_phase%gases(i)%set_name(str_trim)
+                    call this%gas_phase%gases(i)%set_cst_act_flag(cst_act_label)
+                    call this%gas_phase%gases(i)%set_valence(0)
+                else
+                    j=j+1
+                    call this%gas_phase%gases(this%gas_phase%num_gases_eq+j)%set_name(str_trim)
+                    call this%gas_phase%gases(this%gas_phase%num_gases_eq+j)%set_cst_act_flag(cst_act_label)
+                    call this%gas_phase%gases(this%gas_phase%num_gases_eq+j)%set_valence(0)
+                end if
             end do
         else if (label=='SURFACE COMPLEXES') then
             i=0 !> surface complexes

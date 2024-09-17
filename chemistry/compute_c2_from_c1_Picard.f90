@@ -29,7 +29,7 @@ subroutine compute_c2_from_c1_Picard(this,c1,c2_ig,c2,niter,CV_flag)
     
     call this%set_conc_sec_aq_species(c2_ig(1:n_sec_aq)) !> initial guess c2aq
     if (associated(this%gas_chemistry)) then !> chapuza
-        call this%gas_chemistry%set_concentrations(c2_ig(n_sec_aq+n_mins_eq+1:n_e)) !> initial guess conc_gases
+        call this%gas_chemistry%set_concentrations(c2_ig(n_sec_aq+n_mins_eq+1:n_e)*this%volume) !> initial guess conc_gases
     end if
     c2_old=c2_ig
     c2_new=c2_old !> chapuza
@@ -51,19 +51,19 @@ subroutine compute_c2_from_c1_Picard(this,c1,c2_ig,c2,niter,CV_flag)
         log_gamma1_old(1:n_p_aq)=this%log_act_coeffs(1:n_p_aq) !> we set log activity coefficients aqueous primary species
         log_gamma2_old(1:n_sec_aq)=this%log_act_coeffs(n_p_aq+1:this%aq_phase%num_species) !> we set log activity coefficients aqueous secondary species
         !print *, this%gas_chemistry%reactive_zone%gas_phase%num_var_act_species
-        if (associated(this%gas_chemistry) .and. this%gas_chemistry%reactive_zone%gas_phase%num_var_act_species>0) then !> chapuza
+        if (associated(this%gas_chemistry) .and. this%gas_chemistry%reactive_zone%gas_phase%num_cst_act_species>0) then !> chapuza
             !call this%gas_chemistry%compute_vol_gas() !> we compute total volume of gas
             call this%gas_chemistry%compute_log_act_coeffs_gases()
-            log_gamma2_old(n_sec_aq+n_mins_eq+1:n_e)=this%gas_chemistry%log_act_coeffs
+            log_gamma2_old(n_sec_aq+n_mins_eq+1:n_e)=this%gas_chemistry%log_act_coeffs+LOG10(this%gas_chemistry%volume)
         end if
         
         log_c2_new=matmul(this%speciation_alg%Se_1_star,log_gamma1_old+log10(c1))+this%speciation_alg%logK_tilde-log_gamma2_old !> mass action law
         c2_new=10**log_c2_new
         
         call this%update_conc_sec_aq_species(c2_new(1:n_sec_aq)) !> we update aqueous secondary species
-        if (associated(this%gas_chemistry) .and. this%gas_chemistry%reactive_zone%gas_phase%num_var_act_species>0) then !> chapuza
+        if (associated(this%gas_chemistry) .and. this%gas_chemistry%reactive_zone%gas_phase%num_cst_act_species>0) then !> chapuza
             call this%gas_chemistry%update_conc_gases(c2_new(n_sec_aq+n_mins_eq+1:n_e)*this%volume) !> we update moles of gases
-            !call this%gas_chemistry%compute_vol_gas() !> we compute total volume of gas
+            call this%gas_chemistry%compute_vol_gas() !> we compute total volume of gas
         end if
         if (inf_norm_vec_real((c2_new(1:n_sec_aq)-c2_old(1:n_sec_aq))/c2_old(1:n_sec_aq))<this%CV_params%rel_tol) then
             CV_flag=.true.

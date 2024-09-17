@@ -43,16 +43,16 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
             error stop
         else
             allocate(prim_indices(n_p_aq),icons(n_p_aq),ctots(n_p_aq),indices_constrains(num_cstr))
-            if (this%aq_chem%chem_syst%gas_phase%num_species>0) then
-                call react_zone%set_gas_phase(this%aq_chem%chem_syst%gas_phase)
-                call gas_chem%set_reactive_zone(react_zone)
-                call gas_chem%allocate_partial_pressures()
-                call gas_chem%allocate_conc_gases()
-                call gas_chem%allocate_log_act_coeffs_gases()
-                call gas_chem%set_temp(this%aq_chem%temp)
-                call gas_chem%set_volume(1d0) !> arbitrary
-                call this%aq_chem%set_gas_chemistry(gas_chem)
-            end if
+            !if (this%aq_chem%chem_syst%gas_phase%num_species>0) then
+            !    call react_zone%set_gas_phase(this%aq_chem%chem_syst%gas_phase)
+            !    call gas_chem%set_reactive_zone(react_zone)
+            !    call gas_chem%allocate_partial_pressures()
+            !    call gas_chem%allocate_conc_gases()
+            !    call gas_chem%allocate_log_act_coeffs_gases()
+            !    call gas_chem%set_temp(this%aq_chem%temp)
+            !    call gas_chem%set_volume(1d0) !> arbitrary
+            !    call this%aq_chem%set_gas_chemistry(gas_chem)
+            !end if
         end if
         !call this%aq_chem%allocate_conc_comp(n_p_aq)
         !call this%aq_chem%allocate_log_act_coeffs()
@@ -77,6 +77,10 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
                         !> Chapuza
                         if (icon==1) then
                             n_icons(1)=n_icons(1)+1
+                            if (aq_species%name=='h2o') then
+                                guess=1d0/18d-3
+                                ctot=guess
+                            end if
                         else if (icon==2) then
                             n_icons(2)=n_icons(2)+1
                             n_aq_comp=n_aq_comp+1
@@ -130,7 +134,7 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
         flag_surf=.false.
     end if
     call this%aq_chem%speciation_alg%set_flag_cat_exch(flag_surf)
-    call this%aq_chem%speciation_alg%set_dimensions(this%aq_chem%chem_syst%num_species,this%aq_chem%chem_syst%num_eq_reacts,this%aq_chem%chem_syst%num_cst_act_species,this%aq_chem%aq_phase%num_species,this%aq_chem%aq_phase%num_species-this%aq_chem%aq_phase%wat_flag,this%aq_chem%chem_syst%num_min_kin_reacts)
+    call this%aq_chem%speciation_alg%set_dimensions(this%aq_chem%chem_syst%num_species,this%aq_chem%chem_syst%num_eq_reacts,this%aq_chem%chem_syst%num_cst_act_species,this%aq_chem%aq_phase%num_species,this%aq_chem%aq_phase%num_species-this%aq_chem%aq_phase%wat_flag,this%aq_chem%chem_syst%num_min_kin_reacts,this%aq_chem%chem_syst%gas_phase%num_species-this%aq_chem%chem_syst%gas_phase%num_gases_eq)
     call this%aq_chem%speciation_alg%compute_arrays(this%aq_chem%chem_syst%Se,this%aq_chem%chem_syst%get_eq_csts(),this%aq_chem%CV_params%abs_tol)
             
     call this%aq_chem%set_prim_species_indices()

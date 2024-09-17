@@ -1,4 +1,4 @@
-subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_prim_array,num_cstr_array,init_cat_exch_zones)
+subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_prim_array,num_cstr_array,init_cat_exch_zones,gas_chem)
     use chemistry_Lagr_m
     implicit none
     class(chemistry_c) :: this
@@ -6,7 +6,8 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
     integer(kind=4), intent(out), allocatable :: ind_wat_type(:)
     integer(kind=4), intent(out), allocatable :: num_aq_prim_array(:)
     integer(kind=4), intent(out), allocatable :: num_cstr_array(:)
-    class(solid_type_c), intent(inout), optional :: init_cat_exch_zones(:)
+    class(solid_type_c), intent(inout) :: init_cat_exch_zones(:)
+    class(gas_chemistry_c), intent(in), optional :: gas_chem !> chapuza
     
     integer(kind=4) :: i,j,k,l,nwtype,icon,n_p_aq,gas_ind,min_ind,model,niter
     !integer(kind=4), allocatable :: num_aq_prim_array(:),num_cstr_array(:)
@@ -15,7 +16,7 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
     logical :: CV_flag,flag,flag_surf,flag_comp
     
     type(reactive_zone_c) :: react_zone
-    type(gas_chemistry_c) :: gas_chem
+    !type(gas_chemistry_c) :: gas_chem
     type(aq_species_c) :: aq_species
     type(mineral_c) :: mineral
     type(aq_phase_c) :: old_aq_phase
@@ -254,13 +255,13 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
                 read(unit,*) j, temp !> we read index water type and temperature (in Celsius)
                 read(unit,*) name
             !> Chapuza
-                if (PRESENT(init_cat_exch_zones)) then
-                    if (SIZE(init_cat_exch_zones)==1) then
-                        call this%wat_types(j)%read_wat_type_CHEPROO(num_aq_prim_array(j),num_cstr_array(j),this%act_coeffs_model,this%Jac_flag,unit,niter,CV_flag,init_cat_exch_zones(1)%solid_chem)
-                    end if
-                else
-                    call this%wat_types(j)%read_wat_type_CHEPROO(num_aq_prim_array(j),num_cstr_array(j),this%act_coeffs_model,this%Jac_flag,unit,niter,CV_flag)
+                if (SIZE(init_cat_exch_zones)==1) then
+                    call this%wat_types(j)%read_wat_type_CHEPROO(num_aq_prim_array(j),num_cstr_array(j),this%act_coeffs_model,this%Jac_flag,unit,niter,CV_flag,init_cat_exch_zones(1)%solid_chem)
                 end if
+                if (present(gas_chem)) then
+                    call this%wat_types(j)%aq_chem%set_gas_chemistry(gas_chem)
+                end if
+                call this%wat_types(j)%read_wat_type_CHEPROO(num_aq_prim_array(j),num_cstr_array(j),this%act_coeffs_model,this%Jac_flag,unit,niter,CV_flag)
             end do
             !read(unit,*) this%num_init_wat_types, this%num_bd_wat_types, this%num_rech_wat_types
             !do i=1,this%num_init_wat_types
@@ -301,7 +302,7 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
         flag_surf=.false.
     end if
     call this%chem_syst%speciation_alg%set_flag_cat_exch(flag_surf)
-    call this%chem_syst%speciation_alg%compute_num_prim_species(this%chem_syst%num_min_kin_reacts)
+    call this%chem_syst%speciation_alg%compute_num_prim_species(this%chem_syst%num_min_kin_reacts,this%chem_syst%gas_phase%num_species-this%chem_syst%gas_phase%num_gases_eq)
     call this%chem_syst%speciation_alg%compute_num_aq_sec_var_act_species()
     old_aq_phase=this%chem_syst%aq_phase !> chapuza
     call this%chem_syst%aq_phase%rearrange_aq_species()

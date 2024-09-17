@@ -5,7 +5,7 @@
 'denitrification'
 1 'o2(aq)' 1.0e+00
 1 'no3-' 1.0e+00
-6 'no3-' -0.8  'ch2o(aq)' -1.0 'hco3-' 1.0 'n2(aq)' 0.4 'h2o' 0.4 'h+' 0.2 1.0e+00
+6 'no3-' -0.8  'ch2o(aq)' -1.0 'hco3-' 1.0 'n2(g)' 0.4 'h2o' 0.4 'h+' 0.2 1.0e+00
 'Mn reduction (review)'
 2 'o2' 1.0e-04 'no3-' 1.0e-04
 'mno2(s)' 1.0e-04

@@ -223,19 +223,17 @@ subroutine write_chemistry(this,unit,file_out)
     else if (this%chem_syst%num_eq_reacts>0) then
         allocate(conc_comp(this%target_waters_init(1)%speciation_alg%num_aq_prim_species,this%num_target_waters_init))
         write(unit,"(/,2x,'Initial concentration of components:'/)")
-        do j=1,this%num_target_waters_init
-            do i=1,this%target_waters_init(j)%speciation_alg%num_aq_prim_species
-                conc_comp(i,j)=dot_product(this%target_waters_init(j)%speciation_alg%comp_mat(i,:),this%target_waters_init(j)%concentrations(1:this%target_waters_init(j)%speciation_alg%num_var_act_species))
-                write(unit,"(10x,*(ES15.5))") conc_comp(i,j) !(this%target_waters_init(tar_wat_indices(j))%concentrations(i), j=1,size(tar_wat_indices))
+        !do j=1,this%num_target_waters_init
+            do i=1,this%target_waters_init(1)%speciation_alg%num_aq_prim_species
+                write(unit,"(10x,*(ES15.5))") (dot_product(this%target_waters_init(j)%speciation_alg%comp_mat(i,:),this%target_waters_init(j)%concentrations(1:this%target_waters_init(j)%speciation_alg%num_var_act_species)), j=1,this%num_target_waters_init) !(this%target_waters_init(tar_wat_indices(j))%concentrations(i), j=1,size(tar_wat_indices))
             end do
-        end do
+        !end do
         write(unit,"(/,2x,'Concentration of components:'/)")
-        do j=1,this%num_target_waters_init
-            do i=1,this%target_waters_init(j)%speciation_alg%num_aq_prim_species
-                conc_comp(i,j)=dot_product(this%target_waters_init(j)%speciation_alg%comp_mat(i,:),this%target_waters_init(j)%concentrations(1:this%target_waters_init(j)%speciation_alg%num_var_act_species))
-                write(unit,"(10x,*(ES15.5))") conc_comp(i,j) !(this%target_waters_init(tar_wat_indices(j))%concentrations(i), j=1,size(tar_wat_indices))
+        !do j=1,this%num_target_waters_init
+            do i=1,this%target_waters(1)%speciation_alg%num_aq_prim_species
+                write(unit,"(10x,*(ES15.5))") (dot_product(this%target_waters(j)%speciation_alg%comp_mat(i,:),this%target_waters(j)%concentrations(1:this%target_waters(j)%speciation_alg%num_var_act_species)), j=1,this%num_target_waters) !(this%target_waters_init(tar_wat_indices(j))%concentrations(i), j=1,size(tar_wat_indices))
             end do
-        end do
+        !end do
         deallocate(conc_comp)
     end if
 end subroutine

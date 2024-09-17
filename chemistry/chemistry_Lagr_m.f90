@@ -326,10 +326,11 @@ module chemistry_Lagr_m
         
        
         
-        subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_prim_array,num_cstr_array,init_cat_exch_zones)
+        subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_prim_array,num_cstr_array,init_cat_exch_zones,gas_chem)
             import chemistry_c
             import water_type_c
             import solid_type_c
+            import gas_chemistry_c
             implicit none
             class(chemistry_c) :: this
             integer(kind=4), intent(in) :: unit !> file
@@ -343,7 +344,8 @@ module chemistry_Lagr_m
             integer(kind=4), intent(out), allocatable :: ind_wat_type(:)
             integer(kind=4), intent(out), allocatable :: num_aq_prim_array(:)
             integer(kind=4), intent(out), allocatable :: num_cstr_array(:)
-            class(solid_type_c), intent(inout), optional :: init_cat_exch_zones(:)
+            class(solid_type_c), intent(inout) :: init_cat_exch_zones(:)
+            class(gas_chemistry_c), intent(in),optional :: gas_chem !> chapuza
             !logical, intent(out) :: CV_flag !> TRUE if converges, FALSE otherwise
         end subroutine
         

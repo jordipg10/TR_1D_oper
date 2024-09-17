@@ -1,10 +1,11 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Sun Sep  8 17:54:36 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Tue Sep 17 12:13:32 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE READ_INIT_BD_RECH_WAT_TYPES_CHEPROO__genmod
           INTERFACE 
             SUBROUTINE READ_INIT_BD_RECH_WAT_TYPES_CHEPROO(THIS,UNIT,   &
-     &IND_WAT_TYPE,NUM_AQ_PRIM_ARRAY,NUM_CSTR_ARRAY,INIT_CAT_EXCH_ZONES)
+     &IND_WAT_TYPE,NUM_AQ_PRIM_ARRAY,NUM_CSTR_ARRAY,INIT_CAT_EXCH_ZONES,&
+     &GAS_CHEM)
               USE CHEMISTRY_LAGR_M
               CLASS (CHEMISTRY_C) :: THIS
               INTEGER(KIND=4), INTENT(IN) :: UNIT
@@ -14,7 +15,8 @@
      &NUM_AQ_PRIM_ARRAY(:)
               INTEGER(KIND=4) ,ALLOCATABLE, INTENT(OUT) ::              &
      &NUM_CSTR_ARRAY(:)
-               ,OPTIONAL, INTENT(INOUT) :: INIT_CAT_EXCH_ZONES(:)
+              , INTENT(INOUT) :: INIT_CAT_EXCH_ZONES(:)
+              CLASS (GAS_CHEMISTRY_C) ,OPTIONAL, INTENT(IN) :: GAS_CHEM
             END SUBROUTINE READ_INIT_BD_RECH_WAT_TYPES_CHEPROO
           END INTERFACE 
         END MODULE READ_INIT_BD_RECH_WAT_TYPES_CHEPROO__genmod

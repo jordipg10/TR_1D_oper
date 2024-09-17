@@ -238,7 +238,7 @@ module reactive_zone_Lagr_m
             else
                 j=0 !> counter constant non flowing species
                 k=0 !> counter variable non flowing species
-                call this%allocate_non_flowing_species(this%num_minerals+this%cat_exch_zone%num_surf_compl+this%gas_phase%num_species)
+                call this%allocate_non_flowing_species(this%num_minerals+this%cat_exch_zone%num_surf_compl+this%gas_phase%num_gases_eq)
             !> First: minerals
                 do i=1,this%num_minerals
                     if (this%minerals(i)%mineral%cst_act_flag==.true.) then
@@ -256,7 +256,7 @@ module reactive_zone_Lagr_m
                 j=0
                 k=0
             !> Third: gases
-                do i=1,this%gas_phase%num_species
+                do i=1,this%gas_phase%num_gases_eq
                     if (this%gas_phase%gases(i)%cst_act_flag==.true.) then
                         j=j+1
                         call this%non_flowing_species(this%num_solids+j)%assign_species(this%gas_phase%gases(i))
@@ -383,40 +383,42 @@ module reactive_zone_Lagr_m
                 l=1 !> counter exchange & gas reactions reactive zone
                 j=1 !> counter equilibrium reactions chemical system
                 k=1 !> counter non flowing species
-                this%eq_reactions(this%num_minerals_cst_act+this%gas_phase%num_cst_act_species+1:this%num_minerals+this%gas_phase%num_cst_act_species+this%chem_syst%num_redox_eq_reacts+this%chem_syst%aq_phase%num_aq_complexes)=this%chem_syst%eq_reacts(this%chem_syst%num_minerals_eq+this%chem_syst%gas_phase%num_cst_act_species+1:this%chem_syst%num_minerals_eq+this%chem_syst%gas_phase%num_cst_act_species+this%chem_syst%num_redox_eq_reacts+this%chem_syst%aq_phase%num_aq_complexes)
-                do
-                    if (this%non_flowing_species(k)%name=='x-') then !> chapuza
-                        k=k+1
-                    end if
-                    call this%chem_syst%eq_reacts(j)%is_species_in_react(this%non_flowing_species(k),flag,sp_ind)
-                    !call this%chem_syst%is_eq_reaction_in_chem_syst(this%non_flowing_species(i),flag,eq_react_ind)
-                    if (flag==.true.) then
-                        if (this%non_flowing_species(k)%cst_act_flag==.true.) then
-                            this%eq_reactions(i)=this%chem_syst%eq_reacts(j)
-                            i=i+1
-                        else
-                            this%eq_reactions(this%num_minerals_cst_act+this%gas_phase%num_cst_act_species+this%chem_syst%num_redox_eq_reacts+this%chem_syst%aq_phase%num_aq_complexes+l)=this%chem_syst%eq_reacts(j)
-                            l=l+1
-                        end if
-                    !!> Chapuza
-                    !>    if (k==this%num_minerals) then
-                    !>        this%eq_reactions(k+1:k+this%chem_syst%aq_phase%num_aq_complexes)=this%chem_syst%eq_reacts(this%chem_syst%num_minerals_eq+1:this%chem_syst%num_minerals_eq+this%chem_syst%aq_phase%num_aq_complexes)
-                    !>        i=i+this%chem_syst%aq_phase%num_aq_complexes
-                    !>    end if
-                        if (k<this%num_non_flowing_species) then
-                            !i=i+1
+                this%eq_reactions(this%num_minerals_cst_act+this%gas_phase%num_gases_eq+1:this%num_minerals+this%gas_phase%num_gases_eq+this%chem_syst%num_redox_eq_reacts+this%chem_syst%aq_phase%num_aq_complexes)=this%chem_syst%eq_reacts(this%chem_syst%num_minerals_eq+this%chem_syst%gas_phase%num_gases_eq+1:this%chem_syst%num_minerals_eq+this%chem_syst%gas_phase%num_gases_eq+this%chem_syst%num_redox_eq_reacts+this%chem_syst%aq_phase%num_aq_complexes)
+                if (this%num_non_flowing_species>0) then
+                    do
+                        if (this%non_flowing_species(k)%name=='x-') then !> chapuza
                             k=k+1
-                            j=1
-                        else
-                            exit
                         end if
-                        !call append_int_1D_array(eq_react_indices,eq_react_ind)
-                    else if (j<this%chem_syst%num_eq_reacts) then
-                        j=j+1
-                    else
-                        error stop "This equilibrium reaction is not in the chemical system"
-                    end if
-                end do
+                        call this%chem_syst%eq_reacts(j)%is_species_in_react(this%non_flowing_species(k),flag,sp_ind)
+                        !call this%chem_syst%is_eq_reaction_in_chem_syst(this%non_flowing_species(i),flag,eq_react_ind)
+                        if (flag==.true.) then
+                            if (this%non_flowing_species(k)%cst_act_flag==.true.) then
+                                this%eq_reactions(i)=this%chem_syst%eq_reacts(j)
+                                i=i+1
+                            else
+                                this%eq_reactions(this%num_minerals_cst_act+this%gas_phase%num_gases_eq+this%chem_syst%num_redox_eq_reacts+this%chem_syst%aq_phase%num_aq_complexes+l)=this%chem_syst%eq_reacts(j)
+                                l=l+1
+                            end if
+                        !!> Chapuza
+                        !>    if (k==this%num_minerals) then
+                        !>        this%eq_reactions(k+1:k+this%chem_syst%aq_phase%num_aq_complexes)=this%chem_syst%eq_reacts(this%chem_syst%num_minerals_eq+1:this%chem_syst%num_minerals_eq+this%chem_syst%aq_phase%num_aq_complexes)
+                        !>        i=i+this%chem_syst%aq_phase%num_aq_complexes
+                        !>    end if
+                            if (k<this%num_non_flowing_species) then
+                                !i=i+1
+                                k=k+1
+                                j=1
+                            else
+                                exit
+                            end if
+                            !call append_int_1D_array(eq_react_indices,eq_react_ind)
+                        else if (j<this%chem_syst%num_eq_reacts) then
+                            j=j+1
+                        else
+                            error stop "This equilibrium reaction is not in the chemical system"
+                        end if
+                    end do
+                end if
                 !this%eq_reactions(i+1:this%num_eq_reactions)=this%chem_syst%eq_reacts(this%chem_syst%num_eq_reacts-this%chem_syst%num_eq_reacts_homog+1:this%chem_syst%num_eq_reacts)
                 !call this%chem_syst%is_water_dissoc_in_chem_syst(flag,eq_react_ind)
                 !if (flag==.true.) then
@@ -523,7 +525,7 @@ module reactive_zone_Lagr_m
         subroutine allocate_eq_reactions(this)
             implicit none
             class(reactive_zone_c) :: this
-            this%num_eq_reactions=this%num_minerals+this%cat_exch_zone%num_exch_cats+this%chem_syst%aq_phase%num_aq_complexes+this%gas_phase%num_species+this%chem_syst%num_redox_eq_reacts
+            this%num_eq_reactions=this%num_minerals+this%cat_exch_zone%num_exch_cats+this%chem_syst%aq_phase%num_aq_complexes+this%gas_phase%num_gases_eq+this%chem_syst%num_redox_eq_reacts
             if (allocated(this%eq_reactions)) then
                 deallocate(this%eq_reactions)
             end if

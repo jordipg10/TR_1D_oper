@@ -53,7 +53,7 @@ subroutine solve_reactive_mixing(this,mixing_ratios,mixing_waters_indices,F_mat,
                         if (react_zone%cat_exch_zone%num_surf_compl==0) then
                             p_prim=>get_c1_aq !> chapuza
                         else
-                            p_prim=>get_c1_exch
+                            p_prim=>get_c1
                         end if
                         if (int_method_chem_reacts==1) then !> Euler explicit
                             p_solver=>water_mixing_iter_EE_eq_kin
@@ -67,7 +67,7 @@ subroutine solve_reactive_mixing(this,mixing_ratios,mixing_waters_indices,F_mat,
                         p_prim=>get_c1_aq
                     else if (react_zone%cat_exch_zone%num_surf_compl>0) then !> variable activity species are aqueous and solid
                         p_solver=>transport_iter_comp_exch_EE_aq_chem !> only equilibrium reactions
-                        p_prim=>get_c1_exch
+                        p_prim=>get_c1
                     else !> faltan los gases en equilibrio
                         p_solver=>transport_iter_comp_EE_aq_chem !> only equilibrium reactions
                     end if

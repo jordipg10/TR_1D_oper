@@ -13,7 +13,7 @@ subroutine compute_c2nc_from_c1_expl(this)
     n_e=this%speciation_alg%num_eq_reactions
     n_nc2_aq=this%speciation_alg%num_aq_sec_var_act_species
     
-    c1=this%get_c1_exch() !> we get primary concentartions
+    c1=this%get_c1() !> we get primary concentartions
         
 !> Mass action law to compute log_10 secondary variable activity concentrations
     log_c2nc=matmul(this%speciation_alg%Se_nc_1_star,log10(c1))+this%speciation_alg%logK_star

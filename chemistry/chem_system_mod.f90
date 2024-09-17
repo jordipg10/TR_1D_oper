@@ -22,8 +22,8 @@ module chem_system_m
         type(gas_phase_c) :: gas_phase !> gas phase (we assume only 1)
         integer(kind=4) :: num_var_act_species !> number of variable activity species
         type(species_c), allocatable :: var_act_species(:) !> variable activity species
-        integer(kind=4) :: num_minerals !> number of minerals
-        integer(kind=4) :: num_minerals_eq !> number of minerals in equilibrium
+        integer(kind=4) :: num_minerals=0 !> number of minerals
+        integer(kind=4) :: num_minerals_eq=0 !> number of minerals in equilibrium
         type(mineral_c), allocatable :: minerals(:) !> minerals
         integer(kind=4) :: num_cst_act_species !> number of constant activity species
         type(species_c), allocatable :: cst_act_species(:) !> constant activity species
@@ -697,7 +697,7 @@ module chem_system_m
             allocate(this%eq_reacts(this%num_eq_reacts))
             ind_cst_act=1
             ind_var_act=this%num_cst_act_species-this%aq_phase%wat_flag+1
-            ind_aq=this%num_cst_act_species-this%aq_phase%wat_flag+this%num_redox_eq_reacts+1
+            ind_aq=this%num_minerals_eq+this%num_redox_eq_reacts+1
             ind_redox=this%num_cst_act_species-this%aq_phase%wat_flag+1
             ind_gas=ind_aq+this%aq_phase%num_aq_complexes
             ind_surf=ind_gas+this%gas_phase%num_species
@@ -829,7 +829,12 @@ module chem_system_m
                     end if
                 end do
             else
-                continue
+                do i=1,this%gas_phase%num_species-this%gas_phase%num_gases_eq
+                    call this%species(this%speciation_alg%num_aq_prim_species+i)%assign_species(this%gas_phase%gases(this%gas_phase%num_gases_eq+i))
+                end do
+                do i=1,this%aq_phase%num_aq_complexes
+                    call this%species(this%speciation_alg%num_aq_prim_species+this%gas_phase%num_species-this%gas_phase%num_gases_eq+i)%assign_species(this%aq_phase%aq_species(this%speciation_alg%num_aq_prim_species+i))
+                end do
             end if
         end subroutine
         

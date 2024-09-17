@@ -112,7 +112,8 @@ subroutine read_init_gas_zones_CHEPROO(this,unit,gas_zones,reactive_zones)
             allocate(reactive_zones(ngtype))
         end if
         do i=1,size(reactive_zones)
-            reactive_zones(i)%gas_phase=gas_zones(i)%gas_chem%reactive_zone%gas_phase
+            call reactive_zones(i)%set_chem_syst_react_zone(gas_zones(i)%gas_chem%reactive_zone%chem_syst)
+            call reactive_zones(i)%set_gas_phase(gas_zones(i)%gas_chem%reactive_zone%gas_phase)
         end do
     end if
 end subroutine

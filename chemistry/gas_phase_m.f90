@@ -5,7 +5,8 @@ module gas_phase_m
     implicit none
     save
     type, public, extends(phase_c) :: gas_phase_c
-        type(gas_c), allocatable :: gases(:) !> gases
+        type(gas_c), allocatable :: gases(:) !> gases (first equilibrium, then kinetic)
+        integer(kind=4) :: num_gases_eq=0 !> number of gases in equilibrium
     contains
     !> Allocate
         procedure, public :: allocate_gases

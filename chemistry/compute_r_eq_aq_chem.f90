@@ -45,5 +45,5 @@ subroutine compute_r_eq_aq_chem(this,c2nc_tilde,Delta_t,porosity)
                 A=matmul(this%chem_syst%stoich_mat(:,this%speciation_alg%num_prim_species+1:this%speciation_alg%num_var_act_species),transpose(this%chem_syst%stoich_mat(:,this%speciation_alg%num_prim_species+1:this%speciation_alg%num_var_act_species)))
                 b=matmul(this%chem_syst%stoich_mat(:,this%speciation_alg%num_prim_species+1:this%speciation_alg%num_var_act_species),c2nc-c2nc_tilde)
             end if
-            this%r_eq=R_eq(this%speciation_alg%num_cst_act_species-this%aq_phase%wat_flag+1:this%speciation_alg%num_cst_act_species-this%aq_phase%wat_flag+this%aq_phase%num_aq_complexes+this%chem_syst%num_redox_eq_reacts)*porosity/Delta_t !> r_eq_j=R_eq*phi_j/Delta_t
+            this%r_eq=R_eq(this%speciation_alg%num_cst_act_species-this%chem_syst%gas_phase%num_species+this%chem_syst%gas_phase%num_gases_eq-this%aq_phase%wat_flag+1:this%speciation_alg%num_cst_act_species-this%chem_syst%gas_phase%num_species+this%chem_syst%gas_phase%num_gases_eq-this%aq_phase%wat_flag+this%aq_phase%num_aq_complexes+this%chem_syst%num_redox_eq_reacts)*porosity/Delta_t !> r_eq_j=R_eq*phi_j/Delta_t
 end subroutine

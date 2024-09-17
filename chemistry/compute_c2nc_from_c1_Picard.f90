@@ -25,7 +25,7 @@ subroutine compute_c2nc_from_c1_Picard(this,c2nc_ig,c2nc,niter,CV_flag)
     log_gamma1_old=0d0 !> chapuza
     log_gamma2nc_old=this%get_log_gamma2nc() !> chapuza
     
-    c1=this%get_c1_exch()
+    c1=this%get_c1()
     c2nc_old=c2nc_ig
     
     niter=0 !> we initialise number of iterations

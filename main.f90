@@ -31,7 +31,7 @@ program main
     character(len=256) :: file_time !> file name with temporal discretisation to solve transport
 !**************************************************************************************************
 !> Name of path containing databases
-    path_DB = '' !> must be written by the user
+    path_DB = 'C:\Users\user2319\source\repos\jordipg10\RT_Lagr_borr\input\BBDD\' !> must be written by the user
 !> File units (arbitrary)
     unit_chem_syst=1
     unit_loc_chem=2
@@ -39,20 +39,39 @@ program main
     unit_discr=10
     unit_tpt=11
     unit_out=6
-!> Problem: Gypsum in equilibrium
-    path_inp='' !> name of path containing user input (must be written by the user)
-    file_chem_syst='gypsum_eq_sist_quim.dat'
-    file_loc_chem='gypsum_eq_quim_loc.dat'
-    file_tw='gypsum_eq_tar_wat.dat'
-    file_tpt_props='tpt_props_gypsum_eq.dat'
-    file_BCs='BCs_gypsum_eq.dat'
-    file_space='discr_esp_gypsum_eq.dat' 
-    file_time='discr_temp_gypsum_eq.dat'
-    file_discr='WMA_discr_gypsum_eq.dat' 
-    file_tpt='WMA_lambdas_gypsum_eq.dat'
-    file_out='gypsum_eq.out'
+!> Choose example
+    example=1
+    if (example==0) then
+    !> Problem: Gypsum in equilibrium
+        path_inp='C:\Users\user2319\source\repos\jordipg10\RT_Lagr_borr\input\gypsum_eq\' !> name of path containing user input (must be written by the user)
+        file_chem_syst='gypsum_eq_sist_quim.dat'
+        file_loc_chem='gypsum_eq_quim_loc.dat'
+        file_tw='gypsum_eq_tar_wat.dat'
+        file_tpt_props='tpt_props_gypsum_eq.dat'
+        file_BCs='BCs_gypsum_eq.dat'
+        file_space='discr_esp_gypsum_eq.dat' 
+        file_time='discr_temp_gypsum_eq.dat'
+        file_discr='WMA_discr_gypsum_eq.dat' 
+        file_tpt='WMA_lambdas_gypsum_eq.dat'
+        file_out='gypsum_eq.out'
+    else if (example==1) then
+    !> Problem: Denitrification
+        path_inp='C:\Users\user2319\source\repos\jordipg10\RT_Lagr_borr\input\denitrification\' !> name of path containing user input (must be written by the user)
+        file_chem_syst='denit_sist_quim.dat'
+        file_loc_chem='denit_quim_loc.dat'
+        file_tw='denit_tar_wat.dat'
+        file_tpt_props='tpt_props_denit.dat'
+        file_BCs='BCs_denit.dat'
+        file_space='discr_esp_denit.dat' 
+        file_time='discr_temp_denit.dat'
+        file_discr='WMA_discr_denit.dat' 
+        file_tpt='WMA_lambdas_denit.dat'
+        file_out='denit.out'
+    else
+        error stop "Problem not implemented yet"
+    end if
 !> Initialise transport
-    option_tpt=1
+    option_tpt=0
     if (option_tpt==0) then
     !> we read transport data, BCs and discretisations
         !> in the explicit case, we also compute stability parameters
@@ -64,7 +83,7 @@ program main
         !> we set transport attribute in reactive transport object
             call my_RT_trans%set_transport(my_tpt_trans)
         !> we choose and set integration method for chemical reactions
-            int_method_chem=2
+            int_method_chem=1
             call my_RT_trans%set_int_method_chem_reacts(int_method_chem)
     else if (option_tpt==1) then
     !> we read temporal discretisation
