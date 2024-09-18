@@ -38,9 +38,10 @@ subroutine compute_c2nc_from_c1_aq_Picard(this,c2nc_ig,c2nc,niter,CV_flag)
         log_gamma1_old=this%log_act_coeffs(1:n_p)
         log_gamma2nc_old(1:n_nc2_aq)=this%log_act_coeffs(n_p+1:n_nc_aq)
         if (associated(this%gas_chemistry)) then
-            if (this%gas_chemistry%reactive_zone%gas_phase%num_var_act_species>0) then !> chapuza
+            if (this%gas_chemistry%reactive_zone%gas_phase%num_species>this%gas_chemistry%reactive_zone%gas_phase%num_cst_act_species) then !> chapuza
+                !print *, this%gas_chemistry%reactive_zone%gas_phase%num_species
                 call this%gas_chemistry%compute_log_act_coeffs_gases()
-                log_gamma2nc_old(n_nc2_aq+1:n_e)=this%gas_chemistry%log_act_coeffs
+                log_gamma2nc_old(n_nc2_aq+1:n_e)=this%gas_chemistry%log_act_coeffs+LOG10(this%gas_chemistry%volume)
             end if
         end if
     !> We apply mass action law to compute concentration secondary variable activity species
@@ -76,8 +77,9 @@ subroutine compute_c2nc_from_c1_aq_Picard(this,c2nc_ig,c2nc,niter,CV_flag)
     !call this%compute_molarities()
     if (associated(this%gas_chemistry)) then !> chapuza
         !call this%gas_chemistry%update_conc_gases(c2nc(n_nc2_aq+1:n_e)*this%volume) !> we update moles of gases
-        !call this%gas_chemistry%compute_vol_gas() !> we compute total volume of gas
-        call this%gas_chemistry%compute_log_act_coeffs_gases() !> we compute log_10 activity coefficients of gases
-        call this%gas_chemistry%compute_partial_pressures() !> we compute activities (ie. partial pressures)
+        if (this%gas_chemistry%reactive_zone%gas_phase%num_species>this%gas_chemistry%reactive_zone%gas_phase%num_cst_act_species) then !> chapuza
+            call this%gas_chemistry%compute_log_act_coeffs_gases() !> we compute log_10 activity coefficients of gases
+            call this%gas_chemistry%compute_partial_pressures() !> we compute activities (ie. partial pressures)
+        end if
     end if
  end subroutine

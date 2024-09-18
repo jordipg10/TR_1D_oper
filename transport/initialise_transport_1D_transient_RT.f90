@@ -41,10 +41,10 @@ subroutine initialise_transport_1D_transient_RT(this,path,file_BCs,file_spatial_
 !> Boundary conditions
     call my_BCs%read_BCs(trim(path)//file_BCs)
     if (my_BCs%BCs_label(1)==1 .and. my_BCs%BCs_label(2)==1) then
-        call my_BCs%read_Dirichlet_BCs(trim(path)//"Dirichlet_BCs.dat")
-        call my_BCs%read_flux_inf(trim(path)//"flux_inflow.dat")
+        !call my_BCs%read_Dirichlet_BCs(trim(path)//"Dirichlet_BCs.dat")
+        !call my_BCs%read_flux_inf(trim(path)//"flux_inflow.dat")
     else if (my_BCs%BCs_label(1)==3) then
-        call my_BCs%read_Robin_BC_inflow(trim(path)//"Robin_BC_inflow.dat")
+        !call my_BCs%read_Robin_BC_inflow(trim(path)//"Robin_BC_inflow.dat")
     end if
     call this%set_BCs(my_BCs)
  !> Uniform mesh

@@ -155,8 +155,10 @@ module gas_chemistry_m
             real(kind=8), intent(in) :: wat_vol !> water volume
             integer(kind=4) :: i
             real(kind=8), parameter :: R=0.08205746 !> [atm*L/mol*K]
-            do i=1,this%reactive_zone%gas_phase%num_species
-                this%concentrations(i)=this%concentrations(i)+Delta_t*this%r_eq(i)*wat_vol/porosity
+            do i=1,this%reactive_zone%gas_phase%num_gases_eq
+                if (this%reactive_zone%gas_phase%gases(i)%cst_act_flag==.true.) then
+                    this%concentrations(i)=this%concentrations(i)+Delta_t*this%r_eq(i)*wat_vol/porosity
+                end if
             end do
        end subroutine
        

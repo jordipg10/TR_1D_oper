@@ -13,7 +13,7 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
     logical, intent(out) :: CV_flag !> TRUE if converges, FALSE otherwise
     
     integer(kind=4) :: ind,i,j,k,m,nwtype,num_tar_wat,tar_wat_ind,wtype,istype,nstype,nbwtype,bwtype,mix_wat_ind,ngzns,igzn,num_tar_wat_ext
-    real(kind=8), allocatable :: c_nc(:),u_init(:,:),c1_init(:,:),c2_init(:),c2_ig(:),gamma_2aq(:)
+    real(kind=8), allocatable :: c_nc(:),u_init(:,:),c1(:),c2_init(:),c2_ig(:),gamma_2aq(:)
     character(len=256) :: label,str
     logical :: flag_comp,flag_surf
     
@@ -178,7 +178,8 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
                                 allocate(c2_ig(this%target_waters_init(tar_wat_ind-this%num_ext_waters)%speciation_alg%num_eq_reactions))
                                 allocate(c2_init(this%target_waters_init(tar_wat_ind-this%num_ext_waters)%speciation_alg%num_eq_reactions))
                                 c2_ig=1d-16
-                                call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%compute_c2nc_from_c1_Picard(c2_ig,c2_init,niter,CV_flag)
+                                c1=this%target_waters_init(tar_wat_ind-this%num_ext_waters)%get_c1()
+                                call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%compute_c2nc_from_c1_Picard(c1,c2_ig,c2_init,niter,CV_flag)
                                 c_nc=this%target_waters_init(tar_wat_ind-this%num_ext_waters)%get_conc_nc()
                                 !call this%target_waters_init(tar_wat_ind)%compute_conc_comp(c_nc)
                                 deallocate(c2_ig,c2_init)
@@ -364,6 +365,6 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
     !do i=1,this%num_target_gases
     !    this%target_waters_init(i)%gas_chemistry%concentrations=1d-16
     !end do
-    print *, this%target_waters(1)%gas_chemistry%reactive_zone%gas_phase%num_species
+    !print *, this%target_waters(1)%gas_chemistry%reactive_zone%gas_phase%num_species
     !call this%set_reactive_zones()
 end subroutine

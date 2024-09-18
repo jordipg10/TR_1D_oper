@@ -37,7 +37,7 @@ subroutine solve_reactive_mixing(this,mixing_ratios,mixing_waters_indices,F_mat,
     procedure(compute_c_tilde_aq_chem), pointer :: p_c_tilde=>null()
     p_c_tilde=>compute_c_tilde_aq_chem !> by default
 !> We initialise target waters
-    print *, this%target_waters(1)%gas_chemistry%reactive_zone%gas_phase%num_species
+    !print *, this%target_waters(1)%gas_chemistry%reactive_zone%gas_phase%num_species
     target_waters_old=this%target_waters
     
     target_waters_old_old=target_waters_old
@@ -101,7 +101,7 @@ subroutine solve_reactive_mixing(this,mixing_ratios,mixing_waters_indices,F_mat,
                     !> We compute concentrations of gases
                         call target_waters_new(i)%gas_chemistry%compute_conc_gases_iter(time_discr_tpt%get_Delta_t(k),F_mat%diag(i-this%num_ext_waters),target_waters_new(i)%volume)
                     !> We compute activity coefficients of gases    
-                        call target_waters_new(i)%gas_chemistry%compute_log_act_coeffs_gases()
+                        !call target_waters_new(i)%gas_chemistry%compute_log_act_coeffs_gases()
                     end if
                 !> Deallocate
                     deallocate(c_tilde,conc_old,conc_nc,conc_comp)
@@ -139,11 +139,13 @@ subroutine solve_reactive_mixing(this,mixing_ratios,mixing_waters_indices,F_mat,
     !> Time loop
         do k=1,time_discr_tpt%Num_time
         !> Target waters loop
-            do i=1,this%num_ext_waters+1,this%num_target_waters
+            do i=this%num_ext_waters+1,this%num_target_waters
                 if (this%target_waters(i)%speciation_alg%num_aq_prim_species==this%target_waters(i)%speciation_alg%num_prim_species) then
                     p_prim=>get_c1_aq !> chapuza
+                    p_solver=>transport_iter_comp_EE_aq_chem !> chapuza
                 else
                     p_prim=>get_c1
+                    p_solver=>transport_iter_comp_exch_EE_aq_chem !> chapuza
                 end if
                 allocate(conc_nc(this%target_waters(i)%speciation_alg%num_var_act_species))
                 allocate(conc_comp(this%target_waters(i)%speciation_alg%num_prim_species))
@@ -156,6 +158,15 @@ subroutine solve_reactive_mixing(this,mixing_ratios,mixing_waters_indices,F_mat,
                 c_tilde=p_c_tilde(target_waters_old(i),mixing_ratios%cols(i)%col_1,conc_old)
             !> We solve reactive mixing iteration
                 call p_solver(target_waters_new(i),p_prim(target_waters_old_old(i)),target_waters_old(i)%get_c2nc(),c_tilde,conc_nc,conc_comp,F_mat%diag(i-this%num_ext_waters),time_discr_tpt%get_Delta_t(k))
+            !> Chapuza
+                if (associated(target_waters_new(i)%gas_chemistry)) then
+                !> We compute concentrations of gases
+                    call target_waters_new(i)%gas_chemistry%compute_conc_gases_iter(time_discr_tpt%get_Delta_t(k),F_mat%diag(i-this%num_ext_waters),target_waters_new(i)%volume)
+                !> We compute activity coefficients of gases    
+                    call target_waters_new(i)%gas_chemistry%compute_vol_gas()
+                end if
+            !> Deallocate
+                deallocate(c_tilde,conc_old,conc_nc,conc_comp)
             end do
         !> We update target waters
             target_waters_old_old=target_waters_old

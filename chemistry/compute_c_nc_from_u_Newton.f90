@@ -1,13 +1,14 @@
 !> Computes variable activity species concentrations from component concentrations using Newton method
-!! We assume primary species are aqueous & solid
+!! We assume not all primary species are aqueous
 !! We assume the initial guess for the primary concentrations is already set in the aqueous & solid chemistry objects
-subroutine compute_c_nc_from_u_Newton(this,c2nc_ig,conc_comp,conc_nc,niter,CV_flag)
+subroutine compute_c_nc_from_u_Newton(this,c1_ig,c2nc_ig,conc_comp,conc_nc,niter,CV_flag)
     use metodos_sist_lin_m
     use aqueous_chemistry_m
     use vectors_m, only : inf_norm_vec_real
     implicit none
 !> Arguments
     class(aqueous_chemistry_c) :: this
+    real(kind=8), intent(in) :: c1_ig(:) !> initial guess primary concentrations
     real(kind=8), intent(in) :: c2nc_ig(:) !> initial guess secondary variable activity concentrations
     real(kind=8), intent(in) :: conc_comp(:) !> component concentrations
     real(kind=8), intent(out) :: conc_nc(:) !> variable activity concentrations (already allocated)
@@ -34,8 +35,7 @@ subroutine compute_c_nc_from_u_Newton(this,c2nc_ig,conc_comp,conc_nc,niter,CV_fl
     niter=0
     log_Jacobian_act_coeffs=0d0 !> chapuza
     d_log_gamma_d_I=0d0 !> chapuza
-    conc_nc(1:n_p_aq)=this%concentrations(1:n_p_aq) !> chapuza
-    conc_nc(n_p)=this%solid_chemistry%concentrations(this%solid_chemistry%reactive_zone%num_minerals+1) !> chapuza
+    conc_nc(1:n_p)=c1_ig
     c2nc_old=c2nc_ig !> chapuza
 !> Process
         do
@@ -45,7 +45,7 @@ subroutine compute_c_nc_from_u_Newton(this,c2nc_ig,conc_comp,conc_nc,niter,CV_fl
                 print *, "Too many Newton iterations in speciation"
                 exit
             end if
-            call this%compute_c2nc_from_c1_Picard(c2nc_old,c2nc_new,niter_Picard,CV_flag_Picard)
+            call this%compute_c2nc_from_c1_Picard(conc_nc(1:n_p),c2nc_old,c2nc_new,niter_Picard,CV_flag_Picard)
             conc_nc(n_p+1:n_nc)=c2nc_new !> chapuza
             call this%compute_residual(conc_comp,conc_nc,residual)
             if (inf_norm_vec_real(residual)<this%CV_params%abs_tol) then !> CV reached
