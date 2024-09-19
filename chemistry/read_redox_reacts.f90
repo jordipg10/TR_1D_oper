@@ -14,7 +14,7 @@ subroutine read_redox_reacts(this,path,unit)
     type(aq_species_c) :: DOC    
     type(aq_species_c), allocatable :: inhibitors(:),TEAs(:)
 !> Pre-process    
-    filename=trim(path)//'\reacciones_redox.dat'
+    filename=trim(path)//'\reacciones_monod.dat'
     allocate(n_inh(this%num_redox_kin_reacts),n_TEAs(this%num_redox_kin_reacts))
     call DOC%set_name('ch2o(aq)')
 !> Process

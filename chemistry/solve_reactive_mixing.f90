@@ -37,12 +37,9 @@ subroutine solve_reactive_mixing(this,mixing_ratios,mixing_waters_indices,F_mat,
     procedure(compute_c_tilde_aq_chem), pointer :: p_c_tilde=>null()
     p_c_tilde=>compute_c_tilde_aq_chem !> by default
 !> We initialise target waters
-    !print *, this%target_waters(1)%gas_chemistry%reactive_zone%gas_phase%num_species
     target_waters_old=this%target_waters
-    
     target_waters_old_old=target_waters_old
     target_waters_new=target_waters_old
-    print *, target_waters_new(1)%gas_chemistry%concentrations
 !> We select reactive mixing subroutine depending on the nature of the chemical system and the methods to compute Jacobians and integrate in time
     if (this%num_reactive_zones>0) then !> there are reactive zones
         !> Time loop
@@ -194,5 +191,7 @@ subroutine solve_reactive_mixing(this,mixing_ratios,mixing_waters_indices,F_mat,
         end do
     end if
 !> We set the new target waters to the chemistry object
+    print *, this%target_waters(1)%concentrations
+    print *, target_waters_new(1)%concentrations
     this%target_waters=target_waters_new
 end subroutine
