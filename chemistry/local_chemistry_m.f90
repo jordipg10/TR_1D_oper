@@ -85,6 +85,9 @@ module local_chemistry_m
             implicit none
             class(local_chemistry_c) :: this
             integer(kind=4), intent(in) :: num_var
+            if (allocated(this%var_act_species_indices)) then
+                deallocate(this%var_act_species_indices)
+            end if
             allocate(this%var_act_species_indices(num_var))
         end subroutine
         
@@ -92,6 +95,9 @@ module local_chemistry_m
             implicit none
             class(local_chemistry_c) :: this
             integer(kind=4), intent(in) :: num_cst
+            if (allocated(this%cst_act_species_indices)) then
+                deallocate(this%cst_act_species_indices)
+            end if
             allocate(this%cst_act_species_indices(num_cst))
         end subroutine
 end module

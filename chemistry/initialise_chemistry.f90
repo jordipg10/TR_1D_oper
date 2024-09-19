@@ -13,6 +13,6 @@ subroutine initialise_chemistry(this,path_inp,path_DB,unit_chem_syst_file,chem_s
 !**************************************************************************************************
 !> Read chemistry
     call this%read_chemistry(path_inp,path_DB,unit_chem_syst_file,chem_syst_file,unit_loc_chem_file,loc_chem_file,unit_target_waters_init_file,target_waters_init_file)
-    !print *, this%target_waters(1)%gas_chemistry%reactive_zone%gas_phase%num_species
+    print *, this%target_waters(1)%gas_chemistry%reactive_zone%gas_phase%num_species
 end subroutine
 

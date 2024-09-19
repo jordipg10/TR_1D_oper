@@ -1400,7 +1400,8 @@ module aqueous_chemistry_m
                 allocate(this%solid_chemistry%r_eq(this%solid_chemistry%reactive_zone%num_minerals+this%solid_chemistry%reactive_zone%cat_exch_zone%num_exch_cats))
             end if
             if (associated(this%gas_chemistry)) then
-                allocate(this%gas_chemistry%r_eq(this%gas_chemistry%reactive_zone%gas_phase%num_species))
+                allocate(this%gas_chemistry%r_eq(this%gas_chemistry%reactive_zone%gas_phase%num_gases_eq))
+                !allocate(this%gas_chemistry%rk(this%gas_chemistry%reactive_zone%gas_phase%num_species-this%gas_chemistry%reactive_zone%gas_phase%num_gases_eq))
             end if
         end subroutine
         

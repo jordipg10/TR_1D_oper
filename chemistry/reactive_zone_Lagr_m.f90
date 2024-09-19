@@ -20,6 +20,7 @@ module reactive_zone_Lagr_m
         type(gas_phase_c) :: gas_phase !> gas phase
         real(kind=8), allocatable :: stoich_mat(:,:) !> stoichiometric matrix
         real(kind=8), allocatable :: stoich_mat_sol(:,:) !> solid stoichiometric matrix
+        real(kind=8), allocatable :: stoich_mat_gas(:,:) !> gas stoichiometric matrix
         integer(kind=4) :: num_eq_reactions=0 !> number of equilibrium reactions
         type(eq_reaction_c), allocatable :: eq_reactions(:) !> equilibrium heterogeneous reactions
         class(chem_system_c), pointer :: chem_syst !>  (same chemical system as chemistry class)
@@ -37,6 +38,7 @@ module reactive_zone_Lagr_m
         procedure, public :: set_eq_reactions
         procedure, public :: set_stoich_mat_react_zone
         procedure, public :: set_stoich_mat_sol
+        !procedure, public :: set_stoich_mat_gas
         procedure, public :: set_num_mins_cst_act
         procedure, public :: set_num_mins_var_act
         procedure, public :: set_gas_phase

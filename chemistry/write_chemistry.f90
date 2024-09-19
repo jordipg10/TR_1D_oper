@@ -235,5 +235,29 @@ subroutine write_chemistry(this,unit,file_out)
             end do
         !end do
         deallocate(conc_comp)
+        write(unit,"(/,10x,'Initial concentration of gases:'/)")
+        do i=1,this%chem_syst%gas_phase%num_species
+            write(unit,"(10x,*(ES15.5))") (this%target_gases(j)%concentrations(i), j=1,this%num_target_gases)
+        end do
+        write(unit,"(/,10x,'Concentration of gases:'/)")
+        do i=1,this%chem_syst%gas_phase%num_species
+            write(unit,"(10x,*(ES15.5))") (this%target_waters(j)%gas_chemistry%concentrations(i), j=1,this%num_target_waters)
+        end do
+        write(unit,"(/,10x,'Initial partial pressures of gases:'/)")
+        do i=1,this%chem_syst%gas_phase%num_species
+            write(unit,"(10x,*(ES15.5))") (this%target_gases(j)%activities(i), j=1,this%num_target_gases)
+        end do
+        write(unit,"(/,10x,'Partial pressures of gases:'/)")
+        do i=1,this%chem_syst%gas_phase%num_species
+            write(unit,"(10x,*(ES15.5))") (this%target_waters(j)%gas_chemistry%activities(i), j=1,this%num_target_waters)
+        end do
+        write(unit,"(/,10x,'Initial volume of gas:'/)")
+        if (this%chem_syst%gas_phase%num_species>0) then
+            write(unit,"(10x,*(ES15.5))") (this%target_gases(j)%volume, j=1,this%num_target_gases)
+        end if
+        write(unit,"(/,10x,'Volume of gas:'/)")
+        if (this%chem_syst%gas_phase%num_species>0) then
+           write(unit,"(10x,*(ES15.5))") (this%target_waters(j)%gas_chemistry%volume, j=1,this%num_target_waters)
+        end if
     end if
 end subroutine 

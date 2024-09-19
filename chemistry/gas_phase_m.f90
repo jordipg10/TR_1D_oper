@@ -7,6 +7,7 @@ module gas_phase_m
     type, public, extends(phase_c) :: gas_phase_c
         type(gas_c), allocatable :: gases(:) !> gases (first equilibrium, then kinetic)
         integer(kind=4) :: num_gases_eq=0 !> number of gases in equilibrium
+        integer(kind=4) :: num_gases_kin=0 !> number of gases in kinetic reactions
     contains
     !> Allocate
         procedure, public :: allocate_gases

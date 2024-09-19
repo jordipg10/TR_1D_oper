@@ -42,7 +42,7 @@ subroutine solve_reactive_mixing(this,mixing_ratios,mixing_waters_indices,F_mat,
     
     target_waters_old_old=target_waters_old
     target_waters_new=target_waters_old
-    !print *, target_waters_new(1)%gas_chemistry%concentrations
+    print *, target_waters_new(1)%gas_chemistry%concentrations
 !> We select reactive mixing subroutine depending on the nature of the chemical system and the methods to compute Jacobians and integrate in time
     if (this%num_reactive_zones>0) then !> there are reactive zones
         !> Time loop
@@ -135,17 +135,36 @@ subroutine solve_reactive_mixing(this,mixing_ratios,mixing_waters_indices,F_mat,
         else !> no chemical reactions
             p_solver=>transport_iter_species_EE_aq_chem !> conservative transport
         end if
-        allocate(tar_wat_indices(this%num_target_waters))
     !> Time loop
         do k=1,time_discr_tpt%Num_time
         !> Target waters loop
             do i=this%num_ext_waters+1,this%num_target_waters
                 if (this%target_waters(i)%speciation_alg%num_aq_prim_species==this%target_waters(i)%speciation_alg%num_prim_species) then
                     p_prim=>get_c1_aq !> chapuza
-                    p_solver=>transport_iter_comp_EE_aq_chem !> chapuza
+                    if (this%chem_syst%num_kin_reacts>0) then !> equilibrium and kinetic reactions
+                        if (int_method_chem_reacts==1) then !> Euler explicit
+                            p_solver=>water_mixing_iter_EE_eq_kin
+                        else if (int_method_chem_reacts==2 .and. this%Jac_flag==1) then !> Euler fully implicit
+                            p_solver=>water_mixing_iter_EfI_eq_kin_anal
+                        else
+                            error stop "Integration method for chemical reactions not implemented yet"
+                        end if
+                    else
+                        p_solver=>transport_iter_comp_EE_aq_chem !> only equilibrium reactions
+                    end if
                 else
                     p_prim=>get_c1
-                    p_solver=>transport_iter_comp_exch_EE_aq_chem !> chapuza
+                    if (this%chem_syst%num_kin_reacts>0) then !> equilibrium and kinetic reactions
+                        if (int_method_chem_reacts==1) then !> Euler explicit
+                            p_solver=>water_mixing_iter_EE_eq_kin
+                        else if (int_method_chem_reacts==2 .and. this%Jac_flag==1) then !> Euler fully implicit
+                            p_solver=>water_mixing_iter_EfI_eq_kin_anal
+                        else
+                            error stop "Integration method for chemical reactions not implemented yet"
+                        end if
+                    else
+                        p_solver=>transport_iter_comp_exch_EE_aq_chem !> only equilibrium reactions
+                    end if
                 end if
                 allocate(conc_nc(this%target_waters(i)%speciation_alg%num_var_act_species))
                 allocate(conc_comp(this%target_waters(i)%speciation_alg%num_prim_species))
@@ -160,8 +179,9 @@ subroutine solve_reactive_mixing(this,mixing_ratios,mixing_waters_indices,F_mat,
                 call p_solver(target_waters_new(i),p_prim(target_waters_old_old(i)),target_waters_old(i)%get_c2nc(),c_tilde,conc_nc,conc_comp,F_mat%diag(i-this%num_ext_waters),time_discr_tpt%get_Delta_t(k))
             !> Chapuza
                 if (associated(target_waters_new(i)%gas_chemistry)) then
+                    call target_waters_new(i)%gas_chemistry%reactive_zone%set_chem_syst_react_zone(this%chem_syst)
                 !> We compute concentrations of gases
-                    call target_waters_new(i)%gas_chemistry%compute_conc_gases_iter(time_discr_tpt%get_Delta_t(k),F_mat%diag(i-this%num_ext_waters),target_waters_new(i)%volume)
+                    call target_waters_new(i)%gas_chemistry%compute_conc_gases_iter(time_discr_tpt%get_Delta_t(k),F_mat%diag(i-this%num_ext_waters),target_waters_new(i)%volume,target_waters_new(i)%rk)
                 !> We compute activity coefficients of gases    
                     call target_waters_new(i)%gas_chemistry%compute_vol_gas()
                 end if
@@ -172,8 +192,6 @@ subroutine solve_reactive_mixing(this,mixing_ratios,mixing_waters_indices,F_mat,
             target_waters_old_old=target_waters_old
             target_waters_old=target_waters_new
         end do
-    !> Deallocate indices
-        deallocate(tar_wat_indices)
     end if
 !> We set the new target waters to the chemistry object
     this%target_waters=target_waters_new
