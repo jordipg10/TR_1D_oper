@@ -89,6 +89,7 @@ subroutine read_transport_data_WMA(this,path,unit,file_tpt)!,tpt_props,BCs,mesh,
                 i=i+1
                 if (i<=this%spatial_discr%Num_targets) then
                     read(unit,*) tar_dim, (mixing_ratios%cols(i)%col_1(j), j=1,tar_dim)
+                    print *, mixing_ratios%cols(1)%col_1
                 else
                     exit
                 end if

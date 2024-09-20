@@ -191,7 +191,7 @@ subroutine solve_reactive_mixing(this,mixing_ratios,mixing_waters_indices,F_mat,
         end do
     end if
 !> We set the new target waters to the chemistry object
-    print *, this%target_waters(1)%concentrations
-    print *, target_waters_new(1)%concentrations
+    !print *, this%target_waters(1)%concentrations
+    !print *, target_waters_new(1)%concentrations
     this%target_waters=target_waters_new
 end subroutine

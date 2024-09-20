@@ -72,7 +72,7 @@ program main
         error stop "Problem not implemented yet"
     end if
 !> Initialise transport
-    option_tpt=0
+    option_tpt=1
     if (option_tpt==0) then
     !> we read transport data, BCs and discretisations
         !> in the explicit case, we also compute stability parameters
@@ -104,27 +104,30 @@ program main
     !print *, my_chem%target_waters(1)%gas_chemistry%activities
     !> we set chemistry attribute in reactive transport object
     call my_RT_trans%set_chemistry(my_chem) 
+!> Chapuza
+    if (example==1) then
+        do i=1,my_RT_trans%chemistry%num_target_waters
+            call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%reactive_zone%set_chem_syst_react_zone(my_RT_trans%chemistry%chem_syst)
+            call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%reactive_zone%gas_phase%allocate_gases(1)
+            call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%reactive_zone%gas_phase%set_num_var_act_species_phase(0)
+            call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%reactive_zone%gas_phase%set_num_cst_act_species_phase(1)
+            call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%set_temp() !> Kelvin
+            call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%set_volume(1d0)
+            call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%allocate_partial_pressures()
+            my_RT_trans%chemistry%target_waters(i)%gas_chemistry%activities(1)=1d0
+            call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%allocate_conc_gases()
+            call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%allocate_log_act_coeffs_gases()
+            call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%compute_log_act_coeffs_gases()
+            call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%allocate_var_act_species_indices(0)
+            call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%allocate_cst_act_species_indices(1)
+            call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%set_indices_gases()
+            my_RT_trans%chemistry%target_waters(i)%gas_chemistry%reactive_zone%gas_phase%gases(1)=my_RT_trans%chemistry%chem_syst%gas_phase%gases(1) !> we set gas
+            call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%compute_conc_gases_ideal()
+            my_RT_trans%chemistry%target_gases(i)=my_RT_trans%chemistry%target_waters(i)%gas_chemistry
+        end do
+        !call my_RT_trans%transport%read_transport_data_WMA(path_inp,unit_tpt,file_tpt)
+    end if
 !> We call the main solver
-    do i=1,my_RT_trans%chemistry%num_target_waters
-        call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%reactive_zone%set_chem_syst_react_zone(my_RT_trans%chemistry%chem_syst)
-        call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%reactive_zone%gas_phase%allocate_gases(1)
-        call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%reactive_zone%gas_phase%set_num_var_act_species_phase(0)
-        call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%reactive_zone%gas_phase%set_num_cst_act_species_phase(1)
-        call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%set_temp() !> Kelvin
-        call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%set_volume(1d0)
-        call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%allocate_partial_pressures()
-        my_RT_trans%chemistry%target_waters(i)%gas_chemistry%activities(1)=1d0
-        call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%allocate_conc_gases()
-        call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%allocate_log_act_coeffs_gases()
-        call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%compute_log_act_coeffs_gases()
-        call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%allocate_var_act_species_indices(0)
-        call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%allocate_cst_act_species_indices(1)
-        call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%set_indices_gases()
-        my_RT_trans%chemistry%target_waters(i)%gas_chemistry%reactive_zone%gas_phase%gases(1)=my_RT_trans%chemistry%chem_syst%gas_phase%gases(1) !> we set gas
-        call my_RT_trans%chemistry%target_waters(i)%gas_chemistry%compute_conc_gases_ideal()
-        my_RT_trans%chemistry%target_gases(i)=my_RT_trans%chemistry%target_waters(i)%gas_chemistry
-    end do
-    !print *, my_RT_trans%chemistry%target_waters(1)%gas_chemistry%concentrations
     call my_RT_trans%chemistry%solve_reactive_mixing(my_RT_trans%transport%mixing_ratios,my_RT_trans%transport%mixing_waters_indices,my_RT_trans%transport%F_mat,my_RT_trans%transport%time_discr,my_RT_trans%int_method_chem_reacts)
 !> We write data and results
     call my_RT_trans%write_RT_1D(unit_out,file_out)
