@@ -4,17 +4,18 @@
 !!      transport properties
 !!      BCs
 !! It computes stability parameters (in the explicit case)
-subroutine initialise_transport_1D_transient_RT(this,path,file_BCs,file_spatial_discr,file_time_discr,file_tpt_props)
+subroutine initialise_transport_1D_transient_RT(this,root)
     use BCs_subroutines_m
     use transport_stab_params_m
     implicit none
 
     class(transport_1D_transient_c) :: this
-    character(len=*), intent(in) :: path
-    character(len=*), intent(in) :: file_BCs
-    character(len=*), intent(in) :: file_spatial_discr
-    character(len=*), intent(in) :: file_time_discr
-    character(len=*), intent(in) :: file_tpt_props
+    !character(len=*), intent(in) :: path
+    character(len=*), intent(in) :: root
+    !character(len=*), intent(in) :: file_BCs
+    !character(len=*), intent(in) :: file_spatial_discr
+    !character(len=*), intent(in) :: file_time_discr
+    !character(len=*), intent(in) :: file_tpt_props
     
     type(tpt_props_heterog_c) :: my_props_tpt
     class(spatial_discr_c), pointer :: my_mesh=>null()
@@ -38,26 +39,26 @@ subroutine initialise_transport_1D_transient_RT(this,path,file_BCs,file_spatial_
 !> Dimensionless form flag
     dimless=.false. !> esto habria que leerlo
     this%dimensionless=dimless
-!> Boundary conditions
-    call my_BCs%read_BCs(trim(path)//file_BCs)
-    if (my_BCs%BCs_label(1)==1 .and. my_BCs%BCs_label(2)==1) then
-        !call my_BCs%read_Dirichlet_BCs(trim(path)//"Dirichlet_BCs.dat")
-        !call my_BCs%read_flux_inf(trim(path)//"flux_inflow.dat")
-    else if (my_BCs%BCs_label(1)==3) then
-        !call my_BCs%read_Robin_BC_inflow(trim(path)//"Robin_BC_inflow.dat")
-    end if
-    call this%set_BCs(my_BCs)
  !> Uniform mesh
     my_mesh=>my_homog_mesh
-    call my_mesh%read_mesh(trim(path)//file_spatial_discr)
+    call my_mesh%read_mesh(root//'_discr_esp.dat')
     call this%set_spatial_discr(my_mesh)
+!> Boundary conditions
+    call my_BCs%read_BCs(root//'_BCs.dat')
+    if (my_BCs%BCs_label(1)==1 .and. my_BCs%BCs_label(2)==1 .and. this%spatial_discr%targets_flag==0) then
+        call my_BCs%read_Dirichlet_BCs(root//"_Dirichlet_BCs.dat")
+        call my_BCs%read_flux_inf(root//"_flux_inflow.dat")
+    else if (my_BCs%BCs_label(1)==3) then
+        call my_BCs%read_Robin_BC_inflow(root//"_Robin_BC_inflow.dat")
+    end if
+    call this%set_BCs(my_BCs)
 !> Uniform time discretisation
     my_time_discr=>my_homog_time_discr
-    call my_time_discr%read_time_discr(trim(path)//file_time_discr)
+    call my_time_discr%read_time_discr(root//'_discr_temp.dat')
     call this%set_time_discr(my_time_discr)
 !****************************************************************************************************************************************************
 !> Transport properties
-    call my_props_tpt%read_props(trim(path)//file_tpt_props,this%spatial_discr)
+    call my_props_tpt%read_props(root//'_tpt_props.dat',this%spatial_discr)
     if (my_props_tpt%source_term_order==0) then !> constant source term
         if (inf_norm_vec_real(my_props_tpt%source_term)<eps) then
             call this%BCs%set_cst_flux_boundary(my_props_tpt%flux(1))
@@ -66,7 +67,7 @@ subroutine initialise_transport_1D_transient_RT(this,path,file_BCs,file_spatial_
         end if
     else if (my_props_tpt%source_term_order>0) then !> flux is polynomic
     !> chapuza
-        open(unit=2,file=trim(path)//"flux_coeffs.dat",status='old',action='read')
+        open(unit=2,file=root//"_flux_coeffs.dat",status='old',action='read')
         read(2,*) flux_ord
         allocate(flux_coeffs(flux_ord+1))
         read(2,*) flux_coeffs
@@ -79,10 +80,10 @@ subroutine initialise_transport_1D_transient_RT(this,path,file_BCs,file_spatial_
     call this%set_tpt_props_heterog_obj(my_props_tpt)
 !****************************************************************************************************************************************************
 !> Stability parameters
-    if (this%time_discr%int_method==1) then !> Euler explicit
+    !if (this%time_discr%int_method==1) then !> Euler explicit
         call my_stab_params_tpt%compute_stab_params(this%tpt_props_heterog,my_homog_mesh%Delta_x,my_homog_time_discr%Delta_t)
         call this%set_stab_params_tpt(my_stab_params_tpt)
-    end if
+    !end if
 !**************************************************************************************************************************************************
     nullify(my_mesh,my_time_discr)
 end subroutine

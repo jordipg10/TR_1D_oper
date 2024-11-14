@@ -32,7 +32,7 @@ subroutine set_stoich_mat(this)
         do
             if (this%species(i)%name==this%eq_reacts(j)%species(k)%name) then
                 this%Se(j,i)=this%eq_reacts(j)%stoichiometry(k)
-                print *, this%species(i)%name
+                !print *, this%species(i)%name
                 if (j<this%num_eq_reacts) then
                     j=j+1
                     k=1
@@ -159,9 +159,4 @@ subroutine set_stoich_mat(this)
     end if
     this%stoich_mat(1:this%num_eq_reacts,:)=this%Se
     this%stoich_mat(this%num_eq_reacts+1:this%num_reacts,:)=this%Sk
-    !open(97,file='C:\Users\Jordi\OneDrive\Documentos\trabajo\python\Se.dat')
-    !do i=1,this%num_eq_reacts
-    !    write(97,"(*(ES15.5))") (this%Se(i,j), j=1,this%num_species)
-    !end do
-    !close(97)
 end subroutine

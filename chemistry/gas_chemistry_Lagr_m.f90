@@ -21,7 +21,8 @@ module gas_chemistry_m
         procedure, public :: compute_partial_pressures
         procedure, public :: compute_conc_gases_ideal
         procedure, public :: compute_conc_gases_iter
-        procedure, public :: compute_vol_gas
+        procedure, public :: compute_vol_gas_conc
+        procedure, public :: compute_vol_gas_act_coeffs
         procedure, public :: compute_pressure
     !> Update
         procedure, public :: update_conc_gases
@@ -69,9 +70,6 @@ module gas_chemistry_m
         subroutine allocate_partial_pressures(this) !< units are atm
             implicit none
             class(gas_chemistry_c) :: this
-            if (allocated(this%activities)) then
-                deallocate(this%activities)
-            end if
             allocate(this%activities(this%reactive_zone%gas_phase%num_species))
         end subroutine
         
@@ -87,9 +85,6 @@ module gas_chemistry_m
         subroutine allocate_log_act_coeffs_gases(this) !> 
             implicit none
             class(gas_chemistry_c) :: this
-            if (allocated(this%log_act_coeffs)) then
-                deallocate(this%log_act_coeffs)
-            end if
             allocate(this%log_act_coeffs(this%reactive_zone%gas_phase%num_species))
         end subroutine
         !
@@ -153,35 +148,46 @@ module gas_chemistry_m
             do i=1,this%reactive_zone%gas_phase%num_species
                 this%concentrations(i)=this%activities(i)*this%volume/(this%temp*R)
             end do
-            !print *, this%concentrations
        end subroutine
        
-       subroutine compute_conc_gases_iter(this,Delta_t,porosity,wat_vol,rk) !> gas conservation equation
+       subroutine compute_conc_gases_iter(this,Delta_t,porosity,wat_vol,r_aq) !> gas conservation equation
        !> Concentrations are expressed in moles
             implicit none
             class(gas_chemistry_c) :: this
             real(kind=8), intent(in) :: Delta_t !> time step
             real(kind=8), intent(in) :: porosity !> porosity
             real(kind=8), intent(in) :: wat_vol !> water volume
-            real(kind=8), intent(in), optional :: rk(:) !> kinetic reaction rates
-            
+            real(kind=8), intent(in), optional :: r_aq(:)
             integer(kind=4) :: i
             real(kind=8), parameter :: R=0.08205746 !> [atm*L/mol*K]
-            !print *, this%reactive_zone%chem_syst%num_cst_act_species
-            do i=1,this%reactive_zone%gas_phase%num_species
-                if (this%reactive_zone%gas_phase%gases(i)%cst_act_flag==.true.) then
-                    this%concentrations(i)=this%concentrations(i)+(Delta_t*wat_vol/porosity)*(this%r_eq(i)+dot_product(this%reactive_zone%chem_syst%Sk(:,this%reactive_zone%chem_syst%num_cst_act_species-this%reactive_zone%gas_phase%num_cst_act_species+i),rk))
+            
+            if (present(r_aq)) then
+                if (this%reactive_zone%gas_phase%num_gases_kin>0) then
+                    do i=1,this%reactive_zone%gas_phase%num_cst_act_species
+                        this%concentrations(this%cst_act_species_indices(i))=this%concentrations(this%cst_act_species_indices(i))+Delta_t*dot_product(this%reactive_zone%chem_syst%stoich_mat_gas(:,this%cst_act_species_indices(i)),r_aq)*wat_vol/porosity
+                    end do
+                else if (this%reactive_zone%gas_phase%num_gases_eq>0) then
+                    do i=1,this%reactive_zone%gas_phase%num_cst_act_species
+                        this%concentrations(this%cst_act_species_indices(i))=this%concentrations(this%cst_act_species_indices(i))+Delta_t*dot_product(this%reactive_zone%chem_syst%stoich_mat_gas(:,this%cst_act_species_indices(i)),[this%r_eq(i),r_aq])*wat_vol/porosity
+                    end do
                 end if
-            end do
-            !print *, this%concentrations
+            end if
        end subroutine
        
-       subroutine compute_vol_gas(this)
-       !> Computes total volume of gas
+       subroutine compute_vol_gas_conc(this)
+       !> Computes total volume of gas from concentrations
             implicit none
             class(gas_chemistry_c) :: this
             real(kind=8), parameter :: R=0.08205746 !> [atm*L/mol*K]
             this%volume=sum(this%concentrations)*R*this%temp/this%pressure !> we choose first gas species in gas phase arbitrarily
+       end subroutine
+       
+       subroutine compute_vol_gas_act_coeffs(this)
+       !> Computes total volume of gas from activity coefficients
+            implicit none
+            class(gas_chemistry_c) :: this
+            real(kind=8), parameter :: R=0.08205746 !> [atm*L/mol*K]
+            this%volume=R*this%temp/(10**this%log_act_coeffs(1)) !> we choose first gas species in gas phase arbitrarily
        end subroutine
        
        subroutine compute_pressure(this)

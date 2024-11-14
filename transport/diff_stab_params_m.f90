@@ -24,7 +24,7 @@ module diff_stab_params_m
             class is (diff_props_heterog_c)
                 this%beta=maxval(props%dispersion)*time_step/(minval(props%porosity)*mesh_size**2)
             end select
-            !if (this%beta>5d-1) print *, "Unstable diffusion", this%beta
+            if (this%beta>5d-1) print *, "Unstable transport", this%beta
         end subroutine
         
         

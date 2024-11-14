@@ -11,10 +11,14 @@ subroutine LU_lin_syst(A,b,tol,x) !> Ax=b
     
     real(kind=8), allocatable :: L(:,:), U(:,:), y(:)
     integer(kind=4) :: n
+    logical :: error
     
     n=size(b)
     allocate(L(n,n),U(n,n),y(n))
-    call LU(A,L,U)
+    call LU(A,tol,L,U,error)
+    if (error==.true.) then
+        error stop
+    end if
     call forward_substitution(L,b,y)
     call backward_substitution(U,y,x)
     

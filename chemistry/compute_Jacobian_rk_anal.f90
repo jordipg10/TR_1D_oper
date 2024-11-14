@@ -12,7 +12,7 @@ subroutine compute_Jacobian_rk_anal(this,drk_dc)
 
     drk_dc=0d0 !> chapuza
     do i=1,this%chem_syst%num_lin_kin_reacts
-        call this%chem_syst%lin_kin_reacts(i)%compute_drk_dc_lin(this%concentrations,this%rk(i),drk_dc(i,:))
+        call this%chem_syst%lin_kin_reacts(i)%compute_drk_dc_lin(drk_dc(i,:))
     end do
     do i=1,this%chem_syst%num_min_kin_reacts
         indices=this%chem_syst%min_kin_reacts(i)%indices_aq_phase

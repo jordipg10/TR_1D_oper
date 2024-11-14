@@ -13,6 +13,10 @@ module redox_kin_reaction_m
     !> Compute
         procedure, public :: compute_drk_dc_Monod
         procedure, public :: compute_rk_Monod
+    !> Rearrange
+        procedure, public :: rearrange_indices_aq_phase_Monod
+    !> Check
+        !procedure, public :: check_indices_aq_phase_Monod
     end type
     
     !type, public :: monod_type
@@ -97,5 +101,24 @@ module redox_kin_reaction_m
         !>    end select
         !end function
         
-
+        subroutine rearrange_indices_aq_phase_Monod(this,aq_phase_old,aq_phase_new)
+            implicit none
+            class(redox_kin_c) :: this
+            class(aq_phase_c), intent(in) :: aq_phase_old
+            class(aq_phase_c), intent(in) :: aq_phase_new
+            
+            integer(kind=4) :: i,ind_new
+            type(aq_species_c) :: DOC
+            logical :: flag
+            
+            !allocate(THIS%indices_aq_phase(this%params%num_terms))
+            do i=1,this%params%num_terms
+                call aq_phase_new%is_species_in_aq_phase(aq_phase_old%aq_species(this%indices_aq_phase(i)),flag,ind_new)
+                if (flag==.true.) then
+                    this%indices_aq_phase(i)=ind_new
+                else
+                    error stop "Inhibitor/electron acceptor/electron donor is not in aqueous phase"
+                end if
+            end do
+        end subroutine
 end module

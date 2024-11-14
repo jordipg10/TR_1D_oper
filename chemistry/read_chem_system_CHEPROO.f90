@@ -8,18 +8,18 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
     integer(kind=4), intent(in) :: unit !> file unit
     
     real(kind=8), allocatable :: Sk(:,:),logK(:),gamma_1(:),gamma_2(:)
-    integer(kind=4) :: exch_cat_valence,n_eq_homog,unit_master_25,unit_kinetics,unit_redox,i,j,num_sp,ind_var_act_sp,num_var_act_sp,num_cst_act_sp,k,num_aq_sp,num_sec_aq_sp,exch_cat_ind, n_min_kin, n_gas_eq,index,kin_react_type,n_r,num_mins,num_gases,num_surf_compl,num_exch_cats,n_eq,n_k,num_mins_eq_indices,n_redox,n_lin_kin,num_aq_compl,num_mins_eq,num_cst_act_gases,num_var_act_gases
+    integer(kind=4) :: n_gas_kin,exch_cat_valence,n_eq_homog,unit_master_25,unit_kinetics,unit_redox,i,j,num_sp,ind_var_act_sp,num_var_act_sp,num_cst_act_sp,k,num_aq_sp,num_sec_aq_sp,exch_cat_ind, n_min_kin, n_gas_eq,index,kin_react_type,n_r,num_mins,num_gases,num_surf_compl,num_exch_cats,n_eq,n_k,num_mins_eq_indices,n_redox,n_lin_kin,n_lin_eq,num_aq_compl,num_mins_eq,num_cst_act_gases,num_var_act_gases
     integer(kind=4) :: num_cst_act_mins,num_var_act_mins,n_redox_eq,n_redox_kin
-    integer(kind=4), allocatable :: n_tar(:),mins_eq_indices(:),gases_eq_indices(:)
-    real(kind=8) :: aux,conc,temp,SI
+    integer(kind=4), allocatable :: n_tar(:),mins_eq_indices(:),gases_eq_indices(:),indices_lin_reacts(:,:)
+    real(kind=8) :: aux,conc,temp,SI,lambda
     character(len=256) :: str,str1,str2,str3,str4,str5,Monod_name,file_kin_params,label
-    character(len=:), allocatable :: str_block_trim,str_trim,valence_str,exch_cat_val,exch_cat_name
-    logical :: flag,eq_label,exch_cat_flag,cst_act_label
+    character(len=:), allocatable :: str_block_trim,str_trim,valence_str,exch_cat_val,exch_cat_name,str_trim_1,str_trim_2
+    logical :: flag,eq_label,exch_cat_flag,cst_act_label,flag_1,flag_2
     
     character(len=256), allocatable :: aq_species_str(:),prim_species_str(:),cst_act_species_str(:),minerals_str(:),solid_species_str(:),kin_react_names(:)
     type(species_c) :: species
     type(species_c), allocatable :: surf_compl(:)
-    type(aq_species_c) :: exch_cat
+    type(aq_species_c) :: exch_cat,aq_sp_1,aq_sp_2
     type(aq_species_c), allocatable :: aq_species(:),exch_cats(:),prim_species(:)
     type(mineral_c) :: mineral
     type(mineral_c), allocatable :: mins(:)
@@ -56,7 +56,9 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
     n_k=0
     n_min_kin=0
     n_gas_eq=0
+    n_gas_kin=0
     n_lin_kin=0
+    n_lin_eq=0
     n_redox_eq=0
     n_redox_kin=0
     do
@@ -136,7 +138,7 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
                     n_gas_eq=n_gas_eq+1
                 else
                     !n_k=n_k+1
-                    !n_gas_kin=n_gas_kin+1
+                    n_gas_kin=n_gas_kin+1
                 end if
             end do 
         else if (label=='SURFACE COMPLEXES') then
@@ -165,6 +167,18 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
                     n_k=n_k+1
                 end if
             end do
+        else if (label=='LINEAR REACTIONS') then
+            do
+                read(unit,*) str1, str2, lambda, eq_label
+                if (str1=='*') exit
+                if (eq_label==.true.) then
+                    n_lin_eq=n_lin_eq+1
+                    n_eq=n_eq+1
+                else
+                    n_lin_kin=n_lin_kin+1
+                    n_k=n_k+1
+                end if
+            end do
         else 
             continue
         end if
@@ -181,6 +195,7 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
     this%num_minerals_eq=num_mins_eq !> falta un set aquí
     call this%gas_phase%allocate_gases(num_gases)
     this%gas_phase%num_gases_eq=n_gas_eq !> falta un set aquí
+    this%gas_phase%num_gases_kin=n_gas_kin !> falta un set aquí
     call this%cat_exch%allocate_surf_compl(num_surf_compl)
     call this%cat_exch%allocate_exch_cats(num_exch_cats)
     this%num_eq_reacts_homog=n_eq_homog !> falta un set aqui
@@ -190,6 +205,7 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
     call this%allocate_redox_kin_reacts(n_redox_kin)
     call this%allocate_lin_kin_reacts(n_lin_kin)
     call this%set_num_reacts()
+    call this%set_num_solids_chem_syst()
     
     call this%gas_phase%set_num_var_act_species_phase(num_var_act_gases)
     call this%gas_phase%set_num_cst_act_species_phase(num_cst_act_gases)
@@ -341,6 +357,35 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
                     call this%eq_reacts(j)%set_react_type(4)
                 end if
             end do
+        else if (label=='LINEAR REACTIONS') then
+            i=0 !> linear kinetic reactions
+            j=0 !> linear equilibrium reactions
+            allocate(indices_lin_reacts(n_lin_kin+n_lin_eq,2)) !> first kinetic, then equilibrium
+            do
+                read(unit,*) str1, str2, lambda, eq_label
+                if (str1=='*') exit
+                str_trim_1=trim(str1)
+                str_trim_2=trim(str2)
+                call aq_sp_1%set_name(str_trim_1)
+                call aq_sp_2%set_name(str_trim_2)
+                if (eq_label==.false.) then
+                    i=i+1
+                    call this%aq_phase%is_species_in_aq_phase(aq_sp_1,flag_1,indices_lin_reacts(i,1))
+                    call this%aq_phase%is_species_in_aq_phase(aq_sp_2,flag_2,indices_lin_reacts(i,2))
+                    if (flag_1==.false. .or. flag_2==.false.) then
+                        error stop
+                    else
+                        call this%lin_kin_reacts(i)%set_react_name(str_trim_1//'-->'//str_trim_2)
+                        call this%lin_kin_reacts(i)%set_react_type(5)
+                        call this%lin_kin_reacts(i)%allocate_reaction(2)
+                        call this%lin_kin_reacts(i)%set_lambda(lambda)
+                    end if
+                else
+                    !j=j+1
+                    !call this%eq_reacts(j)%set_react_name(str_trim_1//str_trim_2)
+                    !call this%eq_reacts(j)%set_react_type(5)
+                end if
+            end do
         else 
             continue
         end if
@@ -353,7 +398,15 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
     end if
     unit_redox=4
     if (this%num_redox_kin_reacts>0 .or. this%num_redox_eq_reacts>0) then
-        call this%read_redox_reacts(path_DB,unit_redox)
+        call this%read_Monod_reacts(path_DB,unit_redox)
+    end if
+    if (this%num_lin_kin_reacts>0) then
+        do i=1,this%num_lin_kin_reacts
+            call this%lin_kin_reacts(i)%set_all_species(this%aq_phase%aq_species(indices_lin_reacts(i,:)))
+            call this%lin_kin_reacts(i)%set_stoichiometry([-1d0,1d0])
+        end do
     end if
     call this%set_stoich_mat()
+    call this%set_stoich_mat_gas()
+    call this%set_stoich_mat_sol()
 end subroutine

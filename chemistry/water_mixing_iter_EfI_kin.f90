@@ -20,7 +20,7 @@ subroutine water_mixing_iter_EfI_kin_anal(this,c1_old,c2nc_ig,c_tilde,conc_nc,co
     real(kind=8) :: mu !> Newton initialisation parameter
     logical :: CV_flag !> convergence flag
 !> Pre-process
-        n_aq=this%aq_phase%num_species
+        n_aq=this%chem_syst%aq_phase%num_species
     !> We assign aqueous species concentrations
         conc=this%concentrations
     !> Newton initialisation parameter

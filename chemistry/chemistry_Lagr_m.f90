@@ -4,6 +4,7 @@ module chemistry_Lagr_m
     use chem_type_m
     use gas_chemistry_m
     use CV_params_m
+    use chem_out_options_m
     implicit none
     save
     type, public :: chemistry_c
@@ -18,8 +19,10 @@ module chemistry_Lagr_m
         !type(water_type_c), allocatable :: bd_wat_types(:)
         !integer(kind=4) :: num_rech_wat_types=0 !> number of recharge water types
         !type(water_type_c), allocatable :: rech_wat_types(:)
-        integer(kind=4) :: num_init_sol_types=0 !> number of initial solid types
-        type(solid_type_c), allocatable :: init_sol_types(:)
+        integer(kind=4) :: num_init_sol_zones=0 !> number of initial solid zones
+        type(solid_type_c), allocatable :: init_sol_zones(:)
+        integer(kind=4) :: num_init_gas_zones=0 !> number of initial gas zones
+        type(gas_type_c), allocatable :: init_gas_zones(:)
         integer(kind=4) :: num_target_waters=0 !> number of target waters
         type(aqueous_chemistry_c), allocatable :: target_waters(:) !> target waters
         integer(kind=4) :: num_target_waters_init=0 !> number of initial target waters
@@ -35,6 +38,7 @@ module chemistry_Lagr_m
         type(reactive_zone_c), allocatable :: reactive_zones(:) !> reactive zones
         integer(kind=4) :: Jac_flag !> model to compute Jacobians (0: incremental coefficnets, 1: analytical)
         type(CV_params_t) :: CV_params !> parameters for convergence
+        type(chem_out_options_t) :: chem_out_options !> output results options variable
     contains
     !> Set
         procedure, public :: set_chem_syst
@@ -94,18 +98,21 @@ module chemistry_Lagr_m
             class(chemistry_c) :: this
         end subroutine
         
-        subroutine solve_reactive_mixing(this,mixing_ratios,mixing_waters_indices,F_mat,time_discr_tpt,int_method_chem_reacts)
+        subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indices,F_mat,time_discr,int_method_chem_reacts)
             import chemistry_c
-            import matrix_real_c
-            import matrix_int_c
+            import real_array_c
+            import int_array_c
             import diag_matrix_c
             import time_discr_c
             implicit none
             class(chemistry_c) :: this
-            class(matrix_real_c), intent(in) :: mixing_ratios
-            class(matrix_int_c), intent(in) :: mixing_waters_indices
-            class(diag_matrix_c), intent(in) :: F_mat !> storage matrix
-            class(time_discr_c), intent(in) :: time_discr_tpt !> time discretisation object to solve transport
+            character(len=*), intent(in) :: root
+            integer(kind=4), intent(in) :: unit
+            class(real_array_c), intent(in) :: mixing_ratios
+            class(int_array_c), intent(in) :: mixing_waters_indices
+            !class(diag_matrix_c), intent(in) :: F_mat !> storage matrix
+            real(kind=8), intent(in) :: F_mat(:) !> storage matrix (diagonal)
+            class(time_discr_c), intent(in) :: time_discr !> time discretisation object
             integer(kind=4), intent(in) :: int_method_chem_reacts !> integration method for chemical reactions
         end subroutine
         
@@ -120,32 +127,36 @@ module chemistry_Lagr_m
             character(len=*), intent(in) :: filename
         end subroutine
         
-        subroutine read_chemistry_CHEPROO(this,path_inp,path_DB,unit_chem_syst_file,chem_syst_file,unit_loc_chem_file,loc_chem_file,unit_target_waters_init_file,target_waters_init_file)
+        subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc_chem_file,unit_target_waters_init_file,unit_output_file)
             import chemistry_c
-            implicit none    
+            implicit none
             class(chemistry_c) :: this
-            character(len=*), intent(in) :: path_inp
+            character(len=*), intent(in) :: root
             character(len=*), intent(in) :: path_DB
             integer(kind=4), intent(in) :: unit_chem_syst_file
-            character(len=*), intent(in) :: chem_syst_file
+            !character(len=*), intent(in) :: chem_syst_file
             integer(kind=4), intent(in) :: unit_loc_chem_file
-            character(len=*), intent(in) :: loc_chem_file
+            !character(len=*), intent(in) :: loc_chem_file
             integer(kind=4), intent(in) :: unit_target_waters_init_file
-            character(len=*), intent(in) :: target_waters_init_file
+            !character(len=*), intent(in) :: target_waters_init_file
+            integer(kind=4), intent(in) :: unit_output_file
+            !character(len=*), intent(in) :: output_file
         end subroutine
         
-        subroutine read_chemistry(this,path_inp,path_DB,unit_chem_syst_file,chem_syst_file,unit_loc_chem_file,loc_chem_file,unit_target_waters_init_file,target_waters_init_file)
+        subroutine read_chemistry(this,root,path_DB,unit_chem_syst_file,unit_loc_chem_file,unit_target_waters_init_file,unit_output_file)
             import chemistry_c
             implicit none    
             class(chemistry_c) :: this
-            character(len=*), intent(in) :: path_inp
+            character(len=*), intent(in) :: root
             character(len=*), intent(in) :: path_DB
             integer(kind=4), intent(in) :: unit_chem_syst_file
-            character(len=*), intent(in) :: chem_syst_file
+            !character(len=*), intent(in) :: chem_syst_file
             integer(kind=4), intent(in) :: unit_loc_chem_file
-            character(len=*), intent(in) :: loc_chem_file
+            !character(len=*), intent(in) :: loc_chem_file
             integer(kind=4), intent(in) :: unit_target_waters_init_file
-            character(len=*), intent(in) :: target_waters_init_file
+            !character(len=*), intent(in) :: target_waters_init_file
+            integer(kind=4), intent(in) :: unit_output_file
+            !character(len=*), intent(in) :: output_file
         end subroutine
         
         !subroutine read_PHREEQC_DB_opc1(this,filename)
@@ -244,6 +255,7 @@ module chemistry_Lagr_m
             import water_type_c
             import solid_type_c
             import gas_type_c
+            import aq_phase_c
             implicit none
             class(chemistry_c) :: this
             integer(kind=4), intent(in) :: unit !> file
@@ -254,6 +266,7 @@ module chemistry_Lagr_m
             class(gas_type_c), intent(in) :: init_gas_types(:)
             integer(kind=4), intent(out) :: niter !> number of iterations
             logical, intent(out) :: CV_flag !> TRUE if converges, FALSE otherwise
+            !class(aq_phase_c), intent(out), optional :: aq_phase_new
         end subroutine
         
         subroutine read_target_waters_init_bis(this,unit,init_water_types,bd_water_types,init_sol_types,niter,CV_flag)
@@ -292,28 +305,30 @@ module chemistry_Lagr_m
         
        
         
-        subroutine initialise_chemistry(this,path_inp,path_DB,unit_chem_syst_file,chem_syst_file,unit_loc_chem_file,loc_chem_file,unit_target_waters_init_file,target_waters_init_file)
+        subroutine initialise_chemistry(this,path_DB,root,unit_chem_syst_file,unit_loc_chem_file,unit_target_waters_init_file,unit_output_file)
             import chemistry_c
-            import matrix_real_c
+            import real_array_c
             implicit none
             class(chemistry_c) :: this
-            character(len=*), intent(in) :: path_inp
+            character(len=*), intent(in) :: root
             character(len=*), intent(in) :: path_DB
             integer(kind=4), intent(in) :: unit_chem_syst_file
-            character(len=*), intent(in) :: chem_syst_file
+            !character(len=*), intent(in) :: chem_syst_file
             integer(kind=4), intent(in) :: unit_loc_chem_file
-            character(len=*), intent(in) :: loc_chem_file
+            !character(len=*), intent(in) :: loc_chem_file
             integer(kind=4), intent(in) :: unit_target_waters_init_file
-            character(len=*), intent(in) :: target_waters_init_file
+            !character(len=*), intent(in) :: target_waters_init_file
+            integer(kind=4), intent(in) :: unit_output_file
+            !character(len=*), intent(in) :: output_file
         end subroutine
         
        
         
-        subroutine write_chemistry(this,unit,file_out)
+        subroutine write_chemistry(this,unit)
             import chemistry_c
             class(chemistry_c) :: this
             integer(kind=4), intent(in) :: unit
-            character(len=*), intent(in) :: file_out
+            !character(len=*), intent(in) :: file_out
         end subroutine
         
         subroutine check_new_reactive_zones(this,i,tolerance)
@@ -424,7 +439,7 @@ module chemistry_Lagr_m
             class(chemistry_c) :: this
             integer(kind=4), intent(in) :: Jac_flag
             if (Jac_flag<0 .or. Jac_flag>1) then
-                error stop "Chemistry attribute 'Jac_flag' not implemented yet"
+                error stop "Chemistry attribute 'Jac_flag' must be 0 or 1"
             else
                 this%Jac_flag=Jac_flag
             end if
@@ -592,10 +607,13 @@ module chemistry_Lagr_m
                 end do
                 rz_indices(j)=1
                 call this%allocate_reactive_zones()
+                !print *, this%target_solids(1)%reactive_zone%non_flowing_species(1)%name
+                !call this%reactive_zones(1)%assign_react_zone=this%target_solids(1)%reactive_zone%stoich_mat
                 l=1
                 do i=1,this%num_target_solids
                     if (rz_indices(i)==1) then
-                        this%reactive_zones(l)=this%target_solids(i)%reactive_zone
+                        !print *, this%target_solids(i)%reactive_zone%non_flowing_species(1)%name
+                        call this%reactive_zones(l)%assign_react_zone(this%target_solids(i)%reactive_zone)
                         l=l+1
                     end if
                 end do

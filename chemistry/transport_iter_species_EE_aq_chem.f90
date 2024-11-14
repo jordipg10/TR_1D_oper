@@ -23,7 +23,7 @@ subroutine transport_iter_species_EE_aq_chem(this,c1_old,c2nc_ig,c_tilde,conc_nc
     !> We compute ionic activity
         call this%compute_ionic_act() 
     !> We compute log_10 activity coefficients
-        call this%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs)
+        call this%chem_syst%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs)
         call this%compute_log_act_coeff_wat()
     !> We compute activities
         call this%compute_activities_aq()

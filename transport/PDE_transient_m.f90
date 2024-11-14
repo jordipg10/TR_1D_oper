@@ -15,8 +15,8 @@ module PDE_transient_m
         type(tridiag_matrix_c) :: B_mat !> mixing ratios previous time step
         type(tridiag_matrix_c) :: A_mat !>  mixing ratios next time step
         real(kind=8), allocatable :: f_vec(:) !> independent term in linear system
-        type(matrix_real_c) :: mixing_ratios !> mixing ratios WMA (vale para cualquier dimension)
-        type(matrix_int_c) :: mixing_waters_indices !> matrix that contains indices of target waters that mix with each target water
+        type(real_array_c) :: mixing_ratios !> mixing ratios WMA (vale para cualquier dimension)
+        type(int_array_c) :: mixing_waters_indices !> matrix that contains indices of target waters that mix with each target water
         real(kind=8), allocatable :: mixing_ratios_mat(:,:) !> mixing ratios WMA (Euler implicito)
     contains
     !> set

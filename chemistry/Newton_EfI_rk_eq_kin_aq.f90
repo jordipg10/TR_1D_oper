@@ -48,7 +48,6 @@ subroutine Newton_EfI_rk_eq_kin_aq_anal(this,c2nc_ig,c_tilde,porosity,Delta_t,co
         do 
             niter=niter+1 !> we update number of iterations
             if (niter>this%CV_params%niter_max) then
-                print *, inf_norm_vec_real(fk)
                 print *, "Too many iterations in subroutine Newton_EfI_rk_eq_kin_aq_anal"
                 exit
             end if
@@ -69,7 +68,6 @@ subroutine Newton_EfI_rk_eq_kin_aq_anal(this,c2nc_ig,c_tilde,porosity,Delta_t,co
                 call LU_lin_syst(dfk_dc1,-fk,this%CV_params%zero,Delta_c1) !> solves linear system dfk_dc1*Delta_c1=-fk, where c1_new=c1_old+Delta_c1
                 !call Gauss_Jordan(dfk_dc1,-fk,this%CV_params%zero,Delta_c1) !> solves linear system dfk_dc1*Delta_c1=-fk, where c1_new=c1_old+Delta_c1
                 if (inf_norm_vec_real(Delta_c1/this%concentrations(1:n_p))<this%CV_params%rel_tol) then !> we check relative tolerance
-                    print *, inf_norm_vec_real(fk)
                     print *, "Newton solution not accurate enough"
                     exit
                 else

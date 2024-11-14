@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Fri Sep 20 12:50:04 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Nov 14 15:42:23 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPUTE_RES_INIT__genmod
@@ -8,7 +8,7 @@
               USE METODOS_SIST_LIN_M
               USE AQUEOUS_CHEMISTRY_M
               CLASS (AQUEOUS_CHEMISTRY_C) :: THIS
-              CLASS (MATRIX_INT_C), INTENT(IN) :: INDICES_ICON
+              CLASS (INT_ARRAY_C), INTENT(IN) :: INDICES_ICON
               INTEGER(KIND=4), INTENT(IN) :: N_ICON(:)
               INTEGER(KIND=4), INTENT(IN) :: INDICES_CONSTRAINS(:)
               REAL(KIND=8), INTENT(IN) :: CTOT(:)

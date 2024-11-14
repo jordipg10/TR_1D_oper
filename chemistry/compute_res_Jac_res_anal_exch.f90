@@ -7,7 +7,7 @@ subroutine compute_res_Jac_res_anal_exch(this,conc,indices_icon,n_icon,indices_c
     !> Pre-process
     class(aqueous_chemistry_c) :: this
     real(kind=8), intent(in) :: conc(:)
-    class(matrix_int_c), intent(in) :: indices_icon
+    class(int_array_c), intent(in) :: indices_icon
     integer(kind=4), intent(in) :: n_icon(:) !> number of each icon
     integer(kind=4), intent(in) :: indices_constrains(:)
     real(kind=8), intent(in) :: ctot(:)
@@ -27,9 +27,9 @@ subroutine compute_res_Jac_res_anal_exch(this,conc,indices_icon,n_icon,indices_c
     
     ind_cstr=0 !> indices constrains
     Jac_res=0d0 !> Jacobian of residue
-    allocate(U_aq(this%speciation_alg%num_aq_prim_species,this%aq_phase%num_species))
+    allocate(U_aq(this%speciation_alg%num_aq_prim_species,this%chem_syst%aq_phase%num_species))
     U_aq(:,1:this%speciation_alg%num_aq_prim_species)=this%speciation_alg%comp_mat_cst_act(1:this%speciation_alg%num_aq_prim_species,1:this%speciation_alg%num_aq_prim_species)
-    U_aq(:,this%speciation_alg%num_aq_prim_species+1:this%aq_phase%num_species)=this%speciation_alg%comp_mat_cst_act(1:this%speciation_alg%num_aq_prim_species,this%speciation_alg%num_prim_species+1:this%aq_phase%num_species)
+    U_aq(:,this%speciation_alg%num_aq_prim_species+1:this%chem_syst%aq_phase%num_species)=this%speciation_alg%comp_mat_cst_act(1:this%speciation_alg%num_aq_prim_species,this%speciation_alg%num_prim_species+1:this%chem_syst%aq_phase%num_species)
 !> Concentrations
     do i=1,n_icon(1)
         res(indices_icon%cols(1)%col_1(i))=conc(indices_icon%cols(1)%col_1(i))-ctot(indices_icon%cols(1)%col_1(i))
@@ -39,7 +39,7 @@ subroutine compute_res_Jac_res_anal_exch(this,conc,indices_icon,n_icon,indices_c
     do i=1,n_icon(2)
         res(indices_icon%cols(2)%col_1(i))=dot_product(U_aq(indices_icon%cols(2)%col_1(i),:),conc)-ctot(indices_icon%cols(2)%col_1(i))
         do j=1,this%speciation_alg%num_aq_prim_species
-            Jac_res(indices_icon%cols(2)%col_1(i),j)=U_aq(indices_icon%cols(2)%col_1(i),j)+dot_product(U_aq(indices_icon%cols(2)%col_1(i),this%speciation_alg%num_aq_prim_species+1:this%aq_phase%num_species),dc2_dc1(1:this%speciation_alg%num_sec_aq_species,j))
+            Jac_res(indices_icon%cols(2)%col_1(i),j)=U_aq(indices_icon%cols(2)%col_1(i),j)+dot_product(U_aq(indices_icon%cols(2)%col_1(i),this%speciation_alg%num_aq_prim_species+1:this%chem_syst%aq_phase%num_species),dc2_dc1(1:this%speciation_alg%num_sec_aq_species,j))
         end do
     end do
 !> Activities

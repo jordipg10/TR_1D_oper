@@ -1,13 +1,13 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Fri Sep 20 12:50:10 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Nov 14 15:42:30 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE WRITE_RT_1D__genmod
           INTERFACE 
-            SUBROUTINE WRITE_RT_1D(THIS,UNIT,FILE_OUT,PATH_PY)
+            SUBROUTINE WRITE_RT_1D(THIS,UNIT,ROOT,PATH_PY)
               USE RT_1D_M
               CLASS (RT_1D_C), INTENT(IN) :: THIS
               INTEGER(KIND=4), INTENT(IN) :: UNIT
-              CHARACTER(*), INTENT(IN) :: FILE_OUT
+              CHARACTER(*), INTENT(IN) :: ROOT
               CHARACTER(*) ,OPTIONAL, INTENT(IN) :: PATH_PY
             END SUBROUTINE WRITE_RT_1D
           END INTERFACE 

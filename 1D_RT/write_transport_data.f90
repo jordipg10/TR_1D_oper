@@ -1,13 +1,13 @@
 !> Writes transport data from 1D reactive transport model
 !> File is already opened
-subroutine write_transport_data(this,unit,file_out)
+subroutine write_transport_data(this,unit)
     use analytical_solutions_transport_m
     use RT_1D_m
     use spatial_discr_rad_m
     implicit none
     class(RT_1D_c), intent(in) :: this
     integer(kind=4), intent(in) :: unit
-    character(len=*), intent(in) :: file_out
+    !character(len=*), intent(in) :: file_out
     
     class(time_discr_c), pointer :: time_discr
     integer(kind=4) :: i,j,n,num_cells
@@ -131,16 +131,16 @@ subroutine write_transport_data(this,unit,file_out)
             !>        write(unit,"(2x,2F15.5,15x,F15.5/)") this%transport%B_mat%sub(n-1), this%transport%B_mat%diag(n), this%transport%f_vec(n)
             !>    end if
             !else if (this%transport%time_discr%int_method==3) then
-            !>    !write(unit,"(/,2x,'Mixing ratios+sink/source terms:'/)")
-            !>    if (n==1) then
-            !>        write(unit,"(2x,F15.5,/)") this%transport%A_mat%diag(1)
-            !>    else if (n>2) then
-            !>        write(unit,"(2x,15x,3F15.5)") this%transport%A_mat%diag(1), this%transport%A_mat%super(1), this%transport%f_vec(1)
-            !>        do i=2,n-1
-            !>            write(unit,"(2x,4F15.5)") this%transport%A_mat%sub(i-1), this%transport%A_mat%diag(i), this%transport%A_mat%super(i), this%transport%f_vec(i)
-            !>        end do
-            !>        write(unit,"(2x,2F15.5,15x,F15.5/)") this%transport%A_mat%sub(n-1), this%transport%A_mat%diag(n), this%transport%f_vec(n)
-            !>    end if
+                !write(unit,"(/,2x,'Matrix that is inverted:'/)")
+                !if (n==1) then
+                !    write(unit,"(17x,ES15.5,/)") this%transport%A_mat%diag(1)
+                !else if (n>2) then
+                !    write(unit,"(17x,*(ES15.5))") this%transport%A_mat%diag(1), this%transport%A_mat%super(1)
+                !    do i=2,n-1
+                !        write(unit,"(2x,*(ES15.5))") this%transport%A_mat%sub(i-1), this%transport%A_mat%diag(i), this%transport%A_mat%super(i)
+                !    end do
+                !    write(unit,"(2x,*(ES15.5)/)") this%transport%A_mat%sub(n-1), this%transport%A_mat%diag(n)
+                !end if
             !end if
     end select
     !close(unit)

@@ -83,7 +83,7 @@ module solid_chemistry_m
             implicit none
             class(solid_chemistry_c) :: this
             real(kind=8), intent(in) :: conc_solids(:)
-            if (this%reactive_zone%num_non_flowing_species<size(conc_solids)) error stop "Dimension error in set_conc_solids"
+            if (this%reactive_zone%chem_syst%num_solids<size(conc_solids)) error stop "Dimension error in set_conc_solids"
             this%concentrations=conc_solids
         end subroutine
         
@@ -91,14 +91,18 @@ module solid_chemistry_m
             implicit none
             class(solid_chemistry_c) :: this
             real(kind=8), intent(in) :: vol_fracts(:)
-            if (this%reactive_zone%num_minerals/=size(vol_fracts)) error stop "Dimension error in set_vol_fracts"
+            if (this%reactive_zone%chem_syst%num_minerals<size(vol_fracts)) error stop "Dimension error in set_vol_fracts"
             this%vol_fracts=vol_fracts
         end subroutine
         
         subroutine allocate_vol_fracts(this)
             implicit none
             class(solid_chemistry_c) :: this
-            allocate(this%vol_fracts(this%reactive_zone%num_minerals))
+            if (this%reactive_zone%num_minerals==0) then
+                allocate(this%vol_fracts(this%reactive_zone%chem_syst%num_min_kin_reacts))
+            else
+                allocate(this%vol_fracts(this%reactive_zone%num_minerals+this%reactive_zone%chem_syst%num_min_kin_reacts))
+            end if
             this%vol_fracts=0d0
         end subroutine
         
@@ -106,35 +110,51 @@ module solid_chemistry_m
             implicit none
             class(solid_chemistry_c) :: this
             real(kind=8), intent(in) :: react_surfaces(:)
-            if (this%reactive_zone%num_minerals/=size(react_surfaces)) error stop "Dimension error in set_react_surfaces"
+            if (this%reactive_zone%chem_syst%num_minerals<size(react_surfaces)) error stop "Dimension error in set_react_surfaces"
             this%react_surfaces=react_surfaces
         end subroutine
         
         subroutine allocate_react_surfaces(this)
             implicit none
             class(solid_chemistry_c) :: this
-            allocate(this%react_surfaces(this%reactive_zone%num_minerals))
+            if (this%reactive_zone%num_minerals==0) then
+                allocate(this%react_surfaces(this%reactive_zone%chem_syst%num_min_kin_reacts))
+            else
+                allocate(this%react_surfaces(this%reactive_zone%num_minerals+this%reactive_zone%chem_syst%num_min_kin_reacts))
+            end if
             this%react_surfaces=0d0
         end subroutine
         
         subroutine allocate_conc_solids(this)
             implicit none
             class(solid_chemistry_c) :: this
-            allocate(this%concentrations(this%reactive_zone%num_solids))
+            if (this%reactive_zone%num_solids==0) then
+                allocate(this%concentrations(this%reactive_zone%chem_syst%num_min_kin_reacts))
+            else
+                allocate(this%concentrations(this%reactive_zone%num_solids+this%reactive_zone%chem_syst%num_min_kin_reacts))
+            end if
             this%concentrations=0d0
         end subroutine
         
         subroutine allocate_activities(this)
             implicit none
             class(solid_chemistry_c) :: this
-            allocate(this%activities(this%reactive_zone%num_solids))
+            if (this%reactive_zone%num_solids==0) then
+                allocate(this%activities(this%reactive_zone%chem_syst%num_min_kin_reacts))
+            else
+                allocate(this%activities(this%reactive_zone%num_solids+this%reactive_zone%chem_syst%num_min_kin_reacts))
+            end if
             this%activities=0d0
         end subroutine
         
         subroutine allocate_log_act_coeffs_solid_chem(this)
             implicit none
             class(solid_chemistry_c) :: this
-            allocate(this%log_act_coeffs(this%reactive_zone%num_non_flowing_species))
+            if (this%reactive_zone%num_solids==0) then
+                allocate(this%log_act_coeffs(this%reactive_zone%chem_syst%num_min_kin_reacts))
+            else
+                allocate(this%log_act_coeffs(this%reactive_zone%num_solids+this%reactive_zone%chem_syst%num_min_kin_reacts))
+            end if
             this%log_act_coeffs=0d0 !> chapuza
         end subroutine
         

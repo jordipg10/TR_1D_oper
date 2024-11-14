@@ -5,9 +5,8 @@ module Monod_params_m
     save
     type, public, extends(kin_params_c) :: Monod_params_c
         integer(kind=4) :: num_terms !> number of terms
-        integer(kind=4) :: n_M !> number of TEAs
         integer(kind=4) :: n_inh !> number of inhibitors
-        real(kind=8), allocatable :: conc_thr_TEAs(:) !> threshold concentration electron donors & acceptors
+        real(kind=8), allocatable :: conc_thr(:) !> threshold concentration electron donors & acceptors
         !type(species_c), allocatable :: TEAs(:) !> terminal electron acceptors
         !type(species_c), allocatable :: inhibitors(:)
         !type(species_c), allocatable :: catalysts(:)
@@ -17,8 +16,8 @@ module Monod_params_m
         real(kind=8), allocatable :: conc_thr_inh(:) !> threshold concentration inhibitors
         
     contains
-        procedure, public :: allocate_inhibitors
-        procedure, public :: allocate_TEAs
+        procedure, public :: allocate_k_inh
+        procedure, public :: allocate_k_M
         procedure, public :: compute_num_terms
     end type
         
@@ -28,21 +27,13 @@ module Monod_params_m
     
     contains
       
-        subroutine allocate_TEAs(this,n_M)
+        subroutine allocate_k_M(this)
             implicit none
             class(Monod_params_c) :: this
-            integer(kind=4), intent(in), optional :: n_M
-            if (present(n_M)) then
-                if (n_M<0) then
-                    error stop
-                else
-                    this%n_M=n_M
-                end if
-            end if
-            allocate(this%k_M(this%n_M))
+            allocate(this%k_M(2))
         end subroutine
         
-        subroutine allocate_inhibitors(this,n_inh)
+        subroutine allocate_k_inh(this,n_inh)
             implicit none
             class(Monod_params_c) :: this
             integer(kind=4), intent(in), optional :: n_inh
@@ -59,7 +50,7 @@ module Monod_params_m
         subroutine compute_num_terms(this)
             implicit none
             class(Monod_params_c) :: this
-            this%num_terms=this%n_inh+this%n_M
+            this%num_terms=this%n_inh+2
         end subroutine
         
 end module

@@ -4,7 +4,7 @@ module kin_reaction_m
     use kin_params_m
     implicit none
     save
-    type, public, abstract, extends(reaction_c) :: kin_reaction_c !> Kinetic reaction subclass
+    type, public, extends(reaction_c) :: kin_reaction_c !> Kinetic reaction subclass
         integer(kind=4), allocatable :: indices_aq_phase(:) !> indices of species in aqueous phase class that control kinetic reaction rates
     contains
     end type

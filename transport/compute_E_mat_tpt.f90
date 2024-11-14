@@ -5,7 +5,7 @@
 !>    implicit none
 !>    
 !>    class(transport_1D_transient_c) :: this
-!>    class(matrix_c), pointer, intent(out) :: E_mat
+!>    class(array_c), pointer, intent(out) :: E_mat
 !>    integer(kind=4), intent(in), optional :: k
 !>    
 !>    real(kind=8) :: sign_vel !> sign of velocity parameter

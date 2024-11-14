@@ -1,13 +1,12 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Fri Sep 20 12:49:56 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Nov 14 15:42:10 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPUTE_C_NC_FROM_U_NEWTON__genmod
           INTERFACE 
-            SUBROUTINE COMPUTE_C_NC_FROM_U_NEWTON(THIS,C1_IG,C2NC_IG,   &
-     &CONC_COMP,CONC_NC,NITER,CV_FLAG)
+            SUBROUTINE COMPUTE_C_NC_FROM_U_NEWTON(THIS,C2NC_IG,CONC_COMP&
+     &,CONC_NC,NITER,CV_FLAG)
               USE AQUEOUS_CHEMISTRY_M
               CLASS (AQUEOUS_CHEMISTRY_C) :: THIS
-              REAL(KIND=8), INTENT(IN) :: C1_IG(:)
               REAL(KIND=8), INTENT(IN) :: C2NC_IG(:)
               REAL(KIND=8), INTENT(IN) :: CONC_COMP(:)
               REAL(KIND=8), INTENT(OUT) :: CONC_NC(:)

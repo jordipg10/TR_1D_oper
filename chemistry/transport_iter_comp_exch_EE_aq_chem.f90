@@ -1,5 +1,5 @@
 !> Computes component and variable activity concentrations after iteration of WMA method for equilibrium chemical system
-!> We assume NOT all primary species are aqueous
+!> We assume all primary species are aqueous
 subroutine transport_iter_comp_exch_EE_aq_chem(this,c1_old,c2nc_ig,c_tilde,conc_nc,conc_comp,porosity,Delta_t)
     use aqueous_chemistry_m
     implicit none
@@ -17,7 +17,7 @@ subroutine transport_iter_comp_exch_EE_aq_chem(this,c1_old,c2nc_ig,c_tilde,conc_
     integer(kind=4) :: niter !> number of iterations in Newton speciation
     logical :: CV_flag !> convergence flag
     real(kind=8) :: mu=0d0 !> Newton initialistaion parameter
-    real(kind=8), allocatable :: c1(:),c1_ig(:) !> concentration primary species
+    real(kind=8), allocatable :: c1(:) !> concentration primary species
 !> Pre-process
     c1=this%get_c1()
 !> Process  
@@ -26,9 +26,9 @@ subroutine transport_iter_comp_exch_EE_aq_chem(this,c1_old,c2nc_ig,c_tilde,conc_
     !> Loop until speciation converges
         do
         !> We initialise primary concentrations for Newton speciation
-            call initialise_iterative_method(c1_old,c1,mu,c1_ig)
+            call initialise_iterative_method(c1_old(1:this%speciation_alg%num_aq_prim_species),c1(1:this%speciation_alg%num_aq_prim_species),mu,this%concentrations(1:this%speciation_alg%num_aq_prim_species))
         !> We compute variable activity concentrations from component concentrations
-            call this%compute_c_nc_from_u_Newton(c1_ig,c2nc_ig,conc_comp,conc_nc,niter,CV_flag)
+            call this%compute_c_nc_from_u_Newton(c2nc_ig,conc_comp,conc_nc,niter,CV_flag)
         !> We check convergence
             if (CV_flag==.false.) then !> NO CV
                 if (mu<1d0) then

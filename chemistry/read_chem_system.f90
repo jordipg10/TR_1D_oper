@@ -71,7 +71,7 @@ subroutine read_chem_system(this,filename)
 !>                        prim_species(num_prim_sp-i+1)%cst_act_flag=.false.
 !>                        backspace(55)
 !>                    end do
-!>                    !call this%aq_phase%set_aq_species(aq_species)
+!>                    !call this%chem_syst%aq_phase%set_aq_species(aq_species)
 !>                    exit
 !>                else
 !>                    num_sp=num_sp+1
@@ -100,8 +100,8 @@ subroutine read_chem_system(this,filename)
 !>                        end if
 !>                        backspace(55)
 !>                    end do
-!>                    call this%aq_phase%set_aq_species(aq_species)
-!>                    call this%aq_phase%rearrange_aq_species() !> sorts aqueous species into variable activity & constant activity
+!>                    call this%chem_syst%aq_phase%set_aq_species(aq_species)
+!>                    call this%chem_syst%aq_phase%rearrange_aq_species() !> sorts aqueous species into variable activity & constant activity
 !>                    exit
 !>                else
 !>                    num_sp=num_sp+1

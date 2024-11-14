@@ -45,7 +45,7 @@ subroutine compute_dc2nc_dc1(this,c1,c2nc,out_prod,dc2nc_dc1)
 !    allocate(d_log_gamma2nc_d_log_c2nc(this%speciation_alg%num_eq_reactions,this%speciation_alg%num_eq_reactions))
 !    allocate(d_log_gamma_surf_d_log_c_surf(this%solid_chemistry%reactive_zone%cat_exch_zone%num_exch_cats,this%solid_chemistry%reactive_zone%cat_exch_zone%num_exch_cats))
 !!> We compute Jacobian logarithm activity coefficients
-!    call this%aq_phase%compute_log_Jacobian_act_coeffs_aq_phase(out_prod,this%concentrations(1:this%speciation_alg%num_aq_var_act_species),this%log_Jacobian_act_coeffs(1:this%speciation_alg%num_aq_var_act_species,1:this%speciation_alg%num_aq_var_act_species))
+!    call this%chem_syst%aq_phase%compute_log_Jacobian_act_coeffs_aq_phase(out_prod,this%concentrations(1:this%speciation_alg%num_aq_var_act_species),this%log_Jacobian_act_coeffs(1:this%speciation_alg%num_aq_var_act_species,1:this%speciation_alg%num_aq_var_act_species))
 !    call this%solid_chemistry%reactive_zone%cat_exch_zone%compute_log_Jacobian_act_coeffs_ads_cats(this%solid_chemistry%log_act_coeffs(this%solid_chemistry%reactive_zone%num_minerals+2:this%solid_chemistry%reactive_zone%num_solids),d_log_gamma_surf_d_log_c_surf)
 !!> log Jacobiano primarias-primarias
 !    d_log_gamma1_d_log_c1(1:this%speciation_alg%num_aq_prim_species,1:this%speciation_alg%num_aq_prim_species)=this%log_Jacobian_act_coeffs(1:this%speciation_alg%num_aq_prim_species,1:this%speciation_alg%num_aq_prim_species)

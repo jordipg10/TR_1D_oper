@@ -13,6 +13,7 @@ module kin_mineral_m
     !> Set
         procedure, public :: set_mineral_params
         procedure, public :: set_mineral
+        procedure, public :: set_indices_aq_phase_min
     !> Compute
         procedure, public :: compute_rk_mineral
         procedure, public :: compute_drk_dc_mineral

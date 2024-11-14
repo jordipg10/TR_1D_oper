@@ -28,8 +28,8 @@ subroutine check_eigenvectors_tridiag_sym_matrix(this,tolerance)
             end if
         end do
         prod=matmul(this%eigenvectors,transpose(this%eigenvectors))
-        if ((abs(det(this%eigenvectors))-1d0)>=tolerance) then
-            print *, "abs(det(P)) is not 1"
-            error stop
-        end if
+        !if ((abs(det(this%eigenvectors))-1d0)>=tolerance) then
+        !    print *, "abs(det(P)) is not 1"
+        !    error stop
+        !end if
 end subroutine

@@ -6,7 +6,7 @@ subroutine compute_res_init(this,indices_icon,n_icon,indices_constrains,ctot,res
     implicit none
     !> Arguments
     class(aqueous_chemistry_c) :: this
-    class(matrix_int_c), intent(in) :: indices_icon
+    class(int_array_c), intent(in) :: indices_icon
     integer(kind=4), intent(in) :: n_icon(:) !> number of each icon
     integer(kind=4), intent(in) :: indices_constrains(:)
     real(kind=8), intent(in) :: ctot(:)
@@ -21,7 +21,7 @@ subroutine compute_res_init(this,indices_icon,n_icon,indices_constrains,ctot,res
     end do
     !> Aqueous components
     do i=1,n_icon(2)
-        res(indices_icon%cols(2)%col_1(i))=dot_product(this%speciation_alg%comp_mat_cst_act(indices_icon%cols(2)%col_1(i),1:this%aq_phase%num_species),this%concentrations)-ctot(indices_icon%cols(2)%col_1(i))
+        res(indices_icon%cols(2)%col_1(i))=dot_product(this%speciation_alg%comp_mat_cst_act(indices_icon%cols(2)%col_1(i),1:this%chem_syst%aq_phase%num_species),this%concentrations)-ctot(indices_icon%cols(2)%col_1(i))
     end do
     !> Activities
     do i=1,n_icon(3)

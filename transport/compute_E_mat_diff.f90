@@ -5,7 +5,7 @@
 !>    implicit none
 !>    
 !>    class(diffusion_transient_c) :: this
-!>    class(matrix_c), pointer, intent(out) :: E_mat
+!>    class(array_c), pointer, intent(out) :: E_mat
 !>    integer(kind=4), intent(in), optional :: k
 !>    
 !>    integer(kind=4) :: n

@@ -27,8 +27,11 @@ module chem_system_m
         type(mineral_c), allocatable :: minerals(:) !> minerals
         integer(kind=4) :: num_cst_act_species !> number of constant activity species
         type(species_c), allocatable :: cst_act_species(:) !> constant activity species
+        integer(kind=4) :: num_solids=0
         type(cat_exch_c) :: cat_exch !> cation exchange object
         real(kind=8), allocatable :: stoich_mat(:,:) !> global stoichiometric matrix (S)
+        real(kind=8), allocatable :: stoich_mat_sol(:,:) !> solid stoichiometric matrix
+        real(kind=8), allocatable :: stoich_mat_gas(:,:) !> gas stoichiometric matrix
         real(kind=8), allocatable :: Se(:,:) !> equilibrium stoichiometric matrix
         real(kind=8), allocatable :: Sk(:,:) !> kinetic stoichiometric matrix
         integer(kind=4) :: num_eq_reacts=0 !> number of equilibrium reactions
@@ -51,6 +54,7 @@ module chem_system_m
         procedure, public :: set_species
         procedure, public :: set_cat_exch_obj
         procedure, public :: set_num_cst_act_species
+        procedure, public :: set_num_solids_chem_syst
         procedure, public :: set_cst_act_species
         procedure, public :: set_var_act_species
         procedure, public :: set_num_var_act_species
@@ -61,6 +65,8 @@ module chem_system_m
         procedure, public :: set_num_lin_kin_reacts
         procedure, public :: set_num_min_kin_reacts
         procedure, public :: set_stoich_mat
+        procedure, public :: set_stoich_mat_gas
+        procedure, public :: set_stoich_mat_sol
     !> Allocate
         procedure, public :: allocate_species
         procedure, public :: allocate_cst_act_species
@@ -81,7 +87,7 @@ module chem_system_m
         procedure, public :: read_chem_system_PFLOTRAN
         procedure, public :: read_master25
         procedure, public :: read_kinetics_DB
-        procedure, public :: read_redox_reacts
+        procedure, public :: read_Monod_reacts
         procedure, public :: read_PHREEQC_DB_opc1
         procedure, public :: read_PHREEQC_DB_opc2
     !> Is
@@ -139,7 +145,7 @@ module chem_system_m
             integer(kind=4), intent(in) :: unit
         end subroutine
         
-        subroutine read_redox_reacts(this,path,unit)
+        subroutine read_Monod_reacts(this,path,unit)
             import chem_system_c
             implicit none
             class(chem_system_c) :: this
@@ -192,6 +198,18 @@ module chem_system_m
     end subroutine
     
         subroutine set_stoich_mat(this)
+            import chem_system_c
+            implicit none
+            class(chem_system_c) :: this
+        end subroutine
+        
+        subroutine set_stoich_mat_gas(this)
+            import chem_system_c
+            implicit none
+            class(chem_system_c) :: this
+        end subroutine
+        
+        subroutine set_stoich_mat_sol(this)
             import chem_system_c
             implicit none
             class(chem_system_c) :: this
@@ -379,6 +397,17 @@ module chem_system_m
                 this%num_cst_act_species=num_cst_act_species
             else
                 this%num_cst_act_species=size(this%cst_act_species)
+            end if
+        end subroutine
+        
+        subroutine set_num_solids_chem_syst(this,num_solids)
+            implicit none
+            class(chem_system_c) :: this
+            integer(kind=4), intent(in), optional :: num_solids
+            if (present(num_solids)) then
+                this%num_solids=num_solids
+            else
+                this%num_solids=this%num_minerals+this%cat_exch%num_surf_compl
             end if
         end subroutine
         
@@ -697,7 +726,7 @@ module chem_system_m
             allocate(this%eq_reacts(this%num_eq_reacts))
             ind_cst_act=1
             ind_var_act=this%num_cst_act_species-this%aq_phase%wat_flag+1
-            ind_aq=this%num_minerals_eq+this%num_redox_eq_reacts+1
+            ind_aq=this%num_minerals_eq+this%gas_phase%num_cst_act_species+this%num_redox_eq_reacts+1
             ind_redox=this%num_cst_act_species-this%aq_phase%wat_flag+1
             ind_gas=ind_aq+this%aq_phase%num_aq_complexes
             ind_surf=ind_gas+this%gas_phase%num_species
@@ -829,11 +858,14 @@ module chem_system_m
                     end if
                 end do
             else
-                do i=1,this%gas_phase%num_species-this%gas_phase%num_gases_eq
-                    call this%species(this%speciation_alg%num_aq_prim_species+i)%assign_species(this%gas_phase%gases(this%gas_phase%num_gases_eq+i))
+                do i=1,this%num_min_kin_reacts
+                    call this%species(this%speciation_alg%num_aq_prim_species+i)%assign_species(this%minerals(i)%mineral)
+                end do
+                do i=1,this%gas_phase%num_gases_kin
+                    call this%species(this%speciation_alg%num_aq_prim_species+this%num_min_kin_reacts+i)%assign_species(this%gas_phase%gases(this%gas_phase%num_gases_eq+i))
                 end do
                 do i=1,this%aq_phase%num_aq_complexes
-                    call this%species(this%speciation_alg%num_aq_prim_species+this%gas_phase%num_species-this%gas_phase%num_gases_eq+i)%assign_species(this%aq_phase%aq_species(this%speciation_alg%num_aq_prim_species+i))
+                    call this%species(this%speciation_alg%num_aq_prim_species+this%num_min_kin_reacts+this%gas_phase%num_gases_kin+i)%assign_species(this%aq_phase%aq_species(this%speciation_alg%num_aq_prim_species+i))
                 end do
             end if
         end subroutine

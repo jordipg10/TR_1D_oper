@@ -33,15 +33,14 @@ subroutine compute_c2nc_from_c1_aq_Picard(this,c2nc_ig,c2nc,niter,CV_flag)
         !call this%compute_salinity()
         !call this%compute_molarities()
     !> We compute log_10 of activity coefficients of variable activity species
-        call this%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs(1:n_nc_aq))
+        call this%chem_syst%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs(1:n_nc_aq))
         
         log_gamma1_old=this%log_act_coeffs(1:n_p)
         log_gamma2nc_old(1:n_nc2_aq)=this%log_act_coeffs(n_p+1:n_nc_aq)
         if (associated(this%gas_chemistry)) then
-            if (this%gas_chemistry%reactive_zone%gas_phase%num_species>this%gas_chemistry%reactive_zone%gas_phase%num_cst_act_species) then !> chapuza
-                !print *, this%gas_chemistry%reactive_zone%gas_phase%num_species
+            if (this%gas_chemistry%reactive_zone%gas_phase%num_var_act_species>0) then !> chapuza
                 call this%gas_chemistry%compute_log_act_coeffs_gases()
-                log_gamma2nc_old(n_nc2_aq+1:n_e)=this%gas_chemistry%log_act_coeffs+LOG10(this%gas_chemistry%volume)
+                log_gamma2nc_old(n_nc2_aq+1:n_e)=this%gas_chemistry%log_act_coeffs
             end if
         end if
     !> We apply mass action law to compute concentration secondary variable activity species
@@ -70,16 +69,15 @@ subroutine compute_c2nc_from_c1_aq_Picard(this,c2nc_ig,c2nc,niter,CV_flag)
 !> Post-process
     !call this%compute_molalities() !> we change units to compute ionic activity
     call this%compute_ionic_act() !> we compute ionic activity
-    call this%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs(1:n_nc_aq)) !> we compute log_10 activity coefficients aqueous variable activity species
+    call this%chem_syst%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs(1:n_nc_aq)) !> we compute log_10 activity coefficients aqueous variable activity species
     call this%compute_activities_aq() !> we compute activities
     call this%compute_log_act_coeff_wat() !> we compute log_10 activity coefficient of water
     call this%compute_salinity()
     !call this%compute_molarities()
     if (associated(this%gas_chemistry)) then !> chapuza
         !call this%gas_chemistry%update_conc_gases(c2nc(n_nc2_aq+1:n_e)*this%volume) !> we update moles of gases
-        if (this%gas_chemistry%reactive_zone%gas_phase%num_species>this%gas_chemistry%reactive_zone%gas_phase%num_cst_act_species) then !> chapuza
-            call this%gas_chemistry%compute_log_act_coeffs_gases() !> we compute log_10 activity coefficients of gases
-            call this%gas_chemistry%compute_partial_pressures() !> we compute activities (ie. partial pressures)
-        end if
+        !call this%gas_chemistry%compute_vol_gas() !> we compute total volume of gas
+        call this%gas_chemistry%compute_log_act_coeffs_gases() !> we compute log_10 activity coefficients of gases
+        call this%gas_chemistry%compute_partial_pressures() !> we compute activities (ie. partial pressures)
     end if
  end subroutine

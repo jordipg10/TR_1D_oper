@@ -40,7 +40,8 @@ module aq_phase_m
     !> Is
         procedure, public :: is_species_in_aq_phase
         procedure, public :: is_water_in_aq_phase
-
+    !> Copy
+        procedure, public :: copy_attributes
     end type
     
     interface
@@ -108,6 +109,10 @@ module aq_phase_m
             integer(kind=4), intent(in), optional :: num_species
             if (present(num_species)) then
                 this%num_species=num_species
+            end if
+            if (allocated(this%aq_species)) then
+                print *, "hola"
+                deallocate(this%aq_species)
             end if
             allocate(this%aq_species(this%num_species))
         end subroutine
@@ -326,4 +331,26 @@ module aq_phase_m
         !        d_log_gamma_d_c2_aq(:,j)=5d-1*this%z2(n_p_aq+j)*c2_aq(j)*log(1d1)*d_log_gamma_d_I
         !    end do
         !end subroutine
+        
+        subroutine copy_attributes(this,aq_phase)
+            implicit none
+            class(aq_phase_c) :: this
+            class(aq_phase_c), intent(in) :: aq_phase
+            
+            integer(KIND=4) :: i
+            
+            if (allocated(this%aq_species)) then
+                continue
+            else
+                call this%allocate_aq_species(aq_phase%num_species)
+            end if
+            this%wat_flag=aq_phase%wat_flag
+            this%num_aq_complexes=aq_phase%num_aq_complexes
+            this%ind_wat=aq_phase%ind_wat
+            this%ind_proton=aq_phase%ind_proton
+            !this%ind_diss_solids=aq_phase%ind_diss_solids
+            do i=1,this%num_species
+                call this%aq_species(i)%assign_species(aq_phase%aq_species(i))
+            end do
+        end subroutine
 end module

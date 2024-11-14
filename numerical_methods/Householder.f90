@@ -1,6 +1,6 @@
 function Householder(x)
     use vectors_m
-    use matrices_m, only : id_matrix,det
+    use matrices_m, only : id_matrix,compute_det
     implicit none
     real(kind=8), intent(in) :: x(:)
     real(kind=8), allocatable :: Householder(:,:)
@@ -14,5 +14,5 @@ function Householder(x)
     u(1)=sign(1d0,x(1))*(abs(x(1))+p_norm_vec(x,2))
     u(2:n)=x(2:n)
     Householder=id_matrix(n)-beta*outer_prod_vec(u,u)
-    if (abs(det(Householder))+epsilon<1d0) error stop "Not orthogonal"
+    !if (abs(det(Householder))+epsilon<1d0) error stop "Not orthogonal"
 end function

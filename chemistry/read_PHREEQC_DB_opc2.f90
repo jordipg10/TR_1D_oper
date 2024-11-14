@@ -65,7 +65,7 @@ subroutine read_PHREEQC_DB_opc2(this,unit,filename)
                     cycle
                 !else if (str_trim(1:1)/='') then
                     !call this%read_sol_master_species_PHREEQC(str_trim,aq_species,prim_flag)
-                    !call aq_species%append_aq_species(this%aq_phase%aq_species)
+                    !call aq_species%append_aq_species(this%chem_syst%aq_phase%aq_species)
                 !else if (index(str_trim,'log_k')/=0) then !> logK a 25 ºC
                 !>    backspace(5)
                 !>    read(5,*) str, logK_25
@@ -111,7 +111,7 @@ subroutine read_PHREEQC_DB_opc2(this,unit,filename)
                         !call this%append_reaction(eq_react)
                         call eq_react%deallocate_reaction()
                     end if
-                    !call this%aq_phase%append_aq_species(aq_species)
+                    !call this%chem_syst%aq_phase%append_aq_species(aq_species)
                     call eq_react%read_association_react_PHREEQC(str_trim,prim_flag)
                 else if (index(str_trim,'log_k')==3) then !> logK a 25 ºC
                     backspace(5)
@@ -172,7 +172,7 @@ subroutine read_PHREEQC_DB_opc2(this,unit,filename)
                         end if
                         !call this%append_phase(phase)
                         call eq_react%read_dissolution_react_PHREEQC(str_trim)
-                        !call aq_species%append_aq_species(this%aq_phase%aq_species)
+                        !call aq_species%append_aq_species(this%chem_syst%aq_phase%aq_species)
                     else if (index(str_trim,'log_k')/=0) then !> logK a 25 ºC
                         backspace(5)
                         read(5,*) str, logK_25

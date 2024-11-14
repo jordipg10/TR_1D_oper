@@ -46,15 +46,16 @@ module transport_transient_m
             class(transport_1D_transient_c) :: this
         end subroutine
         
-        subroutine initialise_transport_1D_transient_RT(this,path,file_BCs,file_spatial_discr,file_time_discr,file_tpt_props)
+        subroutine initialise_transport_1D_transient_RT(this,root)
             import transport_1D_transient_c
             implicit none
             class(transport_1D_transient_c) :: this
-            character(len=*), intent(in) :: path
-            character(len=*), intent(in) :: file_BCs
-            character(len=*), intent(in) :: file_spatial_discr
-            character(len=*), intent(in) :: file_time_discr
-            character(len=*), intent(in) :: file_tpt_props
+            !character(len=*), intent(in) :: path
+            character(len=*), intent(in) :: root
+            !character(len=*), intent(in) :: file_BCs
+            !character(len=*), intent(in) :: file_spatial_discr
+            !character(len=*), intent(in) :: file_time_discr
+            !character(len=*), intent(in) :: file_tpt_props
         end subroutine
         
         subroutine write_transport_1D_transient(this,Time_out,output)
@@ -132,16 +133,16 @@ module transport_transient_m
             real(kind=8) :: mass_bal_err
         end function
         
-        subroutine read_transport_data_WMA(this,path,unit,file_tpt)!,mixing_ratios)!,f_vec)!,tpt_props,BCs,mesh,time_discr)
+        subroutine read_transport_data_WMA(this,unit,root)!,mixing_ratios)!,f_vec)!,tpt_props,BCs,mesh,time_discr)
             import transport_1D_transient_c
             !import tpt_props_heterog_c
             !import BCs_t
             !import mesh_1D_Euler_homog_c
             !import time_discr_homog_c
             class(transport_1D_transient_c) :: this
-            character(len=*), intent(in) :: path
+            !character(len=*), intent(in) :: path
             integer(kind=4), intent(in) :: unit
-            character(len=*), intent(in) :: file_tpt
+            character(len=*), intent(in) :: root
             !real(kind=8), intent(out), allocatable :: mixing_ratios(:,:)
             !real(kind=8), intent(out), allocatable :: f_vec(:)
             !type(tpt_props_heterog_c), intent(out) :: tpt_props
@@ -151,12 +152,12 @@ module transport_transient_m
             !type(time_discr_homog_c), intent(out) :: time_discr !> homogeneous time discretisation
         end subroutine
         
-        subroutine read_discretisation_WMA(this,path,unit,file_discr)
+        subroutine read_discretisation_WMA(this,unit,root)
             import transport_1D_transient_c
             class(transport_1D_transient_c) :: this
-            character(len=*), intent(in) :: path
+            !character(len=*), intent(in) :: path
             integer(kind=4), intent(in) :: unit
-            character(len=*), intent(in) :: file_discr
+            character(len=*), intent(in) :: root
         end subroutine
     end interface
     

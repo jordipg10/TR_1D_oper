@@ -36,6 +36,7 @@ module transport_stab_params_m
                     this%Delta_t_crit=phi*mesh_size**2/(2d0*D)
                     this%Courant=q*time_step/(phi*mesh_size)
                     if (this%Courant>1d0) then
+                        print *, this%Courant
                         error stop  "Courant condition violated"
                     end if
                     this%Peclet=abs(q)*mesh_size/D

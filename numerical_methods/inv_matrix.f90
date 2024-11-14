@@ -9,13 +9,16 @@ subroutine inv_matrix(A,tol,inv)
     real(kind=8), intent(out) :: inv(:,:)
     
     integer(kind=4) :: n,j,i,err
+    real(kind=8) :: det
     real(kind=8), parameter :: epsilon=1d-6
     real(kind=8), allocatable :: id(:,:), prod_A_invA(:,:), id_col(:), inv_col(:)
-    logical :: nzdiag
+    logical :: nzdiag,error
     
     if (size(A,1)/=size(A,2)) then
         error stop "Matrix must be square (inv_matrix)"
-    else if (abs(det(A))<tol) then
+    end if
+    call compute_det(A,tol,det,error)
+    if (error==.true. .or. abs(det)<tol) then
         error stop "Matrix is not invertible"
     end if
     n=size(A,1)
@@ -24,7 +27,7 @@ subroutine inv_matrix(A,tol,inv)
         inv(1,2)=-A(1,2)
         inv(2,1)=-A(2,1)
         inv(2,2)=A(1,1)
-        inv=inv/det(A)
+        inv=inv/det
     else
         allocate(inv_col(n))
         id=id_matrix(n)
@@ -50,10 +53,11 @@ subroutine inv_matrix(A,tol,inv)
         !end if
         do j=1,n
             id_col=id(1:n,j)
-            call Gauss_Jordan(A,id_col,tol,inv_col,err) !> Gauss-Jordan
-            if (err==1) then
-                error stop "Singular equation in Gauss-Jordan"
-            end if
+            !call Gauss_Jordan(A,id_col,tol,inv_col,err) !> Gauss-Jordan
+            call LU_lin_syst(A,id_col,tol,inv_col)
+            !if (err==1) then
+            !    error stop "Singular equation in Gauss-Jordan"
+            !end if
             inv(1:n,j)=inv_col
         end do
         prod_A_invA=matmul(A,inv)

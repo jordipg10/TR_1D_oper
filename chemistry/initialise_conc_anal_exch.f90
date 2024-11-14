@@ -28,7 +28,7 @@ subroutine initialise_conc_anal_exch(this,icon,n_icon,indices_constrains,ctot,su
     integer(kind=4) :: i,j,ind_eqn,niter_Picard,ind_cstr
     integer(kind=4), allocatable :: ind_aq_comp(:),cols(:),ind_aq_species(:),counters(:)
     logical :: flag_gas,flag_min,flag_wat
-    type(matrix_int_c) :: indices_icon
+    type(int_array_c) :: indices_icon
     
 !> Pre-process
     CV_flag=.false.
@@ -75,7 +75,7 @@ subroutine initialise_conc_anal_exch(this,icon,n_icon,indices_constrains,ctot,su
     allocate(d_log_gamma_d_I(this%speciation_alg%num_species))
     allocate(log_Jacobian_act_coeffs(this%speciation_alg%num_species,this%speciation_alg%num_species))
     allocate(dc2_dc1(this%speciation_alg%num_eq_reactions,this%speciation_alg%num_prim_species)) !> chapuza
-    allocate(out_prod_aq(this%aq_phase%num_species,this%aq_phase%num_species))
+    allocate(out_prod_aq(this%chem_syst%aq_phase%num_species,this%chem_syst%aq_phase%num_species))
     
     c1(this%speciation_alg%num_prim_species)=surf_chem%concentrations(1)
     c1(1:this%speciation_alg%num_aq_prim_species)=this%concentrations(1:this%speciation_alg%num_aq_prim_species) !> chapuza
@@ -94,8 +94,8 @@ subroutine initialise_conc_anal_exch(this,icon,n_icon,indices_constrains,ctot,su
     !allocate(z2(this%speciation_alg%num_species))
     !z2=0d0 !> chapuza
     !z2(this%speciation_alg%num_prim_species)=1 !> autentica chapuza
-    !z2(1:this%speciation_alg%num_aq_prim_species)=this%aq_phase%z2(1:this%speciation_alg%num_aq_prim_species)
-    !z2(this%speciation_alg%num_prim_species+1:this%aq_phase%num_species)=this%aq_phase%z2(this%speciation_alg%num_aq_prim_species+1:this%aq_phase%num_species)
+    !z2(1:this%speciation_alg%num_aq_prim_species)=this%chem_syst%aq_phase%z2(1:this%speciation_alg%num_aq_prim_species)
+    !z2(this%speciation_alg%num_prim_species+1:this%chem_syst%aq_phase%num_species)=this%chem_syst%aq_phase%z2(this%speciation_alg%num_aq_prim_species+1:this%chem_syst%aq_phase%num_species)
     Delta_c1=0d0 !> chapuza
     do
     !> We update number of iterations
@@ -105,10 +105,10 @@ subroutine initialise_conc_anal_exch(this,icon,n_icon,indices_constrains,ctot,su
             error stop
         end if
         !call this%compute_ionic_act()
-        !call this%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs)
+        !call this%chem_syst%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs)
         call this%compute_c2_from_c1_Picard(c1,c2_old,c2_new,niter_Picard,CV_flag)
         !call this%compute_ionic_act() !> we compute ionic activity
-        !call this%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs) !> we compute log activity coefficients aqueous species
+        !call this%chem_syst%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs) !> we compute log activity coefficients aqueous species
         !call this%compute_activities()
         !call this%compute_log_act_coeff_wat()
         
@@ -116,18 +116,18 @@ subroutine initialise_conc_anal_exch(this,icon,n_icon,indices_constrains,ctot,su
         !print *, c2_new
         !print *, this%activities
     !> Chapuza
-        !c2(1:this%speciation_alg%num_sec_aq_species)=this%concentrations(this%speciation_alg%num_aq_prim_species+1:this%aq_phase%num_species)
+        !c2(1:this%speciation_alg%num_sec_aq_species)=this%concentrations(this%speciation_alg%num_aq_prim_species+1:this%chem_syst%aq_phase%num_species)
     !> We compute residue and Jacobian analytically
         !> First we compute d_log_gamma_d_I
         call this%compute_d_log_gamma_d_I_aq_chem(d_log_gamma_d_I)
         !> Outer product d_log_gamma_d_I and z^2
         out_prod=outer_prod_vec(d_log_gamma_d_I,this%chem_syst%z2)
         !out_prod_aq(1:this%speciation_alg%num_aq_prim_species)=out_prod(1:this%speciation_alg%num_aq_prim_species) !> chapuza
-        !out_prod_aq(this%speciation_alg%num_aq_prim_species+1:this%aq_phase%num_species)=out_prod(1:this%speciation_alg%num_prim_species+1:this%aq_phase%num_species) !> chapuza
+        !out_prod_aq(this%speciation_alg%num_aq_prim_species+1:this%chem_syst%aq_phase%num_species)=out_prod(1:this%speciation_alg%num_prim_species+1:this%chem_syst%aq_phase%num_species) !> chapuza
         !> We compute Jacobian secondary-primary concentrations
         call this%compute_dc2_dc1(out_prod,c1,c2_new,dc2_dc1)
         !> We compute log-Jacobian activity coefficients-concentrations
-        call this%aq_phase%compute_log_Jacobian_act_coeffs_aq_phase(out_prod,[c1,c2_new],log_Jacobian_act_coeffs)
+        call this%chem_syst%aq_phase%compute_log_Jacobian_act_coeffs_aq_phase(out_prod,[c1,c2_new],log_Jacobian_act_coeffs)
         !> We check dc2_dc1
         call this%check_dc2_dc1(c1,c2_new,dc2_dc1,log_Jacobian_act_coeffs)
         conc_comp=this%compute_conc_comp_cst_act([c1,c2_new])

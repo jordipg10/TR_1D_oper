@@ -29,7 +29,7 @@ subroutine Newton_EfI_rk_kin_aq_anal(this,c_tilde,porosity,Delta_t,niter,CV_flag
 !> Pre-process
     niter=0
     CV_flag=.false.
-    n_aq=this%aq_phase%num_species
+    n_aq=this%chem_syst%aq_phase%num_species
     allocate(dfk_dc(n_aq,n_aq),Delta_c_aq(n_aq),drk_dc(this%chem_syst%num_kin_reacts,n_aq))
 !> Process
     !> We start Newton loop
@@ -63,7 +63,7 @@ subroutine Newton_EfI_rk_kin_aq_anal(this,c_tilde,porosity,Delta_t,niter,CV_flag
         end do
     !> We compute aqueous chemistry attributes
         call this%compute_ionic_act()
-        call this%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs)
+        call this%chem_syst%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs)
         call this%compute_log_act_coeff_wat()
         call this%compute_activities_aq()
         call this%compute_pH()

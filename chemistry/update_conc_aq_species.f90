@@ -10,7 +10,7 @@ subroutine update_conc_aq_species(this,Delta_c_aq)
     
     if (this%CV_params%control_factor>1d0 .or. this%CV_params%control_factor<0d0) error stop "Control factor must be in (0,1)"
     conc_old=this%concentrations
-    do i=1,this%aq_phase%num_species
+    do i=1,this%chem_syst%aq_phase%num_species
         if (this%concentrations(i)+Delta_c_aq(i)<=this%CV_params%control_factor*this%concentrations(i)) then
             this%concentrations(i)=this%CV_params%control_factor*this%concentrations(i)
         else if (this%concentrations(i)+Delta_c_aq(i)>=this%concentrations(i)/this%CV_params%control_factor) then

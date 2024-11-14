@@ -60,6 +60,7 @@ subroutine read_kinetics_DB(this,path,unit)
                 else
                     exit
                 end if
+                deallocate(min_params%k,min_params%p,min_params%theta,min_params%eta,min_params%cat_indices,catalysers)
             else
                 read(unit,*) cst
             end if

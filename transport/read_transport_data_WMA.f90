@@ -1,9 +1,10 @@
-subroutine read_transport_data_WMA(this,path,unit,file_tpt)!,tpt_props,BCs,mesh,time_discr)
+subroutine read_transport_data_WMA(this,unit,root)!,tpt_props,BCs,mesh,time_discr)
     use transport_transient_m
     class(transport_1D_transient_c) :: this
-    character(len=*), intent(in) :: path
+    !character(len=*), intent(in) :: path
     integer(kind=4), intent(in) :: unit
-    character(len=*), intent(in) :: file_tpt
+    character(len=*), intent(in) :: root
+    !character(len=*), intent(in) :: file_tpt
     
     character(len=256) :: str,label
     character(len=:), allocatable :: str_trim
@@ -14,7 +15,7 @@ subroutine read_transport_data_WMA(this,path,unit,file_tpt)!,tpt_props,BCs,mesh,
     integer(kind=4) :: i,j,BCs_label(2),comm_ind,pos
     integer(kind=4), allocatable :: num_mix_waters(:),mix_wat_indices(:)
     real(kind=8) :: Delta_x,Delta_t,r,phi,D
-    type(matrix_real_c) :: mixing_ratios
+    type(real_array_c) :: mixing_ratios
     logical :: flag_props
     type(diag_matrix_c) :: F_mat
     
@@ -22,7 +23,7 @@ subroutine read_transport_data_WMA(this,path,unit,file_tpt)!,tpt_props,BCs,mesh,
     
     
     
-    open(unit,file=trim(path)//file_tpt,status='old',action='read')
+    open(unit,file=root//'_WMA_lambdas.dat',status='old',action='read')
     do 
         read(unit,*) label
         if (label=='end') then
@@ -89,7 +90,6 @@ subroutine read_transport_data_WMA(this,path,unit,file_tpt)!,tpt_props,BCs,mesh,
                 i=i+1
                 if (i<=this%spatial_discr%Num_targets) then
                     read(unit,*) tar_dim, (mixing_ratios%cols(i)%col_1(j), j=1,tar_dim)
-                    print *, mixing_ratios%cols(1)%col_1
                 else
                     exit
                 end if

@@ -57,7 +57,7 @@ subroutine compute_c_nc_from_u_aq_Newton(this,c2nc_ig,conc_comp,conc_nc,niter,CV
         !> We compute Jacobian secondary variable activity-primary concentrations
             call this%compute_dc2nc_dc1_aq(conc_nc(n_p+1:n_nc),out_prod,dc2nc_dc1)
         !> We compute log-Jacobian variable activity coefficients-variable activity concentrations
-            call this%aq_phase%compute_log_Jacobian_act_coeffs_aq_phase(out_prod(1:n_nc_aq,1:n_nc_aq),THIS%concentrations(1:n_nc_aq),log_Jacobian_act_coeffs(1:n_nc_aq,1:n_nc_aq))
+            call this%chem_syst%aq_phase%compute_log_Jacobian_act_coeffs_aq_phase(out_prod(1:n_nc_aq,1:n_nc_aq),THIS%concentrations(1:n_nc_aq),log_Jacobian_act_coeffs(1:n_nc_aq,1:n_nc_aq))
         !> We check Jacobain secondary variable activity-primary concentrations
              call this%check_dc2nc_dc1_aq(conc_nc(n_p+1:n_nc),dc2nc_dc1,log_Jacobian_act_coeffs)
         !> We solve linear system

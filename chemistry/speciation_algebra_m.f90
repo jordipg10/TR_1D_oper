@@ -112,28 +112,54 @@ module speciation_algebra_m
             call inv_matrix(Se_nc_2,tol,this%inv_Se_nc_2)
         end subroutine
         
-        subroutine compute_arrays(this,Se,K,tol)
+        subroutine compute_arrays(this,Se,K,tol,flag,cols)
             implicit none
             class(speciation_algebra_c) :: this
-            real(kind=8), intent(in) :: Se(:,:) !> equilibrium stoichiometric matrix
+            real(kind=8), intent(inout) :: Se(:,:) !> equilibrium stoichiometric matrix
             real(kind=8), intent(in) :: K(:) !> equilibrium constants
             real(kind=8), intent(in) :: tol !> for computing inverse matrix
+            logical, intent(out) :: flag !> TRUE if stoichiometric matrix has been modified
+            integer(kind=4), intent(out) :: cols(:)
             
-            real(kind=8), allocatable :: Se_nc_2(:,:),Se_2(:,:)
+            integer(kind=4) :: i
+            real(kind=8) :: det
+            logical :: error
+            real(kind=8), allocatable :: Se_nc_2(:,:),Se_2(:,:),aux_Se(:,:)
+            
+            flag=.false. !> by default
+            !aux_Se=Se
+            
+            !allocate(cols(2)) !> chapuza
+            !cols=0 !> no columns are swapped by default
+            
+            i=0
+            aux_Se=Se
             
             if (this%flag_comp==.true.) then
-                Se_nc_2=Se(:,this%num_prim_species+1:this%num_var_act_species) !> secondary variable activity equilibrium stoichiometric submatrix
-                if (abs(det(Se_nc_2))<tol) then
-                    error stop "Matrix Se_2,nc is not invertible. You must change set of primary species"
-                else
-                    call this%compute_inv_Se_nc_2(Se_nc_2,tol)
-                end if
-                call this%compute_Se_nc_1_star(Se(:,1:this%num_prim_species))
-                call this%compute_logK_star(K)
-                call this%compute_comp_mat()
+                do
+                    Se_nc_2=Se(:,this%num_prim_species+1:this%num_var_act_species) !> secondary variable activity equilibrium stoichiometric submatrix
+                    call compute_det(Se_nc_2,tol,det,error)
+                    if (error==.true. .or. abs(det)<tol) then
+                        flag=.true.
+                        i=i+1
+                        Se=aux_Se
+                        Se(:,this%num_prim_species+1)=aux_Se(:,this%num_prim_species-i+1)
+                        Se(:,this%num_prim_species-i+1)=aux_Se(:,this%num_prim_species+1)
+                        !error stop "Matrix Se_2,nc is not invertible. You must change set of primary species"
+                    else
+                        call this%compute_inv_Se_nc_2(Se_nc_2,tol)
+                        cols(1)=this%num_prim_species-i+1
+                        cols(2)=this%num_prim_species+1
+                        call this%compute_Se_nc_1_star(Se(:,1:this%num_prim_species))
+                        call this%compute_logK_star(K)
+                        call this%compute_comp_mat()
+                        exit
+                    end if
+                end do
             else
                 Se_2=Se(:,this%num_prim_species+1:this%num_species) !> secondary equilibrium stoichiometric submatrix
-                if (abs(det(Se_2))<tol) then
+                call compute_det(Se_nc_2,tol,det,error)
+                if (error==.true.) then
                     error stop "Matrix Se_2 is not invertible. You must change set of primary species"
                 end if
                 caLL this%compute_inv_Se_2(Se_2,tol)

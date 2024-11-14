@@ -7,7 +7,7 @@ subroutine compute_res_Jac_res_incr_coef(this,c2,indices_icon,n_icon,indices_con
     !> Pre-process
     class(aqueous_chemistry_c) :: this
     real(kind=8), intent(in) :: c2(:) !> chapuza (dim=n_eq) (secondary concentrations for unperturbed residual)
-    class(matrix_int_c), intent(in) :: indices_icon
+    class(int_array_c), intent(in) :: indices_icon
     integer(kind=4), intent(in) :: n_icon(:) !> number of each icon
     integer(kind=4), intent(in) :: indices_constrains(:)
     real(kind=8), intent(in) :: ctot(:)
@@ -46,7 +46,7 @@ subroutine compute_res_Jac_res_incr_coef(this,c2,indices_icon,n_icon,indices_con
     call this%set_conc_prim_species(c1) !> unperturbed c1
     call this%set_conc_sec_aq_species(c2(1:this%speciation_alg%num_sec_aq_species)) !> unperturbed c2aq
     call this%compute_ionic_act() !> we compute ionic activity
-    call this%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs) !> we compute log activity coefficients aqueous species
+    call this%chem_syst%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs) !> we compute log activity coefficients aqueous species
     call this%compute_activities_aq() !> chapuza
     call this%compute_log_act_coeff_wat()
 end subroutine

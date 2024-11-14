@@ -1,7 +1,7 @@
 function prod_mat_vec(A,b) result(x) !> Ab=x
     use matrices_m
     implicit none
-    class(matrix_c), intent(in) :: A
+    class(array_c), intent(in) :: A
     real(kind=8), intent(in) :: b(:)
     real(kind=8), allocatable :: x(:) 
     

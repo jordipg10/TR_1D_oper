@@ -12,5 +12,5 @@ subroutine compute_dfk_dc_aq_EfI(this,drk_dc,porosity,Delta_t,dfk_dc)
     real(kind=8), intent(out) :: dfk_dc(:,:) !> Jacobian Newton residual - aqueous concentrations (must be already allocated)
 !> Process
     !> We compute Jacobian Newton residual
-        dfk_dc=id_matrix(this%aq_phase%num_species)-(Delta_t/porosity)*matmul(transpose(this%chem_syst%Sk),drk_dc)
+        dfk_dc=id_matrix(this%chem_syst%aq_phase%num_species)-(Delta_t/porosity)*matmul(transpose(this%chem_syst%Sk),drk_dc)
 end subroutine

@@ -6,25 +6,26 @@ subroutine compute_rk_Jac_rk_incr_coeff(this,drk_dc)
     class(aqueous_chemistry_c) :: this !> aqueous chemistry object
     real(kind=8), intent(out) :: drk_dc(:,:) !> Jacobian (must be allocated)
 !> Variables
-    integer(kind=4) :: i,j,niter,rk_ind,l
+    integer(kind=4) :: i,j,niter,rk_ind,l,index
     integer(kind=4), allocatable :: kin_ind(:),species_indices(:)
     real(kind=8), allocatable :: rk_pert(:),c_pert(:)
     real(kind=8) :: saturation,saturation_pert
 
-    type(matrix_int_c) :: indices_Monod,indices_min
+    type(int_array_c) :: indices_Monod,indices_min
     
     allocate(rk_pert(this%chem_syst%num_kin_reacts))
     
     drk_dc=0d0 !> chapuza
 !> We compute linear kinetic reaction rates
     do i=1,this%chem_syst%num_lin_kin_reacts
+        index=this%chem_syst%lin_kin_reacts(i)%indices_aq_phase(1)
         !allocate(conc_kin(this%chem_syst%num_species),kin_ind(this%chem_syst%num_species))
-        call this%chem_syst%lin_kin_reacts(i)%compute_rk_lin(this%concentrations,this%rk(i))
+        call this%chem_syst%lin_kin_reacts(i)%compute_rk_lin(this%concentrations(index),this%rk(i))
     end do
 !> We compute mineral kinetic reaction rates
     call indices_min%allocate_matrix(this%chem_syst%num_min_kin_reacts)
     do i=1,this%chem_syst%num_min_kin_reacts
-        !call this%chem_syst%min_kin_reacts(i)%get_solid_chem_mineral(this%aq_phase%aq_species,this%activities,this%activities)
+        !call this%chem_syst%min_kin_reacts(i)%get_solid_chem_mineral(this%chem_syst%aq_phase%aq_species,this%activities,this%activities)
         indices_min%cols(i)%col_1=this%chem_syst%min_kin_reacts(i)%indices_aq_phase
         indices_min%cols(i)%dim=SIZE(indices_min%cols(i)%col_1) !> chapuza
         saturation=this%compute_saturation_min(this%chem_syst%min_kin_reacts(i))
@@ -44,7 +45,7 @@ subroutine compute_rk_Jac_rk_incr_coeff(this,drk_dc)
          !> chapuza
             this%concentrations(indices_min%cols(i)%col_1(j))=this%concentrations(indices_min%cols(i)%col_1(j))+this%CV_params%eps
             call this%compute_ionic_act()
-            call this%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs)
+            call this%chem_syst%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs)
             call this%compute_activities()
 
             saturation_pert=this%compute_saturation_min(this%chem_syst%min_kin_reacts(i))
@@ -53,7 +54,7 @@ subroutine compute_rk_Jac_rk_incr_coeff(this,drk_dc)
         !> chapuza
             this%concentrations(indices_min%cols(i)%col_1(j))=this%concentrations(indices_min%cols(i)%col_1(j))-this%CV_params%eps
             call this%compute_ionic_act()
-            call this%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs)
+            call this%chem_syst%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs)
             call this%compute_activities()
         end do
     end do

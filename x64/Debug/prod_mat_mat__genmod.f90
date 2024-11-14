@@ -1,11 +1,11 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Thu Sep 19 14:42:20 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Nov 14 15:42:26 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE PROD_MAT_MAT__genmod
           INTERFACE 
             FUNCTION PROD_MAT_MAT(THIS,B_MAT) RESULT(C_MAT)
               USE MATRICES_M
-              CLASS (MATRIX_C), INTENT(IN) :: THIS
+              CLASS (ARRAY_C), INTENT(IN) :: THIS
               REAL(KIND=8), INTENT(IN) :: B_MAT(:,:)
               REAL(KIND=8) ,ALLOCATABLE :: C_MAT(:,:)
             END FUNCTION PROD_MAT_MAT

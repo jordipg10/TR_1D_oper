@@ -5,7 +5,7 @@ module species_m
     implicit none
     save
     type, public :: element_c !> element superclass
-        character(len=256)  :: name !> name of species (including valence)
+        character(len=256)  :: name !> name of element (including valence)
         integer(kind=4) :: valence !> valence
         real(kind=8) :: molecular_weight !> [kg/mol]
         real(kind=8) :: mol_vol !> molar volume [L/mol]

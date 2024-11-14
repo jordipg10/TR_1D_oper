@@ -29,24 +29,29 @@ subroutine write_python(this,path)
         open(998,file=trim(path)//'lambdas_filas.dat')
         if (this%transport%time_discr%int_method==1) then
             do i=1,this%transport%mixing_ratios%num_cols
-                write(998,"(*(F15.5))") (this%transport%mixing_ratios%cols(i)%col_1(j), j=1,this%transport%mixing_ratios%cols(i)%dim)
+                write(998,"(*(ES20.10))") (this%transport%mixing_ratios%cols(i)%col_1(j), j=1,this%transport%mixing_ratios%cols(i)%dim)
             end do
         else if (this%transport%time_discr%int_method==2) then
             do i=1,this%transport%mixing_ratios%num_cols
-                write(998,"(*(F15.5))") (this%transport%mixing_ratios_mat(j,i), j=1,this%transport%mixing_ratios%num_cols)
+                write(998,"(*(ES20.10))") (this%transport%mixing_ratios_mat(j,i), j=1,this%transport%mixing_ratios%num_cols)
             end do
         end if
         close(998)
         open(997,file=trim(path)//'lambdas_cols.dat')
         if (this%transport%time_discr%int_method==1) then
             do i=1,this%transport%mixing_ratios%num_cols
-                write(997,"(*(F15.5))") (this%transport%mixing_ratios%cols(i)%col_1(j), j=1,this%transport%mixing_ratios%cols(i)%dim)
+                write(997,"(*(ES20.10))") (this%transport%mixing_ratios%cols(i)%col_1(j), j=1,this%transport%mixing_ratios%cols(i)%dim)
             end do
         else if (this%transport%time_discr%int_method==2) then
             do i=1,this%transport%mixing_ratios%num_cols
-                write(997,"(*(F15.5))") (this%transport%mixing_ratios_mat(i,j), j=1,this%transport%mixing_ratios%num_cols)
+                write(997,"(*(ES20.10))") (this%transport%mixing_ratios_mat(i,j), j=1,this%transport%mixing_ratios%num_cols)
             end do
         end if
         close(997)
+        !open(991,file=trim(path)//'vol_frac_init.dat')
+        !do i=1,this%chemistry%chem_syst%num_minerals
+        !    write(991,"(*(ES20.10))") (this%chemistry%target_solids(j)%vol_fracts(i), j=1,this%chemistry%num_target_solids)
+        !end do
+        !close(991)
     end select
 end subroutine

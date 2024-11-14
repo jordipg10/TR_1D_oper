@@ -19,9 +19,9 @@ subroutine compute_dc2_dc1(this,out_prod,c1,c2,dc2_dc1)
     call diag_c2%set_diag_matrix(c2)
     call diag_c1%set_diag_matrix(c1)
 !> Then we compute log-Jacobian activity coefficients with respect to secondary aqueous concentrations
-    !call this%aq_phase%compute_d_log_gamma_d_c2_aq(this%d_log_gamma_d_I,this%concentrations(this%speciation_alg%num_aq_prim_species+1:this%aq_phase%num_species),this%log_Jacobian_act_coeffs(:,this%speciation_alg%num_prim_species+1:this%aq_phase%num_species))
+    !call this%chem_syst%aq_phase%compute_d_log_gamma_d_c2_aq(this%d_log_gamma_d_I,this%concentrations(this%speciation_alg%num_aq_prim_species+1:this%chem_syst%aq_phase%num_species),this%log_Jacobian_act_coeffs(:,this%speciation_alg%num_prim_species+1:this%chem_syst%aq_phase%num_species))
     !d_log_gamma_d_log_c=0d0
-    !d_log_gamma_d_log_c(1:this%aq_phase%num_species,this%speciation_alg%num_prim_species+1:this%aq_phase%num_species)=this%log_Jacobian_act_coeffs(:,this%speciation_alg%num_prim_species+1:this%aq_phase%num_species)
+    !d_log_gamma_d_log_c(1:this%chem_syst%aq_phase%num_species,this%speciation_alg%num_prim_species+1:this%chem_syst%aq_phase%num_species)=this%log_Jacobian_act_coeffs(:,this%speciation_alg%num_prim_species+1:this%chem_syst%aq_phase%num_species)
     !d_log_gamma1_d_log_c2=d_log_gamma_d_log_c(1:this%speciation_alg%num_prim_species,this%speciation_alg%num_prim_species+1:this%speciation_alg%num_species)
     !d_log_gamma2_d_log_c2=d_log_gamma_d_log_c(this%speciation_alg%num_prim_species+1:this%speciation_alg%num_species,this%speciation_alg%num_prim_species+1:this%speciation_alg%num_species)
 !> We compute linear system with logarithms
@@ -36,9 +36,9 @@ subroutine compute_dc2_dc1(this,out_prod,c1,c2,dc2_dc1)
     !allocate(indep_mat(this%speciation_alg%num_eq_reactions,this%speciation_alg%num_prim_species))
     do j=1,this%speciation_alg%num_prim_species
     !!> Independent term j-th primary species
-    !    indep_term_aux=this%aq_phase%z2(j)*5d-1*log(1d1)*this%concentrations(j)*this%d_log_gamma_d_I(1:this%speciation_alg%num_prim_species)
+    !    indep_term_aux=this%chem_syst%aq_phase%z2(j)*5d-1*log(1d1)*this%concentrations(j)*this%d_log_gamma_d_I(1:this%speciation_alg%num_prim_species)
     !    indep_term_aux(j)=indep_term_aux(j)+1d0
-    !    indep_term(:,j)=matmul(this%speciation_alg%Se_1_star,indep_term_aux)-this%aq_phase%z2(j)*5d-1*log(1d1)*this%concentrations(j)*this%d_log_gamma_d_I(this%speciation_alg%num_prim_species+1:this%speciation_alg%num_species)
+    !    indep_term(:,j)=matmul(this%speciation_alg%Se_1_star,indep_term_aux)-this%chem_syst%aq_phase%z2(j)*5d-1*log(1d1)*this%concentrations(j)*this%d_log_gamma_d_I(this%speciation_alg%num_prim_species+1:this%speciation_alg%num_species)
      !> Linear system solver
         call LU_lin_syst(mat_lin_syst,indep_mat(:,j),this%CV_params%zero,log_dc2_dc1(:,j))
     end do

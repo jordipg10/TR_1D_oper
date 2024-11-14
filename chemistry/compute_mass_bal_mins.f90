@@ -9,7 +9,11 @@ subroutine compute_mass_bal_mins(this,Delta_t)
 !> Variables
     integer(kind=4) :: i !> counter minerals
 !> Process
+    do i=1,this%reactive_zone%chem_syst%num_min_kin_reacts
+        !print *, this%rk
+        this%vol_fracts(i)=this%vol_fracts(i)+Delta_t*this%reactive_zone%chem_syst%minerals(i)%mineral%mol_vol*this%rk(i)
+    end do
     do i=1,this%reactive_zone%num_minerals
-        this%vol_fracts(i)=this%vol_fracts(i)+Delta_t*this%reactive_zone%minerals(i)%mineral%mol_vol*this%r_eq(i)
+        this%vol_fracts(this%reactive_zone%chem_syst%num_min_kin_reacts+i)=this%vol_fracts(this%reactive_zone%chem_syst%num_min_kin_reacts+i)+Delta_t*this%reactive_zone%minerals(i)%mineral%mol_vol*this%r_eq(i)
     end do
 end subroutine

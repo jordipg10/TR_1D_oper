@@ -3,7 +3,7 @@ module matrices_m
     implicit none
     save
     
-    type, public, abstract :: matrix_c !> matrix superclass
+    type, public, abstract :: array_c !> matrix superclass
         integer(kind=4) :: num_cols
     contains
         procedure, public :: allocate_matrix
@@ -17,22 +17,22 @@ module matrices_m
         procedure, public :: compute_norm_1
     end type
     
-    type, public, extends(matrix_c) :: non_sq_matrix_c
+    type, public, extends(array_c) :: non_sq_matrix_c
     end type
     
-    type, public, extends(non_sq_matrix_c) :: matrix_real_c
+    type, public, extends(non_sq_matrix_c) :: real_array_c
         type(vector_real_c), allocatable :: cols(:)
     contains
         procedure, public :: is_matrix_full
     end type
     
-    type, public, extends(non_sq_matrix_c) :: matrix_int_c
+    type, public, extends(non_sq_matrix_c) :: int_array_c
         type(vector_int_c), allocatable :: cols(:)
     contains
         procedure, public :: get_vector_int
     end type
     
-    type, public, extends(matrix_c) :: sq_matrix_c
+    type, public, extends(array_c) :: sq_matrix_c
         !integer(kind=4) :: dim
         real(kind=8), allocatable :: eigenvalues(:)
         real(kind=8), allocatable :: eigenvectors(:,:)
@@ -115,12 +115,14 @@ module matrices_m
             real(kind=8) :: norm
         end function
         
-        function det(A)
+        subroutine compute_det(A,tol,det,error)
         !> Determinant of square matrix using LU decomposition
             implicit none
             real(kind=8), intent(in) :: A(:,:)
-            real(kind=8) :: det
-        end function det
+            real(kind=8), intent(in) :: tol
+            real(kind=8), intent(out) :: det
+            logical, intent(out) :: error
+        end subroutine
         
         subroutine inv_matrix(A,tol,inv)
         !> Inverse of square matrix using Gauss-Jordan
@@ -131,9 +133,9 @@ module matrices_m
         end subroutine inv_matrix
         
         function prod_mat_vec(this,b) result(x) !> Ab=x
-            import matrix_c
+            import array_c
             implicit none
-            class(matrix_c), intent(in) :: this
+            class(array_c), intent(in) :: this
             real(kind=8), intent(in) :: b(:)
             real(kind=8), allocatable :: x(:)
         end function
@@ -146,10 +148,12 @@ module matrices_m
             real(kind=8), allocatable :: C_mat(:,:)
         end function 
         
-        subroutine LU(A,L,U)
+        subroutine LU(A,tol,L,U,error)
             implicit none
             real(kind=8), intent(in) :: A(:,:)
+            real(kind=8), intent(in) :: tol
             real(kind=8), intent(out) :: L(:,:), U(:,:)
+            logical, intent(out) :: error
         end subroutine LU
         
         subroutine Cholesky(A,L)
@@ -224,7 +228,7 @@ module matrices_m
     contains
         subroutine allocate_matrix(this,n)
             implicit none
-            class(matrix_c) :: this
+            class(array_c) :: this
             integer(kind=4), intent(in), optional :: n
             if (present(n)) then
                 this%num_cols=n
@@ -244,11 +248,11 @@ module matrices_m
                         !end select
                     end select
                 end select
-            type is (matrix_real_c)
+            type is (real_array_c)
                 allocate(this%cols(this%num_cols))
                 !do i=1,this%num_cols
                 !    call this%cols(i)%allocate_vector()
-            type is (matrix_int_c)
+            type is (int_array_c)
                 if (allocated(this%cols)) then
                     deallocate(this%cols)
                 end if
@@ -258,14 +262,14 @@ module matrices_m
         
         subroutine allocate_columns(this)
             implicit none
-            class(matrix_c) :: this
+            class(array_c) :: this
             integer(kind=4) :: i
             select type (this)
-            type is (matrix_real_c)
+            type is (real_array_c)
                 do i=1,this%num_cols
                     call this%cols(i)%allocate_vector()
                 end do
-            type is (matrix_int_c)
+            type is (int_array_c)
                 do i=1,this%num_cols
                     call this%cols(i)%allocate_vector()
                 end do
@@ -301,7 +305,7 @@ module matrices_m
         
         function get_diag(this) result(diag)
             implicit none
-            class(matrix_c), intent(in) :: this
+            class(array_c), intent(in) :: this
             real(kind=8), allocatable :: diag(:)
             select type (this)
             class is (diag_matrix_c)
@@ -311,7 +315,7 @@ module matrices_m
         
         function get_sub(this) result(sub)
             implicit none
-            class(matrix_c), intent(in) :: this
+            class(array_c), intent(in) :: this
             real(kind=8), allocatable :: sub(:)
             select type (this)
             class is (tridiag_sym_matrix_c)
@@ -321,7 +325,7 @@ module matrices_m
         
         function get_super(this) result(super)
             implicit none
-            class(matrix_c), intent(in) :: this
+            class(array_c), intent(in) :: this
             real(kind=8), allocatable :: super(:)
             select type (this)
             class is (tridiag_matrix_c)
@@ -331,7 +335,7 @@ module matrices_m
         
         function compute_norm_inf(this) result(norm)
             implicit none
-            class(matrix_c), intent(in) :: this
+            class(array_c), intent(in) :: this
             real(kind=8) :: norm
             
             integer(kind=4) :: i,n
@@ -365,7 +369,7 @@ module matrices_m
         
         function compute_norm_1(this) result(norm)
             implicit none
-            class(matrix_c), intent(in) :: this
+            class(array_c), intent(in) :: this
             real(kind=8) :: norm
             
             type(tridiag_matrix_c) :: transpose
@@ -419,7 +423,7 @@ module matrices_m
         
         function get_vector_int(this) result(vector_int)
             implicit none
-            class(matrix_int_c), intent(in) :: this
+            class(int_array_c), intent(in) :: this
             integer(kind=4), allocatable :: vector_int(:)
             
             integer(kind=4) :: i,j,dim_vec
@@ -439,7 +443,7 @@ module matrices_m
         
         subroutine is_matrix_full(this,flag)
             implicit none
-            class(matrix_real_c), intent(in) :: this
+            class(real_array_c), intent(in) :: this
             logical, intent(out) :: flag
             
             integer(kind=4) :: i

@@ -17,12 +17,12 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
     !real(kind=8), intent(out), optional :: conc_exch(:) !> chapuza
     
     integer(kind=4) :: i,j,k,l,m,niwtype,nbwtype,nrwtype,gas_ind,min_ind,n_comp_aq,ind_cstr,n_gas_constr,n_aq_comp,icon,sp_ind
-    integer(kind=4), allocatable :: icons(:),indices_constrains(:),gas_indices(:),n_icons(:),prim_indices(:)
+    integer(kind=4), allocatable :: icons(:),indices_constrains(:),gas_indices(:),n_icons(:),prim_indices(:),cols(:)
     real(kind=8), allocatable :: ctots(:)
     character(len=256) :: prim_sp_name,label,aq_sp_name
     character(len=256), allocatable :: constrains(:)
     real(kind=8) :: temp,conc,ionic_act,guess,ctot
-    logical :: flag_gas,flag_min,flag,flag_comp,flag_surf
+    logical :: flag_gas,flag_min,flag,flag_comp,flag_surf,flag_Se
     
     type(reactive_zone_c) :: react_zone
     type(gas_chemistry_c) :: gas_chem
@@ -37,7 +37,7 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
     !        i=0 !> counter initial water types
     !        read(unit,*) model
     !        read(unit,*) this%num_init_wat_types, this%num_bd_wat_types, this%num_rech_wat_types
-        if (n_p_aq<0 .or. n_p_aq>this%aq_chem%aq_phase%num_species) then
+        if (n_p_aq<0 .or. n_p_aq>this%aq_chem%chem_syst%aq_phase%num_species) then
             error stop
         else if (num_cstr<0 .or. num_cstr>n_p_aq) then
             error stop
@@ -71,7 +71,7 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
                 if (aq_species%name=='*') then
                     exit
                 else
-                    call this%aq_chem%aq_phase%is_species_in_aq_phase(aq_species,flag,sp_ind)
+                    call this%aq_chem%chem_syst%aq_phase%is_species_in_aq_phase(aq_species,flag,sp_ind)
                     if (flag==.true.) then
                         prim_indices(k)=sp_ind
                         !> Chapuza
@@ -87,7 +87,7 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
                         else if (icon==3) then
                             n_icons(3)=n_icons(3)+1
                             if (aq_species%name=='h+') then
-                                call this%aq_chem%aq_phase%set_ind_proton(sp_ind)
+                                call this%aq_chem%chem_syst%aq_phase%set_ind_proton(sp_ind)
                                 call this%aq_chem%set_pH(-log10(ctot))
                             end if
                         else if (icon==4) then
@@ -96,8 +96,8 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
                             if (flag==.true.) then
                                 indices_constrains(l)=ind_cstr
                                 l=l+1
-                                if (ind_cstr>this%aq_chem%chem_syst%num_minerals_eq+this%aq_chem%aq_phase%num_aq_complexes+this%aq_chem%chem_syst%num_redox_eq_reacts) then
-                                    this%aq_chem%gas_chemistry%activities(ind_cstr-this%aq_chem%chem_syst%num_minerals_eq-this%aq_chem%aq_phase%num_aq_complexes-this%aq_chem%chem_syst%num_redox_eq_reacts)=ctot
+                                if (ind_cstr>this%aq_chem%chem_syst%num_minerals_eq+this%aq_chem%chem_syst%aq_phase%num_aq_complexes+this%aq_chem%chem_syst%num_redox_eq_reacts) then
+                                    this%aq_chem%gas_chemistry%activities(ind_cstr-this%aq_chem%chem_syst%num_minerals_eq-this%aq_chem%chem_syst%aq_phase%num_aq_complexes-this%aq_chem%chem_syst%num_redox_eq_reacts)=ctot
                                 end if
                                 !call this%aq_chem%chem_syst%gas_phase%is_gas_in_gas_phase(gas,flag,gas_ind)
                             else
@@ -123,8 +123,8 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
         else
             error stop
         end if
-    do i=1,this%aq_chem%aq_phase%num_species
-        call this%aq_chem%aq_phase%aq_species(i)%params_act_coeff%compute_csts(this%aq_chem%aq_phase%aq_species(i)%valence,this%aq_chem%params_aq_sol,model)
+    do i=1,this%aq_chem%chem_syst%aq_phase%num_species
+        call this%aq_chem%chem_syst%aq_phase%aq_species(i)%params_act_coeff%compute_csts(this%aq_chem%chem_syst%aq_phase%aq_species(i)%valence,this%aq_chem%params_aq_sol,model)
     end do
 !> We set speciation algebra
     call this%aq_chem%speciation_alg%set_flag_comp(.false.)
@@ -134,12 +134,12 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
         flag_surf=.false.
     end if
     call this%aq_chem%speciation_alg%set_flag_cat_exch(flag_surf)
-    call this%aq_chem%speciation_alg%set_dimensions(this%aq_chem%chem_syst%num_species,this%aq_chem%chem_syst%num_eq_reacts,this%aq_chem%chem_syst%num_cst_act_species,this%aq_chem%aq_phase%num_species,this%aq_chem%aq_phase%num_species-this%aq_chem%aq_phase%wat_flag,this%aq_chem%chem_syst%num_min_kin_reacts,this%aq_chem%chem_syst%gas_phase%num_species-this%aq_chem%chem_syst%gas_phase%num_gases_eq)
-    call this%aq_chem%speciation_alg%compute_arrays(this%aq_chem%chem_syst%Se,this%aq_chem%chem_syst%get_eq_csts(),this%aq_chem%CV_params%abs_tol)
+    call this%aq_chem%speciation_alg%set_dimensions(this%aq_chem%chem_syst%num_species,this%aq_chem%chem_syst%num_eq_reacts,this%aq_chem%chem_syst%num_cst_act_species,this%aq_chem%chem_syst%aq_phase%num_species,this%aq_chem%chem_syst%aq_phase%num_species-this%aq_chem%chem_syst%aq_phase%wat_flag,this%aq_chem%chem_syst%num_min_kin_reacts,this%aq_chem%chem_syst%gas_phase%num_species-this%aq_chem%chem_syst%gas_phase%num_gases_eq)
+    call this%aq_chem%speciation_alg%compute_arrays(this%aq_chem%chem_syst%Se,this%aq_chem%chem_syst%get_eq_csts(),this%aq_chem%CV_params%abs_tol,flag_Se,cols)
             
     call this%aq_chem%set_prim_species_indices()
     call this%aq_chem%set_sec_var_act_species_indices()
-    call this%aq_chem%aq_phase%set_ind_diss_solids()
+    call this%aq_chem%chem_syst%aq_phase%set_ind_diss_solids()
     
     !call this%aq_chem%allocate_conc_comp_aq()
     !call this%aq_chem%allocate_log_act_coeffs_aq_chem()
@@ -158,6 +158,8 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
             else
                 error stop
             end if
+        else if (model==0) then
+            call this%aq_chem%initialise_conc_anal_ideal(icons,n_icons,indices_constrains,ctots,niter,CV_flag)
         else
             if (Jac_flag==0) then
                 call this%aq_chem%initialise_conc_incr_coeff(icons,n_icons,indices_constrains,ctots,niter,CV_flag)

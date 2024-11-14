@@ -10,10 +10,10 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
     class(gas_chemistry_c), intent(in), optional :: gas_chem !> chapuza
     
     integer(kind=4) :: i,j,k,l,nwtype,icon,n_p_aq,gas_ind,min_ind,model,niter
-    !integer(kind=4), allocatable :: num_aq_prim_array(:),num_cstr_array(:)
+    integer(kind=4), allocatable :: cols(:)
     character(len=256) :: prim_sp_name,constrain,label,name
     real(kind=8) :: guess,c_tot,temp,conc
-    logical :: CV_flag,flag,flag_surf,flag_comp
+    logical :: CV_flag,flag,flag_surf,flag_comp,flag_Se
     
     type(reactive_zone_c) :: react_zone
     !type(gas_chemistry_c) :: gas_chem
@@ -29,6 +29,7 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
     !read(unit,*) this%num_init_wat_types, this%num_bd_wat_types, this%num_rech_wat_types
     
     call this%allocate_wat_types()
+    allocate(cols(2))
     !this%num_wat_types=this%num_init_wat_types+this%num_bd_wat_types+this%num_rech_wat_types !> total number of water types
     allocate(num_aq_prim_array(this%num_wat_types),num_cstr_array(this%num_wat_types),ind_wat_type(this%num_wat_types))
     
@@ -40,7 +41,7 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
         if (j<1 .or. j>this%num_wat_types) error stop
         ind_wat_type(i)=j
         call this%wat_types(j)%aq_chem%set_chem_syst_aq_chem(this%chem_syst)
-        call this%wat_types(j)%aq_chem%set_aq_phase(this%chem_syst%aq_phase) !> redundante
+        !call this%wat_types(j)%aq_chem%set_aq_phase(this%chem_syst%aq_phase) !> redundante
         call this%wat_types(j)%aq_chem%set_temp(temp+273.18) !> Kelvin
         call this%wat_types(j)%aq_chem%set_density()
         call this%wat_types(j)%aq_chem%allocate_conc_aq_species()
@@ -57,7 +58,7 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
                 if (aq_species%name=='*') then
                     exit
                 else
-                    call this%wat_types(j)%aq_chem%aq_phase%is_species_in_aq_phase(aq_species,flag)
+                    call this%wat_types(j)%aq_chem%chem_syst%aq_phase%is_species_in_aq_phase(aq_species,flag)
                     if (flag==.true.) then
                         num_aq_prim_array(j)=num_aq_prim_array(j)+1
                         if (icon==4) then
@@ -312,7 +313,8 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
     
     call this%chem_syst%rearrange_eq_reacts()
     call this%chem_syst%set_stoich_mat()
-    call this%chem_syst%speciation_alg%compute_arrays(this%chem_syst%Se,this%chem_syst%get_eq_csts(),this%CV_params%zero)
+    call this%chem_syst%set_stoich_mat_gas()
+    call this%chem_syst%speciation_alg%compute_arrays(this%chem_syst%Se,this%chem_syst%get_eq_csts(),this%CV_params%zero,flag_Se,cols)
 !> Chapuza
     do i=1,this%num_wat_types
         !> rearrange cocnentrations and activities
@@ -325,4 +327,23 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
     !do i=1,this%num_bd_wat_types
     !    call this%bd_wat_types(i)%aq_chem%rearrange_state_vars(old_aq_phase)
     !end do
+!> Chapuza
+    do i=1,this%chem_syst%num_min_kin_reacts
+        !> indices reactants
+        call this%chem_syst%min_kin_reacts(i)%set_indices_aq_phase_min(this%chem_syst%aq_phase)
+    end do
+!> Chapuza
+    do i=1,this%chem_syst%num_lin_kin_reacts
+        !> indices reactants
+        call this%chem_syst%lin_kin_reacts(i)%set_index_aq_phase_lin(this%chem_syst%aq_phase)
+    end do 
+!> Chapuza
+    do i=1,this%chem_syst%num_redox_kin_reacts
+        !> indices inhibitors/electron acceptor & donor
+        call this%chem_syst%redox_kin_reacts(i)%rearrange_indices_aq_phase_Monod(old_aq_phase,this%chem_syst%aq_phase)
+    end do 
+!> chapuza denit
+    !call this%chem_syst%eq_reacts(this%chem_syst%num_minerals_eq+1)%set_eq_cst(1.860081d11)
+    !call this%chem_syst%eq_reacts(this%chem_syst%num_minerals_eq+2)%set_eq_cst(3.953393d3)
+    !call this%chem_syst%eq_reacts(this%chem_syst%num_minerals_eq+3)%set_eq_cst(3.445514d4)
 end subroutine

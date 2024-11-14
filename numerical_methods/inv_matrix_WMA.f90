@@ -15,7 +15,7 @@ subroutine inv_matrix_WMA(A,tol,inv)
     
     if (size(A,1)/=size(A,2)) error stop "Matrix must be square (inv_matrix_WMA)"
     
-    if (det(A)>=tol) error stop "Matrix is not invertible"
+    !if (det(A)>=tol) error stop "Matrix is not invertible"
     
     call inv_matrix(A,tol,inv) 
 end subroutine

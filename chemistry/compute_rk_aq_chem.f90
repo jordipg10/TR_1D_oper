@@ -5,15 +5,14 @@ subroutine compute_rk_aq_chem(this)
 !> Arguments
     class(aqueous_chemistry_c) :: this !> aqueous chemistry object
 !> Variables
-    integer(kind=4) :: i,n,niter,rk_ind,l
+    integer(kind=4) :: i,n,niter,rk_ind,l,index
     integer(kind=4), allocatable :: kin_ind(:),species_indices(:)
     real(kind=8), allocatable :: conc_kin(:),conc(:),act_cat(:)
     real(kind=8) :: saturation
 !> We compute linear kinetic reaction rates
     do i=1,this%chem_syst%num_lin_kin_reacts
-        allocate(conc_kin(this%chem_syst%num_species),kin_ind(this%chem_syst%num_species))
-        call this%chem_syst%lin_kin_reacts(i)%compute_rk_lin(conc_kin,this%rk(i))
-        deallocate(conc_kin,kin_ind)
+        index=this%chem_syst%lin_kin_reacts(i)%indices_aq_phase(1)
+        call this%chem_syst%lin_kin_reacts(i)%compute_rk_lin(this%concentrations(index),this%rk(i))
     end do
 !> We compute mineral kinetic reaction rates
     do i=1,this%chem_syst%num_min_kin_reacts

@@ -20,7 +20,6 @@ module reactive_zone_Lagr_m
         type(gas_phase_c) :: gas_phase !> gas phase
         real(kind=8), allocatable :: stoich_mat(:,:) !> stoichiometric matrix
         real(kind=8), allocatable :: stoich_mat_sol(:,:) !> solid stoichiometric matrix
-        real(kind=8), allocatable :: stoich_mat_gas(:,:) !> gas stoichiometric matrix
         integer(kind=4) :: num_eq_reactions=0 !> number of equilibrium reactions
         type(eq_reaction_c), allocatable :: eq_reactions(:) !> equilibrium heterogeneous reactions
         class(chem_system_c), pointer :: chem_syst !>  (same chemical system as chemistry class)
@@ -37,8 +36,7 @@ module reactive_zone_Lagr_m
         procedure, public :: set_cat_exch_zone
         procedure, public :: set_eq_reactions
         procedure, public :: set_stoich_mat_react_zone
-        procedure, public :: set_stoich_mat_sol
-        !procedure, public :: set_stoich_mat_gas
+        procedure, public :: set_stoich_mat_sol_rz
         procedure, public :: set_num_mins_cst_act
         procedure, public :: set_num_mins_var_act
         procedure, public :: set_gas_phase
@@ -60,6 +58,8 @@ module reactive_zone_Lagr_m
     !> Is
         procedure, public :: is_nf_species_in_react_zone
         procedure, public :: is_mineral_in_react_zone
+    !> ASsign
+        procedure, public :: assign_react_zone
     end type
 !**************************************************************************************************
     interface
@@ -69,7 +69,7 @@ module reactive_zone_Lagr_m
             class(reactive_zone_c) :: this
          end subroutine
         
-         subroutine set_stoich_mat_sol(this)
+         subroutine set_stoich_mat_sol_rz(this)
             import reactive_zone_c
             implicit none
             class(reactive_zone_c) :: this
@@ -208,6 +208,8 @@ module reactive_zone_Lagr_m
             integer(kind=4), intent(in), optional :: num_non_flowing_species
             if (present(num_non_flowing_species)) then
                 call this%set_num_non_flowing_species(num_non_flowing_species)
+            else
+                !call this%set_num_non_flowing_species()
             end if
             if (allocated(this%non_flowing_species)) then
                 deallocate(this%non_flowing_species)
@@ -493,6 +495,9 @@ module reactive_zone_Lagr_m
                 if (num_minerals<0 .or. num_minerals>this%chem_syst%num_minerals) error stop
                 this%num_minerals=num_minerals
             end if
+            if (allocated(this%minerals)) then
+                deallocate(this%minerals)
+            end if
             allocate(this%minerals(this%num_minerals))
         end subroutine
         
@@ -568,7 +573,7 @@ module reactive_zone_Lagr_m
             implicit none
             class(reactive_zone_c), intent(in) :: this
             integer(kind=4) :: n_sp
-            n_sp=this%chem_syst%aq_phase%num_species+this%num_non_flowing_species
+            n_sp=this%chem_syst%aq_phase%num_species+this%num_non_flowing_species+this%chem_syst%num_min_kin_reacts
         end function
         
         function compute_num_cst_act_species_react_zone(this) result(n_c)
@@ -659,5 +664,25 @@ module reactive_zone_Lagr_m
             class(reactive_zone_c) :: this
             deallocate(this%minerals)
             deallocate(this%non_flowing_species)
+        end subroutine
+        
+        subroutine assign_react_zone(this,react_zone)
+            implicit none
+            class(reactive_zone_c) :: this
+            class(reactive_zone_c), intent(in) :: react_zone
+            this%chem_syst=>react_zone%chem_syst
+            this%minerals=react_zone%minerals
+            this%non_flowing_species=react_zone%non_flowing_species
+            this%num_non_flowing_species=react_zone%num_non_flowing_species
+            this%gas_phase=react_zone%gas_phase
+            this%num_minerals=react_zone%num_minerals
+            this%num_minerals_cst_Act=react_zone%num_minerals_cst_Act
+            this%num_minerals_var_Act=react_zone%num_minerals_var_Act
+            this%cat_exch_zone=react_zone%cat_exch_zone
+            this%num_solids=react_zone%num_solids
+            this%stoich_mat=react_zone%stoich_mat
+            this%stoich_mat_sol=react_zone%stoich_mat_sol
+            call this%set_eq_reactions()
+            !this%eq_reactions=react_zone%eq_reactions
         end subroutine
 end module

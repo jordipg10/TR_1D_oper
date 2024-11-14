@@ -1,7 +1,7 @@
 subroutine compute_eigenvalues(this)
     use matrices_m
     implicit none
-    class(matrix_c) :: this
+    class(array_c) :: this
     
     real(kind=8), allocatable :: d(:),e(:)
     integer(kind=4) :: info

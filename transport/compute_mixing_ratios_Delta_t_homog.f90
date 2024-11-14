@@ -102,9 +102,8 @@ subroutine compute_mixing_ratios_Delta_t_homog(this,A_mat_lumped)
             this%mixing_waters_indices%cols(i)%col_1=[i-1,i+1]
         end do
         if (this%BCs%BCs_label(2)==1) then
-            print *, this%mixing_ratios%num_cols
             !print *, this%mixing_ratios%cols(this%mixing_ratios%num_cols)%dim
-            !this%mixing_ratios%cols(this%mixing_ratios%num_cols)%col_1(this%mixing_ratios%cols(this%mixing_ratios%num_cols)%dim)=this%B_mat%diag(this%mixing_ratios%num_cols)
+            this%mixing_ratios%cols(this%mixing_ratios%num_cols)%col_1(this%mixing_ratios%cols(this%mixing_ratios%num_cols)%dim)=this%B_mat%diag(this%mixing_ratios%num_cols)
         else
             this%mixing_ratios%cols(this%mixing_ratios%num_cols)%col_1=[this%B_mat%diag(this%mixing_ratios%num_cols),this%B_mat%sub(this%mixing_ratios%num_cols-1)]
             this%mixing_waters_indices%cols(this%mixing_ratios%num_cols)%col_1=this%mixing_ratios%num_cols-1

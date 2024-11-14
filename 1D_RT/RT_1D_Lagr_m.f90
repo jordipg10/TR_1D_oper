@@ -18,7 +18,7 @@ module RT_1D_m
         procedure, public :: compute_Delta_t_crit_RT
         procedure, public :: check_Delta_t_RT
         procedure, public :: write_transport_data
-        procedure, public :: read_discretisation
+        procedure, public :: read_time_discretisation
     end type
     
     type,public,extends(RT_1D_c) :: RT_1D_transient_c !> 1D transient reactive transport subclass
@@ -40,12 +40,12 @@ module RT_1D_m
             !class(props_c), intent(in), optional :: props
         end subroutine
         
-        subroutine write_RT_1D(this,unit,file_out,path_py)!,mixing_ratios)
+        subroutine write_RT_1D(this,unit,root,path_py)!,mixing_ratios)
             import RT_1D_c
             implicit none
             class(RT_1D_c), intent(in) :: this
             integer(kind=4), intent(in) :: unit
-            character(len=*), intent(in) :: file_out
+            character(len=*), intent(in) :: root
             character(len=*), intent(in), optional :: path_py
             !real(kind=8), intent(in) :: mixing_ratios(:)
         end subroutine
@@ -65,12 +65,12 @@ module RT_1D_m
             class(RT_1D_c) :: this
         end subroutine
         
-       subroutine read_discretisation(this,path,unit,file_discr)
+       subroutine read_time_discretisation(this,unit,root)
             import RT_1D_c
             class(RT_1D_c) :: this
-            character(len=*), intent(in) :: path
+            !character(len=*), intent(in) :: path
             integer(kind=4), intent(in) :: unit
-            character(len=*), intent(in) :: file_discr
+            character(len=*), intent(in) :: root
         end subroutine
         
        subroutine read_transport_data(this,unit,file_tpt,mixing_ratios)!,f_vec)!,tpt_props,BCs,mesh,time_discr)
@@ -91,11 +91,11 @@ module RT_1D_m
             !type(time_discr_homog_c), intent(out) :: time_discr !> homogeneous time discretisation
         end subroutine
         
-        subroutine write_transport_data(this,unit,file_out)!,mixing_ratios)
+        subroutine write_transport_data(this,unit)!,mixing_ratios)
             import RT_1D_c
             class(RT_1D_c) :: this
             integer(kind=4), intent(in) :: unit
-            character(len=*), intent(in) :: file_out
+            !character(len=*), intent(in) :: file_out
             !real(kind=8), intent(in) :: mixing_ratios(:)
         end subroutine
 

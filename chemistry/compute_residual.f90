@@ -11,5 +11,6 @@ subroutine compute_residual(this,conc_comp,c_nc,residual)
     real(kind=8), intent(out) :: residual(:) !> residual of component concentrations
     
     !> Process
+    !print *, this%speciation_alg%comp_mat(1,:)
     residual=matmul(this%speciation_alg%comp_mat,c_nc) - conc_comp
 end subroutine

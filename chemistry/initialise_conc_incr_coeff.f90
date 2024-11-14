@@ -24,7 +24,7 @@ subroutine initialise_conc_incr_coeff(this,icon,n_icon,indices_constrains,ctot,n
     integer(kind=4) :: i,j,ind_eqn,niter_Picard,ind_cstr
     integer(kind=4), allocatable :: ind_aq_comp(:),cols(:),ind_aq_species(:),counters(:)
     logical :: flag_gas,flag_min,flag_wat
-    type(matrix_int_c) :: indices_icon
+    type(int_array_c) :: indices_icon
     
     !external :: compute_res_init
 !> Pre-process
@@ -82,7 +82,7 @@ subroutine initialise_conc_incr_coeff(this,icon,n_icon,indices_constrains,ctot,n
 !!> Squared charges species 
 !    allocate(z2(this%speciation_alg%num_species))
 !    z2=0d0 !> chapuza
-!    z2(1:this%aq_phase%num_species)=this%aq_phase%z2
+!    z2(1:this%chem_syst%aq_phase%num_species)=this%chem_syst%aq_phase%z2
     do
     !> We update number of iterations
         niter=niter+1
@@ -92,14 +92,14 @@ subroutine initialise_conc_incr_coeff(this,icon,n_icon,indices_constrains,ctot,n
         end if
         call this%compute_c2_from_c1_aq_Picard(c2_old,c2_new,niter_Picard,CV_flag)
         !call this%compute_ionic_act() !> we compute ionic activity
-        !call this%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs) !> we compute log activity coefficients aqueous species
+        !call this%chem_syst%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs) !> we compute log activity coefficients aqueous species
         !call this%compute_activities()
         !call this%compute_log_act_coeff_wat()
         
         !print *, 10**this%log_act_coeffs
         !print *, c2_new
     !> Chapuza
-        !c2(1:this%speciation_alg%num_sec_aq_species)=this%concentrations(this%speciation_alg%num_prim_species+1:this%aq_phase%num_species)
+        !c2(1:this%speciation_alg%num_sec_aq_species)=this%concentrations(this%speciation_alg%num_prim_species+1:this%chem_syst%aq_phase%num_species)
     !> We compute resideu and Jacobian of residue using incremental coefficients
         call this%compute_res_Jac_res_incr_coef(c2_new,indices_icon,n_icon,indices_constrains,ctot,res,Jac_res)
     !> We check convergence

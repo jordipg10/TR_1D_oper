@@ -2,5 +2,5 @@
 subroutine compute_eigenvectors(this)
     use eigenvectors_m
     implicit none
-    class(matrix_c) :: this
+    class(array_c) :: this
 end subroutine
