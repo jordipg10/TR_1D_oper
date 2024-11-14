@@ -155,12 +155,12 @@ subroutine initialise_conc_anal_ideal(this,icon,n_icon,indices_constrains,ctot,n
     end if
 !> We write initial concentrations Python
     !if (present(path_py)) then
-        open(999,file='C:\Users\Jordi\OneDrive\Documentos\trabajo\python\c1_init_wt_anal.dat')
+        open(999,file='C:\Users\user2319\OneDrive\Documentos\trabajo\python\c1_init_wt_anal.dat')
         do i=1,this%speciation_alg%num_prim_species
             write(999,"(ES15.5)") c1(i)
         end do
         close(999)
-        open(9999,file='C:\Users\Jordi\OneDrive\Documentos\trabajo\python\c2_init_wt_anal.dat')
+        open(9999,file='C:\Users\user2319\OneDrive\Documentos\trabajo\python\c2_init_wt_anal.dat')
         do i=1,this%speciation_alg%num_eq_reactions
             write(9999,"(ES15.5)") c2(i)
         end do

@@ -32,7 +32,6 @@ subroutine set_stoich_mat(this)
         do
             if (this%species(i)%name==this%eq_reacts(j)%species(k)%name) then
                 this%Se(j,i)=this%eq_reacts(j)%stoichiometry(k)
-                !print *, this%species(i)%name
                 if (j<this%num_eq_reacts) then
                     j=j+1
                     k=1

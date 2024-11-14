@@ -121,11 +121,17 @@ subroutine read_init_min_zones_CHEPROO(this,unit,init_min_zones,reactive_zones)
                                 num_mins_loc=num_mins_loc+1
                                 if (min_indices(num_mins_loc,num_min_zones)>this%chem_syst%num_min_kin_reacts) then
                                     init_min_zones(imtype)%solid_chem%reactive_zone%minerals(num_mins_loc)=this%chem_syst%minerals(min_indices(num_mins_loc,num_min_zones)) !> we set mineral
+                                    init_min_zones(imtype)%solid_chem%vol_fracts(num_mins_loc)=vol_frac !> we set volumetric fraction
+                                    init_min_zones(imtype)%solid_chem%react_surfaces(num_mins_loc)=react_surf !> we set reactive surface
+                                    init_min_zones(imtype)%solid_chem%concentrations(num_mins_loc)=1d0 !> we assume minerals are pure phases
+                                    init_min_zones(imtype)%solid_chem%activities(num_mins_loc)=1d0 !> we assume minerals are pure phases
+                                else
+                                    !init_min_zones(imtype)%solid_chem%reactive_zone%minerals(num_mins_loc)=this%chem_syst%minerals(min_indices(num_mins_loc,num_min_zones)) !> we set mineral
+                                    init_min_zones(imtype)%solid_chem%vol_fracts(min_indices(num_mins_loc,num_min_zones))=vol_frac !> we set volumetric fraction
+                                    init_min_zones(imtype)%solid_chem%react_surfaces(min_indices(num_mins_loc,num_min_zones))=react_surf !> we set reactive surface
+                                    init_min_zones(imtype)%solid_chem%concentrations(min_indices(num_mins_loc,num_min_zones))=1d0 !> we assume minerals are pure phases
+                                    init_min_zones(imtype)%solid_chem%activities(min_indices(num_mins_loc,num_min_zones))=1d0 !> we assume minerals are pure phases
                                 end if
-                                init_min_zones(imtype)%solid_chem%vol_fracts(min_indices(num_mins_loc,num_min_zones))=vol_frac !> we set volumetric fraction
-                                init_min_zones(imtype)%solid_chem%react_surfaces(min_indices(num_mins_loc,num_min_zones))=react_surf !> we set reactive surface
-                                init_min_zones(imtype)%solid_chem%concentrations(min_indices(num_mins_loc,num_min_zones))=1d0 !> we assume minerals are pure phases
-                                init_min_zones(imtype)%solid_chem%activities(min_indices(num_mins_loc,num_min_zones))=1d0 !> we assume minerals are pure phases
                             end if
                         end do
                         if (num_min_zones==nmtype) then

@@ -29,7 +29,7 @@ program main
 !> Name of path containing chemical and transport information
     path_DB = 'C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\BBDD\' !> must be written by the user
     path_DB_trim = trim(path_DB)
-    path_py='C:\Users\user2319\OneDrive\Documentos\trabajo\python\'
+    path_py='C:\Users\user2319\OneDrive\Documentos\trabajo\python\' !> must be written by the user
 !> File units (arbitrary)
     unit_chem_syst=1
     unit_loc_chem=2
@@ -39,13 +39,13 @@ program main
     unit_out=4
     unit_res=6
 !> Choose problem
-    problem=15
+    problem=1
     if (problem==1) then
         root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\gypsum_eq\gypsum_eq' !> name of path containing user input (must be written by the user)
     else if (problem==2) then
-        root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\cc_anh_eq\gyp_anh' !> name of path containing user input (must be written by the user)
+        root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\cc_anh_eq\cc_anh' !> name of path containing user input (must be written by the user)
     else if (problem==3) then
-        root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\cc_anh_kin\gyp_anh' !> name of path containing user input (must be written by the user)
+        root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\cc_anh_kin\cc_anh' !> name of path containing user input (must be written by the user)
     else
         error stop "Problem not implemented yet"
     end if
