@@ -7,7 +7,6 @@ subroutine compute_c2_from_c1_aq_Picard(this,c2_init,c2,niter,CV_flag)
     implicit none
 !> Arguments
     class(aqueous_chemistry_c) :: this
-    !real(kind=8), intent(in) :: act_ph(:) !> chapuza
     real(kind=8), intent(in) :: c2_init(:) !> chapuza (dim=n_eq)
     real(kind=8), intent(out) :: c2(:) !> chapuza (dim=n_eq)
     integer(kind=4), intent(out) :: niter !> number of iterations
@@ -25,8 +24,6 @@ subroutine compute_c2_from_c1_aq_Picard(this,c2_init,c2,niter,CV_flag)
         
     niter=0
     
-    !c1=1d0 !> chapuza
-    !c1(1:n_p_aq)=this%concentrations(1:n_p_aq)
     c2_old=c2_init
     log_gamma1_old=0d0 !> chapuza
     log_gamma2_old=0d0 !> chapuza
@@ -44,7 +41,6 @@ subroutine compute_c2_from_c1_aq_Picard(this,c2_init,c2,niter,CV_flag)
         
         log_gamma1_old(1:n_p)=this%log_act_coeffs(1:n_p) !> we set log activity coefficients aqueous primary species
         log_gamma2_old(1:n_sec_aq)=this%log_act_coeffs(n_p+1:this%chem_syst%aq_phase%num_species) !> we set log activity coefficients aqueous secondary species
-        !log_gamma2_old(n_sec_aq+1:n_e)=LOG10(act_ph)-LOG10(c2_old(n_sec_aq+1:n_e)) !> chapuza
         log_c2_new=matmul(this%speciation_alg%Se_1_star,log_gamma1_old+log10(THIS%concentrations(1:n_p)))+this%speciation_alg%logK_tilde-log_gamma2_old !> mass action law
         c2_new=10**log_c2_new
         

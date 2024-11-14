@@ -7,7 +7,7 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
     integer(kind=4), intent(out), allocatable :: num_aq_prim_array(:)
     integer(kind=4), intent(out), allocatable :: num_cstr_array(:)
     class(solid_type_c), intent(inout) :: init_cat_exch_zones(:)
-    class(gas_chemistry_c), intent(in), optional :: gas_chem !> chapuza
+    class(gas_chemistry_c), intent(in), optional :: gas_chem 
     
     integer(kind=4) :: i,j,k,l,nwtype,icon,n_p_aq,gas_ind,min_ind,model,niter
     integer(kind=4), allocatable :: cols(:)
@@ -82,7 +82,6 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
                 !i=i+1
                 read(unit,*) j, temp !> we read index water type and temperature (in Celsius)
                 read(unit,*) name
-            !> Chapuza
                 if (SIZE(init_cat_exch_zones)==1) then
                     call this%wat_types(j)%read_wat_type_CHEPROO(num_aq_prim_array(j),num_cstr_array(j),this%act_coeffs_model,this%Jac_flag,unit,niter,CV_flag,init_cat_exch_zones(1)%solid_chem)
                 end if
@@ -106,32 +105,28 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
     call this%chem_syst%speciation_alg%set_flag_cat_exch(flag_surf)
     call this%chem_syst%speciation_alg%compute_num_prim_species(this%chem_syst%num_min_kin_reacts,this%chem_syst%gas_phase%num_species-this%chem_syst%gas_phase%num_gases_eq)
     call this%chem_syst%speciation_alg%compute_num_aq_sec_var_act_species()
-    old_aq_phase=this%chem_syst%aq_phase !> chapuza
+    old_aq_phase=this%chem_syst%aq_phase 
     call this%chem_syst%aq_phase%rearrange_aq_species()
     call this%chem_syst%aq_phase%set_indices_aq_phase()
     call this%chem_syst%rearrange_species()
-    call this%chem_syst%compute_z2() !> chapuza
+    call this%chem_syst%compute_z2()
     
     call this%chem_syst%rearrange_eq_reacts()
     call this%chem_syst%set_stoich_mat()
     call this%chem_syst%set_stoich_mat_gas()
     call this%chem_syst%speciation_alg%compute_arrays(this%chem_syst%Se,this%chem_syst%get_eq_csts(),this%CV_params%zero,flag_Se,cols)
-!> Chapuza
     do i=1,this%num_wat_types
         !> rearrange concentrations and activities
         call this%wat_types(i)%aq_chem%rearrange_state_vars(old_aq_phase)
     end do
-!> Chapuza
     do i=1,this%chem_syst%num_min_kin_reacts
         !> indices reactants
         call this%chem_syst%min_kin_reacts(i)%set_indices_aq_phase_min(this%chem_syst%aq_phase)
     end do
-!> Chapuza
     do i=1,this%chem_syst%num_lin_kin_reacts
         !> indices reactants
         call this%chem_syst%lin_kin_reacts(i)%set_index_aq_phase_lin(this%chem_syst%aq_phase)
     end do 
-!> Chapuza
     do i=1,this%chem_syst%num_redox_kin_reacts
         !> indices inhibitors/electron acceptor & donor
         call this%chem_syst%redox_kin_reacts(i)%rearrange_indices_aq_phase_Monod(old_aq_phase,this%chem_syst%aq_phase)

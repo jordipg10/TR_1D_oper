@@ -18,7 +18,6 @@ program main
     integer(kind=4) :: unit_chem_syst !> chemical system file unit
     integer(kind=4) :: unit_loc_chem !> local chemistry file unit
     integer(kind=4) :: unit_tw !> target waters file unit
-    character(len=256) :: path_py !> path for Python
     character(len=256) :: path_inp !> path for reading files
     character(len=:), allocatable :: path_inp_trim !> path for reading files trimmed
     character(len=256) :: path_DB !> path for database
@@ -29,7 +28,6 @@ program main
 !> Name of path containing chemical and transport information
     path_DB = 'C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\BBDD\' !> must be written by the user
     path_DB_trim = trim(path_DB)
-    path_py='C:\Users\user2319\OneDrive\Documentos\trabajo\python\' !> must be written by the user
 !> File units (arbitrary)
     unit_chem_syst=1
     unit_loc_chem=2
@@ -50,7 +48,7 @@ program main
         error stop "Problem not implemented yet"
     end if
     root_trim=trim(root)
-!> Initialise transport (este bloque podría estar dentro de 1 subrutina)
+!> Initialise transport
     option_tpt=0
     if (option_tpt==0) then
     !> we read transport data, BCs and discretisations
@@ -75,7 +73,7 @@ program main
     else
         error stop "This option is not implemented yet"
     end if
-!> Initialise chemistry (este bloque podría estar dentro de 1 subrutina)
+!> Initialise chemistry
     option_chem=1 
     call my_chem%set_option(option_chem)
     opc_Jac=1
@@ -87,5 +85,5 @@ program main
 !> We set chemistry attribute in reactive transport object
     call my_RT_trans%set_chemistry(my_chem)
 !> We write data and results
-    call my_RT_trans%write_RT_1D(unit_res,root_trim,path_py)
+    call my_RT_trans%write_RT_1D(unit_res,root_trim)
 end program

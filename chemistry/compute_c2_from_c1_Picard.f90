@@ -35,24 +35,17 @@ subroutine compute_c2_from_c1_Picard(this,c1,c2_ig,c2,niter,CV_flag)
     c2_new=c2_old !> chapuza
     log_gamma1_old=0d0 !> chapuza
     log_gamma2_old=0d0 !> chapuza
-    !log_gamma2_old=this%get_log_gamma2() !> chapuza
 !> Process
     do
         niter=niter+1 !> we update number of iterations
-        !call this%compute_molalities()
         call this%compute_ionic_act() !> we compute ionic activity
-        !print *, this%ionic_act
-        !call this%compute_salinity()
-        !call this%compute_molarities()
         call this%chem_syst%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs) !> we compute log activity coefficients aqueous species
         call this%compute_activities_aq()
         call this%compute_log_act_coeff_wat()
         
         log_gamma1_old(1:n_p_aq)=this%log_act_coeffs(1:n_p_aq) !> we set log activity coefficients aqueous primary species
         log_gamma2_old(1:n_sec_aq)=this%log_act_coeffs(n_p_aq+1:this%chem_syst%aq_phase%num_species) !> we set log activity coefficients aqueous secondary species
-        !print *, this%gas_chemistry%reactive_zone%gas_phase%num_var_act_species
         if (associated(this%gas_chemistry)) then
-            !call this%gas_chemistry%compute_vol_gas() !> we compute total volume of gas
             call this%gas_chemistry%compute_log_act_coeffs_gases()
             log_gamma2_old(n_sec_aq+n_mins_eq+1:n_e)=this%gas_chemistry%log_act_coeffs+LOG10(this%gas_chemistry%volume)
         end if
@@ -81,7 +74,6 @@ subroutine compute_c2_from_c1_Picard(this,c1,c2_ig,c2,niter,CV_flag)
     call this%compute_activities_aq()
     call this%compute_log_act_coeff_wat()
     if (associated(this%gas_chemistry)) then !> chapuza
-        !nullify(this%gas_chemistry)
         call this%gas_chemistry%compute_log_act_coeffs_gases() !> we compute log_10 activity coefficients of gases
         call this%gas_chemistry%compute_partial_pressures() !> we compute activities (ie. partial pressures)
         call this%gas_chemistry%compute_pressure()

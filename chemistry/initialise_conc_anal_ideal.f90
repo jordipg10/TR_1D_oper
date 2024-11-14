@@ -73,10 +73,9 @@ subroutine initialise_conc_anal_ideal(this,icon,n_icon,indices_constrains,ctot,n
     allocate(d_log_gamma_d_I(this%speciation_alg%num_species))
     allocate(log_Jacobian_act_coeffs(this%speciation_alg%num_species,this%speciation_alg%num_species))
     allocate(log_Jacobian_act_coeffs_aq(this%chem_syst%aq_phase%num_species,this%chem_syst%aq_phase%num_species))
-    allocate(dc2_dc1(this%speciation_alg%num_eq_reactions,this%speciation_alg%num_prim_species)) !> chapuza    
+    allocate(dc2_dc1(this%speciation_alg%num_eq_reactions,this%speciation_alg%num_prim_species)) !>     
     allocate(out_prod_aq(this%chem_syst%aq_phase%num_species,this%chem_syst%aq_phase%num_species))
     
-    !c2_old=1d-16 !> chapuza
     
     niter=0
     this%log_act_coeffs=0d0
@@ -102,28 +101,8 @@ subroutine initialise_conc_anal_ideal(this,icon,n_icon,indices_constrains,ctot,n
         call this%compute_activities_aq()
         call this%compute_log_act_coeff_wat()
         
-        !print *, 10**this%log_act_coeffs
-        !print *, c2_new
-        !print *, this%activities
-    !> Chapuza
-        !c2(1:this%speciation_alg%num_sec_aq_species)=this%concentrations(this%speciation_alg%num_aq_prim_species+1:this%chem_syst%aq_phase%num_species)
-    !> We compute residue and Jacobian analytically
-        !!> First we compute d_log_gamma_d_I
-        !call this%compute_d_log_gamma_d_I_aq_chem(d_log_gamma_d_I)
-        !!> Outer product d_log_gamma_d_I and z^2
-        !out_prod=outer_prod_vec(d_log_gamma_d_I,this%chem_syst%z2)
-        !out_prod_aq(1:this%speciation_alg%num_aq_prim_species,1:this%speciation_alg%num_aq_prim_species)=out_prod(1:this%speciation_alg%num_aq_prim_species,1:this%speciation_alg%num_aq_prim_species) !> chapuza
-        !out_prod_aq(1:this%speciation_alg%num_aq_prim_species,this%speciation_alg%num_aq_prim_species+1:this%chem_syst%aq_phase%num_species)=out_prod(1:this%speciation_alg%num_aq_prim_species,this%speciation_alg%num_prim_species+1:this%chem_syst%aq_phase%num_species) !> chapuza
-        !out_prod_aq(this%speciation_alg%num_aq_prim_species+1:this%chem_syst%aq_phase%num_species,1:this%speciation_alg%num_aq_prim_species)=out_prod(this%speciation_alg%num_prim_species+1:this%chem_syst%aq_phase%num_species,1:this%speciation_alg%num_aq_prim_species) !> chapuza
-        !out_prod_aq(this%speciation_alg%num_aq_prim_species+1:this%chem_syst%aq_phase%num_species,this%speciation_alg%num_aq_prim_species+1:this%chem_syst%aq_phase%num_species)=out_prod(this%speciation_alg%num_prim_species+1:this%chem_syst%aq_phase%num_species,this%speciation_alg%num_prim_species+1:this%chem_syst%aq_phase%num_species) !> chapuza
-        !> We compute Jacobian secondary-primary concentrations
+    !> We compute Jacobian secondary-primary concentrations
         call this%compute_dc2_dc1_ideal(c1,c2,dc2_dc1)
-        !> We compute log-Jacobian activity coefficients-concentrations
-        !call this%chem_syst%aq_phase%compute_log_Jacobian_act_coeffs_aq_phase(out_prod_aq,[c1(1:this%speciation_alg%num_aq_prim_species),c2_new(1:this%speciation_alg%num_sec_aq_species)],log_Jacobian_act_coeffs_aq)
-        !log_Jacobian_act_coeffs(1:this%speciation_alg%num_aq_prim_species,1:this%speciation_alg%num_aq_prim_species)=log_Jacobian_act_coeffs_aq(1:this%speciation_alg%num_aq_prim_species,1:this%speciation_alg%num_aq_prim_species) !> chapuza
-        !log_Jacobian_act_coeffs(1:this%speciation_alg%num_aq_prim_species,this%speciation_alg%num_prim_species+1:this%chem_syst%aq_phase%num_species)=log_Jacobian_act_coeffs_aq(1:this%speciation_alg%num_aq_prim_species,this%speciation_alg%num_aq_prim_species+1:this%chem_syst%aq_phase%num_species) !> chapuza
-        !log_Jacobian_act_coeffs(this%speciation_alg%num_prim_species+1:this%chem_syst%aq_phase%num_species,1:this%speciation_alg%num_aq_prim_species)=log_Jacobian_act_coeffs_aq(this%speciation_alg%num_aq_prim_species+1:this%chem_syst%aq_phase%num_species,1:this%speciation_alg%num_aq_prim_species) !> chapuza
-        !log_Jacobian_act_coeffs(this%speciation_alg%num_prim_species+1:this%chem_syst%aq_phase%num_species,this%speciation_alg%num_prim_species+1:this%chem_syst%aq_phase%num_species)=log_Jacobian_act_coeffs_aq(this%speciation_alg%num_aq_prim_species+1:this%chem_syst%aq_phase%num_species,this%speciation_alg%num_aq_prim_species+1:this%chem_syst%aq_phase%num_species) !> chapuza
     !> We check dc2_dc1
         !call this%check_dc2_dc1(c1,c2_new,dc2_dc1,log_Jacobian_act_coeffs)
         call this%compute_res_Jac_res_anal_ideal(indices_icon,n_icon,indices_constrains,ctot,dc2_dc1(1:this%speciation_alg%num_sec_aq_species,:),res,Jac_res)
@@ -144,7 +123,6 @@ subroutine initialise_conc_anal_ideal(this,icon,n_icon,indices_constrains,ctot,n
         call this%update_conc_aq_prim_species(Delta_c1(1:this%speciation_alg%num_aq_prim_species))
         !c2_old=c2_new
     end do
-    !call this%compute_pH()
     call this%compute_salinity()
     call this%compute_alkalinity()
     if (associated(this%solid_chemistry)) then
@@ -153,17 +131,5 @@ subroutine initialise_conc_anal_ideal(this,icon,n_icon,indices_constrains,ctot,n
     if (associated(this%gas_chemistry)) then
         nullify(this%gas_chemistry)
     end if
-!> We write initial concentrations Python
-    !if (present(path_py)) then
-        open(999,file='C:\Users\user2319\OneDrive\Documentos\trabajo\python\c1_init_wt_anal.dat')
-        do i=1,this%speciation_alg%num_prim_species
-            write(999,"(ES15.5)") c1(i)
-        end do
-        close(999)
-        open(9999,file='C:\Users\user2319\OneDrive\Documentos\trabajo\python\c2_init_wt_anal.dat')
-        do i=1,this%speciation_alg%num_eq_reactions
-            write(9999,"(ES15.5)") c2(i)
-        end do
-        close(9999)
-    !end if
+
 end subroutine

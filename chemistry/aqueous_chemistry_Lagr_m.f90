@@ -240,10 +240,8 @@ module aqueous_chemistry_m
             import aqueous_chemistry_c
             implicit none
             class(aqueous_chemistry_c) :: this
-            !real(kind=8), intent(in) :: act_ph(:) !> chapuza innecesaria
-            !real(kind=8), intent(in) :: c1(:) !> chapuza (dim=n_p)
-            real(kind=8), intent(in) :: c2_init(:) !> chapuza (dim=n_eq)
-            real(kind=8), intent(out) :: c2(:) !> chapuza (dim=n_eq)
+            real(kind=8), intent(in) :: c2_init(:) !>  (dim=n_eq)
+            real(kind=8), intent(out) :: c2(:) !>  (dim=n_eq)
             integer(kind=4), intent(out) :: niter !> number of iterations
             logical, intent(out) :: CV_flag !> TRUE if converges, FALSE otherwise
         end subroutine
@@ -252,10 +250,9 @@ module aqueous_chemistry_m
             import aqueous_chemistry_c
             implicit none
             class(aqueous_chemistry_c) :: this
-            !real(kind=8), intent(in) :: act_ph(:) !> chapuza innecesaria
-            real(kind=8), intent(in) :: c1(:) !> chapuza (dim=n_p)
-            real(kind=8), intent(in) :: c2_init(:) !> chapuza (dim=n_eq)
-            real(kind=8), intent(out) :: c2(:) !> chapuza (dim=n_eq)
+            real(kind=8), intent(in) :: c1(:) !>  (dim=n_p)
+            real(kind=8), intent(in) :: c2_init(:) !>  (dim=n_eq)
+            real(kind=8), intent(out) :: c2(:) !>  (dim=n_eq)
             integer(kind=4), intent(out) :: niter !> number of iterations
             logical, intent(out) :: CV_flag !> TRUE if converges, FALSE otherwise
         end subroutine
@@ -360,9 +357,6 @@ module aqueous_chemistry_m
             integer(kind=4), intent(in) :: n_icon(:)
             integer(kind=4), intent(in) :: indices_constrains(:)
             real(kind=8), intent(in) :: ctot(:)
-            !real(kind=8), intent(in) :: c1_surf !> chapuza
-            !real(kind=8), intent(in) :: CEC
-            !real(kind=8), intent(out) :: conc_exch(:) !> chapuza
             class(solid_chemistry_c), intent(inout) :: surf_chem !> surface chemistry
             integer(kind=4), intent(out) :: niter !> number of iterations
             logical, intent(out) :: CV_flag !> TRUE if converges, FALSE otherwise
@@ -377,14 +371,7 @@ module aqueous_chemistry_m
             real(kind=8), intent(out) :: residual(:)
         end subroutine
         
-        !subroutine compute_residual_bis(this,c_nc,conc_comp,residual)
-        !    import aqueous_chemistry_c
-        !    implicit none
-        !    class(aqueous_chemistry_c), intent(in) :: this
-        !    real(kind=8), intent(in) :: c_nc(:) !> variable activity concentrations (chapuza)
-        !    real(kind=8), intent(in) :: conc_comp(:) !> component concentrations (chapuza)
-        !    real(kind=8), intent(out) :: residual(:)
-        !end subroutine
+
         
         subroutine compute_residual_cst_act(this,conc_comp,conc,residual)
             import aqueous_chemistry_c
@@ -406,8 +393,8 @@ module aqueous_chemistry_m
             import aqueous_chemistry_c
             implicit none
             class(aqueous_chemistry_c), intent(in) :: this
-            real(kind=8), intent(in) :: c1(:) !> chapuza (dim=n_p)
-            real(kind=8), intent(in) :: c2(:) !> chapuza (dim=n_eq)
+            real(kind=8), intent(in) :: c1(:) !>  (dim=n_p)
+            real(kind=8), intent(in) :: c2(:) !>  (dim=n_eq)
             real(kind=8), intent(out) :: dc2_dc1(:,:)
         end subroutine
         
@@ -415,7 +402,7 @@ module aqueous_chemistry_m
             import aqueous_chemistry_c
             implicit none
             class(aqueous_chemistry_c), intent(in) :: this
-            real(kind=8), intent(in) :: c2nc(:) !> chapuza (dim=n_eq)
+            real(kind=8), intent(in) :: c2nc(:) !>  (dim=n_eq)
             real(kind=8), intent(out) :: dc2nc_dc1(:,:)
         end subroutine
         
@@ -423,8 +410,8 @@ module aqueous_chemistry_m
             import aqueous_chemistry_c
             implicit none
             class(aqueous_chemistry_c) :: this
-            real(kind=8), intent(in) :: c1(:) !> chapuza
-            real(kind=8), intent(in) :: c2nc(:) !> chapuza
+            real(kind=8), intent(in) :: c1(:) !> 
+            real(kind=8), intent(in) :: c2nc(:) !> 
             real(kind=8), intent(in) :: out_prod(:,:) !> outer product between d_log_gamma_nc_aq_d_I and z_nc_aq^2
             real(kind=8), intent(out) :: dc2nc_dc1(:,:)
         end subroutine
@@ -450,8 +437,8 @@ module aqueous_chemistry_m
             implicit none
             class(aqueous_chemistry_c) :: this
             real(kind=8), intent(in) :: out_prod(:,:) !> outer product between d_log_gamma_d_I and z^2
-            real(kind=8), intent(in) :: c1(:) !> chapuza (dim=n_p)
-            real(kind=8), intent(in) :: c2(:) !> chapuza (dim=n_eq)
+            real(kind=8), intent(in) :: c1(:) !>  (dim=n_p)
+            real(kind=8), intent(in) :: c2(:) !>  (dim=n_eq)
             real(kind=8), intent(out) :: dc2_dc1(:,:)
         end subroutine
         
@@ -1258,7 +1245,7 @@ module aqueous_chemistry_m
                 error stop "Activity coefficients not allocated"
             else
                 do i=1,this%chem_syst%aq_phase%num_species
-                    this%log_act_coeffs(i)=0d0 !> chapuza
+                    this%log_act_coeffs(i)=0d0 !> 
                 end do
             end if
         end subroutine
@@ -1386,32 +1373,6 @@ module aqueous_chemistry_m
             real(kind=8), allocatable :: conc_comp(:)
             conc_comp=matmul(this%speciation_alg%comp_mat_cst_act,conc)
         end function
-        !
-        !subroutine compute_conc_comp_cst_act_exch(this,c1,c2)
-        !    implicit none
-        !    class(aqueous_chemistry_c) :: this
-        !    real(kind=8), intent(in) :: c1(:) !> autentica chapuza
-        !    real(kind=8), intent(in) :: c2(:) !> autentica chapuza
-        !    this%conc_comp=matmul(this%speciation_alg%comp_mat_cst_act(1:this%speciation_alg%num_aq_prim_species,:),[c1,c2]) !> chapuza
-        !    this%solid_chemistry%conc_comp=matmul(this%speciation_alg%comp_mat(this%speciation_alg%num_aq_prim_species+1:this%speciation_alg%num_prim_species,:),[c1,c2])
-        !end subroutine
-        !
-        !subroutine compute_conc_comp_glob_aq(this)
-        !    implicit none
-        !    class(aqueous_chemistry_c) :: this
-        !    this%conc_comp=matmul(this%speciation_alg%comp_mat(1:this%speciation_alg%num_aq_prim_species,1:this%chem_syst%aq_phase%num_species),this%concentrations)
-        !end subroutine
-        !
-        !subroutine set_conc_comp_aq(this,conc_comp)
-        !    implicit none
-        !    class(aqueous_chemistry_c) :: this
-        !    real(kind=8), intent(in) :: conc_comp(:)
-        !    if (size(conc_comp)/=this%speciation_alg%num_aq_prim_species) then
-        !        error stop "Dimension error in aqueous component concentrations"
-        !    else
-        !        this%conc_comp=conc_comp
-        !    end if
-        !end subroutine
         
       
         

@@ -20,7 +20,7 @@ subroutine read_init_min_zones_CHEPROO(this,unit,init_min_zones,reactive_zones)
 
     read(unit,*) nmtype
     
-    allocate(react_zones(nmtype)) !> chapuza
+    allocate(react_zones(nmtype)) !> 
     
     allocate(min_indices(this%chem_syst%num_minerals,nmtype))
     

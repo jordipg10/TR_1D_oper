@@ -42,9 +42,6 @@ module chem_type_m
             integer(kind=4), intent(in) :: unit !> file unit
             integer(kind=4), intent(out) :: niter !> number of iterations in Newton method
             logical, intent(out) :: CV_flag !> TRUE if Newton method converges, FALSE otherwise
-            !real(kind=8), intent(in), optional :: c1_surf !> chapuza
-            !real(kind=8), intent(in), optional :: CEC !> chapuza
-            !real(kind=8), intent(out), optional :: conc_exch(:) !> chapuza
             class(solid_chemistry_c), intent(inout), optional :: surf_chem
         end subroutine
     end interface
