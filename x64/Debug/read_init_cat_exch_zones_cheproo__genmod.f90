@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Thu Nov 14 16:40:11 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Fri Nov 15 23:22:13 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE READ_INIT_CAT_EXCH_ZONES_CHEPROO__genmod

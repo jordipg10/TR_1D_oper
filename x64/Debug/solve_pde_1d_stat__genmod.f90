@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Thu Nov 14 15:41:55 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Fri Nov 15 22:53:16 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE SOLVE_PDE_1D_STAT__genmod

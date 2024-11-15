@@ -23,7 +23,7 @@ subroutine water_mixing_iter_EE_eq_kin(this,c1_old,c2nc_ig,c_tilde,conc_nc,conc_
     allocate(conc_comp_react(this%speciation_alg%num_prim_species))
     c1=this%concentrations(1:this%speciation_alg%num_prim_species)
 !> Components concentrations
-    u_tilde=this%compute_u_tilde_aq_chem(c_tilde) !> transport part: concentrations of variable activity species after mixing
+    u_tilde=this%compute_u_tilde(c_tilde) !> transport part: concentrations of variable activity species after mixing
     call this%reaction_iteration_EE_eq_kin_aq_chem(porosity,Delta_t,conc_comp_react) !> chemical part
     conc_comp=u_tilde+conc_comp_react !> we sum both parts
 !> Speciation for variable activity species concentrations

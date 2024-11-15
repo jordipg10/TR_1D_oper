@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Thu Nov 14 15:42:25 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Fri Nov 15 22:52:27 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPUTE_DRK_DC_MINERAL__genmod

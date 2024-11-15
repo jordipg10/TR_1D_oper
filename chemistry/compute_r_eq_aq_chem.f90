@@ -1,5 +1,5 @@
 !> Computes equilibrium reaction rates from secondary variable activity species concentrations
-subroutine compute_r_eq_aq_chem(this,c2nc_tilde,Delta_t,porosity)
+subroutine compute_r_eq(this,c2nc_tilde,Delta_t,porosity)
     use aqueous_chemistry_m
     use metodos_sist_lin_m
     implicit none

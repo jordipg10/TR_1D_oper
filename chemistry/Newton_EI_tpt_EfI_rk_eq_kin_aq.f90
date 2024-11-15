@@ -32,7 +32,7 @@
 !
 !    allocate(dfk_dc1(n_p,n_p),Delta_c1(n_p),drk_dc(this%chem_syst%num_kin_reacts,n_nc))
 !    !eta_old=0d0
-!    u_tilde=this%compute_u_tilde_aq_chem(mixing_ratios(:,1),mixing_waters)
+!    u_tilde=this%compute_u_tilde(mixing_ratios(:,1),mixing_waters)
 !    do 
 !        niter=niter+1 !> we update number of iterations
 !        if (niter>this%CV_params%niter_max) then

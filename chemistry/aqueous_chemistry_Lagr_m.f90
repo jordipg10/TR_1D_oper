@@ -13,7 +13,6 @@ module aqueous_chemistry_m
     type, public, extends(local_chemistry_c) :: aqueous_chemistry_c
         type(params_aq_sol_t) :: params_aq_sol !> parameters of aqueous solution
         real(kind=8) :: ionic_act !> ionic activity I
-        !real(kind=8), allocatable :: d_log_gamma_d_I(:) !> Jacobian of log_10(activity coefficients) with respect to ionic activity
         real(kind=8) :: pH
         real(kind=8) :: pe
         real(kind=8) :: salinity
@@ -71,20 +70,14 @@ module aqueous_chemistry_m
         procedure, public :: compute_alkalinity
         procedure, public :: compute_pH
         procedure, public :: compute_conc_comp
-        !procedure, public :: compute_conc_comp_aq
         procedure, public :: compute_conc_comp_cst_act
-        !procedure, public :: compute_conc_comp_cst_act_exch
-        !procedure, public :: compute_conc_comp_glob_aq
-        !procedure, public :: compute_r_eq_tilde_aq_chem
-        procedure, public :: compute_r_eq_aq_chem
-        procedure, public :: compute_rk_aq_chem
+        procedure, public :: compute_r_eq
+        procedure, public :: compute_rk
         procedure, public :: compute_Jacobian_rk_anal
         procedure, public :: compute_rk_Jac_rk_anal
         procedure, public :: compute_rk_Jac_rk_incr_coeff
         procedure, public :: compute_log_K_aq_chem
         procedure, public :: compute_ionic_act
-        !procedure, public :: compute_d_log_gamma_nc_d_log_c2nc_aq
-        !procedure, public :: compute_d_log_gamma_nc_d_log_c1_aq
         procedure, public :: compute_d_log_gamma_d_I_aq_chem
         procedure, public :: compute_res_Jac_res_anal
         procedure, public :: compute_res_Jac_res_anal_ideal
@@ -106,7 +99,6 @@ module aqueous_chemistry_m
         procedure, public :: get_log_gamma2
         procedure, public :: get_react_zone
     !> Speciation
-        !procedure, public :: compute_c2nc_from_c1_aq_expl
         procedure, public :: compute_c2_from_c1_aq_ideal
         procedure, public :: compute_c2_from_c1_ideal
         procedure, public :: compute_c2nc_from_c1_aq_ideal
@@ -117,10 +109,7 @@ module aqueous_chemistry_m
         procedure, public :: compute_c_nc_from_u_Newton
         procedure, public :: compute_c_nc_from_u_aq_Newton
         procedure, public :: compute_c_nc_from_u_aq_Newton_ideal
-        !procedure, public :: compute_c_aq_from_u_aq_Newton
-        !procedure, public :: compute_c_from_u_Newton_CHEPROO
         procedure, public :: compute_residual
-        !procedure, public :: compute_residual_bis
         procedure, public :: compute_residual_cst_act
         procedure, public :: compute_dc2nc_dc1_gamma_cst
         procedure, public :: compute_dc2_dc1_ideal
@@ -130,10 +119,10 @@ module aqueous_chemistry_m
         procedure, public :: compute_dc2_dc1
         procedure, public :: compute_speciation_alg_arrays
     !> Reactive mixing
-        procedure, public :: transport_iter_comp_EE_aq_chem
-        procedure, public :: transport_iter_comp_EE_aq_chem_ideal
-        procedure, public :: transport_iter_species_EE_aq_chem
-        procedure, public :: transport_iter_comp_exch_EE_aq_chem
+        procedure, public :: transport_iter_comp
+        procedure, public :: transport_iter_comp_ideal
+        procedure, public :: transport_iter_species
+        procedure, public :: transport_iter_comp_exch
         procedure, public :: water_mixing_iter_EE_eq_kin
         procedure, public :: water_mixing_iter_EE_eq_kin_ideal
         procedure, public :: water_mixing_iter_EE_kin
@@ -141,7 +130,7 @@ module aqueous_chemistry_m
         procedure, public :: water_mixing_iter_EfI_eq_kin_anal_ideal
         procedure, public :: water_mixing_iter_EfI_kin_anal
         procedure, public :: compute_c_tilde_aq_chem
-        procedure, public :: compute_u_tilde_aq_chem
+        procedure, public :: compute_u_tilde
         procedure, public :: reaction_iteration_EE_eq_kin_aq_chem
         procedure, public :: reaction_iteration_EE_kin_aq_chem
         procedure, public :: compute_dfk_dc_aq_EfI
@@ -546,7 +535,7 @@ module aqueous_chemistry_m
             real(kind=8), intent(out) :: d_log_gamma_d_log_c(:,:)
         end subroutine
         
-        subroutine transport_iter_comp_EE_aq_chem(this,c1_old,c2nc_ig,c_tilde,conc_nc,conc_comp,porosity,Delta_t)
+        subroutine transport_iter_comp(this,c1_old,c2nc_ig,c_tilde,conc_nc,conc_comp,porosity,Delta_t)
             import aqueous_chemistry_c
             import diag_matrix_c 
             implicit none
@@ -560,7 +549,7 @@ module aqueous_chemistry_m
             real(kind=8), intent(in), optional :: Delta_t !> time step
         end subroutine
         
-        subroutine transport_iter_comp_EE_aq_chem_ideal(this,c1_old,c2nc_ig,c_tilde,conc_nc,conc_comp,porosity,Delta_t)
+        subroutine transport_iter_comp_ideal(this,c1_old,c2nc_ig,c_tilde,conc_nc,conc_comp,porosity,Delta_t)
             import aqueous_chemistry_c
             import diag_matrix_c 
             implicit none
@@ -574,7 +563,7 @@ module aqueous_chemistry_m
             real(kind=8), intent(in), optional :: Delta_t !> time step
         end subroutine
         
-        subroutine transport_iter_comp_exch_EE_aq_chem(this,c1_old,c2nc_ig,c_tilde,conc_nc,conc_comp,porosity,Delta_t)
+        subroutine transport_iter_comp_exch(this,c1_old,c2nc_ig,c_tilde,conc_nc,conc_comp,porosity,Delta_t)
             import aqueous_chemistry_c
             import diag_matrix_c 
             implicit none
@@ -588,7 +577,7 @@ module aqueous_chemistry_m
             real(kind=8), intent(in), optional :: Delta_t !> time step
         end subroutine
         
-        subroutine transport_iter_species_EE_aq_chem(this,c1_old,c2nc_ig,c_tilde,conc_nc,conc_comp,porosity,Delta_t)
+        subroutine transport_iter_species(this,c1_old,c2nc_ig,c_tilde,conc_nc,conc_comp,porosity,Delta_t)
             import aqueous_chemistry_c
             import diag_matrix_c 
             implicit none
@@ -821,7 +810,7 @@ module aqueous_chemistry_m
             real(kind=8), allocatable :: c_tilde(:)
         end function
         
-        function compute_u_tilde_aq_chem(this,c_tilde) result(u_tilde)
+        function compute_u_tilde(this,c_tilde) result(u_tilde)
             import aqueous_chemistry_c
             implicit none
             class(aqueous_chemistry_c), intent(in) :: this
@@ -991,7 +980,7 @@ module aqueous_chemistry_m
             real(kind=8), intent(out) :: r_eq_tilde(:)
         end subroutine
         
-        subroutine compute_r_eq_aq_chem(this,c2nc_tilde,Delta_t,porosity)
+        subroutine compute_r_eq(this,c2nc_tilde,Delta_t,porosity)
             import aqueous_chemistry_c
             implicit none
             class(aqueous_chemistry_c) :: this
@@ -1000,13 +989,13 @@ module aqueous_chemistry_m
             real(kind=8), intent(in) :: porosity
         end subroutine
         
-        subroutine compute_rk_aq_chem_eq_heterog(this)!,rk)
+        subroutine compute_rk_eq_heterog(this)!,rk)
             import aqueous_chemistry_c
             implicit none
             class(aqueous_chemistry_c) :: this
         end subroutine
         
-        subroutine compute_rk_aq_chem(this)!,rk)
+        subroutine compute_rk(this)!,rk)
             import aqueous_chemistry_c
             implicit none
             class(aqueous_chemistry_c) :: this

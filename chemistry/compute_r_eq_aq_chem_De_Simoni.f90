@@ -1,5 +1,5 @@
 !!> Computes r_eq(u_j)
-!subroutine compute_r_eq_aq_chem_De_Simoni(this,grad_conc_comp,dispersion,porosity)
+!subroutine compute_r_eq_De_Simoni(this,grad_conc_comp,dispersion,porosity)
 !    use aqueous_chemistry_Lagr_m
 !    use BCs_m
 !    implicit none

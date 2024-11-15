@@ -1,7 +1,7 @@
 !> Sets aqueous species concentrations after conservative transport iteration
 !! Also computes remaining aqueous state variables
 !> We assume all species are aqueous
-subroutine transport_iter_species_EE_aq_chem(this,c1_old,c2nc_ig,c_tilde,conc_nc,conc_comp,porosity,Delta_t)
+subroutine transport_iter_species(this,c1_old,c2nc_ig,c_tilde,conc_nc,conc_comp,porosity,Delta_t)
     use aqueous_chemistry_m
     implicit none
 !> Arguments

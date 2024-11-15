@@ -1,5 +1,5 @@
 !> Computes kinetic reaction rates associated to aqueous chemistry object
-subroutine compute_rk_aq_chem(this)
+subroutine compute_rk(this)
     use aqueous_chemistry_m
     implicit none
 !> Arguments

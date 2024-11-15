@@ -43,7 +43,7 @@ subroutine Newton_EfI_rk_eq_kin_aq_anal(this,c2nc_ig,c_tilde,porosity,Delta_t,co
     drk_dc=0d0
 !> Process
     !> We compute component concentrations after mixing
-        u_tilde=this%compute_u_tilde_aq_chem(c_tilde)
+        u_tilde=this%compute_u_tilde(c_tilde)
     !> Newton loop
         do 
             niter=niter+1 !> we update number of iterations

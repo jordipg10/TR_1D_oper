@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Thu Nov 14 16:40:15 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Fri Nov 15 23:21:39 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE READ_INIT_BD_RECH_WAT_TYPES_CHEPROO__genmod

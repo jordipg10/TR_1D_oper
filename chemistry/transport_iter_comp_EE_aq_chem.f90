@@ -1,11 +1,10 @@
 !> Computes component and variable activity concentrations after iteration of WMA method for equilibrium chemical system
 !> We assume all primary species are aqueous
-subroutine transport_iter_comp_EE_aq_chem(this,c1_old,c2nc_ig,c_tilde,conc_nc,conc_comp,porosity,Delta_t)
+subroutine transport_iter_comp(this,c1_old,c2nc_ig,c_tilde,conc_nc,conc_comp,porosity,Delta_t)
     use aqueous_chemistry_m
     implicit none
 !> Arguments
     class(aqueous_chemistry_c) :: this !> aqueous chemistry object at current time step
-    !class(aqueous_chemistry_c), intent(in) :: this_old !> aqueous chemistry object at previous time step (nombre muy malo)
     real(kind=8), intent(in) :: c1_old(:)
     real(kind=8), intent(in) :: c2nc_ig(:)
     real(kind=8), intent(in) :: c_tilde(:)

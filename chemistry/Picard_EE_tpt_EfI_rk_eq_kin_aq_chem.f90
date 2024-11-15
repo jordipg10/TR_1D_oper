@@ -37,7 +37,7 @@
 !            error stop
 !        end if
 !        call this%compute_c2nc_from_c1_aq_Picard(niter_spec,CV_flag) !> computes concentration of secondary non constant activity species from concentration of primary species using mass action law
-!        call this%compute_rk_aq_chem()
+!        call this%compute_rk()
 !        c_nc_new=c_tilde+Delta_t*matmul(transpose(this%chem_syst%Sk(:,1:this%speciation_alg%num_aq_var_act_species)),this%rk)
 !        Delta_c1=c_nc_new(1:n_p_aq)-this%concentrations(1:n_p_aq)
 !        if (inf_norm_vec_real(Delta_c1/this%concentrations(1:n_p_aq))<this%CV_params%rel_tol) then !> CV reached

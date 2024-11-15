@@ -61,8 +61,5 @@ subroutine compute_c_nc_from_u_aq_Newton_ideal(this,conc_comp,conc_nc,niter,CV_f
             else
                 call this%update_conc_aq_prim_species(Delta_c1)
             end if
-            !call this%compute_salinity()
-            !call this%compute_molarities()
         end do
-        !call this%compute_pH()
 end subroutine
