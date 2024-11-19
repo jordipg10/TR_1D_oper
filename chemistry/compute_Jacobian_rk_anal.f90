@@ -18,14 +18,14 @@ subroutine compute_Jacobian_rk_anal(this,drk_dc)
         indices=this%chem_syst%min_kin_reacts(i)%indices_aq_phase
         allocate(drk_dc_loc(SIZE(indices)))
         saturation=this%compute_saturation_min(this%chem_syst%min_kin_reacts(i))
-        call this%chem_syst%min_kin_reacts(i)%compute_drk_dc_mineral(this%concentrations(indices),this%activities(this%chem_syst%min_kin_reacts(i)%params%cat_indices),saturation,this%solid_chemistry%react_surfaces(i),this%solid_chemistry%temp,drk_dc_loc)
+        call this%chem_syst%min_kin_reacts(i)%compute_drk_dc_mineral(this%concentrations(this%indices_aq_phase(indices)),this%activities(this%chem_syst%min_kin_reacts(i)%params%cat_indices),saturation,this%solid_chemistry%react_surfaces(i),this%solid_chemistry%temp,drk_dc_loc)
         drk_dc(this%chem_syst%num_lin_kin_reacts+i,indices)=drk_dc_loc !> chapuza
         deallocate(indices,drk_dc_loc)
     end do
     do i=1,this%chem_syst%num_redox_kin_reacts
         indices=this%chem_syst%redox_kin_reacts(i)%indices_aq_phase
         allocate(drk_dc_loc(SIZE(indices)))
-        call this%chem_syst%redox_kin_reacts(i)%compute_drk_dc_Monod(this%concentrations(indices),this%rk(this%chem_syst%num_lin_kin_reacts+this%chem_syst%num_min_kin_reacts+i),drk_dc_loc)
+        call this%chem_syst%redox_kin_reacts(i)%compute_drk_dc_Monod(this%concentrations(this%indices_aq_phase(indices)),this%rk(this%chem_syst%num_lin_kin_reacts+this%chem_syst%num_min_kin_reacts+i),drk_dc_loc)
         drk_dc(this%chem_syst%num_lin_kin_reacts+this%chem_syst%num_min_kin_reacts+i,indices)=drk_dc_loc !> chapuza
         deallocate(drk_dc_loc)
     end do

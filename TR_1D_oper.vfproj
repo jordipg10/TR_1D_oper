@@ -95,16 +95,12 @@
 		<File RelativePath=".\chemistry\compute_drk_dc_mineral_bis.f90"/>
 		<File RelativePath=".\chemistry\compute_drk_dc_Monod.f90"/>
 		<File RelativePath=".\chemistry\compute_Jacobian_rk_anal.f90"/>
-		<File RelativePath=".\chemistry\compute_Jacobian_rk_chemistry.f90"/>
 		<File RelativePath=".\chemistry\compute_r_eq_aq_chem.f90"/>
-		<File RelativePath=".\chemistry\compute_r_eq_aq_chem_De_Simoni.f90"/>
-		<File RelativePath=".\chemistry\compute_r_eq_tilde_aq_chem.f90"/>
 		<File RelativePath=".\chemistry\compute_rk_aq_chem.f90"/>
 		<File RelativePath=".\chemistry\compute_rk_Jac_rk_anal.f90"/>
 		<File RelativePath=".\chemistry\compute_rk_Jac_rk_incr_coeff.f90"/>
 		<File RelativePath=".\chemistry\compute_rk_lin.f90"/>
-		<File RelativePath=".\chemistry\compute_rk_min.f90"/>
-		<File RelativePath=".\chemistry\compute_rk_mineral_bis.f90"/>
+		<File RelativePath=".\chemistry\compute_rk_mineral.f90"/>
 		<File RelativePath=".\chemistry\compute_rk_Monod.f90"/>
 		<File RelativePath=".\chemistry\eq_reaction_m.f90"/>
 		<File RelativePath=".\chemistry\get_indices_reaction.f90"/>
