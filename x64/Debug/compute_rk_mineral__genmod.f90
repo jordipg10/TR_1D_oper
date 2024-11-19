@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Fri Nov 15 22:52:09 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Tue Nov 19 12:02:56 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPUTE_RK_MINERAL__genmod

@@ -6,7 +6,6 @@ subroutine compute_c2_from_c1_Picard(this,c1,c2_ig,c2,niter,CV_flag)
     implicit none
 !> Arguments
     class(aqueous_chemistry_c) :: this
-    !real(kind=8), intent(in) :: act_ph(:) !> chapuza
     real(kind=8), intent(in) :: c1(:) !> chapuza (dim=n_p)
     real(kind=8), intent(in) :: c2_ig(:) !> chapuza (dim=n_eq)
     real(kind=8), intent(out) :: c2(:) !> chapuza (dim=n_eq)
