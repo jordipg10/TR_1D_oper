@@ -14,10 +14,10 @@
 !    call this%link_target_waters_reactive_zone(react_zone_ind,tw_indices)
 !    num_tar_wat=size(tw_indices)
 !    
-!    if (size(grad_conc_comp,1)/=this%target_waters(tw_indices(1))%speciation_alg%num_prim_species .or. size(grad_conc_comp,2)/=num_tar_wat) error stop " Dimension error in compute_grad_conc_comp"
+!    if (size(grad_conc_comp,1)/=this%target_waters(tw_indices(1))%solid_chemistry%reactive_zone%speciation_alg%num_prim_species .or. size(grad_conc_comp,2)/=num_tar_wat) error stop " Dimension error in compute_grad_conc_comp"
 !    
 !    if (BCs%BCs_label(1)==2 .and. BCs%BCs_label(2)==2) then ! Neumann homogeneous
-!        do i=1,this%target_waters(tw_indices(1))%speciation_alg%num_prim_species
+!        do i=1,this%target_waters(tw_indices(1))%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
 !            grad_conc_comp(i,1)=0d0
 !            do j=2,num_tar_wat-1
 !                grad_conc_comp(i,j)=(this%target_waters(tw_indices(j+1))%conc_comp(i)-this%target_waters(tw_indices(j-1))%conc_comp(i))/(2d0*Delta_x) ! CFD

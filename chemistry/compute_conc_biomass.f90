@@ -13,7 +13,7 @@
 !>    logical :: flag
 !>    
 !>    !do j=1,size(this%solid_chem)
-!>    !>    call this%solid_chem(j)%allocate_concentrations(this%chem_syst)
+!>    !>    call this%solid_chem(j)%allocate_concentrations(this%solid_chemistry%reactive_zone%chem_syst)
 !>    !end do
 !>    
 !>    !req_mat=this%get_req_mat()
@@ -22,13 +22,13 @@
 !>        !select type (transport=>this%transport)
 !>        !class is (diffusion_transient_c)
 !>        water%name='h2o'
-!>        call water%belongs_to(this%chem_syst%cst_act_species,flag)
+!>        call water%belongs_to(this%solid_chemistry%reactive_zone%chem_syst%cst_act_species,flag)
 !>        if (flag==.true.) then
 !>            water_flag=1
 !>        else
 !>            water_flag=0
 !>        end if
-!>        select type (chem_syst=>this%chem_syst)
+!>        select type (chem_syst=>this%solid_chemistry%reactive_zone%chem_syst)
 !>        type is (chem_system_eq_kin_c)
 !>            !allocate(rk_mat(chem_syst%num_reactions,transport%spatial_discr%Num_targets))
 !>            !rk_mat=1d0
@@ -52,13 +52,13 @@
 !>            end do
 !>        end select
 !>        if (present(conc_c)) then
-!>            !allocate(conc_c(this%chem_syst%num_cst_act_species,size(this%aqueous_chem)))
+!>            !allocate(conc_c(this%solid_chemistry%reactive_zone%chem_syst%num_cst_act_species,size(this%aqueous_chem)))
 !>            if (water_flag==1) then
 !>                do j=1,size(this%aqueous_chem)
-!>                    conc_c(1,j)=this%aqueous_chem(j)%concentrations(this%chem_syst%num_species)
+!>                    conc_c(1,j)=this%aqueous_chem(j)%concentrations(this%solid_chemistry%reactive_zone%chem_syst%num_species)
 !>                end do
 !>            end if
-!>            do i=1,this%chem_syst%num_solid_species
+!>            do i=1,this%solid_chemistry%reactive_zone%chem_syst%num_solid_species
 !>                do j=1,size(this%aqueous_chem)
 !>                    conc_c(i+water_flag,j)=this%solid_chem(j)%concentrations(i)
 !>                end do

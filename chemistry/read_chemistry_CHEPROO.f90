@@ -23,9 +23,9 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
     real(kind=8), parameter :: tolerance=1d-14, rel_tolerance=1d-9, control_factor=1d-1, epsilon=1d-16
     integer(kind=4), parameter :: niter_max=40
     
-    type(water_type_c), allocatable :: init_wat_types(:),bd_wat_types(:),rech_wat_types(:)
-    type(solid_type_c), allocatable :: init_min_zones(:),init_cat_exch_zones_bis(:),init_cat_exch_zones(:),bd_cat_exch_zones(:),init_sol_zones(:)
-    type(gas_type_c), allocatable :: init_gas_zones(:)
+    type(aqueous_chemistry_c), allocatable :: wat_types(:),bd_wat_types(:),rech_wat_types(:)
+    type(solid_chemistry_c), allocatable :: init_min_zones(:),init_cat_exch_zones_bis(:),init_cat_exch_zones(:),bd_cat_exch_zones(:),init_sol_zones(:)
+    type(gas_chemistry_c), allocatable :: init_gas_zones(:)
     
     character(len=256), allocatable :: aq_species_str(:),prim_species_str(:),cst_act_species_str(:),minerals_str(:),solid_species_str(:),kin_react_names(:)
     type(species_c) :: species,water,constrain
@@ -82,9 +82,9 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
             exit
         else if (label=='INITIAL AND BOUNDARY WATER TYPES') then
             if (size(init_gas_zones)==1) then
-                call this%read_init_bd_rech_wat_types_CHEPROO(unit_loc_chem_file,ind_wat_type,num_aq_prim_array,num_cstr_array,init_cat_exch_zones_bis,init_gas_zones(1)%gas_chem)
+                call this%read_init_bd_rech_wat_types_CHEPROO(unit_loc_chem_file,ind_wat_type,num_aq_prim_array,num_cstr_array,init_cat_exch_zones_bis,wat_types,init_gas_zones(1))
             else if (size(init_gas_zones)==0) then
-                call this%read_init_bd_rech_wat_types_CHEPROO(unit_loc_chem_file,ind_wat_type,num_aq_prim_array,num_cstr_array,init_cat_exch_zones_bis)
+                call this%read_init_bd_rech_wat_types_CHEPROO(unit_loc_chem_file,ind_wat_type,num_aq_prim_array,num_cstr_array,init_cat_exch_zones_bis,wat_types)
             end if
         else if (label=='INITIAL MINERAL ZONES') then
             call this%read_init_min_zones_CHEPROO(unit_loc_chem_file,init_min_zones,reactive_zones)
@@ -95,6 +95,34 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
         end if
     end do
     close(unit_loc_chem_file)
+!!> Chapuza
+!    if (size(init_cat_exch_zones_bis)>0) then
+!        allocate(init_cat_exch_zones(this%num_init_wat_types))
+!        if (size(init_cat_exch_zones_bis)==1) then
+!            do i=1,this%num_init_wat_types
+!                init_cat_exch_zones(ind_wat_type(i))=init_cat_exch_zones_bis(1)
+!                call this%init_wat_types(ind_wat_type(i))%read_wat_type_CHEPROO(num_aq_prim_array(ind_wat_type(i)),num_cstr_array(ind_wat_type(i)),this%model,this%Jac_flag,unit,niter,CV_flag,init_cat_exch_zones(ind_wat_type(i))%solid_chem)
+!                !init_cat_exch_zones(ind_wat_type(i))%solid_chem%concentrations(1)=conc_exch(num_aq_prim_array(ind_wat_type(i))+1)
+!                !init_cat_exch_zones(ind_wat_type(i))%solid_chem%concentrations(2:init_cat_exch_zones(ind_wat_type(i))%solid_chem%reactive_zone%cat_exch_zone%num_surf_compl)=conc_exch(this%init_wat_types(ind_wat_type(i))%aq_chem%aq_phase%num_species+2:this%init_wat_types(ind_wat_type(i))%aq_chem%solid_chemistry%reactive_zone%speciation_alg%num_species)
+!            end do
+!            do i=1,this%num_bd_wat_types
+!                init_cat_exch_zones(ind_wat_type(this%num_init_wat_types+i))=init_cat_exch_zones_bis(1)
+!                call this%bd_wat_types(ind_wat_type(this%num_init_wat_types+i))%read_wat_type_CHEPROO(num_aq_prim_array(ind_wat_type(this%num_init_wat_types+i)),num_cstr_array(ind_wat_type(this%num_init_wat_types+i)),this%model,this%Jac_flag,unit,niter,CV_flag,init_cat_exch_zones(ind_wat_type( i))%solid_chem)
+!                !init_cat_exch_zones(ind_wat_type(this%num_init_wat_types+i))%solid_chem%concentrations(1)=conc_exch(num_aq_prim_array(ind_wat_type(i))+1)
+!                !init_cat_exch_zones(ind_wat_type(i))%solid_chem%concentrations(2:init_cat_exch_zones(ind_wat_type(i))%solid_chem%reactive_zone%cat_exch_zone%num_surf_compl)=conc_exch(this%init_wat_types(ind_wat_type(i))%aq_chem%aq_phase%num_species+2:this%init_wat_types(ind_wat_type(i))%aq_chem%solid_chemistry%reactive_zone%speciation_alg%num_species)
+!            end do
+!        end if
+!    else
+!        do i=1,this%num_init_wat_types
+!            call this%init_wat_types(ind_wat_type(i))%read_wat_type_CHEPROO(num_aq_prim_array(ind_wat_type(i)),num_cstr_array(ind_wat_type(i)),this%model,this%Jac_flag,unit,niter,CV_flag)
+!        end do
+!        do i=1,this%num_bd_wat_types
+!            call this%bd_wat_types(ind_wat_type(this%num_init_wat_types+i))%read_wat_type_CHEPROO(num_aq_prim_array(ind_wat_type(this%num_init_wat_types+i)),num_cstr_array(ind_wat_type(this%num_init_wat_types+i)),this%model,this%Jac_flag,unit,niter,CV_flag)
+!        end do
+!    end if
+!> Chapuza
+    !call this%manipulacion()
+!> Chapuza
     allocate(init_sol_zones(size(init_min_zones)+size(init_cat_exch_zones_bis)))
     do i=1,size(init_min_zones)
         init_sol_zones(i)=init_min_zones(i)
@@ -102,6 +130,7 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
     do i=1,size(init_cat_exch_zones_bis)
         init_sol_zones(size(init_min_zones)+i)=init_cat_exch_zones_bis(i)
     end do
+!> Chapuza
     do i=1,size(reactive_zones)
         call reactive_zones(i)%set_num_solids()
         call reactive_zones(i)%set_non_flowing_species()
@@ -110,29 +139,30 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
         call reactive_zones(i)%set_stoich_mat_sol_rz()
         !call reactive_zones(i)%chem_syst%set_stoich_mat_gas()
     end do
-!> We verify pointers
+!> We verify pointers (chapuza)
     if (size(reactive_zones)>0) then
         do i=1,size(init_sol_zones)
-            if (.not. associated(init_sol_zones(i)%solid_chem%reactive_zone%chem_syst)) then
-                call init_sol_zones(i)%solid_chem%reactive_zone%set_chem_syst_react_zone(this%chem_syst)
+            if (.not. associated(init_sol_zones(i)%reactive_zone%chem_syst)) then
+                call init_sol_zones(i)%reactive_zone%set_chem_syst_react_zone(this%chem_syst)
                 !print *, associated(init_sol_zones(i)%solid_chem%reactive_zone%chem_syst)
             end if
-            call init_sol_zones(i)%solid_chem%set_reactive_zone(reactive_zones(i))
+            call init_sol_zones(i)%set_reactive_zone(reactive_zones(i))
         end do
         do i=1,size(init_gas_zones)
-            if (.not. associated(init_gas_zones(i)%gas_chem%reactive_zone%chem_syst)) then
-                call init_gas_zones(i)%gas_chem%reactive_zone%set_chem_syst_react_zone(this%chem_syst)
+            if (.not. associated(init_gas_zones(i)%reactive_zone%chem_syst)) then
+                call init_gas_zones(i)%reactive_zone%set_chem_syst_react_zone(this%chem_syst)
                 !print *, associated(init_sol_zones(i)%solid_chem%reactive_zone%chem_syst)
             end if
-            call init_gas_zones(i)%gas_chem%set_reactive_zone(reactive_zones(i))
+            call init_gas_zones(i)%set_reactive_zone(reactive_zones(i))
         end do
     end if
 !> Target waters
     open(unit_target_waters_init_file,file=root//'_tar_wat.dat',status='old',action='read')
-    call this%read_target_waters_init(unit_target_waters_init_file,this%wat_types,init_sol_zones,init_gas_zones,niter,CV_flag)
+    call this%read_target_waters_init(unit_target_waters_init_file,wat_types,init_sol_zones,init_gas_zones,niter,CV_flag)
     close(unit_target_waters_init_file)
 !> Output data
     call this%chem_out_options%read_chem_out_options(root,unit_output_file,this%target_waters)
+!> Chapuza
     if (this%chem_syst%num_minerals>0 .or. this%chem_syst%gas_phase%num_species>0) then
         call this%set_reactive_zones()
     end if

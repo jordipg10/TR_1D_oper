@@ -1,0 +1,38 @@
+'TITLE OF THE PROBLEM: Yeso en equilibrio'
+'-----------------------------------------------------------------------------'
+'INITIAL AND BOUNDARY WATER TYPES'
+0						! activity coefficients model
+2						! number of water types
+1     25.0					! iwtype, temp (C)
+'izq'						! name
+'       icon        guess         ctot          constrain'
+'h2o'		1	1d0	1d0		''
+'ca+2'      1         1d-1       1d-1           ''
+'so4-2'    4         1d-5       1d0 		'gypsum'
+'A'		1	1d-8		1d-8		''
+'B'		1		1d-10		1d-10		''
+'*'      0         0.0           0.0              ' '
+2     25.0					!iwtype, temp (C)
+'der'						! name
+'       icon        guess         ctot          constrain'
+'h2o'		1	1d0	1d0		''
+'ca+2'      1         1d-2       1d-2           ''
+'so4-2'    4         1d-5       1d0          'gypsum'
+'A'		1	1d-7		1d-7		''
+'B'		1		1d-9		1d-9		''
+'*'      0         0.0           0.0              ' '
+'----------------------------------------------------------------------------'
+'INITIAL MINERAL ZONES'
+1					!nmtype= number of mineral zones 
+1	25.0				!imtype, temp (C)
+'mineral         vol.frac.    area(m2/m3rock)'
+'gypsum'          0.50         0.1d+3 
+'*'                0.00          0.00
+'----------------------------------------------------------------------------'
+'end'
+
+
+
+
+
+

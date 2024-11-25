@@ -11,5 +11,5 @@ subroutine compute_residual_cst_act(this,conc_comp,conc,residual)
     real(kind=8), intent(out) :: residual(:) !> residual of component concentrations
     
     !> Process
-    residual=matmul(this%speciation_alg%comp_mat_cst_act,conc) - conc_comp
+    residual=matmul(this%solid_chemistry%reactive_zone%speciation_alg%comp_mat_cst_act,conc) - conc_comp
 end subroutine

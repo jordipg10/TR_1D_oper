@@ -23,7 +23,7 @@
 !    conc_old_old=this_old%get_conc_nc()
 !!> Process  
 !    !> We compute aqueous component concentrations after mixing
-!        conc_comp=MATMUL(THIS%speciation_alg%comp_mat,c_tilde)
+!        conc_comp=MATMUL(THIS%solid_chemistry%reactive_zone%speciation_alg%comp_mat,c_tilde)
 !        !conc_comp=this%get_conc_comp_exch()
 !    !> Loop until speciation converges
 !        do

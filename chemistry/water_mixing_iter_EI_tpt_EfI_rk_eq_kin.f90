@@ -18,8 +18,8 @@
 !    
 !    procedure(Newton_EI_tpt_EfI_rk_eq_kin_aq), pointer :: p_iterative_method=>null()
 !    
-!    n_p_aq=this%speciation_alg%num_aq_prim_species
-!    n_nc_aq=this%speciation_alg%num_aq_var_act_species
+!    n_p_aq=this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species
+!    n_nc_aq=this%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species
 !    
 !    conc_old_old=this%concentrations(1:n_p_aq)
 !    conc_old=this%concentrations

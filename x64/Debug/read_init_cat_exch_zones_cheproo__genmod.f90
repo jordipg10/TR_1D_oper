@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Mon Nov 25 16:09:52 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Mon Nov 25 16:00:57 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE READ_INIT_CAT_EXCH_ZONES_CHEPROO__genmod
@@ -8,7 +8,7 @@
               USE CHEMISTRY_LAGR_M
               CLASS (CHEMISTRY_C) :: THIS
               INTEGER(KIND=4), INTENT(IN) :: UNIT
-              TYPE (SOLID_TYPE_C) ,ALLOCATABLE, INTENT(OUT) ::          &
+              TYPE (SOLID_CHEMISTRY_C) ,ALLOCATABLE, INTENT(OUT) ::     &
      &INIT_CAT_EXCH_ZONES(:)
               TYPE (REACTIVE_ZONE_C) ,OPTIONAL ,ALLOCATABLE             &
      &, INTENT(INOUT) :: REACTIVE_ZONES(:)

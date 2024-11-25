@@ -23,9 +23,9 @@ subroutine water_mixing_iter_EfI_eq_kin_anal_ideal(this,c1_old,c2nc_ig,c_tilde,c
     real(kind=8) :: mu !> Newton initialisation parameter
     logical :: CV_flag !> convergence flag
 !> Pre-process
-    n_p=this%speciation_alg%num_prim_species
+    n_p=this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
     !> We assign aqueous primary species concentrations
-        c1=this%concentrations(1:this%speciation_alg%num_prim_species)
+        c1=this%concentrations(1:this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species)
     !> Newton initialisation parameter     
         mu=0d0 
 !> Process
@@ -54,12 +54,12 @@ subroutine water_mixing_iter_EfI_eq_kin_anal_ideal(this,c1_old,c2nc_ig,c_tilde,c
                     exit
                 end if
             end do
-            if (abs(2d0**(k_div)-k)<this%CV_params%zero) then
+            if (abs(2d0**(k_div)-k)<this%solid_chemistry%reactive_zone%CV_params%zero) then
                 exit
             end if
         end do
     !> We compute component concentrations
-        conc_comp=matmul(this%speciation_alg%comp_mat,conc_nc)
+        conc_comp=matmul(this%solid_chemistry%reactive_zone%speciation_alg%comp_mat,conc_nc)
 !< Post-process
     deallocate(c1)
 end subroutine

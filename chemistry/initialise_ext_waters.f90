@@ -11,7 +11,7 @@
 !        
 !    do j=1,this%num_ext_waters
 !        call this%ext_waters(j)%set_solid_chemistry(this%target_solids(j))
-!        call this%ext_waters(j)%set_aq_phase(this%chem_syst%aq_phase)
+!        call this%ext_waters(j)%set_aq_phase(this%aq_phase)
 !        call this%ext_waters(j)%allocate_conc_aq_species()
 !        this%ext_waters(j)%concentrations=0d0 !> no sink/source terms
 !        !call this%ext_waters(j)%compute_conc_comp_aq()

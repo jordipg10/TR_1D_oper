@@ -12,14 +12,14 @@ subroutine compute_dc2nc_dc1_gamma_cst(this,dc2nc_dc1)
     real(kind=8), allocatable :: aux_mat(:,:),c1(:),c2nc(:)
     
 !> Process
-    n_p=this%speciation_alg%num_prim_species
-    n_e=this%speciation_alg%num_eq_reactions
-    n_nc_aq=this%speciation_alg%num_var_act_species
+    n_p=this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
+    n_e=this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions
+    n_nc_aq=this%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species
 
     c1=this%get_c1()
     call id_c1%set_diag_matrix(1d0/c1)
     !id_c1=diag(1d0/c1)
-    aux_mat=this%speciation_alg%Se_nc_1_star
+    aux_mat=this%solid_chemistry%reactive_zone%speciation_alg%Se_nc_1_star
     do i=1,n_e
         do j=1,n_p
             aux_mat(i,j)=aux_mat(i,j)*id_c1%diag(j)

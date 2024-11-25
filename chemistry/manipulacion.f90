@@ -11,22 +11,22 @@
 !    type(aq_phase_c) :: old_aq_phase
 !
 !!> We eliminate constant activity species from component matrix and we rearrange aqueous species and equilibrium reactions
-!    call this%chem_syst%speciation_alg%set_flag_comp(.true.)
-!    if (this%chem_syst%cat_exch%num_surf_compl>0) then
+!    call this%solid_chemistry%reactive_zone%chem_syst%solid_chemistry%reactive_zone%speciation_alg%set_flag_comp(.true.)
+!    if (this%solid_chemistry%reactive_zone%chem_syst%cat_exch%num_surf_compl>0) then
 !        flag_surf=.true.
 !    else
 !        flag_surf=.false.
 !    end if
-!    call this%chem_syst%speciation_alg%set_flag_cat_exch(flag_surf)
-!    call this%chem_syst%speciation_alg%compute_num_prim_species(this%chem_syst%num_min_kin_reacts)
-!    call this%chem_syst%speciation_alg%compute_num_aq_var_act_species()
-!    call this%chem_syst%rearrange_species()
-!    old_aq_phase=this%chem_syst%aq_phase !> chapuza
-!    call this%chem_syst%aq_phase%rearrange_aq_species()
-!    call this%chem_syst%aq_phase%set_indices_aq_phase()
-!    call this%chem_syst%rearrange_eq_reacts()
-!    call this%chem_syst%set_stoich_mat()
-!    call this%chem_syst%speciation_alg%compute_arrays(this%chem_syst%Se,this%chem_syst%get_eq_csts(),this%CV_params%zero)
+!    call this%solid_chemistry%reactive_zone%chem_syst%solid_chemistry%reactive_zone%speciation_alg%set_flag_cat_exch(flag_surf)
+!    call this%solid_chemistry%reactive_zone%chem_syst%solid_chemistry%reactive_zone%speciation_alg%compute_num_prim_species(this%solid_chemistry%reactive_zone%chem_syst%num_min_kin_reacts)
+!    call this%solid_chemistry%reactive_zone%chem_syst%solid_chemistry%reactive_zone%speciation_alg%compute_num_aq_var_act_species()
+!    call this%solid_chemistry%reactive_zone%chem_syst%rearrange_species()
+!    old_aq_phase=this%aq_phase !> chapuza
+!    call this%aq_phase%rearrange_aq_species()
+!    call this%aq_phase%set_indices_aq_phase()
+!    call this%solid_chemistry%reactive_zone%chem_syst%rearrange_eq_reacts()
+!    call this%solid_chemistry%reactive_zone%chem_syst%set_stoich_mat()
+!    call this%solid_chemistry%reactive_zone%chem_syst%solid_chemistry%reactive_zone%speciation_alg%compute_arrays(this%solid_chemistry%reactive_zone%chem_syst%Se,this%solid_chemistry%reactive_zone%chem_syst%get_eq_csts(),this%solid_chemistry%reactive_zone%CV_params%zero)
 !!> Chapuza
 !    do i=1,this%num_wat_types
 !        !> rearrange cocnentrations and activities

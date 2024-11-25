@@ -41,8 +41,8 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
     !> reactive mixing subroutines
     procedure(transport_iter_comp), pointer :: p_solver=>null()
     !> mobile species mixing
-    procedure(compute_c_tilde_aq_chem), pointer :: p_c_tilde=>null()
-    p_c_tilde=>compute_c_tilde_aq_chem !> by default
+    procedure(compute_c_tilde), pointer :: p_c_tilde=>null()
+    p_c_tilde=>compute_c_tilde !> by default
 !> We initialise target waters
     target_waters_old=this%target_waters
     target_waters_old_old=target_waters_old
@@ -66,11 +66,11 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
                 end if
             !> Target waters loop
                 do i=this%num_ext_waters+1,this%num_target_waters
-                    if (abs(mixing_ratios%cols(i-this%num_ext_waters)%col_1(1)-1d0)<this%target_waters(i)%CV_params%abs_tol .and. inf_norm_vec_real(mixing_ratios%cols(i-this%num_ext_waters)%col_1(2:mixing_ratios%cols(i-this%num_ext_waters)%dim))<this%target_waters(i)%CV_params%abs_tol) then
+                    if (abs(mixing_ratios%cols(i-this%num_ext_waters)%col_1(1)-1d0)<this%target_waters(i)%solid_chemistry%reactive_zone%CV_params%abs_tol .and. inf_norm_vec_real(mixing_ratios%cols(i-this%num_ext_waters)%col_1(2:mixing_ratios%cols(i-this%num_ext_waters)%dim))<this%target_waters(i)%solid_chemistry%reactive_zone%CV_params%abs_tol) then
                         continue
                     else
                         react_zone=this%target_waters(i)%get_react_zone()
-                        if (this%target_waters(i)%speciation_alg%num_aq_prim_species==this%target_waters(i)%speciation_alg%num_prim_species) then
+                        if (this%target_waters(i)%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species==this%target_waters(i)%solid_chemistry%reactive_zone%speciation_alg%num_prim_species) then
                             p_prim=>get_c1_aq !> chapuza
                         else
                             p_prim=>get_c1
@@ -100,9 +100,9 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
                                 p_solver=>transport_iter_comp !> only equilibrium reactions
                             end if
                         end if
-                        allocate(conc_nc(this%target_waters(i)%speciation_alg%num_var_act_species))
-                        allocate(conc_comp(this%target_waters(i)%speciation_alg%num_prim_species))
-                        allocate(conc_old(this%target_waters(i)%speciation_alg%num_var_act_species,mixing_ratios%cols(i-this%num_ext_waters)%dim)) !> chapuza
+                        allocate(conc_nc(this%target_waters(i)%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species))
+                        allocate(conc_comp(this%target_waters(i)%solid_chemistry%reactive_zone%speciation_alg%num_prim_species))
+                        allocate(conc_old(this%target_waters(i)%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species,mixing_ratios%cols(i-this%num_ext_waters)%dim)) !> chapuza
                         conc_old(:,1)=target_waters_old(i)%get_conc_nc() !> chapuza
                         do j=1,mixing_waters_indices%cols(i-this%num_ext_waters)%dim
                             conc_old(:,1+j)=target_waters_old(mixing_waters_indices%cols(i-this%num_ext_waters)%col_1(j))%get_conc_nc() !> chapuza
@@ -110,9 +110,9 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
                     !> We solve mixing caused by transport
                         c_tilde=p_c_tilde(target_waters_old(i),mixing_ratios%cols(i-this%num_ext_waters)%col_1,conc_old)
                     !> We solve reactive mixing iteration
-                        call p_solver(target_waters_new(i),p_prim(target_waters_old_old(i)),target_waters_old(i)%get_c2nc(),c_tilde(target_waters_new(i)%indices_aq_phase(1:target_waters_new(i)%speciation_alg%num_var_act_species)),conc_nc,conc_comp,F_mat(i-this%num_ext_waters),Delta_t)
+                        call p_solver(target_waters_new(i),p_prim(target_waters_old_old(i)),target_waters_old(i)%get_c2nc(),c_tilde(target_waters_new(i)%indices_aq_phase(1:target_waters_new(i)%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species)),conc_nc,F_mat(i-this%num_ext_waters),Delta_t)
                     !> We compute equilibrium reaction rates from mass balance equation
-                        call target_waters_new(i)%compute_r_eq(c_tilde(target_waters_new(i)%indices_aq_phase(target_waters_new(i)%speciation_alg%num_prim_species+1:target_waters_new(i)%speciation_alg%num_var_act_species)),Delta_t,F_mat(i-this%num_ext_waters))
+                        call target_waters_new(i)%compute_r_eq(c_tilde(target_waters_new(i)%indices_aq_phase(target_waters_new(i)%solid_chemistry%reactive_zone%speciation_alg%num_prim_species+1:target_waters_new(i)%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species)),Delta_t,F_mat(i-this%num_ext_waters))
                     !> Chapuza
                         if (associated(target_waters_new(i)%solid_chemistry)) then
                         !> We compute mass volumetric fractions of minerals from mass balance equation
@@ -130,7 +130,7 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
                         end if
                     !> We write output
                         if (k==this%chem_out_options%time_steps(kk) .and. i==this%chem_out_options%ind_target_waters(ii)) then
-                            !do j=1,this%target_waters(i)%speciation_alg%num_var_act_species
+                            !do j=1,this%target_waters(i)%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species
                                 write(unit,"(I10,*(ES15.5))") i, (conc_nc(j), j=1,this%chem_out_options%num_aq_species)
                             !end do
                             if (ii<this%chem_out_options%num_target_waters) then
@@ -151,7 +151,7 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
                 target_waters_old=target_waters_new
             end do
     else !> there are NO reactive zones
-        p_c_tilde=>compute_c_tilde_aq_chem
+        p_c_tilde=>compute_c_tilde
         if (this%chem_syst%num_eq_reacts>0) then 
             if (this%chem_syst%num_kin_reacts>0) then !> equilibrium and kinetic reactions
                 if (int_method_chem_reacts==1) then !> Euler explicit
@@ -164,30 +164,30 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
             else
                 p_solver=>transport_iter_comp !> only equilibrium reactions
             end if
-        else if (this%chem_syst%num_kin_reacts>0) then !> only kinetic reactions 
+        else if (this%chem_syst%num_kin_reacts>0) then !> only kinetic reactions
             if (int_method_chem_reacts==1) then !> Euler explicit
-                p_solver=>water_mixing_iter_EE_kin 
+                !p_solver=>water_mixing_iter_EE_kin 
             else if (int_method_chem_reacts==2 .and. this%Jac_flag==1) then !> Euler fully implicit
-                p_solver=>water_mixing_iter_EfI_kin_anal
+                !p_solver=>water_mixing_iter_EfI_kin_anal
             else
                 error stop "Integration method for chemical reactions not implemented yet"
             end if
         else !> no chemical reactions
-            p_solver=>transport_iter_species !> conservative transport
+            !p_solver=>transport_iter_species !> conservative transport
         end if
         allocate(tar_wat_indices(this%num_target_waters))
     !> Time loop
         do k=1,time_discr_tpt%Num_time
         !> Target waters loop
             do i=1,this%num_ext_waters+1,this%num_target_waters
-                if (this%target_waters(i)%speciation_alg%num_aq_prim_species==this%target_waters(i)%speciation_alg%num_prim_species) then
+                if (this%target_waters(i)%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species==this%target_waters(i)%solid_chemistry%reactive_zone%speciation_alg%num_prim_species) then
                     p_prim=>get_c1_aq !> chapuza
                 else
                     p_prim=>get_c1
                 end if
-                allocate(conc_nc(this%target_waters(i)%speciation_alg%num_var_act_species))
-                allocate(conc_comp(this%target_waters(i)%speciation_alg%num_prim_species))
-                allocate(conc_old(this%target_waters(i)%speciation_alg%num_var_act_species,mixing_ratios%cols(i-this%num_ext_waters)%dim)) !> chapuza
+                allocate(conc_nc(this%target_waters(i)%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species))
+                allocate(conc_comp(this%target_waters(i)%solid_chemistry%reactive_zone%speciation_alg%num_prim_species))
+                allocate(conc_old(this%target_waters(i)%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species,mixing_ratios%cols(i-this%num_ext_waters)%dim)) !> chapuza
                 conc_old(:,1)=target_waters_old(i)%get_conc_nc() !> chapuza
                 do j=1,mixing_waters_indices%cols(i-this%num_ext_waters)%dim
                     conc_old(:,1+j)=target_waters_old(mixing_waters_indices%cols(i-this%num_ext_waters)%col_1(j))%get_conc_nc() !> chapuza
@@ -195,9 +195,9 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
             !> We solve mixing caused by transport
                 c_tilde=p_c_tilde(target_waters_old(i),mixing_ratios%cols(i)%col_1,conc_old)
             !> We solve reactive mixing iteration
-                call p_solver(target_waters_new(i),p_prim(target_waters_old_old(i)),target_waters_old(i)%get_c2nc(),c_tilde,conc_nc,conc_comp,F_mat(i-this%num_ext_waters),time_discr_tpt%get_Delta_t(k))
+                call p_solver(target_waters_new(i),p_prim(target_waters_old_old(i)),target_waters_old(i)%get_c2nc(),c_tilde,conc_nc,F_mat(i-this%num_ext_waters),time_discr_tpt%get_Delta_t(k))
             !> We compute equilibrium reaction rates from mass balance equation
-                call target_waters_new(i)%compute_r_eq(c_tilde(target_waters_new(i)%speciation_alg%num_prim_species+1:target_waters_new(i)%speciation_alg%num_var_act_species),Delta_t,F_mat(i-this%num_ext_waters))
+                call target_waters_new(i)%compute_r_eq(c_tilde(target_waters_new(i)%solid_chemistry%reactive_zone%speciation_alg%num_prim_species+1:target_waters_new(i)%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species),Delta_t,F_mat(i-this%num_ext_waters))
             !> Chapuza
                 if (associated(target_waters_new(i)%solid_chemistry)) then
                 !> We compute mass volumetric fractions of minerals from mass balance equation
@@ -215,7 +215,7 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
                 end if
             !> We write output
                 if (k==this%chem_out_options%time_steps(kk) .and. i==this%chem_out_options%ind_target_waters(ii)) then
-                    !do j=1,this%target_waters(i)%speciation_alg%num_var_act_species
+                    !do j=1,this%target_waters(i)%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species
                         write(unit,"(I10,*(ES15.5))") i, (conc_nc(j), j=1,this%chem_out_options%num_aq_species)
                     !end do
                     if (ii<this%chem_out_options%num_target_waters) then

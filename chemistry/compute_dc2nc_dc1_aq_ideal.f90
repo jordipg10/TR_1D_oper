@@ -11,10 +11,10 @@ subroutine compute_dc2nc_dc1_aq_ideal(this,c2nc,dc2nc_dc1)
 !> Variables
     integer(kind=4) :: i,j    
 !> Process
-    !print *, this%speciation_alg%Se_nc_1_star
-    do i=1,this%speciation_alg%num_eq_reactions
-        do j=1,this%speciation_alg%num_prim_species
-            dc2nc_dc1(i,j)=c2nc(i)*this%speciation_alg%Se_nc_1_star(i,j)/this%concentrations(j)
+    !print *, this%solid_chemistry%reactive_zone%speciation_alg%Se_nc_1_star
+    do i=1,this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions
+        do j=1,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
+            dc2nc_dc1(i,j)=c2nc(i)*this%solid_chemistry%reactive_zone%speciation_alg%Se_nc_1_star(i,j)/this%concentrations(j)
         end do
     end do
 end subroutine

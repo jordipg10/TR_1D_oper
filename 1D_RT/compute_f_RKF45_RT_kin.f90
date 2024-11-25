@@ -23,9 +23,9 @@
 !>    f=trans_mat%prod_mat_mat(transpose(conc))
 !>    f=transpose(f)
 !>    
-!>    allocate(rk_mat(this%chem_syst%num_reactions,size(F_mat%diag)))
-!>    call this%compute_rk_mat(this%chem_syst%species,this%chem_syst%kin_reactions,conc,rk_mat)
-!>    f=f+conc_ext+matmul(transpose(this%chem_syst%stoich_mat),rk_mat)
+!>    allocate(rk_mat(this%solid_chemistry%reactive_zone%chem_syst%num_reactions,size(F_mat%diag)))
+!>    call this%compute_rk_mat(this%solid_chemistry%reactive_zone%chem_syst%species,this%solid_chemistry%reactive_zone%chem_syst%kin_reactions,conc,rk_mat)
+!>    f=f+conc_ext+matmul(transpose(this%solid_chemistry%reactive_zone%chem_syst%stoich_mat),rk_mat)
 !>    
 !>    !do j=1,n
 !>    !>    f(:,j)=f(:,j)/F_mat%diag(j)
@@ -42,7 +42,7 @@
 !>    !>    f=conc(:,j-1)*trans_mat%sub(j-1)+conc(:,j)*trans_mat%diag(j)+conc(:,j+1)*trans_mat%super(j)
 !>    !end if
 !>    !
-!>    !allocate(rk_vec(this%chem_syst%num_reactions))
-!>    !call this%compute_rk_vec(j,this%chem_syst%species,this%chem_syst%kin_reactions,conc(:,j),rk_vec)
-!>    !f=f+conc_ext+matmul(transpose(this%chem_syst%stoich_mat),rk_vec)
+!>    !allocate(rk_vec(this%solid_chemistry%reactive_zone%chem_syst%num_reactions))
+!>    !call this%compute_rk_vec(j,this%solid_chemistry%reactive_zone%chem_syst%species,this%solid_chemistry%reactive_zone%chem_syst%kin_reactions,conc(:,j),rk_vec)
+!>    !f=f+conc_ext+matmul(transpose(this%solid_chemistry%reactive_zone%chem_syst%stoich_mat),rk_vec)
 !end function

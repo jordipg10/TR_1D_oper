@@ -13,7 +13,7 @@ subroutine write_python(this,path)
     type is (RT_1D_transient_c)
         open(9988,file=trim(path)//'u_init.dat')
         do i=1,this%chemistry%chem_syst%speciation_alg%num_aq_prim_species
-            write(9988,"(*(ES15.5))") (dot_product(this%chemistry%target_waters_init(j)%speciation_alg%comp_mat(i,:),this%chemistry%target_waters_init(j)%get_conc_nc()), j=1,this%chemistry%num_target_waters_init)
+            write(9988,"(*(ES15.5))") (dot_product(this%chemistry%target_waters_init(j)%solid_chemistry%reactive_zone%speciation_alg%comp_mat(i,:),this%chemistry%target_waters_init(j)%get_conc_nc()), j=1,this%chemistry%num_target_waters_init)
         end do
         close(9988)
         open(999,file=trim(path)//'c1_aq_init.dat')

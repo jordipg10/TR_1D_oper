@@ -22,7 +22,7 @@ subroutine read_PFLOTRAN_DB(this,unit,filename)
 !
 !>    open(unit,file=filename,status='old',action='read')
 !>    
-!>    allocate(eq_react_indices(this%num_eq_reacts),indices_aq_sp(this%chem_syst%aq_phase%num_species),indices_exch_cats(this%cat_exch%num_exch_cats))
+!>    allocate(eq_react_indices(this%num_eq_reacts),indices_aq_sp(this%aq_phase%num_species),indices_exch_cats(this%cat_exch%num_exch_cats))
 !!> First iteration of database
 !>    num_aq_sp=0 !> number of aqueous species
 !>    num_pr_aq_sp=0 !> number of primary aqueous species (CHEPROO)
@@ -50,7 +50,7 @@ subroutine read_PFLOTRAN_DB(this,unit,filename)
 !>            exit
 !>        !else if (aq_species%name=='h2o') then
 !>        !>    error stop "Water cannot be a primary species"
-!>        else!> if (aq_species%name==this%chem_syst%aq_phase%aq_species(num_aq_sp+1)%name) then
+!>        else!> if (aq_species%name==this%aq_phase%aq_species(num_aq_sp+1)%name) then
 !>            call this%is_aq_species_in_chem_syst(aq_species,aq_sp_flag,aq_sp_ind)
 !>            if (aq_sp_flag==.true.) then 
 !>                if (aq_species%name=='h2o') then
@@ -65,7 +65,7 @@ subroutine read_PFLOTRAN_DB(this,unit,filename)
 !>                    num_var_act_sp=num_var_act_sp+1
 !>                end if
 !>                indices_aq_sp(num_aq_sp+1)=aq_sp_ind
-!>                this%chem_syst%aq_phase%aq_species(aq_sp_ind)=aq_species
+!>                this%aq_phase%aq_species(aq_sp_ind)=aq_species
 !>                num_aq_sp=num_aq_sp+1
 !>                num_pr_aq_sp=num_pr_aq_sp+1
 !>            else
@@ -80,7 +80,7 @@ subroutine read_PFLOTRAN_DB(this,unit,filename)
 !>        read(unit,*,iostat=int_var) aq_species%name, num_reactants
 !>        if (aq_species%name=='null') then
 !>            exit
-!>        else!> if (aq_species%name==this%chem_syst%aq_phase%aq_species(num_aq_sp+1)%name) then
+!>        else!> if (aq_species%name==this%aq_phase%aq_species(num_aq_sp+1)%name) then
 !>            call this%is_aq_species_in_chem_syst(aq_species,aq_sp_flag,aq_sp_ind)
 !>            if (aq_sp_flag==.true.) then
 !>                if (aq_species%name=='h2o') then
@@ -108,7 +108,7 @@ subroutine read_PFLOTRAN_DB(this,unit,filename)
 !>            else
 !>                continue
 !>            end if
-!>            !if (ind_pr_sp+ind_aq_compl<this%chem_syst%aq_phase%num_species) then
+!>            !if (ind_pr_sp+ind_aq_compl<this%aq_phase%num_species) then
 !>            !>    ind_aq_compl=ind_aq_compl+1
 !>            !>    ind_eq_reacts=ind_eq_reacts+1
 !>            !else
@@ -305,7 +305,7 @@ subroutine read_PFLOTRAN_DB(this,unit,filename)
 !>                        call this%var_act_species(indices_aq_sp(num_pr_aq_sp+ind_aq_compl))%assign_species(aq_species)
 !>                    end if
 !>                end if
-!>                this%chem_syst%aq_phase%aq_species(indices_aq_sp(num_pr_aq_sp+ind_aq_compl))=aq_species
+!>                this%aq_phase%aq_species(indices_aq_sp(num_pr_aq_sp+ind_aq_compl))=aq_species
 !>                !do i=1,num_temp_pts
 !>                !>    call this%eq_reacts(ind_eq_reacts)%set_eq_cst(10**(-log_K(i)))
 !>                !end do
@@ -318,7 +318,7 @@ subroutine read_PFLOTRAN_DB(this,unit,filename)
 !>                !>    exit
 !>                !end if
 !>                !ind_aq_compl=ind_aq_compl+1
-!>                !if (ind_pr_sp+ind_aq_compl<this%chem_syst%aq_phase%num_species) then
+!>                !if (ind_pr_sp+ind_aq_compl<this%aq_phase%num_species) then
 !>                !>    ind_aq_compl=ind_aq_compl+1
 !>                !>    ind_eq_reacts=ind_eq_reacts+1
 !>                !else
@@ -488,5 +488,5 @@ subroutine read_PFLOTRAN_DB(this,unit,filename)
 !>    !>    end if
 !>    !end do
 !>    close(unit)
-!>    call this%chem_syst%aq_phase%rearrange_aq_species()
+!>    call this%aq_phase%rearrange_aq_species()
 end subroutine

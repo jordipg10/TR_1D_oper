@@ -22,15 +22,15 @@ subroutine compute_res_Jac_res_incr_coef(this,c2,indices_icon,n_icon,indices_con
     integer(kind=4), allocatable :: indices_Jac(:),cols(:),ind_aq_species(:),counters(:)
     logical :: flag_gas,flag_min,flag_wat,CV_flag
     
-    allocate(c1_pert(this%speciation_alg%num_prim_species),res_pert(this%speciation_alg%num_prim_species))
+    allocate(c1_pert(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species),res_pert(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species))
     
     indices_Jac=indices_icon%get_vector_int() !> gets vector of icon indices
     call compute_res_init(this,indices_icon,n_icon,indices_constrains,ctot,res)
-    c1=this%concentrations(1:this%speciation_alg%num_prim_species) !> unperturbed primary concentrations
-    do j=1,this%speciation_alg%num_prim_species
+    c1=this%concentrations(1:this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species) !> unperturbed primary concentrations
+    do j=1,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
         !> we compute perturbation
         c1_pert=c1
-        c1_pert(j)=c1_pert(j)+this%CV_params%eps
+        c1_pert(j)=c1_pert(j)+this%solid_chemistry%reactive_zone%CV_params%eps
         !> we set perturbed c1
         call this%set_conc_prim_species(c1_pert)
         !> we compute perturbed c2
@@ -41,12 +41,12 @@ subroutine compute_res_Jac_res_incr_coef(this,c2,indices_icon,n_icon,indices_con
         !call this%compute_alkalinity()
     !> We compute perturbed residual
         call compute_res_init(this,indices_icon,n_icon,indices_constrains,ctot,res_pert)
-        Jac_res(:,j)=(res_pert-res)/this%CV_params%eps
+        Jac_res(:,j)=(res_pert-res)/this%solid_chemistry%reactive_zone%CV_params%eps
     end do
     call this%set_conc_prim_species(c1) !> unperturbed c1
-    call this%set_conc_sec_aq_species(c2(1:this%speciation_alg%num_sec_aq_species)) !> unperturbed c2aq
+    call this%set_conc_sec_aq_species(c2(1:this%solid_chemistry%reactive_zone%speciation_alg%num_sec_aq_species)) !> unperturbed c2aq
     call this%compute_ionic_act() !> we compute ionic activity
-    call this%chem_syst%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs) !> we compute log activity coefficients aqueous species
+    call this%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs) !> we compute log activity coefficients aqueous species
     call this%compute_activities_aq() !> chapuza
     call this%compute_log_act_coeff_wat()
 end subroutine

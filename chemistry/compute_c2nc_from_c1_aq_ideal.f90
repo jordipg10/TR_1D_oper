@@ -10,11 +10,11 @@ subroutine compute_c2nc_from_c1_aq_ideal(this,c2nc)
     integer(kind=4) :: n_p,n_nc2_aq,n_e
     real(kind=8), allocatable :: log_c2nc(:)
     
-    n_p=this%speciation_alg%num_prim_species
-    n_e=this%speciation_alg%num_eq_reactions
-    n_nc2_aq=this%speciation_alg%num_aq_sec_var_act_species
+    n_p=this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
+    n_e=this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions
+    n_nc2_aq=this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species
 
-    log_c2nc=matmul(this%speciation_alg%Se_nc_1_star,log10(this%concentrations(1:n_p)))+this%speciation_alg%logK_star
+    log_c2nc=matmul(this%solid_chemistry%reactive_zone%speciation_alg%Se_nc_1_star,log10(this%concentrations(1:n_p)))+this%solid_chemistry%reactive_zone%speciation_alg%logK_star
     c2nc=10**log_c2nc
     call this%update_conc_sec_aq_var_act_species(c2nc(1:n_nc2_aq))
     if (associated(this%gas_chemistry)) then

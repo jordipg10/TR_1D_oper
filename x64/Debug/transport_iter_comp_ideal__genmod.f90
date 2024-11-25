@@ -1,17 +1,16 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Mon Nov 25 16:09:42 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Mon Nov 25 16:00:37 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE TRANSPORT_ITER_COMP_IDEAL__genmod
           INTERFACE 
             SUBROUTINE TRANSPORT_ITER_COMP_IDEAL(THIS,C1_OLD,C2NC_IG,   &
-     &C_TILDE,CONC_NC,CONC_COMP,POROSITY,DELTA_T)
+     &C_TILDE,CONC_NC,POROSITY,DELTA_T)
               USE AQUEOUS_CHEMISTRY_M
               CLASS (AQUEOUS_CHEMISTRY_C) :: THIS
               REAL(KIND=8), INTENT(IN) :: C1_OLD(:)
               REAL(KIND=8), INTENT(IN) :: C2NC_IG(:)
               REAL(KIND=8), INTENT(IN) :: C_TILDE(:)
               REAL(KIND=8), INTENT(OUT) :: CONC_NC(:)
-              REAL(KIND=8), INTENT(OUT) :: CONC_COMP(:)
               REAL(KIND=8) ,OPTIONAL, INTENT(IN) :: POROSITY
               REAL(KIND=8) ,OPTIONAL, INTENT(IN) :: DELTA_T
             END SUBROUTINE TRANSPORT_ITER_COMP_IDEAL

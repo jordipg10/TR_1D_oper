@@ -19,13 +19,13 @@
 !>    allocate(aux_mat(size(conc_RK4,1),size(conc_RK4,2)))
 !>    
 !>    
-!>    !select type (chem_syst=>this%chem_syst)
+!>    !select type (chem_syst=>this%solid_chemistry%reactive_zone%chem_syst)
 !>    !type is (chem_system_eq_kin_c)
 !>        do i=1,size(conc_RK4,1)
 !>            aux_mat(i,:)=prod_mat_vec(trans_mat,conc_RK4(i,:))
 !>            !aux_vec(i,1)=prod_mat_vec(trans_mat,conc_RK4(i,:))
 !>        end do
-!>        k(:,:,1)=matmul(this%chem_syst%mob_comp_mat,aux_mat)
+!>        k(:,:,1)=matmul(this%solid_chemistry%reactive_zone%chem_syst%mob_comp_mat,aux_mat)
 !>        !do j=1,n
 !>        !>    k(:,j,1)=prod_mat_vec(chem_syst%mob_comp_mat,conc_RK4)/this%F_mat%diag + this%source_term_PDE/this%F_mat%diag
 !>        !>    k(:,j,2)=prod_mat_vec(this%trans_mat,conc_RK4+Delta_t*k(:,1)/4)/this%F_mat%diag + this%source_term_PDE/this%F_mat%diag

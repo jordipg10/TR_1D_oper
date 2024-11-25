@@ -20,8 +20,8 @@ subroutine water_mixing_iter_EE_eq_kin(this,c1_old,c2nc_ig,c_tilde,conc_nc,conc_
     logical :: CV_flag !> convergence flag
     real(kind=8) :: mu=0d0 !> Newton initialistaion parameter
 !> Pre-process
-    allocate(conc_comp_react(this%speciation_alg%num_prim_species))
-    c1=this%concentrations(1:this%speciation_alg%num_prim_species)
+    allocate(conc_comp_react(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species))
+    c1=this%concentrations(1:this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species)
 !> Components concentrations
     u_tilde=this%compute_u_tilde(c_tilde) !> transport part: concentrations of variable activity species after mixing
     call this%reaction_iteration_EE_eq_kin_aq_chem(porosity,Delta_t,conc_comp_react) !> chemical part
@@ -30,7 +30,7 @@ subroutine water_mixing_iter_EE_eq_kin(this,c1_old,c2nc_ig,c_tilde,conc_nc,conc_
     !> Loop until speciation converges
         do
         !> We initialise variable activity concentrations for Newton speciation
-            call initialise_iterative_method(c1_old,c1,mu,this%concentrations(1:this%speciation_alg%num_prim_species))
+            call initialise_iterative_method(c1_old,c1,mu,this%concentrations(1:this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species))
         !> We compute variable activity concentrations from component concentrations
             call this%compute_c_nc_from_u_aq_Newton(c2nc_ig,conc_comp,conc_nc,niter,CV_flag)
         !> We check convergence

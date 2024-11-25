@@ -4,7 +4,7 @@ subroutine read_init_cat_exch_zones_CHEPROO(this,unit,init_cat_exch_zones,reacti
     implicit none
     class(chemistry_c) :: this
     integer(kind=4), intent(in) :: unit !> file
-    type(solid_type_c), intent(out), allocatable :: init_cat_exch_zones(:)
+    type(solid_chemistry_c), intent(out), allocatable :: init_cat_exch_zones(:)
     type(reactive_zone_c), intent(inout), allocatable, optional :: reactive_zones(:)
     
     integer(kind=4) :: i,j,k,ndtype,idtype,nrwtype,icon,num_ads_zones,num_mins_glob,num_mins_loc
@@ -37,29 +37,29 @@ subroutine read_init_cat_exch_zones_CHEPROO(this,unit,init_cat_exch_zones,reacti
         call react_zone%set_eq_reactions()
         call react_zone%set_num_solids()
         call react_zone%set_stoich_mat_react_zone()
-        call init_cat_exch_zones(idtype)%solid_chem%set_reactive_zone(react_zone)
-        !call init_cat_exch_zones(idtype)%solid_chem%set_CEC(CEC)
-        call init_cat_exch_zones(idtype)%solid_chem%allocate_conc_solids()
-        !call init_cat_exch_zones(idtype)%solid_chem%allocate_conc_comp_solids(1) !> chapuza
-        init_cat_exch_zones(idtype)%solid_chem%CEC=CEC !> falta un set
-        call init_cat_exch_zones(idtype)%solid_chem%allocate_equivalents()
-        call init_cat_exch_zones(idtype)%solid_chem%allocate_log_act_coeffs_solid_chem()
-        !allocate(init_cat_exch_zones(idtype)%solid_chem%log_act_coeffs(init_cat_exch_zones(idtype)%solid_chem%reactive_zone%num_solids))
-        init_cat_exch_zones(idtype)%solid_chem%log_act_coeffs=0d0 !> chapuza
-        init_cat_exch_zones(idtype)%solid_chem%log_Jacobian_act_coeffs=0d0 !> chapuza
-        !init_cat_exch_zones(idtype)%solid_chem%log_act_coeffs=-log10(init_cat_exch_zones(idtype)%solid_chem%concentrations) !> chapuza
-        !call init_cat_exch_zones(idtype)%solid_chem%reactive_zone%cat_exch_zone%compute_log_act_coeffs_ads_cats(init_cat_exch_zones(idtype)%solid_chem%log_act_coeffs(2:init_cat_exch_zones(idtype)%solid_chem%reactive_zone%cat_exch_zone%num_surf_compl))
-        call init_cat_exch_zones(idtype)%solid_chem%allocate_activities()
-        init_cat_exch_zones(idtype)%solid_chem%concentrations(1)=1d-16 !> 'x-', chapuza
-        !call init_cat_exch_zones(idtype)%solid_chem%compute_activities_ads_cats() !> chapuza
-        !init_cat_exch_zones(idtype)%solid_chem%activities(init_cat_exch_zones(idtype)%solid_chem%reactive_zone%num_solids)=1d0-       
+        call init_cat_exch_zones(idtype)%set_reactive_zone(react_zone)
+        !call init_cat_exch_zones(idtype)%set_CEC(CEC)
+        call init_cat_exch_zones(idtype)%allocate_conc_solids()
+        !call init_cat_exch_zones(idtype)%allocate_conc_comp_solids(1) !> chapuza
+        init_cat_exch_zones(idtype)%CEC=CEC !> falta un set
+        call init_cat_exch_zones(idtype)%allocate_equivalents()
+        call init_cat_exch_zones(idtype)%allocate_log_act_coeffs_solid_chem()
+        !allocate(init_cat_exch_zones(idtype)%log_act_coeffs(init_cat_exch_zones(idtype)%reactive_zone%num_solids))
+        init_cat_exch_zones(idtype)%log_act_coeffs=0d0 !> chapuza
+        init_cat_exch_zones(idtype)%log_Jacobian_act_coeffs=0d0 !> chapuza
+        !init_cat_exch_zones(idtype)%log_act_coeffs=-log10(init_cat_exch_zones(idtype)%concentrations) !> chapuza
+        !call init_cat_exch_zones(idtype)%reactive_zone%cat_exch_zone%compute_log_act_coeffs_ads_cats(init_cat_exch_zones(idtype)%log_act_coeffs(2:init_cat_exch_zones(idtype)%reactive_zone%cat_exch_zone%num_surf_compl))
+        call init_cat_exch_zones(idtype)%allocate_activities()
+        init_cat_exch_zones(idtype)%concentrations(1)=1d-16 !> 'x-', chapuza
+        !call init_cat_exch_zones(idtype)%compute_activities_ads_cats() !> chapuza
+        !init_cat_exch_zones(idtype)%activities(init_cat_exch_zones(idtype)%reactive_zone%num_solids)=1d0-       
         num_ads_zones=num_ads_zones+1
         if (num_ads_zones==ndtype) exit
     end do
     if (present(reactive_zones)) then
         allocate(reactive_zones(ndtype))
         do i=1,ndtype
-            reactive_zones(i)=init_cat_exch_zones(i)%solid_chem%reactive_zone
+            reactive_zones(i)=init_cat_exch_zones(i)%reactive_zone
         end do
     end if
 end subroutine

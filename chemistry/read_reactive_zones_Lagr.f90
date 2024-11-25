@@ -149,7 +149,7 @@ subroutine read_reactive_zones_Lagr(this,unit)
     !>            read(5,*) react_zone_file
     !>            do l=1,this%num_reactive_zones
     !>                line=line+1
-    !>                call this%reactive_zones(l)%set_chem_syst_react_zone(this%chem_syst)
+    !>                call this%reactive_zones(l)%set_chem_syst_react_zone(this%solid_chemistry%reactive_zone%chem_syst)
     !>                call this%reactive_zones(l)%read_reactive_zone_Lagr(react_zone_file,line+1+l)
     !>            end do
     !>        end if

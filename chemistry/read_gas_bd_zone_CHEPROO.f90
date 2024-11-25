@@ -3,7 +3,7 @@ subroutine read_gas_bd_zones_CHEPROO(this,unit,gas_bd_zones,reactive_zones)
     implicit none
     class(chemistry_c) :: this
     integer(kind=4), intent(in) :: unit !> file
-    type(gas_type_c), intent(out), allocatable :: gas_bd_zones(:)
+    type(gas_chemistry_c), intent(out), allocatable :: gas_bd_zones(:)
     type(reactive_zone_c), intent(inout), allocatable, optional :: reactive_zones(:)
     
     integer(kind=4) :: i,j,k,ngtype,igtype,nrwtype,gas_ind,num_gas_zones,num_gases_loc,num_gases_var,num_gases_cst
@@ -45,14 +45,14 @@ subroutine read_gas_bd_zones_CHEPROO(this,unit,gas_bd_zones,reactive_zones)
                     call react_zone%gas_phase%allocate_gases(num_gases_loc)
                     call react_zone%gas_phase%set_num_var_act_species_phase(num_gases_var)
                     call react_zone%gas_phase%set_num_cst_act_species_phase(num_gases_cst)
-                    call gas_bd_zones(igtype)%gas_chem%set_reactive_zone(react_zone)
-                    call gas_bd_zones(igtype)%gas_chem%set_temp()
-                    call gas_bd_zones(igtype)%gas_chem%allocate_partial_pressures()
-                    call gas_bd_zones(igtype)%gas_chem%allocate_conc_gases()
-                    call gas_bd_zones(igtype)%gas_chem%allocate_log_act_coeffs_gases()
-                    call gas_bd_zones(igtype)%gas_chem%allocate_var_act_species_indices(num_gases_var)
-                    call gas_bd_zones(igtype)%gas_chem%allocate_cst_act_species_indices(num_gases_cst)
-                    call gas_bd_zones(igtype)%gas_chem%set_indices_gases()
+                    call gas_bd_zones(igtype)%set_reactive_zone(react_zone)
+                    call gas_bd_zones(igtype)%set_temp()
+                    call gas_bd_zones(igtype)%allocate_partial_pressures()
+                    call gas_bd_zones(igtype)%allocate_conc_gases()
+                    call gas_bd_zones(igtype)%allocate_log_act_coeffs_gases()
+                    call gas_bd_zones(igtype)%allocate_var_act_species_indices(num_gases_var)
+                    call gas_bd_zones(igtype)%allocate_cst_act_species_indices(num_gases_cst)
+                    call gas_bd_zones(igtype)%set_indices_gases()
                     exit
                 else
                     call this%chem_syst%gas_phase%is_gas_in_gas_phase(gas,flag,gas_ind)
@@ -93,22 +93,22 @@ subroutine read_gas_bd_zones_CHEPROO(this,unit,gas_bd_zones,reactive_zones)
                 !else if (index(str,'gas')/=0) then
                     num_gas_zones=num_gas_zones+1
                     !num_gases_loc=0 !> counter gases in this zone
-                    do j=1,gas_bd_zones(igtype)%gas_chem%reactive_zone%gas_phase%num_species
+                    do j=1,gas_bd_zones(igtype)%reactive_zone%gas_phase%num_species
                         read(unit,*) gas%name, part_press
                         !if (gas%name=='*') then
-                        !    call gas_bd_zones(igtype)%gas_chem%compute_conc_gases_ideal() !> we assume gases are ideal
+                        !    call gas_bd_zones(igtype)%compute_conc_gases_ideal() !> we assume gases are ideal
                         !    exit
-                        !else if (gas%name/=this%chem_syst%gas_phase%gases(num_gases_glob)%name) then
+                        !else if (gas%name/=this%solid_chemistry%reactive_zone%chem_syst%gas_phase%gases(num_gases_glob)%name) then
                         !    error stop
                         !else
                             !num_gases_loc=num_gases_loc+1
-                            gas_bd_zones(igtype)%gas_chem%reactive_zone%gas_phase%gases(j)=this%chem_syst%gas_phase%gases(ind_gases(j)) !> we set gas
-                            gas_bd_zones(igtype)%gas_chem%activities(j)=part_press !> activities are partial pressures
+                            gas_bd_zones(igtype)%reactive_zone%gas_phase%gases(j)=this%chem_syst%gas_phase%gases(ind_gases(j)) !> we set gas
+                            gas_bd_zones(igtype)%activities(j)=part_press !> activities are partial pressures
                         !end if
                     end do
-                    call gas_bd_zones(igtype)%gas_chem%compute_conc_gases_ideal() !> we assume gases are ideal
-                    call gas_bd_zones(igtype)%gas_chem%compute_log_act_coeffs_gases()
-                    call gas_bd_zones(igtype)%gas_chem%compute_pressure()
+                    call gas_bd_zones(igtype)%compute_conc_gases_ideal() !> we assume gases are ideal
+                    call gas_bd_zones(igtype)%compute_log_act_coeffs_gases()
+                    call gas_bd_zones(igtype)%compute_pressure()
                 !else
                 !    exit
                 !end if
@@ -123,7 +123,7 @@ subroutine read_gas_bd_zones_CHEPROO(this,unit,gas_bd_zones,reactive_zones)
     if (present(reactive_zones)) then
         allocate(reactive_zones(ngtype))
         do i=1,ngtype
-            reactive_zones(i)=gas_bd_zones(i)%gas_chem%reactive_zone
+            reactive_zones(i)=gas_bd_zones(i)%reactive_zone
         end do
     end if
 end subroutine

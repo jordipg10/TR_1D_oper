@@ -10,11 +10,11 @@ subroutine compute_c2_from_c1_ideal(this,c1,c2)
     integer(kind=4) :: n_p,n_e,n_sec_aq,n_nc_aq
     real(kind=8), allocatable :: log_c2(:)
     
-    n_p=this%speciation_alg%num_prim_species
-    n_e=this%speciation_alg%num_eq_reactions
-    n_sec_aq=this%speciation_alg%num_sec_aq_species
+    n_p=this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
+    n_e=this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions
+    n_sec_aq=this%solid_chemistry%reactive_zone%speciation_alg%num_sec_aq_species
             
-    log_c2=matmul(this%speciation_alg%Se_1_star,log10(c1))+this%speciation_alg%logK_tilde !> mass action law
+    log_c2=matmul(this%solid_chemistry%reactive_zone%speciation_alg%Se_1_star,log10(c1))+this%solid_chemistry%reactive_zone%speciation_alg%logK_tilde !> mass action law
     c2=10**log_c2
     call this%set_conc_sec_aq_species(c2(1:n_sec_aq))
         if (associated(this%gas_chemistry)) then

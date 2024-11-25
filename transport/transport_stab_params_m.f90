@@ -41,7 +41,6 @@ module transport_stab_params_m
                     end if
                     this%Peclet=abs(q)*mesh_size/D
                     if (this%Peclet>2d0) then
-                        print *, this%Peclet
                         error stop  "Peclet condition violated"
                     end if
                 else

@@ -6,6 +6,7 @@ module reactive_zone_Lagr_m
     use surf_compl_m
     use array_ops_m
     use gas_zone_m
+    use CV_params_m
     implicit none
     save
     type, public :: reactive_zone_c
@@ -23,6 +24,8 @@ module reactive_zone_Lagr_m
         integer(kind=4) :: num_eq_reactions=0 !> number of equilibrium reactions
         type(eq_reaction_c), allocatable :: eq_reactions(:) !> equilibrium heterogeneous reactions
         class(chem_system_c), pointer :: chem_syst !>  (same chemical system as chemistry class)
+        type(speciation_algebra_c) :: speciation_alg !> speciation algebra object
+        class(CV_params_t), pointer :: CV_params !> convergence parameters for speciation and reactive mixing computations (chapuza)
     contains
     !> Set
         procedure, public :: set_minerals_react_zone
@@ -40,6 +43,8 @@ module reactive_zone_Lagr_m
         procedure, public :: set_num_mins_cst_act
         procedure, public :: set_num_mins_var_act
         procedure, public :: set_gas_phase
+        procedure, public :: set_speciation_alg_dimensions
+        procedure, public :: set_CV_params
     !> Allocate/deallocate
         procedure, public :: allocate_non_flowing_species
         procedure, public :: allocate_minerals_react_zone
@@ -54,7 +59,8 @@ module reactive_zone_Lagr_m
     !> Compute
         procedure, public :: compute_num_species_react_zone
         procedure, public :: compute_num_cst_act_species_react_zone
-        procedure, public :: compute_Delta_t_crit_reactive_zone
+        !procedure, public :: compute_Delta_t_crit_reactive_zone
+        procedure, public :: compute_speciation_alg_arrays
     !> Is
         procedure, public :: is_nf_species_in_react_zone
         procedure, public :: is_mineral_in_react_zone
@@ -97,16 +103,16 @@ module reactive_zone_Lagr_m
         
        
         
-        subroutine compute_Delta_t_crit_reactive_zone(this,B_mat,F_mat,Delta_t_crit)
-            import reactive_zone_c
-            import tridiag_matrix_c
-            import diag_matrix_c
-            implicit none
-            class(reactive_zone_c) :: this
-            class(tridiag_matrix_c), intent(in) :: B_mat
-            class(diag_matrix_c), intent(in) :: F_mat
-            real(kind=8), intent(out) :: Delta_t_crit
-        end subroutine
+        !subroutine compute_Delta_t_crit_reactive_zone(this,B_mat,F_mat,Delta_t_crit)
+        !    import reactive_zone_c
+        !    import tridiag_matrix_c
+        !    import diag_matrix_c
+        !    implicit none
+        !    class(reactive_zone_c) :: this
+        !    class(tridiag_matrix_c), intent(in) :: B_mat
+        !    class(diag_matrix_c), intent(in) :: F_mat
+        !    real(kind=8), intent(out) :: Delta_t_crit
+        !end subroutine
         
         subroutine read_reactive_zone_Lagr(this,filename,line)
             import reactive_zone_c
@@ -671,6 +677,7 @@ module reactive_zone_Lagr_m
             class(reactive_zone_c) :: this
             class(reactive_zone_c), intent(in) :: react_zone
             this%chem_syst=>react_zone%chem_syst
+            this%CV_params=>react_zone%CV_params
             this%minerals=react_zone%minerals
             this%non_flowing_species=react_zone%non_flowing_species
             this%num_non_flowing_species=react_zone%num_non_flowing_species
@@ -682,7 +689,108 @@ module reactive_zone_Lagr_m
             this%num_solids=react_zone%num_solids
             this%stoich_mat=react_zone%stoich_mat
             this%stoich_mat_sol=react_zone%stoich_mat_sol
+            this%speciation_alg=react_zone%speciation_alg
             call this%set_eq_reactions()
-            !this%eq_reactions=react_zone%eq_reactions
+        end subroutine
+        
+        subroutine set_speciation_alg(this,speciation_alg)
+            implicit none
+            class(reactive_zone_c) :: this
+            type(speciation_algebra_c), intent(in) :: speciation_alg
+            this%speciation_alg=speciation_alg
+        end subroutine
+        
+        subroutine set_speciation_alg_dimensions(this,flag_comp)
+            implicit none
+            class(reactive_zone_c) :: this
+            logical, intent(in) :: flag_comp !> TRUE if component matrix has no constant activity species (De Simoni et al, 2005), FALSE otherwise
+            
+            integer(kind=4) :: i,n_sp,n_c,n_eq,n_gas_kin
+            logical :: flag_cat_exch
+            
+            n_gas_kin=0
+            
+            if (.not. associated(this%chem_syst)) then
+                error stop "Chemical system not associated with reactive zone"
+            else if (this%num_non_flowing_species>0) then
+                n_sp=this%chem_syst%aq_phase%num_species+this%num_non_flowing_species+this%chem_syst%num_min_kin_reacts
+                n_c=this%chem_syst%aq_phase%wat_flag
+                do i=1,this%num_minerals
+                    if (this%minerals(I)%mineral%cst_act_flag==.true.) then
+                        n_c=n_c+1
+                    end if
+                end do
+                do i=1,this%chem_syst%num_min_kin_reacts
+                    if (this%chem_syst%minerals(i)%mineral%cst_act_flag==.true.) then
+                        n_c=n_c+1
+                    end if
+                end do
+                !n_gas_kin=this%gas_phase%num_species-this%gas_phase%num_gases_eq
+                do i=1,this%gas_phase%num_species
+                    if (this%gas_phase%gases(i)%cst_act_flag==.true.) then
+                        n_c=n_c+1
+                    end if
+                end do
+                n_eq=this%num_eq_reactions
+                if (this%cat_exch_zone%num_surf_compl>0) then
+                    flag_cat_exch=.true.
+                else
+                    flag_cat_exch=.false.
+                end if
+            else !> all equilibrium reactions are homogeneous
+                n_sp=this%chem_syst%num_species
+                n_c=this%chem_syst%num_cst_act_species
+                n_eq=this%chem_syst%num_eq_reacts
+                if (this%chem_syst%cat_exch%num_surf_compl>0) then
+                    flag_cat_exch=.true.
+                else
+                    flag_cat_exch=.false.
+                end if
+            end if
+            call this%speciation_alg%set_flag_comp(flag_comp)
+            call this%speciation_alg%set_flag_cat_exch(flag_cat_exch)
+            call this%speciation_alg%set_dimensions(n_sp,n_eq,n_c,this%chem_syst%aq_phase%num_species,this%chem_syst%aq_phase%num_species-this%chem_syst%aq_phase%wat_flag,this%chem_syst%num_min_kin_reacts,this%gas_phase%num_gases_kin)
+        end subroutine
+        
+        subroutine compute_speciation_alg_arrays(this,flag,cols)
+            implicit none
+            class(reactive_zone_c) :: this
+            logical, intent(out) :: flag !> TRUE if 
+            !class(aq_phase_c), intent(out) :: aq_phase_new
+            integer(kind=4), intent(out) :: cols(:)
+            
+            real(kind=8), allocatable :: Se(:,:),K(:),aux_Se(:,:),aux_Sk(:,:)
+            integer(kind=4) :: aux_col
+            !logical :: flag
+            !type(aq_phase_c), target :: aux_aq_phase
+                        
+            !call aq_phase_new%copy_attributes(this%aq_phase)
+            
+            if (this%num_eq_reactions>0) then
+                Se=this%stoich_mat
+                aux_Se=Se
+                K=this%get_eq_csts_react_zone()
+                call this%speciation_alg%compute_arrays(Se,K,this%CV_params%zero,flag,cols)
+                if (flag==.true.) then
+                    this%stoich_mat(:,cols(1))=aux_Se(:,cols(2))
+                    this%stoich_mat(:,cols(2))=aux_Se(:,cols(1))
+                    aux_Sk=this%chem_syst%Sk
+                    this%chem_syst%Sk(:,cols(1))=aux_Sk(:,cols(2))
+                    this%chem_syst%Sk(:,cols(2))=aux_Sk(:,cols(1))
+                end if
+            else if (associated(this%chem_syst)) then
+                Se=this%chem_syst%Se
+                K=this%chem_syst%get_eq_csts()
+                !> incompleto
+            else
+                error stop
+            end if
+        end subroutine
+        
+        subroutine set_CV_params(this,CV_params)
+            implicit none
+            class(reactive_zone_c) :: this
+            class(CV_params_t), intent(in), target :: CV_params
+            this%CV_params=>CV_params
         end subroutine
 end module

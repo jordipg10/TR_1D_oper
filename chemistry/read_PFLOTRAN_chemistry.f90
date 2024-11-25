@@ -79,7 +79,7 @@ subroutine read_chem_system_PFLOTRAN(this,path,unit)
             exit
         else if (index(label_trim,'PRIMARY_SPECIES')/=0) then
         !else if (index(label_trim=='AQUEOUS SPECIES') then
-            !this%chem_syst%aq_phase%wat_flag=0
+            !this%aq_phase%wat_flag=0
             do
                 read(unit,*) str
                 !if (str=='*') then
@@ -208,7 +208,7 @@ subroutine read_chem_system_PFLOTRAN(this,path,unit)
     call this%allocate_lin_kin_reacts(n_lin_kin)
     call this%set_num_reacts()
     
-    !call this%speciation_alg%set_dimensions(this%num_species,this%num_eq_reacts,this%num_cst_act_species,this%num_eq_reacts-this%cat_exch%num_surf_compl)
+    !call this%solid_chemistry%reactive_zone%speciation_alg%set_dimensions(this%num_species,this%num_eq_reacts,this%num_cst_act_species,this%num_eq_reacts-this%cat_exch%num_surf_compl)
     
     ind_var_act_sp=0
     do
@@ -233,8 +233,8 @@ subroutine read_chem_system_PFLOTRAN(this,path,unit)
                     call this%var_act_species(ind_var_act_sp)%set_name(str_trim)
                     !num_var_act_sp=num_var_act_sp+1
                 end if
-                !call this%chem_syst%aq_phase%aq_species(i)%read_species(str_trim)
-                !call this%chem_syst%aq_phase%aq_species(i)%set_cst_act_flag(.false.)
+                !call this%aq_phase%aq_species(i)%read_species(str_trim)
+                !call this%aq_phase%aq_species(i)%set_cst_act_flag(.false.)
             end do
         !else if (index(label=='SECONDARY AQUEOUS SPECIES') then
         !>    do
@@ -242,11 +242,11 @@ subroutine read_chem_system_PFLOTRAN(this,path,unit)
         !>        if (str=='*') exit
         !>        i=i+1
         !>        str_trim=trim(str)
-        !>        call this%chem_syst%aq_phase%aq_species(i)%set_name(str_trim)
-        !>        !if (this%chem_syst%aq_phase%aq_species(i)%name=='h2o') then
-        !>        !>    call this%chem_syst%aq_phase%aq_species(i)%set_cst_act_flag(.true.)
+        !>        call this%aq_phase%aq_species(i)%set_name(str_trim)
+        !>        !if (this%aq_phase%aq_species(i)%name=='h2o') then
+        !>        !>    call this%aq_phase%aq_species(i)%set_cst_act_flag(.true.)
         !>        !else
-        !>        !>    call this%chem_syst%aq_phase%aq_species(i)%set_cst_act_flag(.false.)
+        !>        !>    call this%aq_phase%aq_species(i)%set_cst_act_flag(.false.)
         !>        !end if
         !>    end do
         else if (label=='SECONDARY_SPECIES') then
@@ -265,7 +265,7 @@ subroutine read_chem_system_PFLOTRAN(this,path,unit)
                     call this%aq_phase%aq_species(i)%set_name(str_trim)
                     call this%var_act_species(ind_var_act_sp)%set_name(str_trim)
                 end if
-                !call this%chem_syst%aq_phase%aq_species(i)%set_cst_act_flag(.false.)
+                !call this%aq_phase%aq_species(i)%set_cst_act_flag(.false.)
             end do
             !num_aq_sp=num_prim_sp
             !do
@@ -288,8 +288,8 @@ subroutine read_chem_system_PFLOTRAN(this,path,unit)
             !>            end if
             !>            backspace(unit)
             !>        end do
-            !>        call this%chem_syst%aq_phase%set_aq_species(aq_species)
-            !>        call this%chem_syst%aq_phase%rearrange_aq_species() !> sorts aqueous species into variable activity & constant activity
+            !>        call this%aq_phase%set_aq_species(aq_species)
+            !>        call this%aq_phase%rearrange_aq_species() !> sorts aqueous species into variable activity & constant activity
             !>        exit
             !>    else
             !>        num_sp=num_sp+1

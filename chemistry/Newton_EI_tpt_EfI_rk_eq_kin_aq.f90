@@ -26,31 +26,31 @@
 !    
 !    niter=0
 !    CV_flag=.false.
-!    n_p=this%speciation_alg%num_prim_species
-!    n_nc=this%speciation_alg%num_var_act_species
+!    n_p=this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
+!    n_nc=this%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species
 !    n_col_mix=SIZE(mixing_ratios,2) !> chapuza
 !
-!    allocate(dfk_dc1(n_p,n_p),Delta_c1(n_p),drk_dc(this%chem_syst%num_kin_reacts,n_nc))
+!    allocate(dfk_dc1(n_p,n_p),Delta_c1(n_p),drk_dc(this%solid_chemistry%reactive_zone%chem_syst%num_kin_reacts,n_nc))
 !    !eta_old=0d0
-!    u_tilde=this%compute_u_tilde(mixing_ratios(:,1),mixing_waters)
+!    u_tilde=this%compute_u_tilde_aq_chem(mixing_ratios(:,1),mixing_waters)
 !    do 
 !        niter=niter+1 !> we update number of iterations
-!        if (niter>this%CV_params%niter_max) then
+!        if (niter>this%solid_chemistry%reactive_zone%CV_params%niter_max) then
 !            print *, "Too many Newton iterations"
 !            exit
 !        end if
 !        call this%compute_c2nc_from_c1_aq_Picard(niter_spec,CV_flag) !> computes concentration of secondary non constant activity species from concentration of primary species using mass action law
 !        call this%compute_Jacobian_rk_anal(drk_dc) !> we compute kinetic Jacobian
 !        !call this%compute_Jacobian_rk_incr_coeff(drk_dc) !> we compute kinetic reaction rate and Jacobian
-!        fk=matmul(this%speciation_alg%comp_mat,this%concentrations(1:n_nc))-u_tilde-(Delta_t/porosity)*matmul(this%U_SkT_prod,MATMUL(rk_mat,mixing_ratios(:,n_col_mix))) !> Newton residual
-!        if (inf_norm_vec_real(fk)<this%CV_params%abs_tol) then !> CV reached
+!        fk=matmul(this%solid_chemistry%reactive_zone%speciation_alg%comp_mat,this%concentrations(1:n_nc))-u_tilde-(Delta_t/porosity)*matmul(this%U_SkT_prod,MATMUL(rk_mat,mixing_ratios(:,n_col_mix))) !> Newton residual
+!        if (inf_norm_vec_real(fk)<this%solid_chemistry%reactive_zone%CV_params%abs_tol) then !> CV reached
 !            CV_flag=.true.
 !            exit
 !        else
 !            call this%compute_dfk_dc1_aq_EfI(drk_dc,porosity,Delta_t,dfk_dc1) !> computes Jacobian of Newton function
-!            call LU_lin_syst(dfk_dc1,-fk,this%CV_params%zero,Delta_c1) !> solves linear system dfk_dc1*Delta_c1=-fk
+!            call LU_lin_syst(dfk_dc1,-fk,this%solid_chemistry%reactive_zone%CV_params%zero,Delta_c1) !> solves linear system dfk_dc1*Delta_c1=-fk
 !            !c1_new=c1_old+Delta_c1
-!            if (inf_norm_vec_real(Delta_c1/this%concentrations(1:n_p))<this%CV_params%rel_tol) then !> arbitrary
+!            if (inf_norm_vec_real(Delta_c1/this%concentrations(1:n_p))<this%solid_chemistry%reactive_zone%CV_params%rel_tol) then !> arbitrary
 !                print *, "Newton solution not accurate enough"
 !                exit
 !            else

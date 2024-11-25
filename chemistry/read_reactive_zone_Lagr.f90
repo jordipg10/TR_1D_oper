@@ -75,9 +75,9 @@ subroutine read_reactive_zone_Lagr(this,filename,irec)
         !>            else
         !>                num_eq_ph=num_eq_ph+1
         !>                call mineral%set_name(species%name)
-        !>                call this%chem_syst%is_mineral_in_chem_syst(mineral,flag_min,min_ind)
-        !>                !call this%chem_syst%is_species_in_chem_syst(species,flag_sp,sp_ind)
-        !>                call this%chem_syst%is_eq_reaction_in_chem_syst(species,flag_react,eq_react_ind)
+        !>                call this%solid_chemistry%reactive_zone%chem_syst%is_mineral_in_chem_syst(mineral,flag_min,min_ind)
+        !>                !call this%solid_chemistry%reactive_zone%chem_syst%is_species_in_chem_syst(species,flag_sp,sp_ind)
+        !>                call this%solid_chemistry%reactive_zone%chem_syst%is_eq_reaction_in_chem_syst(species,flag_react,eq_react_ind)
         !>                if (flag_react==.true. .and. flag_min==.true.) then
         !>                    num_nf_sp=num_nf_sp+1
         !>                    num_mins=num_mins+1
@@ -96,7 +96,7 @@ subroutine read_reactive_zone_Lagr(this,filename,irec)
         !>                    end if
         !>                else
         !>                    call gas%set_name(eq_phase_str)
-        !>                    call this%chem_syst%is_gas_in_chem_syst(gas,flag_gas,eq_phase_ind)
+        !>                    call this%solid_chemistry%reactive_zone%chem_syst%is_gas_in_chem_syst(gas,flag_gas,eq_phase_ind)
         !>                    if (flag_gas==.true.) then
         !>                        num_gas=num_gas+1
         !>                        !call gas%set_name(eq_phase_str)
@@ -118,7 +118,7 @@ subroutine read_reactive_zone_Lagr(this,filename,irec)
         !>            !end if
         !>            exit
         !>        else
-        !>            call this%chem_syst%is_eq_reaction_in_chem_syst(species,flag_react,eq_react_ind)
+        !>            call this%solid_chemistry%reactive_zone%chem_syst%is_eq_reaction_in_chem_syst(species,flag_react,eq_react_ind)
         !>            if (flag_react==.true.) then
         !>                num_surf_compl=num_surf_compl+1
         !>                num_nf_sp=num_nf_sp+1
@@ -136,7 +136,7 @@ subroutine read_reactive_zone_Lagr(this,filename,irec)
         !>            n_eq=compute_binomial_coeff(num_exch_sp,2) !> we assume all exchangeable cations exchange with each other
         !>            do i=1,num_exch_sp-1
         !>                do j=i+1,num_exch_sp
-        !>                    call this%chem_syst%is_eq_reaction_in_chem_syst(this%chem_syst%species(nf_sp_indices(i)),flag_react,eq_react_ind,this%chem_syst%species(nf_sp_indices(j)))
+        !>                    call this%solid_chemistry%reactive_zone%chem_syst%is_eq_reaction_in_chem_syst(this%solid_chemistry%reactive_zone%chem_syst%species(nf_sp_indices(i)),flag_react,eq_react_ind,this%solid_chemistry%reactive_zone%chem_syst%species(nf_sp_indices(j)))
         !>                    if (flag_react==.true.) then
         !>                        n_eq=n_eq+1
         !>                        call append_int_1D_array(eq_react_indices,eq_react_ind)
@@ -149,7 +149,7 @@ subroutine read_reactive_zone_Lagr(this,filename,irec)
         !>            !end if
         !>            exit
         !>        else
-        !>            call this%chem_syst%is_species_in_chem_syst(species,flag_sp,sp_ind)
+        !>            call this%solid_chemistry%reactive_zone%chem_syst%is_species_in_chem_syst(species,flag_sp,sp_ind)
         !>            if (flag_sp==.true.) then
         !>                num_exch_sp=num_exch_sp+1
         !>                num_nf_sp=num_nf_sp+1
@@ -164,30 +164,30 @@ subroutine read_reactive_zone_Lagr(this,filename,irec)
     close(555)
     !if (n_e>0 .and. n_k>0) then
     !>    !this%reactive_zones(l)=>reactive_zone_eq_kin
-    !>    !this%chem_syst=>my_chem_syst_eq_kin
-    !>    this%chem_syst=>my_chem_syst_eq_kin
+    !>    !this%solid_chemistry%reactive_zone%chem_syst=>my_chem_syst_eq_kin
+    !>    this%solid_chemistry%reactive_zone%chem_syst=>my_chem_syst_eq_kin
     !else if (n_e>0) then
     !>    !this%reactive_zones(l)=>reactive_zone_eq
-    !>    !this%chem_syst=>my_chem_syst_eq
-    !>    this%chem_syst=>my_chem_syst_eq
+    !>    !this%solid_chemistry%reactive_zone%chem_syst=>my_chem_syst_eq
+    !>    this%solid_chemistry%reactive_zone%chem_syst=>my_chem_syst_eq
     !else if (n_k>0) then
     !>    !this%reactive_zones(l)=>reactive_zone_kin
-    !>    !this%chem_syst=>my_chem_syst_kin
-    !>    this%chem_syst=>my_chem_syst_kin
+    !>    !this%solid_chemistry%reactive_zone%chem_syst=>my_chem_syst_kin
+    !>    this%solid_chemistry%reactive_zone%chem_syst=>my_chem_syst_kin
     !else
     !>    error stop "No reactions involved"
     !end if
-    !call this%chem_syst%set_aq_species(aq_species)
-    !call this%chem_syst%aq_phase%set_num_species()
-    !call this%chem_syst%set_prim_species(prim_species)
-    !call this%chem_syst%compute_num_prim_species()
-    !call this%chem_syst%set_cst_act_species(cst_act_species)
-    !call this%chem_syst%set_num_cst_act_species()
-    !call this%chem_syst%set_solid_species(solids)
-    !call this%chem_syst%set_num_solid_species()
-    !call this%chem_syst%set_num_var_act_species()
-    !call this%chem_syst%set_var_act_species()
-    !call this%chem_syst%set_species()
+    !call this%solid_chemistry%reactive_zone%chem_syst%set_aq_species(aq_species)
+    !call this%aq_phase%set_num_species()
+    !call this%solid_chemistry%reactive_zone%chem_syst%set_prim_species(prim_species)
+    !call this%solid_chemistry%reactive_zone%chem_syst%compute_num_prim_species()
+    !call this%solid_chemistry%reactive_zone%chem_syst%set_cst_act_species(cst_act_species)
+    !call this%solid_chemistry%reactive_zone%chem_syst%set_num_cst_act_species()
+    !call this%solid_chemistry%reactive_zone%chem_syst%set_solid_species(solids)
+    !call this%solid_chemistry%reactive_zone%chem_syst%set_num_solid_species()
+    !call this%solid_chemistry%reactive_zone%chem_syst%set_num_var_act_species()
+    !call this%solid_chemistry%reactive_zone%chem_syst%set_var_act_species()
+    !call this%solid_chemistry%reactive_zone%chem_syst%set_species()
     
     
     !call this%set_mineral_zone(mineral_zone)
@@ -208,13 +208,13 @@ subroutine read_reactive_zone_Lagr(this,filename,irec)
     
     !call spec_alg%set_dimensions(size(prim_species)+n_eq+size(cst_act_species),n_eq,size(cst_act_species))
     !call spec_alg%compute_arrays(this%se,this%get_eq_csts(),this%Sk)
-    !call this%set_speciation_alg(spec_alg)             
-    !call aq_spec%set_speciation_alg(spec_alg)
+    !call this%set_solid_chemistry%reactive_zone%speciation_alg(spec_alg)             
+    !call aq_spec%set_solid_chemistry%reactive_zone%speciation_alg(spec_alg)
     !call aq_spec%set_aq_species(aq_species)
     !call aq_spec%allocate_act_coeffs()
                     
     !call this%set_aq_speciation(aq_spec)
-    !call this%compute_aq_speciation_alg()
+    !call this%compute_aq_solid_chemistry%reactive_zone%speciation_alg()
     !call this%initialise_solid_chem(init_solid_chems,n_tar_sol)
     !call this%initialise_aqueous_chem(initial_water_types,n_tar)
     !call this%initialise_water_sources()

@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Mon Nov 25 16:10:15 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Mon Nov 25 16:00:50 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE READ_GAS_BD_ZONES_CHEPROO__genmod
@@ -8,7 +8,7 @@
               USE CHEMISTRY_LAGR_M
               CLASS (CHEMISTRY_C) :: THIS
               INTEGER(KIND=4), INTENT(IN) :: UNIT
-              TYPE (GAS_TYPE_C) ,ALLOCATABLE, INTENT(OUT) ::            &
+              TYPE (GAS_CHEMISTRY_C) ,ALLOCATABLE, INTENT(OUT) ::       &
      &GAS_BD_ZONES(:)
               TYPE (REACTIVE_ZONE_C) ,OPTIONAL ,ALLOCATABLE             &
      &, INTENT(INOUT) :: REACTIVE_ZONES(:)

@@ -29,31 +29,31 @@ subroutine Newton_EfI_rk_kin_aq_anal(this,c_tilde,porosity,Delta_t,niter,CV_flag
 !> Pre-process
     niter=0
     CV_flag=.false.
-    n_aq=this%chem_syst%aq_phase%num_species
-    allocate(dfk_dc(n_aq,n_aq),Delta_c_aq(n_aq),drk_dc(this%chem_syst%num_kin_reacts,n_aq))
+    n_aq=this%aq_phase%num_species
+    allocate(dfk_dc(n_aq,n_aq),Delta_c_aq(n_aq),drk_dc(this%solid_chemistry%reactive_zone%chem_syst%num_kin_reacts,n_aq))
 !> Process
     !> We start Newton loop
         do
         !> we update number of iterations
             niter=niter+1 
-            if (niter>this%CV_params%niter_max) then
+            if (niter>this%solid_chemistry%reactive_zone%CV_params%niter_max) then
                 print *, "Too many Newton iterations"
                 exit
             end if
         !> we compute kinetic reaction rates and its Jacobian analytically
             call this%compute_rk_Jac_rk_anal(drk_dc)
          !> Newton residual
-            fk=this%concentrations-c_tilde-(Delta_t/porosity)*matmul(transpose(this%chem_syst%Sk),this%rk)
+            fk=this%concentrations-c_tilde-(Delta_t/porosity)*matmul(transpose(this%solid_chemistry%reactive_zone%chem_syst%Sk),this%rk)
         !> We check convergence
-            if (inf_norm_vec_real(fk)<this%CV_params%abs_tol) then !> CV reached
+            if (inf_norm_vec_real(fk)<this%solid_chemistry%reactive_zone%CV_params%abs_tol) then !> CV reached
                 CV_flag=.true.
                 exit
             else
             !> compute Jacobian of Newton residual
                 call this%compute_dfk_dc_aq_EfI(drk_dc,porosity,Delta_t,dfk_dc) 
             !> solve linear system dfk_dc*Delta_c_aq=-fk using LU decomposition
-                call LU_lin_syst(dfk_dc,-fk,this%CV_params%zero,Delta_c_aq) 
-                if (inf_norm_vec_real(Delta_c_aq)<this%CV_params%rel_tol) then 
+                call LU_lin_syst(dfk_dc,-fk,this%solid_chemistry%reactive_zone%CV_params%zero,Delta_c_aq) 
+                if (inf_norm_vec_real(Delta_c_aq)<this%solid_chemistry%reactive_zone%CV_params%rel_tol) then 
                     print *, "Newton solution not accurate enough"
                     exit
                 else
@@ -63,7 +63,7 @@ subroutine Newton_EfI_rk_kin_aq_anal(this,c_tilde,porosity,Delta_t,niter,CV_flag
         end do
     !> We compute aqueous chemistry attributes
         call this%compute_ionic_act()
-        call this%chem_syst%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs)
+        call this%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs)
         call this%compute_log_act_coeff_wat()
         call this%compute_activities_aq()
         call this%compute_pH()

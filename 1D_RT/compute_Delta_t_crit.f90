@@ -22,7 +22,7 @@ subroutine compute_Delta_t_crit_RT(this)
         if (this%chemistry%chem_syst%num_kin_reacts>0) then
             do i=1,this%chemistry%num_reactive_zones
                 !if (this%chemistry%reactive_zones(i)%num_kin_reacts>0) then
-                    call this%chemistry%reactive_zones(i)%compute_Delta_t_crit_reactive_zone(this%transport%B_mat,this%transport%F_mat,Delta_t_crit)
+                    !call this%chemistry%reactive_zones(i)%compute_Delta_t_crit_reactive_zone(this%transport%B_mat,this%transport%F_mat,Delta_t_crit)
                     if (Delta_t_crit<this%Delta_t_crit) then
                         this%Delta_t_crit=Delta_t_crit
                     end if

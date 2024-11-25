@@ -1,12 +1,12 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Mon Nov 25 16:10:12 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Mon Nov 25 16:01:18 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE READ_WAT_TYPE_CHEPROO__genmod
           INTERFACE 
             SUBROUTINE READ_WAT_TYPE_CHEPROO(THIS,N_P_AQ,NUM_CSTR,MODEL,&
      &JAC_FLAG,UNIT,NITER,CV_FLAG,SURF_CHEM)
-              USE CHEM_TYPE_M
-              CLASS (WATER_TYPE_C) :: THIS
+              USE AQUEOUS_CHEMISTRY_M
+              CLASS (AQUEOUS_CHEMISTRY_C) :: THIS
               INTEGER(KIND=4), INTENT(IN) :: N_P_AQ
               INTEGER(KIND=4), INTENT(IN) :: NUM_CSTR
               INTEGER(KIND=4), INTENT(IN) :: MODEL

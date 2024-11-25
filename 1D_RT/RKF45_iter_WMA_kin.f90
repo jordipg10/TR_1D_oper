@@ -26,7 +26,7 @@
 !>    
 !>    !select type (this)
 !>    !type is (chemistry_transient_c)
-!>        !select type (chem_syst=>this%chem_syst)
+!>        !select type (chem_syst=>this%solid_chemistry%reactive_zone%chem_syst)
 !>        !type is (chem_system_eq_kin_c)
 !>            !do j=1,n
 !>                !allocate(conc_RK5(n))

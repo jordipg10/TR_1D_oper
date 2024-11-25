@@ -65,7 +65,7 @@ subroutine read_PHREEQC_DB_opc2(this,unit,filename)
                     cycle
                 !else if (str_trim(1:1)/='') then
                     !call this%read_sol_master_species_PHREEQC(str_trim,aq_species,prim_flag)
-                    !call aq_species%append_aq_species(this%chem_syst%aq_phase%aq_species)
+                    !call aq_species%append_aq_species(this%aq_phase%aq_species)
                 !else if (index(str_trim,'log_k')/=0) then !> logK a 25 ºC
                 !>    backspace(5)
                 !>    read(5,*) str, logK_25
@@ -111,7 +111,7 @@ subroutine read_PHREEQC_DB_opc2(this,unit,filename)
                         !call this%append_reaction(eq_react)
                         call eq_react%deallocate_reaction()
                     end if
-                    !call this%chem_syst%aq_phase%append_aq_species(aq_species)
+                    !call this%aq_phase%append_aq_species(aq_species)
                     call eq_react%read_association_react_PHREEQC(str_trim,prim_flag)
                 else if (index(str_trim,'log_k')==3) then !> logK a 25 ºC
                     backspace(5)
@@ -172,7 +172,7 @@ subroutine read_PHREEQC_DB_opc2(this,unit,filename)
                         end if
                         !call this%append_phase(phase)
                         call eq_react%read_dissolution_react_PHREEQC(str_trim)
-                        !call aq_species%append_aq_species(this%chem_syst%aq_phase%aq_species)
+                        !call aq_species%append_aq_species(this%aq_phase%aq_species)
                     else if (index(str_trim,'log_k')/=0) then !> logK a 25 ºC
                         backspace(5)
                         read(5,*) str, logK_25
@@ -216,7 +216,7 @@ subroutine read_PHREEQC_DB_opc2(this,unit,filename)
     !>        do
     !>            read(5,*) species%name, target_SI, conc_init
     !>            if (species%name=='*') then
-    !>                call reactive_zone%set_chem_syst_react_zone(this%chem_syst)
+    !>                call reactive_zone%set_chem_syst_react_zone(this%solid_chemistry%reactive_zone%chem_syst)
     !>                if (num_mins>0 .and. num_gas==0) then
     !>                    backspace(5)
     !>                    call reactive_zone%allocate_non_flowing_species(num_mins)
@@ -233,9 +233,9 @@ subroutine read_PHREEQC_DB_opc2(this,unit,filename)
     !>                call reactive_zone%set_kin_reactions()
     !>                call reactive_zone%set_min_kin_reactions()
     !>                call reactive_zone%compute_num_reactions()
-    !>                call reactive_zone%set_speciation_alg()
+    !>                call reactive_zone%set_solid_chemistry%reactive_zone%speciation_alg()
     !>                call reactive_zone%construct_se()
-    !>                call reactive_zone%compute_speciation_alg_arrays()
+    !>                call reactive_zone%compute_solid_chemistry%reactive_zone%speciation_alg_arrays()
     !>                !else if (num_species>0 .and. num_mins==0) then
     !>                    !backspace(555)
     !>                    !call gas_phase%allocate_gases(num_species)
@@ -249,7 +249,7 @@ subroutine read_PHREEQC_DB_opc2(this,unit,filename)
     !>            else
     !>                num_eq_ph=num_eq_ph+1
     !>                call mineral%set_name(species%name)
-    !>                call this%chem_syst%is_mineral_in_chem_syst(mineral,flag_min,min_ind)
+    !>                call this%solid_chemistry%reactive_zone%chem_syst%is_mineral_in_chem_syst(mineral,flag_min,min_ind)
     !>                
     !>                if (flag_min==.true.) then
     !>                    num_nf_sp=num_nf_sp+1
@@ -261,7 +261,7 @@ subroutine read_PHREEQC_DB_opc2(this,unit,filename)
     !>                    end if
     !>                else
     !>                    call gas%set_name(eq_phase_str)
-    !>                    call this%chem_syst%is_gas_in_chem_syst(gas,flag_gas,eq_phase_ind)
+    !>                    call this%solid_chemistry%reactive_zone%chem_syst%is_gas_in_chem_syst(gas,flag_gas,eq_phase_ind)
     !>                    if (flag_gas==.true.) then
     !>                        num_gas=num_gas+1
     !>                    else
@@ -280,7 +280,7 @@ subroutine read_PHREEQC_DB_opc2(this,unit,filename)
     !>            if (eq_phase_str=='*') then
     !>                exit
     !>            else
-    !>                call this%chem_syst%is_eq_reaction_in_chem_syst(species,flag_react,eq_react_ind)
+    !>                call this%solid_chemistry%reactive_zone%chem_syst%is_eq_reaction_in_chem_syst(species,flag_react,eq_react_ind)
     !>                if (flag_react==.true.) then
     !>                    num_surf_compl=num_surf_compl+1
     !>                    num_nf_sp=num_nf_sp+1
@@ -297,7 +297,7 @@ subroutine read_PHREEQC_DB_opc2(this,unit,filename)
     !>                n_eq=compute_binomial_coeff(num_exch_sp,2) !> we assume all exchangeable cations exchange with each other
     !>                do i=1,num_exch_sp-1
     !>                    do j=i+1,num_exch_sp
-    !>                        call this%chem_syst%is_eq_reaction_in_chem_syst(this%chem_syst%species(nf_sp_indices(i)),flag_react,eq_react_ind,this%chem_syst%species(nf_sp_indices(j)))
+    !>                        call this%solid_chemistry%reactive_zone%chem_syst%is_eq_reaction_in_chem_syst(this%solid_chemistry%reactive_zone%chem_syst%species(nf_sp_indices(i)),flag_react,eq_react_ind,this%solid_chemistry%reactive_zone%chem_syst%species(nf_sp_indices(j)))
     !>                        if (flag_react==.true.) then
     !>                            n_eq=n_eq+1
     !>                            call append_int_1D_array(eq_react_indices,eq_react_ind)
@@ -306,7 +306,7 @@ subroutine read_PHREEQC_DB_opc2(this,unit,filename)
     !>                end do
     !>                exit
     !>            else
-    !>                call this%chem_syst%is_species_in_chem_syst(species,flag_sp,sp_ind)
+    !>                call this%solid_chemistry%reactive_zone%chem_syst%is_species_in_chem_syst(species,flag_sp,sp_ind)
     !>                if (flag_sp==.true.) then
     !>                    num_exch_sp=num_exch_sp+1
     !>                    num_nf_sp=num_nf_sp+1
@@ -316,7 +316,7 @@ subroutine read_PHREEQC_DB_opc2(this,unit,filename)
     !>        end do 
     !>    !else if (str=='REACTIVE_ZONES') then !> aqui se leen las zonas reactivas (cada una se lee a ella misma)
     !>    !>    line_count=line_count+2
-    !>    !>    call reactive_zone%set_chem_syst_react_zone(this%chem_syst)
+    !>    !>    call reactive_zone%set_chem_syst_react_zone(this%solid_chemistry%reactive_zone%chem_syst)
     !>    !>    call reactive_zone%read_reactive_zone_Lagr(filename,line_count)
         else 
             continue
@@ -328,9 +328,9 @@ subroutine read_PHREEQC_DB_opc2(this,unit,filename)
     !!print *, this%target_solids(1)%reactive_zone%non_flowing_species(1)%name
     !call this%initialise_target_waters_init(initial_waters)
     !call this%initialise_ext_waters()
-    !!print *, associated(this%chem_syst%kin_reacts(1)%kin_reaction)
+    !!print *, associated(this%solid_chemistry%reactive_zone%chem_syst%kin_reacts(1)%kin_reaction)
     !!print *, associated(this%reactive_zones(1)%kin_reactions(1)%kin_reaction)
-    !!select type (kin_react=>this%chem_syst%kin_reacts(1)%kin_reaction)
+    !!select type (kin_react=>this%solid_chemistry%reactive_zone%chem_syst%kin_reacts(1)%kin_reaction)
     !!type is (lin_kin_reaction_c)
     !!>    !print *, kin_react%lambda, kin_react%species(1)%name
     !!end select

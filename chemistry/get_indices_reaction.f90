@@ -13,12 +13,12 @@ function get_indices_reaction(this,reaction) result(indices)
     else if (reaction%react_type==3) then !> cation exchange reaction
         allocate(indices(reaction%num_species-2))
     else if (reaction%react_type==4) then !> redox 
-        allocate(indices(reaction%num_species-this%chem_syst%aq_phase%wat_flag)) !> (chapuza)
+        allocate(indices(reaction%num_species-this%aq_phase%wat_flag)) !> (chapuza)
     end if
     i=1 !> counter aqueous species in reaction
     j=1 !> counter species in aqueous phase
     do
-        if (reaction%species(i)%name==this%chem_syst%aq_phase%aq_species(j)%name) then
+        if (reaction%species(i)%name==this%aq_phase%aq_species(j)%name) then
             indices(i)=j
             !print *, reaction%species(i)%name
             if (i<size(indices)) then
@@ -27,7 +27,7 @@ function get_indices_reaction(this,reaction) result(indices)
             else
                 exit
             end if
-        else if (j<this%chem_syst%aq_phase%num_species-this%chem_syst%aq_phase%wat_flag) then
+        else if (j<this%aq_phase%num_species-this%aq_phase%wat_flag) then
             j=j+1
         !else if (i<size(indices)) then
         !    i=i+1

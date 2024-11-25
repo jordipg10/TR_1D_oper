@@ -29,11 +29,11 @@ subroutine initialise_conc_incr_coeff(this,icon,n_icon,indices_constrains,ctot,n
     !external :: compute_res_init
 !> Pre-process
     CV_flag=.false.
-    if (size(icon)/=this%speciation_alg%num_prim_species) error stop
+    if (size(icon)/=this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species) error stop
     
-    if (sum(n_icon)/=this%speciation_alg%num_prim_species) error stop
+    if (sum(n_icon)/=this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species) error stop
     
-    allocate(c2_old(this%speciation_alg%num_eq_reactions),c2_new(this%speciation_alg%num_eq_reactions))
+    allocate(c2_old(this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions),c2_new(this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions))
     ind_cstr=0 !> index of phase constrain
     call indices_icon%allocate_matrix(4)
     do i=1,indices_icon%num_cols
@@ -41,9 +41,9 @@ subroutine initialise_conc_incr_coeff(this,icon,n_icon,indices_constrains,ctot,n
     end do
     allocate(counters(4)) !> dim=nºicon options-2
     counters=0 !> counter for each modified icon option
-    allocate(abs_tol_res(this%speciation_alg%num_prim_species))
-    do i=1,this%speciation_alg%num_prim_species
-        abs_tol_res(i)=this%CV_params%abs_tol
+    allocate(abs_tol_res(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species))
+    do i=1,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
+        abs_tol_res(i)=this%solid_chemistry%reactive_zone%CV_params%abs_tol
         !> Concentrations
         if (icon(i)==1) then
             counters(1)=counters(1)+1
@@ -60,46 +60,46 @@ subroutine initialise_conc_incr_coeff(this,icon,n_icon,indices_constrains,ctot,n
         else if (icon(i)==4) then
             counters(4)=counters(4)+1
             indices_icon%cols(4)%col_1(counters(4))=i
-            abs_tol_res(i)=this%CV_params%log_abs_tol
+            abs_tol_res(i)=this%solid_chemistry%reactive_zone%CV_params%log_abs_tol
         else
             error stop
         end if
     end do
 !> Newton-Raphson
-    allocate(res(this%speciation_alg%num_prim_species),Jac_res(this%speciation_alg%num_prim_species,this%speciation_alg%num_prim_species))
-    allocate(Delta_c1(this%speciation_alg%num_prim_species),c1(this%speciation_alg%num_prim_species))
-    allocate(dc2_dc1(this%speciation_alg%num_eq_reactions,this%speciation_alg%num_prim_species)) !> chapuza
+    allocate(res(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species),Jac_res(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species))
+    allocate(Delta_c1(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species),c1(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species))
+    allocate(dc2_dc1(this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species)) !> chapuza
     call this%set_conc_sec_aq_species() !> initial guess c2aq
     
     c1=1d0
-    c1(1:this%speciation_alg%num_aq_prim_species)=this%concentrations(1:this%speciation_alg%num_aq_prim_species) !> chapuza
+    c1(1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species)=this%concentrations(1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species) !> chapuza
     c2_old=1d-16
-    call this%set_conc_sec_aq_species(c2_old(1:this%speciation_alg%num_sec_aq_species)) !> initial guess c2aq
-    !c2_old(1:this%speciation_alg%num_sec_aq_species)=this%concentrations(this%speciation_alg%num_prim_species+1:this%speciation_alg%num_aq_var_act_species) !> chapuza
-    !c2_old(this%speciation_alg%num_sec_aq_species+1:this%speciation_alg%num_eq_reactions)=ctot(indices_icon%cols(4)%col_1) !> chapuza
+    call this%set_conc_sec_aq_species(c2_old(1:this%solid_chemistry%reactive_zone%speciation_alg%num_sec_aq_species)) !> initial guess c2aq
+    !c2_old(1:this%solid_chemistry%reactive_zone%speciation_alg%num_sec_aq_species)=this%concentrations(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species+1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species) !> chapuza
+    !c2_old(this%solid_chemistry%reactive_zone%speciation_alg%num_sec_aq_species+1:this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions)=ctot(indices_icon%cols(4)%col_1) !> chapuza
     niter=0
     this%log_act_coeffs=0d0 !> chapuza
 !!> Squared charges species 
-!    allocate(z2(this%speciation_alg%num_species))
+!    allocate(z2(this%solid_chemistry%reactive_zone%speciation_alg%num_species))
 !    z2=0d0 !> chapuza
-!    z2(1:this%chem_syst%aq_phase%num_species)=this%chem_syst%aq_phase%z2
+!    z2(1:this%aq_phase%num_species)=this%aq_phase%z2
     do
     !> We update number of iterations
         niter=niter+1
-        if (niter>this%CV_params%niter_max) then
+        if (niter>this%solid_chemistry%reactive_zone%CV_params%niter_max) then
             print *, "Too many Newton iterations in initialisation"
             error stop
         end if
         call this%compute_c2_from_c1_aq_Picard(c2_old,c2_new,niter_Picard,CV_flag)
         !call this%compute_ionic_act() !> we compute ionic activity
-        !call this%chem_syst%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs) !> we compute log activity coefficients aqueous species
+        !call this%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs) !> we compute log activity coefficients aqueous species
         !call this%compute_activities()
         !call this%compute_log_act_coeff_wat()
         
         !print *, 10**this%log_act_coeffs
         !print *, c2_new
     !> Chapuza
-        !c2(1:this%speciation_alg%num_sec_aq_species)=this%concentrations(this%speciation_alg%num_prim_species+1:this%chem_syst%aq_phase%num_species)
+        !c2(1:this%solid_chemistry%reactive_zone%speciation_alg%num_sec_aq_species)=this%concentrations(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species+1:this%aq_phase%num_species)
     !> We compute resideu and Jacobian of residue using incremental coefficients
         call this%compute_res_Jac_res_incr_coef(c2_new,indices_icon,n_icon,indices_constrains,ctot,res,Jac_res)
     !> We check convergence
@@ -108,10 +108,10 @@ subroutine initialise_conc_incr_coeff(this,icon,n_icon,indices_constrains,ctot,n
             exit
         end if
     !> We solve linear system primary concentartions
-        call LU_lin_syst(Jac_res,-res,this%CV_params%zero,Delta_c1)
+        call LU_lin_syst(Jac_res,-res,this%solid_chemistry%reactive_zone%CV_params%zero,Delta_c1)
         !> c1^(i+1)=c1^i+Delta_c1^i
-        if (inf_norm_vec_real(Delta_c1/this%concentrations(1:this%speciation_alg%num_prim_species))<this%CV_params%rel_tol) then
-            print *, inf_norm_vec_real(Delta_c1/this%concentrations(1:this%speciation_alg%num_prim_species))
+        if (inf_norm_vec_real(Delta_c1/this%concentrations(1:this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species))<this%solid_chemistry%reactive_zone%CV_params%rel_tol) then
+            print *, inf_norm_vec_real(Delta_c1/this%concentrations(1:this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species))
             print *, "Newton method not accurate enough in initialisation"
             error stop
         end if

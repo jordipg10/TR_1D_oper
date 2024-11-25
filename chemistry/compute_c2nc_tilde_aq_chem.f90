@@ -11,9 +11,9 @@ function compute_c2nc_tilde_aq_chem(this,mixing_ratios,mixing_waters) result(c2n
     integer(kind=4) :: i !> index aqueous secondary variable activity species
     integer(kind=4) :: j !> index mixing waters
 !> Pre-process
-    allocate(c2nc_tilde(this%speciation_alg%num_aq_sec_var_act_species))
+    allocate(c2nc_tilde(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species))
 !> Process
-    do i=1,this%speciation_alg%num_aq_sec_var_act_species
+    do i=1,this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species
         c2nc_tilde(i)=mixing_ratios(1)*this%concentrations(this%sec_var_act_species_indices(i))
         do j=1,size(mixing_waters)
             c2nc_tilde(i)=c2nc_tilde(i)+mixing_ratios(j+1)*mixing_waters(j)%concentrations(this%sec_var_act_species_indices(i))

@@ -14,11 +14,11 @@ subroutine compute_c2nc_from_c1_Picard(this,c2nc_ig,c2nc,niter,CV_flag)
     integer(kind=4) :: n_p,n_p_aq,n_nc2_aq,n_nc,n_e,n_nc_aq,i
     real(kind=8), allocatable :: log_gamma1_old(:),log_gamma2nc_old(:),log_c2nc_new(:),c2nc_old(:),c1(:)
 !> Pre-process
-    n_p=this%speciation_alg%num_prim_species
-    n_p_aq=this%speciation_alg%num_aq_prim_species
-    n_e=this%speciation_alg%num_eq_reactions
-    n_nc2_aq=this%speciation_alg%num_aq_sec_var_act_species
-    n_nc_aq=this%speciation_alg%num_aq_var_act_species
+    n_p=this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
+    n_p_aq=this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species
+    n_e=this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions
+    n_nc2_aq=this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species
+    n_nc_aq=this%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species
     
     allocate(log_gamma1_old(n_p),log_gamma2nc_old(n_e),log_c2nc_new(n_e),c2nc_old(n_e))
     
@@ -38,7 +38,7 @@ subroutine compute_c2nc_from_c1_Picard(this,c2nc_ig,c2nc,niter,CV_flag)
         !call this%compute_salinity()
         !call this%compute_molarities()
     !> We compute log_10 of activity coefficients of variable activity species
-        call this%chem_syst%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs(1:n_nc_aq))
+        call this%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs(1:n_nc_aq))
         
         log_gamma1_old(1:n_p_aq)=this%log_act_coeffs(1:n_p_aq)
         log_gamma2nc_old(1:n_nc2_aq)=this%log_act_coeffs(n_p+1:n_nc_aq)
@@ -47,7 +47,7 @@ subroutine compute_c2nc_from_c1_Picard(this,c2nc_ig,c2nc,niter,CV_flag)
             log_gamma2nc_old(n_nc2_aq+1:n_e)=this%gas_chemistry%log_act_coeffs
         end if
     !> We apply mass action law to compute concentration secondary variable activity species
-        log_c2nc_new=matmul(this%speciation_alg%Se_nc_1_star,log_gamma1_old+log10(c1))+this%speciation_alg%logK_star-log_gamma2nc_old !> mass action law
+        log_c2nc_new=matmul(this%solid_chemistry%reactive_zone%speciation_alg%Se_nc_1_star,log_gamma1_old+log10(c1))+this%solid_chemistry%reactive_zone%speciation_alg%logK_star-log_gamma2nc_old !> mass action law
         c2nc=10**log_c2nc_new
     !> We update secondary aqueous variable activity concentrations in aqueous chemistry object
         call this%update_conc_sec_var_act_species(c2nc)
@@ -56,10 +56,10 @@ subroutine compute_c2nc_from_c1_Picard(this,c2nc_ig,c2nc,niter,CV_flag)
             call this%gas_chemistry%compute_vol_gas_conc() !> we compute total volume of gas
         end if
     !< We check convergence
-         if (inf_norm_vec_real((c2nc-c2nc_old)/c2nc_old)<this%CV_params%rel_tol) then
+         if (inf_norm_vec_real((c2nc-c2nc_old)/c2nc_old)<this%solid_chemistry%reactive_zone%CV_params%rel_tol) then
             CV_flag=.true.
             exit !> CV reached
-        else if (niter==this%CV_params%niter_max) then
+        else if (niter==this%solid_chemistry%reactive_zone%CV_params%niter_max) then
             print *, inf_norm_vec_real((c2nc-c2nc_old)/c2nc_old)
             print *, "Too many Picard iterations in speciation"
             error stop
@@ -70,7 +70,7 @@ subroutine compute_c2nc_from_c1_Picard(this,c2nc_ig,c2nc,niter,CV_flag)
 !> Post-process
     !call this%compute_molalities() !> we change units to compute ionic activity
     call this%compute_ionic_act() !> we compute ionic activity
-    call this%chem_syst%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs(1:n_nc_aq)) !> we compute log_10 activity coefficients aqueous variable activity species
+    call this%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs(1:n_nc_aq)) !> we compute log_10 activity coefficients aqueous variable activity species
     call this%compute_activities_aq() !> we compute activities
     call this%compute_log_act_coeff_wat() !> we compute log_10 activity coefficient of water
     call this%compute_salinity()

@@ -22,11 +22,11 @@ subroutine transport_iter_comp_exch(this,c1_old,c2nc_ig,c_tilde,conc_nc,conc_com
     c1=this%get_c1()
 !> Process  
     !> We compute component concentrations after mixing
-        conc_comp=MATMUL(THIS%speciation_alg%comp_mat,c_tilde)
+        conc_comp=MATMUL(THIS%solid_chemistry%reactive_zone%speciation_alg%comp_mat,c_tilde)
     !> Loop until speciation converges
         do
         !> We initialise primary concentrations for Newton speciation
-            call initialise_iterative_method(c1_old(1:this%speciation_alg%num_aq_prim_species),c1(1:this%speciation_alg%num_aq_prim_species),mu,this%concentrations(1:this%speciation_alg%num_aq_prim_species))
+            call initialise_iterative_method(c1_old(1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species),c1(1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species),mu,this%concentrations(1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species))
         !> We compute variable activity concentrations from component concentrations
             call this%compute_c_nc_from_u_Newton(c2nc_ig,conc_comp,conc_nc,niter,CV_flag)
         !> We check convergence

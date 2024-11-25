@@ -24,7 +24,7 @@
 !>                    !p_chem=>my_chem_eq_kin
 !>                !end if
 !>                !p_chem_syst=>my_chem_syst_eq_kin
-!>                !select type (chem_syst=>this%chem_syst)
+!>                !select type (chem_syst=>this%solid_chemistry%reactive_zone%chem_syst)
 !>                !type is (chem_system_eq_c)
 !>                !>    p_chem_syst=>my_chem_syst_eq
 !>                !type is (chem_system_kin_c)
@@ -112,7 +112,7 @@
 !>                                if (flag==.true. .or. constrain%name=='') then
 !>                                    this%concentrations(j)=conc
 !>                                    j=j+1
-!>                                    if (j>this%speciation_alg%num_prim_species+1) error stop
+!>                                    if (j>this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species+1) error stop
 !>                                else
 !>                                    error stop "This constrain is wrong"
 !>                                end if

@@ -52,5 +52,5 @@ subroutine read_chemistry(this,root,path_DB,unit_chem_syst_file,unit_loc_chem_fi
         !    call this%target_gases(i)%set_reactive_zone(this%reactive_zones(1))
         !end do
     end if
-    !print *, this%target_waters(17)%chem_syst%aq_phase%num_species
+    !print *, this%target_waters(17)%aq_phase%num_species
 end subroutine

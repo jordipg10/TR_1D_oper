@@ -1,11 +1,11 @@
 !> This subroutine computes the concentration of variable activity species after mixing
-function compute_c_tilde_aq_chem(this,mixing_ratios,conc_old) result(c_tilde)
+function compute_c_tilde(this,mixing_ratios,conc_old) result(c_tilde)
     use aqueous_chemistry_m
     implicit none
 !> Argumnets
     class(aqueous_chemistry_c), intent(in) :: this
     real(kind=8), intent(in) :: mixing_ratios(:)  !> the first element corresponds to argument "this", and the rest correspond to argument "mixing waters" (in the same order)
-    real(kind=8), allocatable :: conc_old(:,:) !> concentration of "mobile" species before mixing
+    real(kind=8), intent(in) :: conc_old(:,:) !> concentration of "mobile" species before mixing
     real(kind=8), allocatable :: c_tilde(:) !> concentration of "mobile" species after mixing
 !> Variables
     integer(kind=4) :: i !> index "mobile" species

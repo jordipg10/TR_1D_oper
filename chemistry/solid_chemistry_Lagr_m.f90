@@ -23,6 +23,7 @@ module solid_chemistry_m
         procedure, public :: allocate_vol_fracts
         procedure, public :: allocate_react_surfaces
         procedure, public :: allocate_conc_solids
+        !procedure, public :: allocate_conc_comp_solids
         procedure, public :: allocate_activities
         procedure, public :: allocate_log_act_coeffs_solid_chem
         procedure, public :: allocate_equivalents

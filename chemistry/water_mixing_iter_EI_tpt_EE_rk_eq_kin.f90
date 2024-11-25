@@ -14,11 +14,11 @@
 !    integer(kind=4) :: i,n,n_nc_aq,n_p_aq,niter,n_mix_rat
 !    logical :: CV_flag
 !    
-!    n_p_aq=this%speciation_alg%num_aq_prim_species
+!    n_p_aq=this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species
 !    n_mix_rat=size(mixing_ratios,2) !> chapuza
 !    
 !    allocate(um_tilde(n_p_aq))
-!    um_tilde=this%compute_u_tilde(mixing_ratios(:,1),mixing_waters) !> transport part
+!    um_tilde=this%compute_u_tilde_aq_chem(mixing_ratios(:,1),mixing_waters) !> transport part
 !    allocate(conc_comp_react(n_p_aq))
 !    call this%reaction_iteration_EI_tpt_EE_rk_eq_kin_aq_chem(mixing_ratios(:,n_mix_rat),rk_mat,porosity,Delta_t,conc_comp_react) !> chemical part
 !    this%conc_comp=um_tilde+conc_comp_react !> we sum both parts

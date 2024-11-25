@@ -24,11 +24,11 @@ subroutine compute_c_nc_from_u_Newton(this,c2nc_ig,conc_comp,conc_nc,niter,CV_fl
     
 !> Pre-Process
     CV_flag=.false.
-    n_e=this%speciation_alg%num_eq_reactions
-    n_p=this%speciation_alg%num_prim_species
-    n_p_aq=this%speciation_alg%num_aq_prim_species
-    n_nc_aq=this%speciation_alg%num_aq_var_act_species
-    n_nc=this%speciation_alg%num_var_act_species
+    n_e=this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions
+    n_p=this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
+    n_p_aq=this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species
+    n_nc_aq=this%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species
+    n_nc=this%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species
         
     allocate(c2nc_new(n_e),residual(n_p),dc2nc_dc1(n_e,n_p),Delta_c1(n_p),d_log_gamma_d_I(n_nc),out_prod_aq(n_nc_aq,n_nc_aq),log_Jacobian_act_coeffs_aq(n_nc_aq,n_nc_aq),log_Jacobian_act_coeffs(n_nc,n_nc))
     niter=0
@@ -40,7 +40,7 @@ subroutine compute_c_nc_from_u_Newton(this,c2nc_ig,conc_comp,conc_nc,niter,CV_fl
 !> Process
         do
             niter=niter+1 !> we update number of iterations
-            if (niter>this%CV_params%niter_max) then
+            if (niter>this%solid_chemistry%reactive_zone%CV_params%niter_max) then
                 print *, "Residual: ", inf_norm_vec_real(residual)
                 print *, "Too many Newton iterations in speciation"
                 exit
@@ -48,29 +48,29 @@ subroutine compute_c_nc_from_u_Newton(this,c2nc_ig,conc_comp,conc_nc,niter,CV_fl
             call this%compute_c2nc_from_c1_Picard(c2nc_old,c2nc_new,niter_Picard,CV_flag_Picard)
             conc_nc(n_p+1:n_nc)=c2nc_new !> chapuza
             call this%compute_residual(conc_comp,conc_nc,residual)
-            if (inf_norm_vec_real(residual)<this%CV_params%abs_tol) then !> CV reached
+            if (inf_norm_vec_real(residual)<this%solid_chemistry%reactive_zone%CV_params%abs_tol) then !> CV reached
                 CV_flag=.true.
                 exit
             end if
         !> First we compute d_log_gamma_d_I
             call this%compute_d_log_gamma_d_I_aq_chem(d_log_gamma_d_I)
         !> Outer product d_log_gamma_nc_d_I and z_nc^2
-            out_prod=outer_prod_vec(d_log_gamma_d_I,this%chem_syst%z2(1:n_nc))
+            out_prod=outer_prod_vec(d_log_gamma_d_I,this%solid_chemistry%reactive_zone%chem_syst%z2(1:n_nc))
         !> We compute Jacobian secondary variable activity-primary concentrations
             call this%compute_dc2nc_dc1_aq(conc_nc(n_p+1:n_nc),out_prod,dc2nc_dc1)
         !> We compute log-Jacobian variable activity coefficients-variable activity concentrations
             out_prod_aq(1:n_p_aq,1:n_p_aq)=out_prod(1:n_p_aq,1:n_p_aq)
             out_prod_aq(n_p_aq+1:n_nc_aq,n_p_aq+1:n_nc_aq)=out_prod(n_p+1:n_nc_aq+1,n_p+1:n_nc_aq+1)
-            call this%chem_syst%aq_phase%compute_log_Jacobian_act_coeffs_aq_phase(out_prod_aq,THIS%concentrations(1:n_nc_aq),log_Jacobian_act_coeffs_aq)
+            call this%aq_phase%compute_log_Jacobian_act_coeffs_aq_phase(out_prod_aq,THIS%concentrations(1:n_nc_aq),log_Jacobian_act_coeffs_aq)
             log_Jacobian_act_coeffs(1:n_p_aq,1:n_p_aq)=log_Jacobian_act_coeffs_aq(1:n_p_aq,1:n_p_aq)
             log_Jacobian_act_coeffs(n_p+1:n_nc_aq+1,n_p+1:n_nc_aq+1)=log_Jacobian_act_coeffs_aq(n_p_aq+1:n_nc_aq,n_p_aq+1:n_nc_aq)            
         !> We check Jacobain secondary variable activity-primary concentrations
              call this%check_dc2nc_dc1(conc_nc(1:n_p),conc_nc(n_p+1:n_nc),dc2nc_dc1,log_Jacobian_act_coeffs)
         !> We solve linear system
-            mat_lin_syst=this%speciation_alg%comp_mat(:,1:n_p)+matmul(this%speciation_alg%comp_mat(:,n_p+1:n_nc),dc2nc_dc1) !> U_1 + U_2_nc*dc2nc_dc1
-            call LU_lin_syst(mat_lin_syst,-residual,this%CV_params%zero,Delta_c1)
+            mat_lin_syst=this%solid_chemistry%reactive_zone%speciation_alg%comp_mat(:,1:n_p)+matmul(this%solid_chemistry%reactive_zone%speciation_alg%comp_mat(:,n_p+1:n_nc),dc2nc_dc1) !> U_1 + U_2_nc*dc2nc_dc1
+            call LU_lin_syst(mat_lin_syst,-residual,this%solid_chemistry%reactive_zone%CV_params%zero,Delta_c1)
             !> c1^(i+1)=c1^i+Delta_c1^i
-            if (inf_norm_vec_real(Delta_c1/conc_nc(1:n_p))<this%CV_params%abs_tol**2) then !> chapuza
+            if (inf_norm_vec_real(Delta_c1/conc_nc(1:n_p))<this%solid_chemistry%reactive_zone%CV_params%abs_tol**2) then !> chapuza
                 print *, "Relative error: ", inf_norm_vec_real(Delta_c1/conc_nc(1:n_p))
                 print *, "Newton speciation not accurate enough"
                 exit

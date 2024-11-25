@@ -18,7 +18,7 @@
 !    class(rk_redox_kin_c), allocatable :: rk_Monod(:,:)
 !    integer(kind=4) :: i,j,nk
 !    
-!    nk=this%chem_syst%get_num_kin_reactions()
+!    nk=this%solid_chemistry%reactive_zone%chem_syst%get_num_kin_reactions()
 !    
 !    if (rk_type==0) then
 !        continue

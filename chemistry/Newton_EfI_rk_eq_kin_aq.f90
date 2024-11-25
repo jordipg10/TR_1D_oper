@@ -36,9 +36,9 @@ subroutine Newton_EfI_rk_eq_kin_aq_anal(this,c2nc_ig,c_tilde,porosity,Delta_t,co
 !> Pre-process
     niter=0
     CV_flag=.false.
-    n_p=this%speciation_alg%num_prim_species
-    n_nc=this%speciation_alg%num_var_act_species
-    allocate(c2nc_new(this%speciation_alg%num_eq_reactions),dfk_dc1(n_p,n_p),Delta_c1(n_p),drk_dc(this%chem_syst%num_kin_reacts,n_nc))
+    n_p=this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
+    n_nc=this%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species
+    allocate(c2nc_new(this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions),dfk_dc1(n_p,n_p),Delta_c1(n_p),drk_dc(this%solid_chemistry%reactive_zone%chem_syst%num_kin_reacts,n_nc))
     c2nc_old=c2nc_ig
     drk_dc=0d0
 !> Process
@@ -47,7 +47,7 @@ subroutine Newton_EfI_rk_eq_kin_aq_anal(this,c2nc_ig,c_tilde,porosity,Delta_t,co
     !> Newton loop
         do 
             niter=niter+1 !> we update number of iterations
-            if (niter>this%CV_params%niter_max) then
+            if (niter>this%solid_chemistry%reactive_zone%CV_params%niter_max) then
                 print *, "Too many iterations in subroutine Newton_EfI_rk_eq_kin_aq_anal"
                 exit
             end if
@@ -58,16 +58,16 @@ subroutine Newton_EfI_rk_eq_kin_aq_anal(this,c2nc_ig,c_tilde,porosity,Delta_t,co
         !> We compute kinetic reaction rates and its Jacobian analitically
             call this%compute_rk_Jac_rk_anal(drk_dc)
         !> Newton residual
-            fk=matmul(this%speciation_alg%comp_mat,conc_nc)-u_tilde-(Delta_t/porosity)*matmul(this%U_SkT_prod,this%rk) 
+            fk=matmul(this%solid_chemistry%reactive_zone%speciation_alg%comp_mat,conc_nc)-u_tilde-(Delta_t/porosity)*matmul(this%U_SkT_prod,this%rk) 
         !> Check convergence
-            if (inf_norm_vec_real(fk)<this%CV_params%abs_tol) then !> CV reached
+            if (inf_norm_vec_real(fk)<this%solid_chemistry%reactive_zone%CV_params%abs_tol) then !> CV reached
                 CV_flag=.true.
                 exit
             else
                 call this%compute_dfk_dc1_aq_EfI(conc_nc(n_p+1:n_nc),drk_dc,porosity,Delta_t,dfk_dc1) !> computes Jacobian of Newton resiudal
-                call LU_lin_syst(dfk_dc1,-fk,this%CV_params%zero,Delta_c1) !> solves linear system dfk_dc1*Delta_c1=-fk, where c1_new=c1_old+Delta_c1
-                !call Gauss_Jordan(dfk_dc1,-fk,this%CV_params%zero,Delta_c1) !> solves linear system dfk_dc1*Delta_c1=-fk, where c1_new=c1_old+Delta_c1
-                if (inf_norm_vec_real(Delta_c1/this%concentrations(1:n_p))<this%CV_params%rel_tol) then !> we check relative tolerance
+                call LU_lin_syst(dfk_dc1,-fk,this%solid_chemistry%reactive_zone%CV_params%zero,Delta_c1) !> solves linear system dfk_dc1*Delta_c1=-fk, where c1_new=c1_old+Delta_c1
+                !call Gauss_Jordan(dfk_dc1,-fk,this%solid_chemistry%reactive_zone%CV_params%zero,Delta_c1) !> solves linear system dfk_dc1*Delta_c1=-fk, where c1_new=c1_old+Delta_c1
+                if (inf_norm_vec_real(Delta_c1/this%concentrations(1:n_p))<this%solid_chemistry%reactive_zone%CV_params%rel_tol) then !> we check relative tolerance
                     print *, "Newton solution not accurate enough"
                     exit
                 else

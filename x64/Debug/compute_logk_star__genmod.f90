@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Mon Nov 25 16:10:20 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Mon Nov 25 16:00:39 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPUTE_LOGK_STAR__genmod

@@ -95,7 +95,7 @@ module chem_out_options_m
                 else if (label=='AQUEOUS SPECIES') then
                     read(unit,*) name
                     if (name=='all') then
-                        this%num_aq_species=target_waters(1)%chem_syst%aq_phase%num_species-target_waters(1)%chem_syst%aq_phase%wat_flag
+                        this%num_aq_species=target_waters(1)%aq_phase%num_species-target_waters(1)%aq_phase%wat_flag
                         allocate(this%ind_aq_species(this%num_aq_species))
                         do i=1,this%num_aq_species
                             this%ind_aq_species(i)=i
@@ -122,7 +122,7 @@ module chem_out_options_m
                     read(unit,*) name
                     if (name=='all') then
                         do i=1,this%num_target_waters
-                            this%num_reacts(i)=target_waters(this%ind_target_waters(i))%speciation_alg%num_eq_reactions + target_waters(this%ind_target_waters(i))%chem_syst%num_kin_reacts
+                            this%num_reacts(i)=target_waters(this%ind_target_waters(i))%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions + target_waters(this%ind_target_waters(i))%solid_chemistry%reactive_zone%chem_syst%num_kin_reacts
                         end do
                     else if (name=='*') then
                         continue

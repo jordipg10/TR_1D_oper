@@ -16,14 +16,14 @@ subroutine transport_iter_species(this,c1_old,c2nc_ig,c_tilde,conc_nc,conc_comp,
 !> Process    
     !> We set concentrations after mixing
         call this%set_conc_aq_species(c_tilde)
-        conc_nc=THIS%concentrations(1:THIS%speciation_alg%num_aq_var_act_species)
+        conc_nc=THIS%concentrations(1:THIS%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species)
         conc_comp=conc_nc
     !> We change units
         call this%compute_molalities()
     !> We compute ionic activity
         call this%compute_ionic_act() 
     !> We compute log_10 activity coefficients
-        call this%chem_syst%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs)
+        call this%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs)
         call this%compute_log_act_coeff_wat()
     !> We compute activities
         call this%compute_activities_aq()

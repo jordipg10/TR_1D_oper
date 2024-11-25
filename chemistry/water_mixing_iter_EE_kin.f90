@@ -24,7 +24,7 @@ subroutine water_mixing_iter_EE_kin(this,c1_old,c2nc_ig,c_tilde,conc_nc,conc_com
 !> We compute aqueous chemistry attributes
     call this%compute_molalities()
     call this%compute_ionic_act()
-    call this%chem_syst%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs)
+    call this%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs)
     call this%compute_log_act_coeff_wat()
     call this%compute_activities_aq()
     call this%compute_pH()

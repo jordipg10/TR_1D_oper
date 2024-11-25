@@ -52,8 +52,8 @@
 !                    error stop
 !                else
 !                    this%target_waters_init(tar_wat_ind)=bd_water_types(bwtype)%aq_chem
-!                    call this%target_waters_init(tar_wat_ind)%set_chem_syst_aq_chem(this%chem_syst) !> chapuza
-!                    call this%target_waters_init(tar_wat_ind)%set_aq_phase(this%chem_syst%aq_phase) !> chapuza
+!                    call this%target_waters_init(tar_wat_ind)%set_chem_syst_aq_chem(this%solid_chemistry%reactive_zone%chem_syst) !> chapuza
+!                    call this%target_waters_init(tar_wat_ind)%set_aq_phase(this%aq_phase) !> chapuza
 !                    this%target_solids_init(tar_wat_ind)=init_sol_types(istype)%solid_chem
 !                    !call this%target_waters_init(tar_wat_ind)%set_solid_chemistry(init_min_zones(imtype))
 !                    !print *, init_sol_types(istype)%solid_chem%vol_fracts
@@ -62,8 +62,8 @@
 !                    !call this%target_solids(tar_wat_ind)%allocate_concentrations()
 !                    !print *, this%target_solids(tar_wat_ind)%reactive_zone%Se
 !                    call this%target_waters_init(tar_wat_ind)%set_solid_chemistry(this%target_solids_init(tar_wat_ind))
-!                    call this%target_waters_init(tar_wat_ind)%set_speciation_alg_dimensions(flag_comp)
-!                    call this%target_waters_init(tar_wat_ind)%compute_speciation_alg_arrays()
+!                    call this%target_waters_init(tar_wat_ind)%set_solid_chemistry%reactive_zone%speciation_alg_dimensions(flag_comp)
+!                    call this%target_waters_init(tar_wat_ind)%compute_solid_chemistry%reactive_zone%speciation_alg_arrays()
 !                    call this%target_waters_init(tar_wat_ind)%set_prim_species_indices()
 !                    call this%target_waters_init(tar_wat_ind)%set_sec_var_act_species_indices()
 !                    call this%target_waters_init(tar_wat_ind)%compute_U_SkT_prod()
@@ -81,7 +81,7 @@
 !                    
 !                    call this%ext_waters(tar_wat_ind)%set_aq_phase(this%target_waters_init(tar_wat_ind)%aq_phase)
 !                    call this%ext_waters(tar_wat_ind)%set_solid_chemistry(this%target_waters_init(tar_wat_ind)%solid_chemistry)
-!                    call this%ext_waters(tar_wat_ind)%set_speciation_alg(this%target_waters_init(tar_wat_ind)%speciation_alg)
+!                    call this%ext_waters(tar_wat_ind)%set_solid_chemistry%reactive_zone%speciation_alg(this%target_waters_init(tar_wat_ind)%solid_chemistry%reactive_zone%speciation_alg)
 !                    call this%ext_waters(tar_wat_ind)%allocate_conc_aq_species()
 !                    call this%ext_waters(tar_wat_ind)%allocate_conc_comp()
 !                    call this%ext_waters(tar_wat_ind)%set_conc_aq_species()
@@ -100,8 +100,8 @@
 !                        error stop
 !                    else
 !                        this%target_waters_init(tar_wat_ind)=init_water_types(iwtype)%aq_chem
-!                        call this%target_waters_init(tar_wat_ind)%set_chem_syst_aq_chem(this%chem_syst)
-!                        call this%target_waters_init(tar_wat_ind)%set_aq_phase(this%chem_syst%aq_phase)
+!                        call this%target_waters_init(tar_wat_ind)%set_chem_syst_aq_chem(this%solid_chemistry%reactive_zone%chem_syst)
+!                        call this%target_waters_init(tar_wat_ind)%set_aq_phase(this%aq_phase)
 !                        this%target_solids_init(tar_wat_ind)=init_sol_types(istype)%solid_chem
 !                        !call this%target_waters_init(tar_wat_ind)%set_solid_chemistry(init_min_zones(imtype))
 !                        !print *, init_sol_types(istype)%reactive_zone%Se
@@ -110,8 +110,8 @@
 !                        !call this%target_solids(tar_wat_ind)%allocate_concentrations()
 !                        !print *, this%target_solids(tar_wat_ind)%reactive_zone%Se
 !                        call this%target_waters_init(tar_wat_ind)%set_solid_chemistry(this%target_solids_init(tar_wat_ind))
-!                        call this%target_waters_init(tar_wat_ind)%set_speciation_alg_dimensions(flag_comp)
-!                        call this%target_waters_init(tar_wat_ind)%compute_speciation_alg_arrays()
+!                        call this%target_waters_init(tar_wat_ind)%set_solid_chemistry%reactive_zone%speciation_alg_dimensions(flag_comp)
+!                        call this%target_waters_init(tar_wat_ind)%compute_solid_chemistry%reactive_zone%speciation_alg_arrays()
 !                        call this%target_waters_init(tar_wat_ind)%set_prim_species_indices()
 !                        call this%target_waters_init(tar_wat_ind)%set_sec_var_act_species_indices()
 !                        call this%target_waters_init(tar_wat_ind)%compute_U_SkT_prod()
@@ -128,7 +128,7 @@
 !                        call this%target_waters_init(tar_wat_ind)%allocate_reaction_rates()
 !                        call this%ext_waters(tar_wat_ind)%set_aq_phase(this%target_waters_init(tar_wat_ind)%aq_phase)
 !                        call this%ext_waters(tar_wat_ind)%set_solid_chemistry(this%target_waters_init(tar_wat_ind)%solid_chemistry)
-!                        call this%ext_waters(tar_wat_ind)%set_speciation_alg(this%target_waters_init(tar_wat_ind)%speciation_alg)
+!                        call this%ext_waters(tar_wat_ind)%set_solid_chemistry%reactive_zone%speciation_alg(this%target_waters_init(tar_wat_ind)%solid_chemistry%reactive_zone%speciation_alg)
 !                        call this%ext_waters(tar_wat_ind)%allocate_conc_aq_species()
 !                        call this%ext_waters(tar_wat_ind)%allocate_conc_comp()
 !                        call this%ext_waters(tar_wat_ind)%set_conc_aq_species()
@@ -147,8 +147,8 @@
 !            !        error stop
 !            !    else
 !            !        this%target_waters_init(tar_wat_ind)=bd_water_types(bwtype)%aq_chem
-!            !        call this%target_waters_init(tar_wat_ind)%set_chem_syst_aq_chem(this%chem_syst) !> chapuza
-!            !        call this%target_waters_init(tar_wat_ind)%set_aq_phase(this%chem_syst%aq_phase) !> chapuza
+!            !        call this%target_waters_init(tar_wat_ind)%set_chem_syst_aq_chem(this%solid_chemistry%reactive_zone%chem_syst) !> chapuza
+!            !        call this%target_waters_init(tar_wat_ind)%set_aq_phase(this%aq_phase) !> chapuza
 !            !        !call this%target_waters_init(tar_wat_ind)%set_aq_phase(bd_water_types(bwtype)%aq_chem%aq_phase)
 !            !        this%target_solids_init(tar_wat_ind)=init_sol_types(istype)%solid_chem
 !            !        !call this%target_waters_init(tar_wat_ind)%set_solid_chemistry(init_min_zones(imtype))
@@ -158,8 +158,8 @@
 !            !        !call this%target_solids(tar_wat_ind)%allocate_concentrations()
 !            !        !print *, this%target_solids(tar_wat_ind)%reactive_zone%Se
 !            !        call this%target_waters_init(tar_wat_ind)%set_solid_chemistry(this%target_solids_init(tar_wat_ind))
-!            !        call this%target_waters_init(tar_wat_ind)%set_speciation_alg_dimensions(flag_comp)
-!            !        call this%target_waters_init(tar_wat_ind)%compute_speciation_alg_arrays()
+!            !        call this%target_waters_init(tar_wat_ind)%set_solid_chemistry%reactive_zone%speciation_alg_dimensions(flag_comp)
+!            !        call this%target_waters_init(tar_wat_ind)%compute_solid_chemistry%reactive_zone%speciation_alg_arrays()
 !            !        call this%target_waters_init(tar_wat_ind)%set_prim_species_indices()
 !            !        call this%target_waters_init(tar_wat_ind)%set_sec_var_act_species_indices()
 !            !        call this%target_waters_init(tar_wat_ind)%compute_U_SkT_prod()
@@ -177,7 +177,7 @@
 !            !        
 !            !        call this%ext_waters(tar_wat_ind)%set_aq_phase(this%target_waters_init(tar_wat_ind)%aq_phase)
 !            !        call this%ext_waters(tar_wat_ind)%set_solid_chemistry(this%target_waters_init(tar_wat_ind)%solid_chemistry)
-!            !        call this%ext_waters(tar_wat_ind)%set_speciation_alg(this%target_waters_init(tar_wat_ind)%speciation_alg)
+!            !        call this%ext_waters(tar_wat_ind)%set_solid_chemistry%reactive_zone%speciation_alg(this%target_waters_init(tar_wat_ind)%solid_chemistry%reactive_zone%speciation_alg)
 !            !        call this%ext_waters(tar_wat_ind)%allocate_conc_aq_species()
 !            !        call this%ext_waters(tar_wat_ind)%allocate_conc_comp()
 !            !        call this%ext_waters(tar_wat_ind)%set_conc_aq_species()
@@ -200,8 +200,8 @@
 !                !    error stop
 !                else
 !                    this%target_waters_init(tar_wat_ind)=bd_water_types(bwtype)%aq_chem
-!                    call this%target_waters_init(tar_wat_ind)%set_chem_syst_aq_chem(this%chem_syst) !> chapuza
-!                    call this%target_waters_init(tar_wat_ind)%set_aq_phase(this%chem_syst%aq_phase) !> chapuza
+!                    call this%target_waters_init(tar_wat_ind)%set_chem_syst_aq_chem(this%solid_chemistry%reactive_zone%chem_syst) !> chapuza
+!                    call this%target_waters_init(tar_wat_ind)%set_aq_phase(this%aq_phase) !> chapuza
 !                    !this%target_solids_init(tar_wat_ind)=init_sol_types(istype)%solid_chem
 !                    !call this%target_waters_init(tar_wat_ind)%set_solid_chemistry(init_min_zones(imtype))
 !                    !print *, init_sol_types(istype)%solid_chem%vol_fracts
@@ -210,8 +210,8 @@
 !                    !call this%target_solids(tar_wat_ind)%allocate_concentrations()
 !                    !print *, this%target_solids(tar_wat_ind)%reactive_zone%Se
 !                    !call this%target_waters_init(tar_wat_ind)%set_solid_chemistry(this%target_solids_init(tar_wat_ind))
-!                    call this%target_waters_init(tar_wat_ind)%set_speciation_alg_dimensions(flag_comp)
-!                    call this%target_waters_init(tar_wat_ind)%compute_speciation_alg_arrays()
+!                    call this%target_waters_init(tar_wat_ind)%set_solid_chemistry%reactive_zone%speciation_alg_dimensions(flag_comp)
+!                    call this%target_waters_init(tar_wat_ind)%compute_solid_chemistry%reactive_zone%speciation_alg_arrays()
 !                    call this%target_waters_init(tar_wat_ind)%set_prim_species_indices()
 !                    call this%target_waters_init(tar_wat_ind)%set_sec_var_act_species_indices()
 !                    call this%target_waters_init(tar_wat_ind)%compute_U_SkT_prod()
@@ -229,7 +229,7 @@
 !                    
 !                    call this%ext_waters(tar_wat_ind)%set_aq_phase(this%target_waters_init(tar_wat_ind)%aq_phase)
 !                    !call this%ext_waters(tar_wat_ind)%set_solid_chemistry(this%target_waters_init(tar_wat_ind)%solid_chemistry)
-!                    call this%ext_waters(tar_wat_ind)%set_speciation_alg(this%target_waters_init(tar_wat_ind)%speciation_alg)
+!                    call this%ext_waters(tar_wat_ind)%set_solid_chemistry%reactive_zone%speciation_alg(this%target_waters_init(tar_wat_ind)%solid_chemistry%reactive_zone%speciation_alg)
 !                    call this%ext_waters(tar_wat_ind)%allocate_conc_aq_species()
 !                    call this%ext_waters(tar_wat_ind)%allocate_conc_comp()
 !                    call this%ext_waters(tar_wat_ind)%set_conc_aq_species()
@@ -243,10 +243,10 @@
 !                        error stop
 !                    else
 !                        this%target_waters_init(tar_wat_ind)=init_water_types(iwtype)%aq_chem
-!                        call this%target_waters_init(tar_wat_ind)%set_chem_syst_aq_chem(this%chem_syst)
+!                        call this%target_waters_init(tar_wat_ind)%set_chem_syst_aq_chem(this%solid_chemistry%reactive_zone%chem_syst)
 !                        if (this%target_waters_init(tar_wat_ind)%chem_syst%num_eq_reacts_homog>0) then
-!                            call this%target_waters_init(tar_wat_ind)%set_speciation_alg_dimensions(flag_comp)
-!                            call this%target_waters_init(tar_wat_ind)%compute_speciation_alg_arrays()
+!                            call this%target_waters_init(tar_wat_ind)%set_solid_chemistry%reactive_zone%speciation_alg_dimensions(flag_comp)
+!                            call this%target_waters_init(tar_wat_ind)%compute_solid_chemistry%reactive_zone%speciation_alg_arrays()
 !                            !call this%target_waters_init(tar_wat_ind)%set_conc_sec_var_act_species() !> initial guess c2nc
 !                            if (allocated(this%target_waters_init(tar_wat_ind)%conc_comp)) then
 !                                call this%target_waters_init(tar_wat_ind)%compute_c_nc_from_u_aq_Newton(niter,CV_flag)
@@ -259,7 +259,7 @@
 !                        call this%target_waters_init(tar_wat_ind)%allocate_reaction_rates()
 !                        call this%ext_waters(tar_wat_ind)%set_aq_phase(this%target_waters_init(tar_wat_ind)%aq_phase)
 !                        call this%ext_waters(tar_wat_ind)%allocate_conc_aq_species()
-!                        call this%ext_waters(tar_wat_ind)%allocate_conc_comp(this%target_waters_init(tar_wat_ind)%speciation_alg%num_prim_species)
+!                        call this%ext_waters(tar_wat_ind)%allocate_conc_comp(this%target_waters_init(tar_wat_ind)%solid_chemistry%reactive_zone%speciation_alg%num_prim_species)
 !                        call this%ext_waters(tar_wat_ind)%compute_conc_comp_aq()
 !                    end if
 !                end do

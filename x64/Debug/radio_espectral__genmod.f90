@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Nov 19 16:49:08 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Fri Nov 22 18:24:52 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE RADIO_ESPECTRAL__genmod

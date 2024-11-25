@@ -145,7 +145,6 @@ module speciation_algebra_m
                         Se=aux_Se
                         Se(:,this%num_prim_species+1)=aux_Se(:,this%num_prim_species-i+1)
                         Se(:,this%num_prim_species-i+1)=aux_Se(:,this%num_prim_species+1)
-                        !error stop "Matrix Se_2,nc is not invertible. You must change set of primary species"
                     else
                         call this%compute_inv_Se_nc_2(Se_nc_2,tol)
                         cols(1)=this%num_prim_species-i+1
