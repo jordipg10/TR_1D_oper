@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Mon Nov 25 12:21:59 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Mon Nov 25 16:09:48 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE READ_KIN_LIN__genmod

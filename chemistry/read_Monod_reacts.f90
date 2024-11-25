@@ -91,7 +91,7 @@ subroutine read_Monod_reacts(this,path,unit)
                 end if
                 read(unit,*) str
                 read(unit,*) this%redox_kin_reacts(react_ind)%num_species, (this%redox_kin_reacts(react_ind)%species(j)%name, this%redox_kin_reacts(react_ind)%stoichiometry(j), j=1,this%redox_kin_reacts(react_ind)%num_species), this%redox_kin_reacts(react_ind)%params%rate_cst!, this%redox_kin_reacts(react_ind)%eq_cst
-                !call this%chem_syst%aq_phase%is_species_in_aq_phase(DOC,flag,ind)
+                !call this%aq_phase%is_species_in_aq_phase(DOC,flag,ind)
                 !if (flag==.false.) then
                 !    error stop
                 !else
