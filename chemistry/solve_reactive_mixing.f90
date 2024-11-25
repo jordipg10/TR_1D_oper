@@ -9,11 +9,9 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
     integer(kind=4), intent(in) :: unit
     class(real_array_c), intent(in) :: mixing_ratios !> mixing ratios matrix
     class(int_array_c), intent(in) :: mixing_waters_indices !> matrix that contains indices of target waters that mix with each target water
-    !class(diag_matrix_c), intent(in) :: F_mat !> storage matrix (diagonal)
     real(kind=8), intent(in) :: F_mat(:) !> storage matrix (diagonal)
     class(time_discr_c), intent(in) :: time_discr_tpt !> time discretisation object (used to solve transport)
     integer(kind=4), intent(in) :: int_method_chem_reacts !> integration method for chemical reactions
-    !class(aq_phase_c), intent
 !> Variables
     integer(kind=4) :: i !> counter target waters
     integer(kind=4) :: j !> counter target solids 
@@ -46,17 +44,6 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
     procedure(compute_c_tilde_aq_chem), pointer :: p_c_tilde=>null()
     p_c_tilde=>compute_c_tilde_aq_chem !> by default
 !> We initialise target waters
-    !print *, this%target_waters(17)%aq_phase%num_species
-    !> chapuza
-    !print *, allocated(this%target_waters(17)%aq_phase%aq_species)
-    !allocate(this%target_waters(17)%aq_phase%aq_species(6))
-    !this%target_waters(17)%aq_phase%aq_species=this%chem_syst%aq_phase%aq_species
-    !do i=17,31
-    !    call this%target_waters(i)%aq_phase%copy_attributes(this%target_waters(1)%aq_phase)
-    !    call this%target_waters(i)%aq_phase%aq_species(3)%assign_species(this%target_waters(1)%aq_phase%aq_species(4))
-    !    call this%target_waters(i)%aq_phase%aq_species(4)%assign_species(this%target_waters(1)%aq_phase%aq_species(3))
-    !end do
-    !print *, this%target_waters(17)%aq_phase%num_species, this%target_waters(17)%aq_phase%wat_flag
     target_waters_old=this%target_waters
     target_waters_old_old=target_waters_old
     target_waters_new=target_waters_old
@@ -89,11 +76,6 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
                             p_prim=>get_c1
                         end if
                         if (this%chem_syst%num_kin_reacts>0) then !> equilibrium and kinetic reactions
-                            !if (react_zone%cat_exch_zone%num_surf_compl==0) then
-                            !    p_prim=>get_c1_aq !> chapuza
-                            !else
-                            !    p_prim=>get_c1
-                            !end if
                             if (int_method_chem_reacts==1) then !> Euler explicit
                                 if (this%act_coeffs_model==0) then !> ideal
                                     p_solver=>water_mixing_iter_EE_eq_kin_ideal
@@ -128,9 +110,6 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
                     !> We solve mixing caused by transport
                         c_tilde=p_c_tilde(target_waters_old(i),mixing_ratios%cols(i-this%num_ext_waters)%col_1,conc_old)
                     !> We solve reactive mixing iteration
-                        !if (k==17 .and. i==17) then
-                        !    print *, "ojo"
-                        !end if
                         call p_solver(target_waters_new(i),p_prim(target_waters_old_old(i)),target_waters_old(i)%get_c2nc(),c_tilde(target_waters_new(i)%indices_aq_phase(1:target_waters_new(i)%speciation_alg%num_var_act_species)),conc_nc,conc_comp,F_mat(i-this%num_ext_waters),Delta_t)
                     !> We compute equilibrium reaction rates from mass balance equation
                         call target_waters_new(i)%compute_r_eq(c_tilde(target_waters_new(i)%indices_aq_phase(target_waters_new(i)%speciation_alg%num_prim_species+1:target_waters_new(i)%speciation_alg%num_var_act_species)),Delta_t,F_mat(i-this%num_ext_waters))

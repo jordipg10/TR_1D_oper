@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Nov 19 16:49:42 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Mon Nov 25 12:23:44 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE HOUSEHOLDER__genmod
