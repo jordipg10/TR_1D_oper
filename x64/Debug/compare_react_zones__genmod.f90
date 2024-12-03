@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Mon Nov 25 16:00:46 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Tue Dec  3 15:20:49 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPARE_REACT_ZONES__genmod

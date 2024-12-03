@@ -11,9 +11,9 @@ subroutine compute_dc2nc_dc1_aq_gamma_cst(this,dc2nc_dc1)
 !> Variables
     integer(kind=4) :: i,j    
 !> Process
-    do i=1,this%speciation_alg%num_eq_reactions
-        do j=1,this%speciation_alg%num_prim_species
-            dc2nc_dc1(i,j)=this%concentrations(this%speciation_alg%num_prim_species+i)*this%speciation_alg%Se_nc_1_star(i,j)/this%concentrations(j)
+    do i=1,this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions
+        do j=1,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
+            dc2nc_dc1(i,j)=this%concentrations(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species+i)*this%solid_chemistry%reactive_zone%speciation_alg%Se_nc_1_star(i,j)/this%concentrations(j)
         end do
     end do
 end subroutine

@@ -9,8 +9,8 @@ subroutine compute_c2nc_aq_from_c1_aq_expl(this)
     integer(kind=4) :: n_p
     real(kind=8), allocatable :: log_c2nc(:)
     
-    n_p=this%speciation_alg%num_prim_species
+    n_p=this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
     
-    log_c2nc=matmul(this%speciation_alg%Se_nc_1_star,log10(this%concentrations(1:n_p)))+this%speciation_alg%logK_star
+    log_c2nc=matmul(this%solid_chemistry%reactive_zone%speciation_alg%Se_nc_1_star,log10(this%concentrations(1:n_p)))+this%solid_chemistry%reactive_zone%speciation_alg%logK_star
     call this%update_conc_sec_aq_var_act_species(10**(log_c2nc))
  end subroutine
