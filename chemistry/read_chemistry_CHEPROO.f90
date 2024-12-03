@@ -37,8 +37,8 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
     !type(Monod_params_c), allocatable, target :: Monod_params_array(:)
     !type(Monod_params_c), target :: Monod_params
     class(kin_reaction_c), pointer :: p_kin_react=>null()
-    type(kin_reaction_ptr_c) :: kin_react_ptr
-    class(kin_reaction_ptr_c), allocatable :: kin_reacts(:)
+    type(kin_reaction_poly_c) :: kin_react_ptr
+    class(kin_reaction_poly_c), allocatable :: kin_reacts(:)
     !type(redox_kin_c), target :: Monod
     type(eq_reaction_c) :: eq_react
     type(eq_reaction_c), allocatable :: eq_reacts(:)

@@ -1,9 +1,9 @@
-!> Cation exchange convention superclass
+!>Exchange sites convention module
 module exch_sites_conv_m
     use species_m
     implicit none
     save
-    type, public, abstract :: exch_sites_conv_c !> exchange sites convention
+    type, public, abstract :: exch_sites_conv_c !> exchange sites convention superclass
     contains
         procedure(compute_log_act_coeff_ads_cat), public, deferred :: compute_log_act_coeff_ads_cat
     end type

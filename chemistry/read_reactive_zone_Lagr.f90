@@ -26,8 +26,8 @@ subroutine read_reactive_zone_Lagr(this,filename,irec)
     type(gas_c), allocatable :: gases(:)
     class(kin_params_c), pointer :: p_kin_params=>null()
     class(kin_reaction_c), pointer :: p_kin_react=>null()
-    type(kin_reaction_ptr_c) :: kin_react_ptr
-    class(kin_reaction_ptr_c), allocatable :: kin_reacts(:)
+    type(kin_reaction_poly_c) :: kin_react_ptr
+    class(kin_reaction_poly_c), allocatable :: kin_reacts(:)
     type(eq_reaction_c) :: eq_react
     type(eq_reaction_c), allocatable :: eq_reacts(:)
     

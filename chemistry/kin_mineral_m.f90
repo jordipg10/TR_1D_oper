@@ -7,12 +7,12 @@ module kin_mineral_m
     implicit none
     save
     type, public, extends(kin_reaction_c) :: kin_mineral_c
-        type(mineral_c) :: mineral !> mineral that dissolves or precipitates
+        !type(solid_c) :: mineral !> mineral that dissolves or precipitates
         type(kin_mineral_params_c) :: params !> parameters to compute reaction rate
     contains
     !> Set
         procedure, public :: set_mineral_params
-        procedure, public :: set_mineral
+        !procedure, public :: set_mineral
         procedure, public :: set_indices_aq_phase_min
     !> Compute
         procedure, public :: compute_rk_mineral
@@ -121,12 +121,12 @@ module kin_mineral_m
             this%params=mineral_params
         end subroutine
         
-        subroutine set_mineral(this,mineral)
-            implicit none
-            class(kin_mineral_c) :: this
-            class(mineral_c), intent(in) :: mineral
-            this%mineral=mineral
-        end subroutine
+        !subroutine set_mineral(this,mineral)
+        !    implicit none
+        !    class(kin_mineral_c) :: this
+        !    class(solid_c), intent(in) :: mineral
+        !    this%mineral=mineral
+        !end subroutine
         
        subroutine append_kin_min_reaction(this,kin_reactions)
         implicit none

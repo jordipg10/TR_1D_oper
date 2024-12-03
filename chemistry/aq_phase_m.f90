@@ -32,9 +32,6 @@ module aq_phase_m
     !> Compute
         procedure, public :: compute_log_act_coeffs_aq_phase
         procedure, public :: compute_log_Jacobian_act_coeffs_aq_phase
-        !procedure, public :: compute_d_log_gamma_d_c1
-        !procedure, public :: compute_d_log_gamma_d_c2_aq
-        !procedure, public :: compute_z2
     !> Rearrange
         procedure, public :: rearrange_aq_species
     !> Is

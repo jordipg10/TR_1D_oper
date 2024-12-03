@@ -40,7 +40,7 @@ module chem_system_m
         type(eq_reaction_c), allocatable :: eq_reacts(:) !> equilibrium reactions
         type(speciation_algebra_c) :: speciation_alg !> speciation algebra object
         integer(kind=4) :: num_kin_reacts=0 !> number of kinetic reactions
-        type(kin_reaction_ptr_c), allocatable :: kin_reacts(:) !> kinetic reactions pointers (not used at the moment)
+        type(kin_reaction_poly_c), allocatable :: kin_reacts(:) !> kinetic reactions pointers (not used at the moment)
         integer(kind=4) :: num_lin_kin_reacts=0 !> number of linear kinetic reactions
         type(lin_kin_reaction_c), allocatable :: lin_kin_reacts(:) !> linear kinetic reactions
         integer(kind=4) :: num_min_kin_reacts=0 !> number of mineral kinetic reactions
@@ -535,7 +535,7 @@ module chem_system_m
         subroutine set_kin_reacts(this,kin_reacts)
             implicit none
             class(chem_system_c) :: this
-            class(kin_reaction_ptr_c), intent(in) :: kin_reacts(:)
+            class(kin_reaction_poly_c), intent(in) :: kin_reacts(:)
             if (allocated(this%kin_reacts)) then
                 deallocate(this%kin_reacts)
             end if

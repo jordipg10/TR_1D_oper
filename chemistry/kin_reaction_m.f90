@@ -9,7 +9,7 @@ module kin_reaction_m
     contains
     end type
     
-    type, public :: kin_reaction_ptr_c !< clase ad hoc para crear vector punteros clase reaccion cinetica (cosas de Fortran)
+    type, public :: kin_reaction_poly_c !< clase ad hoc para crear vector punteros clase reaccion cinetica (cosas de Fortran)
         class(kin_reaction_c), pointer :: kin_reaction
     end type
     

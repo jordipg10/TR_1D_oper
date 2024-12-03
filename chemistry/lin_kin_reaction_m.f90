@@ -12,7 +12,7 @@ module lin_kin_reaction_m
         procedure, public :: set_lambda
         procedure, public :: compute_rk_lin
         procedure, public :: compute_drk_dc_lin
-        procedure, public :: append_lin_kin_reaction
+        !procedure, public :: append_lin_kin_reaction
         procedure, public :: set_index_aq_phase_lin
     end type
     
@@ -60,19 +60,19 @@ module lin_kin_reaction_m
             this%lambda=lambda
         end subroutine
         
-        subroutine append_lin_kin_reaction(this,kin_reactions)
-            implicit none
-            class(lin_kin_reaction_c), intent(in) :: this
-            type(lin_kin_reaction_c), intent(inout), allocatable :: kin_reactions(:)
-        
-            type(lin_kin_reaction_c), allocatable :: aux(:)
-        
-            aux=kin_reactions
-            deallocate(kin_reactions)
-            allocate(kin_reactions(size(aux)+1))
-            kin_reactions(1:size(aux))=aux
-            kin_reactions(size(kin_reactions))=this
-        end subroutine
+        !subroutine append_lin_kin_reaction(this,kin_reactions)
+        !    implicit none
+        !    class(lin_kin_reaction_c), intent(in) :: this
+        !    type(lin_kin_reaction_c), intent(inout), allocatable :: kin_reactions(:)
+        !
+        !    type(lin_kin_reaction_c), allocatable :: aux(:)
+        !
+        !    aux=kin_reactions
+        !    deallocate(kin_reactions)
+        !    allocate(kin_reactions(size(aux)+1))
+        !    kin_reactions(1:size(aux))=aux
+        !    kin_reactions(size(kin_reactions))=this
+        !end subroutine
         
         subroutine set_index_aq_phase_lin(this,aq_phase)
             implicit none

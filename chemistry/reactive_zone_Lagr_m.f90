@@ -442,7 +442,7 @@ module reactive_zone_Lagr_m
         !subroutine set_kin_reactions(this,kin_reactions)
         !>    implicit none
         !>    class(reactive_zone_c) :: this
-        !>    class(kin_reaction_ptr_c), intent(in), optional :: kin_reactions(:)
+        !>    class(kin_reaction_poly_c), intent(in), optional :: kin_reactions(:)
         !>    if (present(kin_reactions)) then
         !>        this%kin_reactions=kin_reactions
         !>    else

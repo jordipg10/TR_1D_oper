@@ -8,7 +8,7 @@ subroutine append_reaction(this,reaction)
     integer(kind=4) :: i
     type(eq_reaction_c), allocatable :: eq_reacts(:)
     type(redox_kin_c), allocatable :: redox_kin_reacts(:)
-    type(kin_reaction_ptr_c), allocatable :: kin_react_ptrs(:)
+    type(kin_reaction_poly_c), allocatable :: kin_react_ptrs(:)
     
     select type (reaction)
     type is (eq_reaction_c)
