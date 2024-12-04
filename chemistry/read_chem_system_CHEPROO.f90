@@ -187,8 +187,8 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
     call this%aq_phase%allocate_aq_species(num_aq_sp)
     allocate(this%aq_phase%ind_diss_solids(this%aq_phase%num_species-this%aq_phase%wat_flag))
     call this%aq_phase%set_num_aq_complexes(num_aq_compl)
-    call this%allocate_cst_act_species(num_cst_act_sp)
-    call this%allocate_var_act_species(num_var_act_sp)
+    call this%allocate_cst_act_sp_indices(num_cst_act_sp)
+    call this%allocate_var_act_sp_indices(num_var_act_sp)
     call this%compute_num_species()
     call this%allocate_species()
     call this%allocate_minerals(num_mins)
@@ -218,13 +218,14 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
     end if
     call this%speciation_alg%set_flag_cat_exch(flag_surf)
     call this%speciation_alg%set_dimensions(this%num_species,this%num_eq_reacts,this%num_cst_act_species,this%aq_phase%num_species,this%aq_phase%num_species-this%aq_phase%wat_flag,this%num_min_kin_reacts,num_gases-n_gas_eq)
-    ind_var_act_sp=0
+    ind_var_act_sp=0 !< counter variable activity species
+    i=0 !> counter aqueous species
     do
         read(unit,*) label
         if (label=='end') then
             exit
-        else if (label=='PRIMARY AQUEOUS SPECIES') then !> suponemos ordenadas en primarias y secundarias
-            i=0 !> counter aqueous species
+        else if (label=='PRIMARY AQUEOUS SPECIES' .OR. label=='AQUEOUS COMPLEXES') then !> suponemos ordenadas en primarias y secundarias
+            
             do
                 read(unit,*) str
                 if (str=='*') exit
@@ -233,29 +234,32 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
                 call this%aq_phase%aq_species(i)%set_name(str_trim)
                 if (str_trim=='h2o') then
                     call this%aq_phase%aq_species(i)%set_cst_act_flag(.true.)
-                    call this%cst_act_species(1)%assign_species(this%aq_phase%aq_species(i))
+                    !call this%species(this%num_var_act_species+1)%assign_species(this%aq_phase%aq_species(i))
+                    this%cst_act_sp_indices(1)=i
                 else
                     ind_var_act_sp=ind_var_act_sp+1
                     call this%aq_phase%aq_species(i)%set_cst_act_flag(.false.)
-                    call this%var_act_species(ind_var_act_sp)%assign_species(this%aq_phase%aq_species(i))
+                    !call this%species(ind_var_act_sp)%assign_species(this%aq_phase%aq_species(i))
+                    this%var_act_sp_indices(ind_var_act_sp)=i
                 end if
+                call this%species(i)%assign_species(this%aq_phase%aq_species(i))
             end do
-        else if (label=='AQUEOUS COMPLEXES') then
-            do
-                read(unit,*) str
-                if (str=='*') exit
-                i=i+1
-                str_trim=trim(str)
-                call this%aq_phase%aq_species(i)%set_name(str_trim)
-                if (str_trim=='h2o') then
-                    call this%aq_phase%aq_species(i)%set_cst_act_flag(.true.)
-                    call this%cst_act_species(1)%assign_species(this%aq_phase%aq_species(i))
-                else
-                    ind_var_act_sp=ind_var_act_sp+1
-                    call this%aq_phase%aq_species(i)%set_cst_act_flag(.false.)
-                    call this%var_act_species(ind_var_act_sp)%assign_species(this%aq_phase%aq_species(i))
-                end if
-            end do             
+        !else if (label=='AQUEOUS COMPLEXES') then
+        !    do
+        !        read(unit,*) str
+        !        if (str=='*') exit
+        !        i=i+1
+        !        str_trim=trim(str)
+        !        call this%aq_phase%aq_species(i)%set_name(str_trim)
+        !        if (str_trim=='h2o') then
+        !            call this%aq_phase%aq_species(i)%set_cst_act_flag(.true.)
+        !            call this%cst_act_species(1)%assign_species(this%aq_phase%aq_species(i))
+        !        else
+        !            ind_var_act_sp=ind_var_act_sp+1
+        !            call this%aq_phase%aq_species(i)%set_cst_act_flag(.false.)
+        !            call this%var_act_species(ind_var_act_sp)%assign_species(this%aq_phase%aq_species(i))
+        !        end if
+        !    end do             
         else if (label=='MINERALS') then
             allocate(mins_eq_indices(0))
             i=0 !> minerals equilibrium

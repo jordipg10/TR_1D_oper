@@ -60,21 +60,20 @@ subroutine read_master25(this,path,unit)
                 call aq_species%set_molecular_weight(mol_weight*1d-3)
                 if (aq_species%name=='h2o') then
                     call aq_species%set_cst_act_flag(.true.)
-                    call this%cst_act_species(1)%assign_species(aq_species)
                     num_cst_act_sp=num_cst_act_sp+1
                 else
                     call aq_species%set_cst_act_flag(.false.)
-                    if (aq_sp_ind>this%aq_phase%ind_wat .and. this%aq_phase%ind_wat>0) then !> chapuza
-                        !aq_sp_ind=aq_sp_ind-1
-                        call this%var_act_species(aq_sp_ind-1)%assign_species(aq_species)
-                    else
-                        call this%var_act_species(aq_sp_ind)%assign_species(aq_species)
-                    end if
+                    !if (aq_sp_ind>this%aq_phase%ind_wat .and. this%aq_phase%ind_wat>0) then !> chapuza
+                    !    !aq_sp_ind=aq_sp_ind-1
+                    !    call this%var_act_species(aq_sp_ind-1)%assign_species(aq_species)
+                    !else
+                    !    call this%var_act_species(aq_sp_ind)%assign_species(aq_species)
+                    !end if
                     num_var_act_sp=num_var_act_sp+1
                 end if
                 call this%species(aq_sp_ind)%assign_species(aq_species)
                 indices_aq_sp(num_aq_sp+1)=aq_sp_ind
-                this%aq_phase%aq_species(aq_sp_ind)=aq_species
+                call this%aq_phase%aq_species(aq_sp_ind)%assign_species(aq_species)
                 num_aq_sp=num_aq_sp+1
                 num_pr_aq_sp=num_pr_aq_sp+1
             else
@@ -91,7 +90,6 @@ subroutine read_master25(this,path,unit)
             call this%aq_phase%is_species_in_aq_phase(aq_species,aq_sp_flag,aq_sp_ind)
             if (aq_sp_flag==.true.) then
                 if (aq_species%name=='h2o') then
-                    !wat_ind=aq_sp_ind
                     call aq_species%set_cst_act_flag(.true.)
                     num_cst_act_sp=num_cst_act_sp+1
                 else
@@ -130,11 +128,11 @@ subroutine read_master25(this,path,unit)
                 !this%minerals(min_ind)=mineral
                 call this%species(this%aq_phase%num_species+min_ind)%assign_species(this%minerals(min_ind)%mineral)
                 if (this%minerals(min_ind)%mineral%cst_act_flag==.true.) then
-                    call this%cst_act_species(num_cst_act_sp+min_ind)%assign_species(this%minerals(min_ind)%mineral)
                     num_cst_act_mins=num_cst_act_mins+1
+                    call this%cst_act_sp_indices(num_cst_act_sp+min_ind)=this%aq_phase%num_species+min_ind
                 else
-                    call this%var_act_species(num_var_act_sp+min_ind)%assign_species(this%minerals(min_ind)%mineral)
                     num_var_act_mins=num_var_act_mins+1
+                    call this%cst_act_sp_indices(num_var_act_sp+min_ind)=this%aq_phase%num_species+min_ind
                 end if
                 if (min_ind>this%num_min_kin_reacts) then
                     call this%eq_reacts(num_eq_reacts+min_ind-this%num_min_kin_reacts)%allocate_reaction(num_reactants+1)
@@ -174,10 +172,10 @@ subroutine read_master25(this,path,unit)
                 num_gases=num_gases+1
                 call this%species(this%aq_phase%num_species+this%num_minerals+gas_ind)%assign_species(gas)
                 if (this%gas_phase%gases(gas_ind)%cst_act_flag==.false.) then
-                    call this%var_act_species(num_var_act_sp+gas_ind)%assign_species(gas)
+                    call this%var_act_sp_indices(num_var_act_sp+gas_ind)=this%aq_phase%num_species+this%num_minerals+gas_ind
                     num_var_act_gases=num_var_act_gases+1
                 else
-                    call this%cst_act_species(num_cst_act_sp+gas_ind)%assign_species(gas)
+                    call this%cst_act_sp_indices(num_cst_act_sp+gas_ind)=this%aq_phase%num_species+this%num_minerals+gas_ind
                     num_cst_act_gases=num_cst_act_gases+1
                 end if
                 if (gas_ind<=this%gas_phase%num_gases_eq) then
@@ -200,10 +198,11 @@ subroutine read_master25(this,path,unit)
     num_reacts=num_reacts+num_gases
     !> Surface complexes
     if (this%cat_exch%num_surf_compl>0) then
-        call this%var_act_species(num_var_act_sp+1)%set_name('x-')
-        call this%var_act_species(num_var_act_sp+1)%set_cst_act_flag(.false.)
-        call this%var_act_species(num_var_act_sp+1)%set_valence(-1)
-        call this%species(this%num_species-this%cat_exch%num_surf_compl+1)%assign_species(this%var_act_species(num_var_act_sp+1))
+        call this%species(this%num_species-this%cat_exch%num_surf_compl+1)%set_name('x-')
+        call this%species(this%num_species-this%cat_exch%num_surf_compl+1)%set_cst_act_flag(.false.)
+        call this%species(this%num_species-this%cat_exch%num_surf_compl+1)%set_valence(-1)
+        this%var_act_sp_indices(num_var_act_sp+1)=this%num_species-this%cat_exch%num_surf_compl+1
+        !call this%species(this%num_species-this%cat_exch%num_surf_compl+1)%assign_species(this%var_act_species(num_var_act_sp+1))
     end if
     do
         read(unit,*,iostat=int_var) surf_compl%name, num_reactants
@@ -213,9 +212,13 @@ subroutine read_master25(this,path,unit)
             call this%cat_exch%is_surf_compl_in(surf_compl,surf_compl_flag,surf_compl_ind)
             if (surf_compl_flag==.true.) then
                 num_exch_cats=num_exch_cats+1
-                call this%var_act_species(num_var_act_sp+surf_compl_ind)%set_name(surf_compl%name)
-                call this%var_act_species(num_var_act_sp+surf_compl_ind)%set_cst_act_flag(.false.)
-                call this%var_act_species(num_var_act_sp+surf_compl_ind)%set_valence(0)
+                !call this%var_act_specis(num_var_act_sp+surf_compl_ind)%set_name(surf_compl%name)
+                !call this%var_act_species(num_var_act_sp+surf_compl_ind)%set_cst_act_flag(.false.)
+                !call this%var_act_species(num_var_act_sp+surf_compl_ind)%set_valence(0)
+                call this%species(this%num_species-this%cat_exch%num_surf_compl+surf_compl_ind)%set_name(surf_compl%name)
+                call this%species(this%num_species-this%cat_exch%num_surf_compl+surf_compl_ind)%set_cst_act_flag(.false.)
+                call this%species(this%num_species-this%cat_exch%num_surf_compl+surf_compl_ind)%set_valence(0)
+                this%var_act_sp_indices(num_var_act_sp+surf_compl_ind)=this%num_species-this%cat_exch%num_surf_compl+surf_compl_ind
                 call this%eq_reacts(num_eq_reacts+surf_compl_ind-1)%allocate_reaction(num_reactants+1)
                 call this%eq_reacts(num_eq_reacts+surf_compl_ind-1)%set_react_type(3)
                 react_indices(num_reacts+surf_compl_ind-1)=ind_exch_cats+1
@@ -262,15 +265,15 @@ subroutine read_master25(this,path,unit)
                 if (aq_species%name=='h2o') then
                     ind_cst_act_sp=ind_cst_act_sp+1
                     call aq_species%set_cst_act_flag(.true.)
-                    call this%cst_act_species(1)%assign_species(aq_species)
+                    !call this%cst_act_species(1)%assign_species(aq_species)
                 else
                     ind_var_act_sp=ind_var_act_sp+1
                     call aq_species%set_cst_act_flag(.false.)
-                    if (indices_aq_sp(num_pr_aq_sp+ind_aq_compl)>this%aq_phase%ind_wat) then
-                        call this%var_act_species(indices_aq_sp(num_pr_aq_sp+ind_aq_compl)-1)%assign_species(aq_species)
-                    else
-                        call this%var_act_species(indices_aq_sp(num_pr_aq_sp+ind_aq_compl))%assign_species(aq_species)
-                    end if
+                    !if (indices_aq_sp(num_pr_aq_sp+ind_aq_compl)>this%aq_phase%ind_wat) then
+                    !    call this%var_act_species(indices_aq_sp(num_pr_aq_sp+ind_aq_compl)-1)%assign_species(aq_species)
+                    !else
+                    !    call this%var_act_species(indices_aq_sp(num_pr_aq_sp+ind_aq_compl))%assign_species(aq_species)
+                    !end if
                 end if
                 call this%species(indices_aq_sp(num_pr_aq_sp+ind_aq_compl))%assign_species(aq_species)
                 call this%aq_phase%aq_species(indices_aq_sp(num_pr_aq_sp+ind_aq_compl))%assign_species(aq_species)

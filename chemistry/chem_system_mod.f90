@@ -13,7 +13,7 @@ module chem_system_m
     use array_ops_m
     implicit none
     save
-    type, public :: chem_system_c
+    type, public :: chem_system_c   !> chemical system class
         integer(kind=4) :: num_species !> number of species
         integer(kind=4) :: num_reacts !> number of reactions
         type(species_c), allocatable :: species(:)  !> species
@@ -21,17 +21,17 @@ module chem_system_m
         type(aq_phase_c) :: aq_phase !> aqueous phase (we assume only 1)
         type(gas_phase_c) :: gas_phase !> gas phase (we assume only 1)
         integer(kind=4) :: num_var_act_species !> number of variable activity species
-        type(species_c), allocatable :: var_act_species(:) !> variable activity species
+        integer(kind=4), allocatable :: var_act_sp_indices(:) !> variable activity species indices in "species" attribute
         integer(kind=4) :: num_minerals=0 !> number of minerals
         integer(kind=4) :: num_minerals_eq=0 !> number of minerals in equilibrium
-        type(mineral_c), allocatable :: minerals(:) !> minerals
+        type(mineral_c), allocatable :: minerals(:) !> minerals (first kinetic, then equilibrium)
         integer(kind=4) :: num_cst_act_species !> number of constant activity species
-        type(species_c), allocatable :: cst_act_species(:) !> constant activity species
-        integer(kind=4) :: num_solids=0
+        integer(kind=4), allocatable :: cst_act_sp_indices(:) !> constant activity species indices in "species" attribute
+        integer(kind=4) :: num_solids=0 !< number of solids
         type(cat_exch_c) :: cat_exch !> cation exchange object
         real(kind=8), allocatable :: stoich_mat(:,:) !> global stoichiometric matrix (S)
-        real(kind=8), allocatable :: stoich_mat_sol(:,:) !> solid stoichiometric matrix
-        real(kind=8), allocatable :: stoich_mat_gas(:,:) !> gas stoichiometric matrix
+        real(kind=8), allocatable :: stoich_mat_sol(:,:) !> solid stoichiometric matrix (S_s)
+        real(kind=8), allocatable :: stoich_mat_gas(:,:) !> gas stoichiometric matrix (S_g)
         real(kind=8), allocatable :: Se(:,:) !> equilibrium stoichiometric matrix
         real(kind=8), allocatable :: Sk(:,:) !> kinetic stoichiometric matrix
         integer(kind=4) :: num_eq_reacts=0 !> number of equilibrium reactions
@@ -40,7 +40,7 @@ module chem_system_m
         type(eq_reaction_c), allocatable :: eq_reacts(:) !> equilibrium reactions
         type(speciation_algebra_c) :: speciation_alg !> speciation algebra object
         integer(kind=4) :: num_kin_reacts=0 !> number of kinetic reactions
-        type(kin_reaction_poly_c), allocatable :: kin_reacts(:) !> kinetic reactions pointers (not used at the moment)
+        type(kin_reaction_poly_c), allocatable :: kin_reacts(:) !> kinetic reactions pointer array (not used at the moment)
         integer(kind=4) :: num_lin_kin_reacts=0 !> number of linear kinetic reactions
         type(lin_kin_reaction_c), allocatable :: lin_kin_reacts(:) !> linear kinetic reactions
         integer(kind=4) :: num_min_kin_reacts=0 !> number of mineral kinetic reactions
@@ -55,8 +55,6 @@ module chem_system_m
         procedure, public :: set_cat_exch_obj
         procedure, public :: set_num_cst_act_species
         procedure, public :: set_num_solids_chem_syst
-        procedure, public :: set_cst_act_species
-        procedure, public :: set_var_act_species
         procedure, public :: set_num_var_act_species
         procedure, public :: set_redox_kin_reacts
         procedure, public :: set_minerals
@@ -69,8 +67,8 @@ module chem_system_m
         procedure, public :: set_stoich_mat_sol
     !> Allocate
         procedure, public :: allocate_species
-        procedure, public :: allocate_cst_act_species
-        procedure, public :: allocate_var_act_species
+        procedure, public :: allocate_cst_act_sp_indices
+        procedure, public :: allocate_var_act_sp_indices
         procedure, public :: allocate_eq_reacts
         procedure, public :: allocate_reacts
         procedure, public :: allocate_redox_kin_reacts
@@ -218,8 +216,6 @@ module chem_system_m
     end interface
 !****************************************************************************************************************************************************
     contains
-
-        
         subroutine set_num_species(this,num_species)
             implicit none
             class(chem_system_c) :: this
@@ -241,7 +237,9 @@ module chem_system_m
             integer(kind=4), intent(in), optional :: num_reacts
             if (present(num_reacts)) then
                 if (num_reacts>this%num_species) then
-                    error stop "Number of reacts cannot be greater than number of species"
+                    error stop "Number of reactions cannot be greater than number of species"
+                else if (num_reacts<0) then
+                    error stop "Number of reactions cannot be negative"
                 else
                     this%num_reacts=num_reacts
                 end if
@@ -255,7 +253,11 @@ module chem_system_m
             class(chem_system_c) :: this
             integer(kind=4), intent(in), optional :: num_species
             if (present(num_species)) then
-                this%num_species=num_species
+                if (num_species<0) then
+                    error stop "Number of species cannot be negative"
+                else
+                    this%num_species=num_species
+                end if
             end if
             if (allocated(this%species)) then
                 deallocate(this%species)
@@ -263,27 +265,27 @@ module chem_system_m
             allocate(this%species(this%num_species))
         end subroutine
         
-        subroutine allocate_cst_act_species(this,num_cst_act_species)
+        subroutine allocate_cst_act_sp_indices(this,num_cst_act_species)
             implicit none
             class(chem_system_c) :: this
             integer(kind=4), intent(in), optional :: num_cst_act_species
             if (present(num_cst_act_species)) then
                 this%num_cst_act_species=num_cst_act_species                
             end if
-            if (allocated(this%cst_act_species)) then
-                deallocate(this%cst_act_species)
+            if (allocated(this%cst_act_sp_indices)) then
+                deallocate(this%cst_act_sp_indices)
             end if
-            allocate(this%cst_act_species(this%num_cst_act_species))
+            allocate(this%cst_act_sp_indices(this%num_cst_act_species))
         end subroutine
         
-        subroutine allocate_var_act_species(this,num_var_act_species)
+        subroutine allocate_var_act_sp_indices(this,num_var_act_species)
             implicit none
             class(chem_system_c) :: this
             integer(kind=4), intent(in), optional :: num_var_act_species
             if (present(num_var_act_species)) then
                 this%num_var_act_species=num_var_act_species                
             end if
-            allocate(this%var_act_species(this%num_var_act_species))
+            allocate(this%var_act_sp_indices(this%num_var_act_species))
         end subroutine
         
         subroutine set_species(this,species) !> sets species (first variable activity, then constant activity)
@@ -300,10 +302,10 @@ module chem_system_m
                     this%species=species
                     this%num_species=size(species)
                 end if
-            else if (allocated(this%cst_act_species) .and. allocated(this%var_act_species)) then
-                call this%allocate_species()
-                this%species(1:this%num_var_act_species)=this%var_act_species
-                this%species(this%num_var_act_species+1:this%num_species)=this%cst_act_species
+            else if (allocated(this%cst_act_sp_indices) .and. allocated(this%var_act_sp_indices)) then
+                !call this%allocate_species()
+                !this%species(1:this%num_var_act_species)=this%var_act_species
+                !this%species(this%num_var_act_species+1:this%num_species)=this%cst_act_species
             end if
         end subroutine
         
@@ -396,7 +398,7 @@ module chem_system_m
             if (present(num_cst_act_species)) then
                 this%num_cst_act_species=num_cst_act_species
             else
-                this%num_cst_act_species=size(this%cst_act_species)
+                this%num_cst_act_species=size(this%cst_act_sp_indices)
             end if
         end subroutine
         
@@ -411,34 +413,34 @@ module chem_system_m
             end if
         end subroutine
         
-        subroutine set_cst_act_species(this,cst_act_species) !> first water, then minerals
-            implicit none
-            class(chem_system_c) :: this
-            type(species_c), intent(in), optional :: cst_act_species(:)
-            
-            integer(kind=4) :: i,wat_ind,j
-            type(aq_species_c) :: water
-            logical :: wat_flag
-            
-            if (present(cst_act_species)) then
-                if (size(cst_act_species)>this%num_species) then
-                    error stop "Number of constant activity species cannot be greater than number of species"
-                else
-                    this%cst_act_species=cst_act_species
-                end if
-            else
-                j=0 !> counter constant activity species
-                call this%aq_phase%is_water_in_aq_phase(wat_flag)
-                if (wat_flag==.true.) then
-                    j=j+1
-                    call this%cst_act_species(j)%assign_species(this%aq_phase%aq_species(this%aq_phase%ind_wat))
-                end if
-                do i=1,this%num_minerals
-                    call this%cst_act_species(j+i)%assign_species(this%minerals(i)%mineral) !> we assume minerals are pure
-                end do
-                j=j+this%num_minerals
-            end if
-        end subroutine
+        !subroutine set_cst_act_species(this,cst_act_species) !> first water, then minerals
+        !    implicit none
+        !    class(chem_system_c) :: this
+        !    type(species_c), intent(in), optional :: cst_act_species(:)
+        !    
+        !    integer(kind=4) :: i,wat_ind,j
+        !    type(aq_species_c) :: water
+        !    logical :: wat_flag
+        !    
+        !    if (present(cst_act_species)) then
+        !        if (size(cst_act_species)>this%num_species) then
+        !            error stop "Number of constant activity species cannot be greater than number of species"
+        !        else
+        !            this%cst_act_species=cst_act_species
+        !        end if
+        !    else
+        !        j=0 !> counter constant activity species
+        !        call this%aq_phase%is_water_in_aq_phase(wat_flag)
+        !        if (wat_flag==.true.) then
+        !            j=j+1
+        !            call this%cst_act_species(j)%assign_species(this%aq_phase%aq_species(this%aq_phase%ind_wat))
+        !        end if
+        !        do i=1,this%num_minerals
+        !            call this%cst_act_species(j+i)%assign_species(this%minerals(i)%mineral) !> we assume minerals are pure
+        !        end do
+        !        j=j+this%num_minerals
+        !    end if
+        !end subroutine
         
 
         
@@ -457,59 +459,16 @@ module chem_system_m
             integer(kind=4), intent(in), optional :: num_var_act_species
             if (present(num_var_act_species)) then
                 this%num_var_act_species=num_var_act_species
-            else if (allocated(this%var_act_species)) then
-                this%num_var_act_species=size(this%var_act_species)
-            else if (allocated(this%species) .and. allocated(this%cst_act_species)) then
+            else if (allocated(this%var_act_sp_indices)) then
+                this%num_var_act_species=size(this%var_act_sp_indices)
+            else if (allocated(this%species) .and. allocated(this%cst_act_sp_indices)) then
                 this%num_var_act_species=this%num_species-this%num_cst_act_species
             else
                 error stop "Unable to compute the number of variable activity species"
             end if
         end subroutine
         
-        subroutine set_var_act_species(this,var_act_species) !> first aqueous, then gases, then surface complexes
-            implicit none
-            class(chem_system_c) :: this
-            type(species_c), intent(in), optional :: var_act_species(:)
-            integer(kind=4) :: i,j,k
-            if (present(var_act_species)) then
-                if (size(var_act_species)>this%num_species) then
-                    error stop "Number of variable activity species cannot be greater than number of species"
-                else
-                    this%var_act_species=var_act_species
-                end if
-            else
-                call this%set_num_var_act_species()
-                call this%allocate_var_act_species()
-                i=1 !> counter aqueous species
-                j=1 !> counter variable activity species
-                do
-                    if (i/=this%aq_phase%ind_wat) then
-                        call this%var_act_species(j)%assign_species(this%aq_phase%aq_species(i))
-                        if (j<this%num_var_act_species) then
-                            j=j+1
-                        else
-                            exit
-                        end if
-                        if (i<this%aq_phase%num_species) then
-                            i=i+1
-                        else
-                            exit
-                        end if
-                    else if (i<this%aq_phase%num_species) then
-                        i=i+1
-                    else
-                        exit
-                    end if
-                end do
-                do k=1,this%gas_phase%num_species
-                    call this%var_act_species(i+k)%assign_species(this%gas_phase%gases(k))
-                end do
-                i=i+this%gas_phase%num_species
-                do k=1,this%cat_exch%num_surf_compl
-                    call this%var_act_species(i+k)%assign_species(this%cat_exch%surf_compl(k))
-                end do
-            end if
-        end subroutine
+       
         
         subroutine set_minerals(this,minerals)
             implicit none
@@ -764,6 +723,8 @@ module chem_system_m
             implicit none
             class(chem_system_c) :: this
             integer(kind=4) :: i,num_sp,num_aq_sec,num_var_act_sp,num_cst_act_sp
+            type(species_c), allocatable :: species(:)
+            species=this%species
             num_sp=0 !> counter number of species
             num_var_act_sp=0 !> counter number of variable activity species
             num_cst_act_sp=this%aq_phase%wat_flag !> counter number of constant activity species
@@ -828,16 +789,16 @@ module chem_system_m
                     end if
                 end do
                 do i=1,this%num_cst_act_species
-                    this%species(this%num_var_act_species+i)=this%cst_act_species(i)
+                    this%species(this%num_var_act_species+i)=species(this%cst_act_sp_indices(i))
                 end do
             else if (this%speciation_alg%flag_comp==.true. .and. this%speciation_alg%flag_cat_exch==.false.) then
                 !call this%set_species()
                 do i=1,this%speciation_alg%num_aq_var_act_species
-                    call this%species(i)%assign_species(this%var_act_species(i))
+                    call this%species(i)%assign_species(species(this%var_act_sp_indices(i)))
                 end do
                 num_var_act_sp=num_var_act_sp+this%speciation_alg%num_aq_var_act_species
                 if (this%aq_phase%wat_flag==1) then
-                    call this%species(this%num_var_act_species+1)%assign_species(this%cst_act_species(1))
+                    call this%species(this%num_var_act_species+1)%assign_species(species(this%cst_act_sp_indices(1)))
                 end if
                 do i=1,this%num_minerals
                     if (this%minerals(i)%mineral%cst_act_flag==.false.) then

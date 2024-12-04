@@ -1,16 +1,15 @@
 !> 1D reactive transport module (Lagrangian version)
 module RT_1D_m
-    use PDE_m
     use chemistry_Lagr_m
     use time_discr_m
     use transport_transient_m
-    use char_params_m
+    use transport_m
     implicit none
     save
     type, public :: RT_1D_c !> 1D reactive transport superclass
-        type(chemistry_c) :: chemistry
+        type(chemistry_c) :: chemistry                          !> chemistry object
     contains
-        procedure, public :: set_transport
+        !procedure, public :: set_transport
         procedure, public :: set_chemistry
         procedure, public :: solve_RT_1D
         procedure, public :: write_RT_1D
@@ -20,15 +19,22 @@ module RT_1D_m
         procedure, public :: write_transport_data
         procedure, public :: read_time_discretisation
     end type
-    
+!***************************************************************************************************************************************************!
+    type,public,extends(RT_1D_c) :: RT_1D_stat_c !> 1D stationary reactive transport subclass
+        type(transport_1D_c) :: transport                       !> stationary transport object
+    contains
+        procedure, public :: set_transport_stat
+    end type
+!***************************************************************************************************************************************************!
     type,public,extends(RT_1D_c) :: RT_1D_transient_c !> 1D transient reactive transport subclass
-        type(transport_1D_transient_c) :: transport
-        real(kind=8) :: Delta_t_crit !> critical time step
-        integer(kind=4) :: int_method_chem_reacts !> intregration method chemical reactions
+        type(transport_1D_transient_c) :: transport             !> transient transport object
+        real(kind=8) :: Delta_t_crit                            !> critical time step
+        integer(kind=4) :: int_method_chem_reacts               !> integration method chemical reactions
     contains
         procedure, public :: set_int_method_chem_reacts
+        procedure, public :: set_transport_trans
     end type
-    
+!***************************************************************************************************************************************************!
     interface
         
         subroutine solve_RT_1D(this)
@@ -36,18 +42,15 @@ module RT_1D_m
             import props_c
             implicit none
             class(RT_1D_c) :: this
-            !integer(kind=4), intent(out), optional :: niter
-            !class(props_c), intent(in), optional :: props
         end subroutine
         
-        subroutine write_RT_1D(this,unit,root,path_py)!,mixing_ratios)
+        subroutine write_RT_1D(this,unit,root,path_py)
             import RT_1D_c
             implicit none
             class(RT_1D_c), intent(in) :: this
             integer(kind=4), intent(in) :: unit
             character(len=*), intent(in) :: root
             character(len=*), intent(in), optional :: path_py
-            !real(kind=8), intent(in) :: mixing_ratios(:)
         end subroutine
         
         subroutine write_python(this,path)
@@ -68,12 +71,11 @@ module RT_1D_m
        subroutine read_time_discretisation(this,unit,root)
             import RT_1D_c
             class(RT_1D_c) :: this
-            !character(len=*), intent(in) :: path
             integer(kind=4), intent(in) :: unit
             character(len=*), intent(in) :: root
         end subroutine
         
-       subroutine read_transport_data(this,unit,file_tpt,mixing_ratios)!,f_vec)!,tpt_props,BCs,mesh,time_discr)
+       subroutine read_transport_data(this,unit,file_tpt,mixing_ratios)
             import RT_1D_c
             import tpt_props_heterog_c
             import BCs_t
@@ -82,35 +84,29 @@ module RT_1D_m
             class(RT_1D_c) :: this
             integer(kind=4), intent(in) :: unit
             character(len=*), intent(in) :: file_tpt
-            !real(kind=8), intent(out), allocatable :: mixing_ratios(:,:)
-            !real(kind=8), intent(out), allocatable :: f_vec(:)
-            !type(tpt_props_heterog_c), intent(out) :: tpt_props
-            !type(BCs_t), intent(out) :: BCs
-            !!real(kind=8), intent(in) :: Delta_x
-            !type(mesh_1D_Euler_homog_c), intent(out) :: mesh !> homogeneous Euler mesh 1D
-            !type(time_discr_homog_c), intent(out) :: time_discr !> homogeneous time discretisation
         end subroutine
         
-        subroutine write_transport_data(this,unit)!,mixing_ratios)
+        subroutine write_transport_data(this,unit)
             import RT_1D_c
             class(RT_1D_c) :: this
             integer(kind=4), intent(in) :: unit
-            !character(len=*), intent(in) :: file_out
-            !real(kind=8), intent(in) :: mixing_ratios(:)
         end subroutine
 
     end interface
     
     contains
-        subroutine set_transport(this,transport_obj)
+        subroutine set_transport_stat(this,transport_obj)
             implicit none
-            class(RT_1D_c) :: this
-            !class(PDE_1D_c), intent(in), target :: transport_obj
+            class(RT_1D_stat_c) :: this
+            class(transport_1D_c), intent(in) :: transport_obj
+            this%transport=transport_obj
+        end subroutine
+        
+        subroutine set_transport_trans(this,transport_obj)
+            implicit none
+            class(RT_1D_transient_c) :: this
             class(transport_1D_transient_c), intent(in) :: transport_obj
-            select type(this)
-            type is (RT_1D_transient_c)
-                this%transport=transport_obj
-            end select
+            this%transport=transport_obj
         end subroutine
         
         subroutine set_chemistry(this,chemistry_obj)
@@ -126,7 +122,7 @@ module RT_1D_m
             implicit none
             class(RT_1D_c) :: this    
             
-            real(kind=8), parameter :: eps=1d-9
+            real(kind=8), parameter :: eps=1d-16
             
             select type (this)
             class is (RT_1D_transient_c)
@@ -144,16 +140,6 @@ module RT_1D_m
                         end select
                     end if
                 end if
-            end select
-        end subroutine
-        
-        subroutine set_char_params_RT(this,char_params_obj)
-            implicit none
-            class(RT_1D_c) :: this
-            class(char_params_c), intent(in), target :: char_params_obj
-            select type (this)
-            class is (RT_1D_transient_c)
-                !this%char_params=>char_params_obj
             end select
         end subroutine
         

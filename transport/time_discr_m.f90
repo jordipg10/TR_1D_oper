@@ -1,9 +1,9 @@
-!> Time discretisation class
+!> Time discretisation abstract superclass
 module time_discr_m
     implicit none
     save
     type, public, abstract :: time_discr_c
-        real(kind=8) :: Final_time
+        real(kind=8) :: Final_time                          !> Final time
         integer(kind=4) :: Num_time                         !> Number of time steps
         integer(kind=4) :: int_method                       !> Time integration method:
                                                                 !> 1: Euler explicit
@@ -11,12 +11,16 @@ module time_discr_m
                                                                 !> 3: Crank-Nicolson
                                                                 !> 4: RKF45
     contains
+    !> Set
         procedure, public :: set_Final_time
         procedure, public :: set_Num_time
         procedure, public :: set_int_method
+    !> Compute
         procedure, public :: compute_Final_time
         procedure, public :: compute_Num_time
+    !> Read
         procedure(read_time_discr), public, deferred :: read_time_discr
+    !> Get
         procedure(get_Delta_t), public, deferred :: get_Delta_t
     end type
 !****************************************************************************************************************************************************
@@ -38,7 +42,7 @@ module time_discr_m
     end interface
 !****************************************************************************************************************************************************
     type, public, extends(time_discr_c) :: time_discr_homog_c
-        real(kind=8) :: Delta_t
+        real(kind=8) :: Delta_t                                 !> Uniform time step
     contains
         procedure, public :: read_time_discr=>read_time_discr_homog
         procedure, public :: set_Delta_t_homog
@@ -46,7 +50,7 @@ module time_discr_m
     end type
     
     type, public, extends(time_discr_c) :: time_discr_heterog_c
-        real(kind=8), allocatable :: Delta_t(:)
+        real(kind=8), allocatable :: Delta_t(:)                 !> Non-uniform time step
     contains
         procedure, public :: read_time_discr=>read_time_discr_heterog
         procedure, public :: set_Delta_t_heterog
@@ -65,6 +69,7 @@ module time_discr_m
             implicit none
             class(time_discr_c) :: this
             integer(kind=4) :: Num_time
+            if (Num_time<1) error stop "Number of time steps must be positive"
             this%Num_time=Num_time
         end subroutine
         
@@ -72,7 +77,7 @@ module time_discr_m
             implicit none
             class(time_discr_c) :: this
             integer(kind=4), intent(in) :: int_method
-            if (int_method>4 .and. int_method<1) error stop "Method not implemented yet"
+            if (int_method>4 .and. int_method<1) error stop "Integration method not implemented yet"
             this%int_method=int_method
         end subroutine
         
@@ -104,6 +109,7 @@ module time_discr_m
             implicit none
             class(time_discr_homog_c) :: this
             real(kind=8), intent(in) :: Delta_t
+            if (Delta_t<=0d0) error stop "Time step must be positive"
             this%Delta_t=Delta_t
         end subroutine
         
@@ -111,6 +117,12 @@ module time_discr_m
             implicit none
             class(time_discr_heterog_c) :: this
             real(kind=8), intent(in) :: Delta_t(:)
+            
+            integer(KIND=4) :: I
+            
+            do I=1,SIZE(Delta_t)
+                if (Delta_t(I)<=0d0) error stop "Time steps must all be positive"
+            end do
             this%Delta_t=Delta_t
         end subroutine
         
@@ -118,7 +130,7 @@ module time_discr_m
             implicit none
             class(time_discr_homog_c) :: this
             character(len=*), intent(in) :: filename
-            !> We assume filename contains integration method, time step and final time
+        !> We assume filename contains integration method, time step and final time
             open(unit=1,file=filename,status='old',action='read')
             read(1,*) this%int_method
             if (this%int_method>4 .and. this%int_method<1) then
@@ -128,13 +140,11 @@ module time_discr_m
             if (this%Delta_t<0d0) then
                 error stop
             end if
-            !read(1,*) this%Final_time
             read(1,*) this%Num_time
             if (this%Num_time<0) then
                 error stop
             end if
             close(1)
-            !call this%compute_Num_time()
             call this%compute_Final_time()
         end subroutine
         
@@ -146,7 +156,7 @@ module time_discr_m
             real(kind=8), allocatable :: t_vec(:)
             integer(kind=4), allocatable :: n_vec(:)
             integer(kind=4) :: i,j,k,size_t_vec
-            !> We assume filename contains a vector of time values and a vector of time steps
+        !> We assume filename contains a vector of time values and a vector of time steps
             open(unit=2,file=filename,status='old',action='read')
             read(2,*) size_t_vec
             allocate(t_vec(size_t_vec))

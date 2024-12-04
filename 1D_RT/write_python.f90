@@ -1,10 +1,10 @@
-!> Writes data and results of chemistry object
+!> Writes data and results of 1D reactive transport object necessary for Python unit tests
 subroutine write_python(this,path)
     use RT_1D_m
     
     implicit none
-    class(RT_1D_c), intent(in) :: this !> chemistry object
-    character(len=*), intent(in) :: path !> path output
+    class(RT_1D_c), intent(in) :: this                          !> 1D reactive transport object
+    character(len=*), intent(in) :: path                        !> path output
     
     integer(kind=4) :: i,j,n,l,k
     integer(kind=4), allocatable :: tar_sol_indices(:),tar_wat_indices(:)
@@ -48,10 +48,5 @@ subroutine write_python(this,path)
             end do
         end if
         close(997)
-        !open(991,file=trim(path)//'vol_frac_init.dat')
-        !do i=1,this%chemistry%chem_syst%num_minerals
-        !    write(991,"(*(ES20.10))") (this%chemistry%target_solids(j)%vol_fracts(i), j=1,this%chemistry%num_target_solids)
-        !end do
-        !close(991)
     end select
 end subroutine

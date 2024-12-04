@@ -55,18 +55,20 @@
 		<Filter Name="Resource Files" Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"/>
 		<Filter Name="Source Files" Filter="f90;for;f;fpp;ftn;def;odl;idl">
 			<Filter Name="1D_RT">
-				<File RelativePath=".\1D_RT\compute_Delta_t_crit.f90"/>
-				<File RelativePath=".\1D_RT\compute_f_RKF45_RT_kin.f90"/>
-				<File RelativePath=".\1D_RT\compute_k_RKF45_RT.f90"/>
-				<File RelativePath=".\1D_RT\compute_k_RKF45_RT_kin.f90"/>
-				<File RelativePath=".\1D_RT\read_discretisation.f90"/>
-				<File RelativePath=".\1D_RT\RKF45_iter_WMA.f90"/>
-				<File RelativePath=".\1D_RT\RKF45_iter_WMA_kin.f90"/>
-				<File RelativePath=".\1D_RT\RT_1D_Lagr_m.f90"/>
-				<File RelativePath=".\1D_RT\solve_RT_1D.f90"/>
-				<File RelativePath=".\1D_RT\write_python.f90"/>
-				<File RelativePath=".\1D_RT\write_RT_1D.f90"/>
-				<File RelativePath=".\1D_RT\write_transport_data.f90"/>
+				<File RelativePath=".\1D_RT\compute_Delta_t_crit.f90">
+				</File>
+				<File RelativePath=".\1D_RT\read_time_discretisation.f90">
+				</File>
+				<File RelativePath=".\1D_RT\RT_1D_Lagr_m.f90">
+				</File>
+				<File RelativePath=".\1D_RT\solve_RT_1D.f90">
+				</File>
+				<File RelativePath=".\1D_RT\write_python.f90">
+				</File>
+				<File RelativePath=".\1D_RT\write_RT_1D.f90">
+				</File>
+				<File RelativePath=".\1D_RT\write_transport_data_WMA.f90">
+				</File>
 			</Filter>
 			<Filter Name="Chemistry">
 				<Filter Name="Abstract">
@@ -76,32 +78,22 @@
 						<File RelativePath=".\chemistry\set_stoich_mat_gas.f90"/>
 					</Filter>
 					<Filter Name="Exchange">
-						<File RelativePath=".\chemistry\exch_sites_conv_m.f90">
-						</File>
-						<File RelativePath=".\chemistry\Gaines_Thomas_m.f90">
-						</File>
-						<File RelativePath=".\chemistry\Gapon_m.f90">
-						</File>
-						<File RelativePath=".\chemistry\surf_ads_m.f90">
-						</File>
-						<File RelativePath=".\chemistry\Vanselow_m.f90">
-						</File>
+						<File RelativePath=".\chemistry\exch_sites_conv_m.f90"/>
+						<File RelativePath=".\chemistry\Gaines_Thomas_m.f90"/>
+						<File RelativePath=".\chemistry\Gapon_m.f90"/>
+						<File RelativePath=".\chemistry\surf_ads_m.f90"/>
+						<File RelativePath=".\chemistry\Vanselow_m.f90"/>
 					</Filter>
 					<Filter Name="Parameters">
-						<File RelativePath=".\chemistry\CV_params_m.f90">
-						</File>
+						<File RelativePath=".\chemistry\CV_params_m.f90"/>
 					</Filter>
 					<Filter Name="Phases">
 						<File RelativePath=".\chemistry\append_phase.f90"/>
-						<File RelativePath=".\chemistry\aq_phase_m.f90">
-						</File>
+						<File RelativePath=".\chemistry\aq_phase_m.f90"/>
 						<File RelativePath=".\chemistry\biofilm_m.f90"/>
-						<File RelativePath=".\chemistry\gas_phase_m.f90">
-						</File>
-						<File RelativePath=".\chemistry\mineral_m.f90">
-						</File>
-						<File RelativePath=".\chemistry\phase_m.f90">
-						</File>
+						<File RelativePath=".\chemistry\gas_phase_m.f90"/>
+						<File RelativePath=".\chemistry\mineral_m.f90"/>
+						<File RelativePath=".\chemistry\phase_m.f90"/>
 					</Filter>
 					<Filter Name="Reactions">
 						<File RelativePath=".\chemistry\append_reaction.f90"/>
@@ -117,26 +109,17 @@
 						<File RelativePath=".\chemistry\compute_rk_lin.f90"/>
 						<File RelativePath=".\chemistry\compute_rk_mineral.f90"/>
 						<File RelativePath=".\chemistry\compute_rk_Monod.f90"/>
-						<File RelativePath=".\chemistry\eq_reaction_m.f90">
-						</File>
+						<File RelativePath=".\chemistry\eq_reaction_m.f90"/>
 						<File RelativePath=".\chemistry\get_indices_reaction.f90"/>
-						<File RelativePath=".\chemistry\kin_mineral_m.f90">
-						</File>
-						<File RelativePath=".\chemistry\kin_mineral_params_m.f90">
-						</File>
-						<File RelativePath=".\chemistry\kin_params_m.f90">
-						</File>
-						<File RelativePath=".\chemistry\kin_reaction_m.f90">
-						</File>
-						<File RelativePath=".\chemistry\lin_kin_reaction_m.f90">
-						</File>
-						<File RelativePath=".\chemistry\Monod_m.f90">
-						</File>
+						<File RelativePath=".\chemistry\kin_mineral_m.f90"/>
+						<File RelativePath=".\chemistry\kin_mineral_params_m.f90"/>
+						<File RelativePath=".\chemistry\kin_params_m.f90"/>
+						<File RelativePath=".\chemistry\kin_reaction_m.f90"/>
+						<File RelativePath=".\chemistry\lin_kin_reaction_m.f90"/>
+						<File RelativePath=".\chemistry\Monod_m.f90"/>
 						<File RelativePath=".\chemistry\Monod_params_m.f90"/>
-						<File RelativePath=".\chemistry\nonlin_kin_m.f90">
-						</File>
-						<File RelativePath=".\chemistry\reaction_m.f90">
-						</File>
+						<File RelativePath=".\chemistry\nonlin_kin_m.f90"/>
+						<File RelativePath=".\chemistry\reaction_m.f90"/>
 					</Filter>
 					<Filter Name="Reactive_Zone">
 						<File RelativePath=".\chemistry\check_new_reactive_zones.f90"/>
@@ -155,24 +138,18 @@
 						<File RelativePath=".\chemistry\update_reactive_zone.f90"/>
 					</Filter>
 					<Filter Name="Species">
-						<File RelativePath=".\chemistry\aq_species_m.f90">
-						</File>
+						<File RelativePath=".\chemistry\aq_species_m.f90"/>
 						<File RelativePath=".\chemistry\compare_species_arrays.f90"/>
-						<File RelativePath=".\chemistry\gas_m.f90">
-						</File>
+						<File RelativePath=".\chemistry\gas_m.f90"/>
 						<File RelativePath=".\chemistry\rearrange_species.f90"/>
-						<File RelativePath=".\chemistry\solid_m.f90">
-						</File>
-						<File RelativePath=".\chemistry\species_m.f90">
-						</File>
+						<File RelativePath=".\chemistry\solid_m.f90"/>
+						<File RelativePath=".\chemistry\species_m.f90"/>
 					</Filter>
-					<File RelativePath=".\chemistry\speciation_algebra_m.f90">
-					</File>
+					<File RelativePath=".\chemistry\speciation_algebra_m.f90"/>
 				</Filter>
 				<Filter Name="Local">
 					<Filter Name="Aqueous_Chemistry">
-						<File RelativePath=".\chemistry\aqueous_chemistry_Lagr_m.f90">
-						</File>
+						<File RelativePath=".\chemistry\aqueous_chemistry_Lagr_m.f90"/>
 						<File RelativePath=".\chemistry\initialise_conc_anal.f90"/>
 						<File RelativePath=".\chemistry\initialise_conc_anal_exch.f90"/>
 						<File RelativePath=".\chemistry\initialise_conc_anal_ideal.f90"/>
@@ -257,8 +234,7 @@
 						<File RelativePath=".\chemistry\compute_dc2nc_dc1_aq_ideal.f90"/>
 						<File RelativePath=".\chemistry\compute_dc2nc_dc1_gamma_cst.f90"/>
 						<File RelativePath=".\chemistry\compute_dI_dc1.f90"/>
-						<File RelativePath=".\chemistry\compute_log_act_coeffs_aq_phase.f90">
-						</File>
+						<File RelativePath=".\chemistry\compute_log_act_coeffs_aq_phase.f90"/>
 						<File RelativePath=".\chemistry\compute_log_act_coeffs_gas_phase.f90"/>
 						<File RelativePath=".\chemistry\compute_log_act_coeffs_surf_compl.f90"/>
 						<File RelativePath=".\chemistry\compute_log_acts_ads_cats.f90"/>
@@ -266,8 +242,7 @@
 						<File RelativePath=".\chemistry\compute_log_Jacobian_act_coeffs_aq_phase_bis.f90"/>
 						<File RelativePath=".\chemistry\compute_log_Jacobian_act_coeffs_gas_phase.f90"/>
 						<File RelativePath=".\chemistry\compute_log_Jacobian_act_coeffs_surf_compl.f90"/>
-						<File RelativePath=".\chemistry\compute_log_Jacobian_acts_ads_cats.f90">
-						</File>
+						<File RelativePath=".\chemistry\compute_log_Jacobian_acts_ads_cats.f90"/>
 						<File RelativePath=".\chemistry\compute_logK_star_spec.f90"/>
 						<File RelativePath=".\chemistry\compute_res_init.f90"/>
 						<File RelativePath=".\chemistry\compute_res_Jac_res_anal.f90"/>
@@ -286,10 +261,8 @@
 				</Filter>
 				<Filter Name="Parameters">
 					<File RelativePath=".\chemistry\params_act_coeff_m.f90"/>
-					<File RelativePath=".\chemistry\params_aq_sol_m.f90">
-					</File>
-					<File RelativePath=".\chemistry\params_spec_vol_m.f90">
-					</File>
+					<File RelativePath=".\chemistry\params_aq_sol_m.f90"/>
+					<File RelativePath=".\chemistry\params_spec_vol_m.f90"/>
 				</Filter>
 				<Filter Name="Read">
 					<File RelativePath=".\chemistry\read_aq_chem_init.f90"/>
@@ -314,12 +287,9 @@
 					<File RelativePath=".\chemistry\read_Monod.f90"/>
 					<File RelativePath="..\RT_Lagrange\chemistry\read_Monod_reacts.f90"/>
 					<File RelativePath=".\chemistry\read_PFLOTRAN_chemistry.f90"/>
-					<File RelativePath=".\chemistry\read_PFLOTRAN_DB.f90">
-					</File>
-					<File RelativePath=".\chemistry\read_PHREEQC_DB_opc1.f90">
-					</File>
-					<File RelativePath=".\chemistry\read_PHREEQC_DB_opc2.f90">
-					</File>
+					<File RelativePath=".\chemistry\read_PFLOTRAN_DB.f90"/>
+					<File RelativePath=".\chemistry\read_PHREEQC_DB_opc1.f90"/>
+					<File RelativePath=".\chemistry\read_PHREEQC_DB_opc2.f90"/>
 					<File RelativePath=".\chemistry\read_reactive_zone_Lagr.f90"/>
 					<File RelativePath=".\chemistry\read_reactive_zones_Lagr.f90"/>
 					<File RelativePath=".\chemistry\read_solid_chem_init.f90"/>
@@ -332,8 +302,7 @@
 				<Filter Name="Write">
 					<File RelativePath=".\chemistry\write_chemistry.f90"/>
 				</Filter>
-				<File RelativePath=".\chemistry\chem_out_options_m.f90">
-				</File>
+				<File RelativePath=".\chemistry\chem_out_options_m.f90"/>
 				<File RelativePath=".\chemistry\chemistry_Lagr_m.f90"/>
 				<File RelativePath=".\chemistry\initialise_iterative_method.f90"/>
 			</Filter>
@@ -449,9 +418,11 @@
 				<File RelativePath=".\transport\mass_balance_error_ADE_trans_PMF_discharge.f90"/>
 				<File RelativePath=".\transport\mass_balance_error_ADE_trans_PMF_evap.f90"/>
 				<File RelativePath=".\transport\mass_balance_error_ADE_trans_PMF_recharge.f90"/>
-				<File RelativePath=".\transport\PDE_m.f90"/>
+				<File RelativePath=".\transport\PDE_m.f90">
+				</File>
 				<File RelativePath=".\transport\PDE_model_m.f90"/>
-				<File RelativePath=".\transport\PDE_transient_m.f90"/>
+				<File RelativePath=".\transport\PDE_transient_m.f90">
+				</File>
 				<File RelativePath=".\transport\prod_total.f90"/>
 				<File RelativePath=".\transport\prod_total_conc.f90"/>
 				<File RelativePath=".\transport\prod_total_sym_mat.f90"/>
@@ -473,7 +444,8 @@
 				<File RelativePath=".\transport\spatial_discr_m.f90"/>
 				<File RelativePath=".\transport\spatial_discr_rad_m.f90"/>
 				<File RelativePath=".\transport\stability_parameters_m.f90"/>
-				<File RelativePath=".\transport\time_discr_m.f90"/>
+				<File RelativePath=".\transport\time_discr_m.f90">
+				</File>
 				<File RelativePath=".\transport\transport_m.f90"/>
 				<File RelativePath=".\transport\transport_properties_heterog_m.f90"/>
 				<File RelativePath=".\transport\transport_stab_params_m.f90"/>

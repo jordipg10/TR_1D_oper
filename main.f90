@@ -49,7 +49,7 @@ program main
     end if
     root_trim=trim(root)
 !> Initialise transport
-    option_tpt=0
+    option_tpt=1
     if (option_tpt==0) then
     !> we read transport data, BCs and discretisations
         !> in the explicit case, we also compute stability parameters
@@ -59,7 +59,7 @@ program main
         !> we compute transport arrays, including mixing ratios, and we impose BCs
             call my_tpt_trans%compute_mixing_ratios_Delta_t_homog()
         !> we set transport attribute in reactive transport object
-            call my_RT_trans%set_transport(my_tpt_trans)
+            call my_RT_trans%set_transport_trans(my_tpt_trans)
         !> we choose and set integration method for chemical reactions
             int_method_chem=2
             call my_RT_trans%set_int_method_chem_reacts(int_method_chem)
