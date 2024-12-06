@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Wed Dec  4 19:40:37 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Fri Dec  6 20:32:54 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPUTE_R_EQ__genmod

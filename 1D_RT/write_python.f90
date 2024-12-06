@@ -6,8 +6,7 @@ subroutine write_python(this,path)
     class(RT_1D_c), intent(in) :: this                          !> 1D reactive transport object
     character(len=*), intent(in) :: path                        !> path output
     
-    integer(kind=4) :: i,j,n,l,k
-    integer(kind=4), allocatable :: tar_sol_indices(:),tar_wat_indices(:)
+    integer(kind=4) :: i,j
         
     select type(this)
     type is (RT_1D_transient_c)

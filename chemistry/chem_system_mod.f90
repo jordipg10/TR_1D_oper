@@ -217,12 +217,13 @@ module chem_system_m
 !****************************************************************************************************************************************************
     contains
         subroutine set_num_species(this,num_species)
+        !< This subroutine sets the attribute "num_species"
             implicit none
             class(chem_system_c) :: this
             integer(kind=4), intent(in), optional :: num_species
             if (present(num_species)) then
-                if (num_species<1) then
-                    error stop "Number of species must be positive"
+                if (num_species<0) then
+                    error stop "Number of species cannot be negative"
                 else
                     this%num_species=num_species
                 end if
@@ -232,6 +233,7 @@ module chem_system_m
         end subroutine
         
         subroutine set_num_reacts(this,num_reacts)
+        !< This subroutine sets the attribute "num_reacts"
             implicit none
             class(chem_system_c) :: this
             integer(kind=4), intent(in), optional :: num_reacts
@@ -249,6 +251,7 @@ module chem_system_m
         end subroutine
         
         subroutine allocate_species(this,num_species)
+        !< This subroutine allocates the attribute "species"
             implicit none
             class(chem_system_c) :: this
             integer(kind=4), intent(in), optional :: num_species
@@ -266,6 +269,7 @@ module chem_system_m
         end subroutine
         
         subroutine allocate_cst_act_sp_indices(this,num_cst_act_species)
+        !< This subroutine allocates the attribute "cst_act_sp_indices"
             implicit none
             class(chem_system_c) :: this
             integer(kind=4), intent(in), optional :: num_cst_act_species
@@ -279,6 +283,7 @@ module chem_system_m
         end subroutine
         
         subroutine allocate_var_act_sp_indices(this,num_var_act_species)
+        !< This subroutine allocates the attribute "var_act_sp_indices"
             implicit none
             class(chem_system_c) :: this
             integer(kind=4), intent(in), optional :: num_var_act_species
@@ -288,24 +293,17 @@ module chem_system_m
             allocate(this%var_act_sp_indices(this%num_var_act_species))
         end subroutine
         
-        subroutine set_species(this,species) !> sets species (first variable activity, then constant activity)
+        subroutine set_species(this,species)
+        !> This subroutine sets the "species" attribute 
             implicit none
             class(chem_system_c) :: this
-            class(species_c), intent(in), optional :: species(:)
-            
-            integer(kind=4) :: i
-            
-            if (present(species)) then
-                if (allocated(this%species) .and. size(species)/=this%num_species) then
-                    error stop "Wrong number of species"
-                else
-                    this%species=species
-                    this%num_species=size(species)
-                end if
-            else if (allocated(this%cst_act_sp_indices) .and. allocated(this%var_act_sp_indices)) then
-                !call this%allocate_species()
-                !this%species(1:this%num_var_act_species)=this%var_act_species
-                !this%species(this%num_var_act_species+1:this%num_species)=this%cst_act_species
+            class(species_c), intent(in) :: species(:)
+                        
+            if (allocated(this%species) .and. size(species)/=this%num_species) then
+                error stop "Wrong number of species"
+            else
+                this%species=species
+                this%num_species=size(species)
             end if
         end subroutine
         
@@ -392,6 +390,7 @@ module chem_system_m
         
         
         subroutine set_num_cst_act_species(this,num_cst_act_species)
+        !> This subroutine sets the "num_cst_act_species" attribute 
             implicit none
             class(chem_system_c) :: this
             integer(kind=4), intent(in), optional :: num_cst_act_species
@@ -403,6 +402,7 @@ module chem_system_m
         end subroutine
         
         subroutine set_num_solids_chem_syst(this,num_solids)
+        !> This subroutine sets the "num_solids" attribute 
             implicit none
             class(chem_system_c) :: this
             integer(kind=4), intent(in), optional :: num_solids
@@ -445,6 +445,7 @@ module chem_system_m
 
         
         subroutine set_cat_exch_obj(this,cat_exch)
+        !> This subroutine sets the "cat_exch" attribute 
             implicit none
             class(chem_system_c) :: this
             class(cat_exch_c), intent(in) :: cat_exch
@@ -454,6 +455,7 @@ module chem_system_m
       
         
         subroutine set_num_var_act_species(this,num_var_act_species)
+        !> This subroutine sets the "num_var_act_species" attribute 
             implicit none
             class(chem_system_c) :: this
             integer(kind=4), intent(in), optional :: num_var_act_species
@@ -471,6 +473,7 @@ module chem_system_m
        
         
         subroutine set_minerals(this,minerals)
+        !> This subroutine sets the "minerals" and "num_minerals" attributes 
             implicit none
             class(chem_system_c) :: this
             class(mineral_c), intent(in) :: minerals(:)
@@ -481,6 +484,7 @@ module chem_system_m
      
         
         subroutine set_eq_reacts(this,eq_reacts)
+        !> This subroutine sets the "eq_reacts" and "num_eq_reacts" attributes 
             implicit none
             class(chem_system_c) :: this
             class(eq_reaction_c), intent(in) :: eq_reacts(:)
@@ -492,6 +496,7 @@ module chem_system_m
         end subroutine
         
         subroutine set_kin_reacts(this,kin_reacts)
+        !> This subroutine sets the "kin_reacts" and "num_kin_reacts" attributes 
             implicit none
             class(chem_system_c) :: this
             class(kin_reaction_poly_c), intent(in) :: kin_reacts(:)
@@ -530,13 +535,14 @@ module chem_system_m
        
         
         
-        
+!***********************************IS************************************************************!
         subroutine is_mineral_in_chem_syst(this,mineral,flag,mineral_ind)
+        !> This subroutine checks if a mineral belongs to the chemical system
             implicit none
-            class(chem_system_c), intent(in) :: this
-            class(mineral_c), intent(in) :: mineral
-            logical, intent(out) :: flag
-            integer(kind=4), intent(out), optional :: mineral_ind
+            class(chem_system_c), intent(in) :: this                    !< chemical system
+            class(mineral_c), intent(in) :: mineral                     !< mineral
+            logical, intent(out) :: flag                                !< TRUE if mineral belongs to chemical system, FALSE otherwise
+            integer(kind=4), intent(out), optional :: mineral_ind       !> index of mineral in "minerals" attribute (if not belongs: 0)
             
             integer(kind=4) :: i
             
@@ -556,11 +562,12 @@ module chem_system_m
         end subroutine
         
         subroutine is_species_in_chem_syst(this,species,flag,species_ind)
+        !> This subroutine checks if a species belongs to the chemical system
             implicit none
-            class(chem_system_c), intent(in) :: this
-            class(species_c), intent(in) :: species
+            class(chem_system_c), intent(in) :: this !< chemical system
+            class(species_c), intent(in) :: species !< species
             logical, intent(out) :: flag !> TRUE if species belongs to chemical system
-            integer(kind=4), intent(out), optional :: species_ind !> species index in 'species' attribute
+            integer(kind=4), intent(out), optional :: species_ind !> species index in "species" attribute
             
             integer(kind=4) :: i
             
