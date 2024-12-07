@@ -24,6 +24,7 @@ module chem_system_m
         integer(kind=4), allocatable :: var_act_sp_indices(:) !> variable activity species indices in "species" attribute
         integer(kind=4) :: num_minerals=0 !> number of minerals
         integer(kind=4) :: num_minerals_eq=0 !> number of minerals in equilibrium
+        integer(kind=4) :: num_minerals_cst_act=0 !> number of minerals with constant activity
         type(mineral_c), allocatable :: minerals(:) !> minerals (first kinetic, then equilibrium)
         integer(kind=4) :: num_cst_act_species !> number of constant activity species
         integer(kind=4), allocatable :: cst_act_sp_indices(:) !> constant activity species indices in "species" attribute
@@ -91,10 +92,9 @@ module chem_system_m
     !> Is
         procedure, public :: is_mineral_in_chem_syst
         procedure, public :: is_eq_reaction_in_chem_syst
-        procedure, public :: is_redox_kin_reaction_in_chem_syst
+        procedure, public :: is_kin_reaction_in_chem_syst
         procedure, public :: is_species_in_chem_syst
     !> Get
-        procedure, public :: get_species_indices_react
         procedure, public :: get_eq_csts
     !> Rearrange
         procedure, public :: rearrange_eq_reacts
@@ -566,8 +566,8 @@ module chem_system_m
             implicit none
             class(chem_system_c), intent(in) :: this !< chemical system
             class(species_c), intent(in) :: species !< species
-            logical, intent(out) :: flag !> TRUE if species belongs to chemical system
-            integer(kind=4), intent(out), optional :: species_ind !> species index in "species" attribute
+            logical, intent(out) :: flag !> TRUE if species belongs to chemical system, FALSE otherwise
+            integer(kind=4), intent(out), optional :: species_ind !> species index in "species" attribute (if not belongs: 0)
             
             integer(kind=4) :: i
             
@@ -589,11 +589,12 @@ module chem_system_m
         
         
         subroutine is_eq_reaction_in_chem_syst(this,react_name,flag,react_ind)
+        !> This subroutine checks if an equilibrium reaction belongs to the chemical system
             implicit none
-            class(chem_system_c), intent(in) :: this
-            character(len=*), intent(in) :: react_name
-            logical, intent(out) :: flag
-            integer(kind=4), intent(out), optional :: react_ind
+            class(chem_system_c), intent(in) :: this !< chemical system
+            character(len=*), intent(in) :: react_name !< reaction name
+            logical, intent(out) :: flag !> TRUE if reaction belongs to chemical system, FALSE otherwise
+            integer(kind=4), intent(out), optional :: react_ind !< index in attribute "eq_reacts" (0 if not present)
             
             integer(kind=4) :: i,sp_ind
             integer(kind=4), allocatable :: sp_indices(:)
@@ -604,8 +605,6 @@ module chem_system_m
                 react_ind=0
             end if
             do i=1,this%num_eq_reacts
-                !call this%eq_reacts(i)%is_species_in_react(species,sp_flag)
-                !if (sp_flag==.true.) then
                 if (this%eq_reacts(i)%name==react_name) then
                     flag=.true.
                     if (present(react_ind)) then
@@ -616,12 +615,13 @@ module chem_system_m
             end do
         end subroutine
         
-        subroutine is_redox_kin_reaction_in_chem_syst(this,react_name,flag,react_ind)
+        subroutine is_kin_reaction_in_chem_syst(this,react_name,flag,react_ind)
+        !> This subroutine checks if a kinetic reaction belongs to the chemical system
             implicit none
-            class(chem_system_c), intent(in) :: this
-            character(len=*), intent(in) :: react_name
-            logical, intent(out) :: flag
-            integer(kind=4), intent(out), optional :: react_ind
+            class(chem_system_c), intent(in) :: this !< chemical system
+            character(len=*), intent(in) :: react_name !< reaction name
+            logical, intent(out) :: flag !> TRUE if reaction belongs to chemical system, FALSE otherwise
+            integer(kind=4), intent(out), optional :: react_ind !< index in attribute "kin_reacts" (0 if not present)
             
             integer(kind=4) :: i,sp_ind
             integer(kind=4), allocatable :: sp_indices(:)
@@ -631,10 +631,8 @@ module chem_system_m
             if (present(react_ind)) then
                 react_ind=0
             end if
-            do i=1,this%num_redox_kin_reacts
-                !call this%eq_reacts(i)%is_species_in_react(species,sp_flag)
-                !if (sp_flag==.true.) then
-                if (this%redox_kin_reacts(i)%name==react_name) then
+            do i=1,this%num_kin_reacts
+                if (this%kin_reacts(i)%kin_reaction%name==react_name) then
                     flag=.true.
                     if (present(react_ind)) then
                         react_ind=i
@@ -643,31 +641,9 @@ module chem_system_m
                 end if
             end do
         end subroutine
-        
-        
-        
-        subroutine get_species_indices_react(this,react,species_indices) !> gets the indices in chemical system of reaction species
-            implicit none
-            class(chem_system_c), intent(in) :: this
-            class(reaction_c), intent(in) :: react !> reaction
-            integer(kind=4), intent(out), allocatable :: species_indices(:) !> indices of species in chemical system
-            
-            logical :: flag
-            integer(kind=4) :: sp_ind,i
-            
-            allocate(species_indices(0))
-            
-            do i=1,react%num_species
-                call this%is_species_in_chem_syst(react%species(i),flag,sp_ind)
-                if (flag==.false.) then
-                    error stop "This reaction does not belong to chemical system"
-                else
-                    call append_int_1D_array(species_indices,sp_ind)
-                end if
-            end do
-        end subroutine
-        
-        function get_eq_csts(this) result(K) !> gets equilibrium constants of equilibrium reactions
+!*********************** GET ***********************************************************************************************************************!        
+        function get_eq_csts(this) result(K)
+        !> This function returns equilibrium constants of equilibrium reactions
             implicit none
             class(chem_system_c), intent(in) :: this
             real(kind=8), allocatable :: K(:)
@@ -679,46 +655,55 @@ module chem_system_m
                 K(i)=this%eq_reacts(i)%eq_cst
             end do
         end function
-        
-        subroutine rearrange_eq_reacts(this) !> first constant activity minerals, then constant activity gases, then aqueous complexes, then variable activity solids, finally variable activity gases
+!*********************** REARRANGE *****************************************************************************************************************!
+        subroutine rearrange_eq_reacts(this)
+        !< This subroutine rearranges the "eq_reacts" attribute in the following order:
+        !<      constant activity minerals
+        !<      constant activity gases
+        !<      redox equilibrium reactions
+        !<      aqueous complexes
+        !<      variable activity minerals
+        !<      cation exchange
+        !<      variable activity gases
             implicit none
             class(chem_system_c) :: this
             
-            integer(kind=4) :: i,ind_min,ind_aq,ind_gas,ind_surf,ind_cst_act,ind_var_act,ind_redox
+            integer(kind=4) :: i,ind_min_cst_act,ind_aq,ind_gas_var_act,ind_surf,ind_gas_cst_act,ind_min_var_act,ind_redox
             type(eq_reaction_c), allocatable :: aux_eq_reacts(:)
             
             aux_eq_reacts=this%eq_reacts
             deallocate(this%eq_reacts)
             allocate(this%eq_reacts(this%num_eq_reacts))
-            ind_cst_act=1
-            ind_var_act=this%num_cst_act_species-this%aq_phase%wat_flag+1
-            ind_aq=this%num_minerals_eq+this%gas_phase%num_cst_act_species+this%num_redox_eq_reacts+1
-            ind_redox=this%num_cst_act_species-this%aq_phase%wat_flag+1
-            ind_gas=ind_aq+this%aq_phase%num_aq_complexes
-            ind_surf=ind_gas+this%gas_phase%num_species
+            ind_min_cst_act=1
+            ind_gas_cst_act=this%num_minerals_cst_act+1
+            ind_redox=this%num_cst_act_species+1
+            ind_aq=ind_redox+this%num_redox_eq_reacts
+            ind_min_var_act=ind_aq+this%aq_phase%num_aq_complexes
+            ind_surf=ind_min_var_act+this%num_minerals-this%num_minerals_cst_act
+            ind_gas_var_act=ind_surf+this%cat_exch%num_exch_cats
             do i=1,this%num_eq_reacts
                 if (aux_eq_reacts(i)%react_type==2) then !> mineral dissolution/precipitation
                     if (aux_eq_reacts(i)%species(aux_eq_reacts(i)%num_species)%cst_act_flag==.true.) then
-                        this%eq_reacts(ind_cst_act)=aux_eq_reacts(i)
-                        ind_cst_act=ind_cst_act+1
+                        this%eq_reacts(ind_min_cst_act)=aux_eq_reacts(i)
+                        ind_min_cst_act=ind_min_cst_act+1
                     else
-                        this%eq_reacts(this%aq_phase%num_aq_complexes+this%num_redox_eq_reacts+ind_var_act)=aux_eq_reacts(i)
-                        ind_var_act=ind_var_act+1
+                        this%eq_reacts(ind_min_var_act)=aux_eq_reacts(i)
+                        ind_min_var_act=ind_min_var_act+1
                     end if
                 else if (aux_eq_reacts(i)%react_type==1) then !> aqueous complex
                     this%eq_reacts(ind_aq)=aux_eq_reacts(i)
                     ind_aq=ind_aq+1
                 else if (aux_eq_reacts(i)%react_type==6) then !> gas
                     if (aux_eq_reacts(i)%species(aux_eq_reacts(i)%num_species)%cst_act_flag==.true.) then
-                        this%eq_reacts(ind_cst_act)=aux_eq_reacts(i)
-                        ind_cst_act=ind_cst_act+1
+                        this%eq_reacts(ind_gas_cst_act)=aux_eq_reacts(i)
+                        ind_gas_cst_act=ind_gas_cst_act+1
                     else
-                        this%eq_reacts(this%aq_phase%num_aq_complexes+this%num_redox_eq_reacts+ind_var_act)=aux_eq_reacts(i)
-                        ind_var_act=ind_var_act+1
+                        this%eq_reacts(ind_gas_var_act)=aux_eq_reacts(i)
+                        ind_gas_var_act=ind_gas_var_act+1
                     end if
                 else if (aux_eq_reacts(i)%react_type==3) then !> cation exchange
-                    this%eq_reacts(ind_var_act)=aux_eq_reacts(i)
-                    ind_var_act=ind_var_act+1
+                    this%eq_reacts(ind_surf)=aux_eq_reacts(i)
+                    ind_surf=ind_surf+1
                 else if (aux_eq_reacts(i)%react_type==4) then !> redox
                     this%eq_reacts(ind_redox)=aux_eq_reacts(i)
                     ind_redox=ind_redox+1
@@ -730,14 +715,19 @@ module chem_system_m
             implicit none
             class(chem_system_c) :: this
             integer(kind=4) :: i,num_sp,num_aq_sec,num_var_act_sp,num_cst_act_sp
-            type(species_c), allocatable :: species(:)
-            species=this%species
             num_sp=0 !> counter number of species
             num_var_act_sp=0 !> counter number of variable activity species
             num_cst_act_sp=this%aq_phase%wat_flag !> counter number of constant activity species
             if (this%speciation_alg%flag_comp==.false. .and. this%speciation_alg%flag_cat_exch==.true.) then
-            !> first primary aqueous and free surfaces, then secondary aqueous, minerals, gases and secondary surface complexes 
-                num_aq_sec=this%aq_phase%num_species-this%speciation_alg%num_aq_prim_species
+            !<      primary aqueous species
+            !<      free surface
+            !<      secondary aqueous species
+            !<      minerals NOT in equilibrium
+            !<      gases NOT in equilibrium
+            !<      minerals in equilibrium
+            !<      surface complexes
+            !<      gases in equilibrium
+                num_aq_sec=this%speciation_alg%num_sec_aq_species
                 do i=1,this%speciation_alg%num_aq_prim_species
                     call this%species(i)%assign_species(this%aq_phase%aq_species(i))
                 end do
@@ -747,19 +737,36 @@ module chem_system_m
                     call this%species(num_sp+i)%assign_species(this%aq_phase%aq_species(this%speciation_alg%num_aq_prim_species+i))
                 end do
                 num_sp=num_sp+num_aq_sec
-                do i=1,this%num_minerals
+                do i=1,this%num_min_kin_reacts
                     call this%species(num_sp+i)%assign_species(this%minerals(i)%mineral)
                 end do
-                num_sp=num_sp+this%num_minerals
-                do i=1,this%gas_phase%num_species
-                    call this%species(num_sp+i)%assign_species(this%gas_phase%gases(i))
+                num_sp=num_sp+this%num_min_kin_reacts
+                do i=1,this%gas_phase%num_gases_kin
+                    call this%species(num_sp+i)%assign_species(this%gas_phase%gases(this%gas_phase%num_gases_eq+i))
                 end do
-                num_sp=num_sp+this%gas_phase%num_species
+                num_sp=num_sp+this%gas_phase%num_gases_kin
+                do i=1,this%num_minerals_eq
+                    call this%species(num_sp+i)%assign_species(this%minerals(this%num_min_kin_reacts+i)%mineral)
+                end do
+                num_sp=num_sp+this%num_minerals_eq  
                 do i=1,this%cat_exch%num_exch_cats
                     call this%species(num_sp+i)%assign_species(this%cat_exch%surf_compl(1+i))
                 end do
+                num_sp=num_sp+this%cat_exch%num_exch_cats
+                do i=1,this%gas_phase%num_gases_eq
+                    call this%species(num_sp+i)%assign_species(this%gas_phase%gases(i))
+                end do
             else if (this%speciation_alg%flag_comp==.true. .and. this%speciation_alg%flag_cat_exch==.true.) then
-            !> first primary aqueous and free surfaces, then secondary variable activity aqueous, solids and gases, then secondary constant activity aqueous, solids and gases
+            !<      primary aqueous species
+            !<      free surface
+            !<      secondary variable activity aqueous species
+            !<      variable activity minerals
+            !<      surface complexes
+            !<      variable activity gases
+            !<      ideal water
+            !<      constant activity minerals
+            !<      constant activity gases
+                call this%species(this%num_var_act_species+1)%assign_species(this%aq_phase%aq_species(this%aq_phase%ind_wat))
                 do i=1,this%speciation_alg%num_aq_prim_species
                     call this%species(i)%assign_species(this%aq_phase%aq_species(i))
                 end do
@@ -795,18 +802,22 @@ module chem_system_m
                         num_cst_act_sp=num_cst_act_sp+1
                     end if
                 end do
-                do i=1,this%num_cst_act_species
-                    this%species(this%num_var_act_species+i)=species(this%cst_act_sp_indices(i))
-                end do
             else if (this%speciation_alg%flag_comp==.true. .and. this%speciation_alg%flag_cat_exch==.false.) then
-                !call this%set_species()
-                do i=1,this%speciation_alg%num_aq_var_act_species
-                    call this%species(i)%assign_species(species(this%var_act_sp_indices(i)))
+            !<      primary species
+            !<      secondary variable activity aqueous species
+            !<      variable activity minerals
+            !<      variable activity gases
+            !<      ideal water
+            !<      constant activity minerals
+            !<      constant activity gases
+                call this%species(this%num_var_act_species+1)%assign_species(this%aq_phase%aq_species(this%aq_phase%ind_wat))
+                do i=1,this%speciation_alg%num_prim_species
+                    call this%species(i)%assign_species(this%aq_phase%aq_species(i))
+                end do
+                do i=1,this%speciation_alg%num_aq_sec_var_act_species
+                    call this%species(this%speciation_alg%num_prim_species+i)%assign_species(this%aq_phase%aq_species(this%speciation_alg%num_aq_prim_species+i))
                 end do
                 num_var_act_sp=num_var_act_sp+this%speciation_alg%num_aq_var_act_species
-                if (this%aq_phase%wat_flag==1) then
-                    call this%species(this%num_var_act_species+1)%assign_species(species(this%cst_act_sp_indices(1)))
-                end if
                 do i=1,this%num_minerals
                     if (this%minerals(i)%mineral%cst_act_flag==.false.) then
                         call this%species(num_var_act_sp+1)%assign_species(this%minerals(i)%mineral)
@@ -826,21 +837,44 @@ module chem_system_m
                     end if
                 end do
             else
+            !<      primary species
+            !<      secondary aqueous species
+            !<      minerals NOT in equilibrium
+            !<      gases NOT in equilibrium
+            !<      minerals in equilibrium
+            !<      gases in equilibrium
+                num_aq_sec=this%speciation_alg%num_sec_aq_species
+                do i=1,this%speciation_alg%num_prim_species
+                    call this%species(i)%assign_species(this%aq_phase%aq_species(i))
+                end do
+                num_sp=num_sp+this%speciation_alg%num_prim_species
+                do i=1,num_aq_sec
+                    call this%species(num_sp+i)%assign_species(this%aq_phase%aq_species(this%speciation_alg%num_aq_prim_species+i))
+                end do
+                num_sp=num_sp+num_aq_sec
                 do i=1,this%num_min_kin_reacts
-                    call this%species(this%speciation_alg%num_aq_prim_species+i)%assign_species(this%minerals(i)%mineral)
+                    call this%species(num_sp+i)%assign_species(this%minerals(i)%mineral)
                 end do
+                num_sp=num_sp+this%num_min_kin_reacts
                 do i=1,this%gas_phase%num_gases_kin
-                    call this%species(this%speciation_alg%num_aq_prim_species+this%num_min_kin_reacts+i)%assign_species(this%gas_phase%gases(this%gas_phase%num_gases_eq+i))
+                    call this%species(num_sp+i)%assign_species(this%gas_phase%gases(this%gas_phase%num_gases_eq+i))
                 end do
-                do i=1,this%aq_phase%num_aq_complexes
-                    call this%species(this%speciation_alg%num_aq_prim_species+this%num_min_kin_reacts+this%gas_phase%num_gases_kin+i)%assign_species(this%aq_phase%aq_species(this%speciation_alg%num_aq_prim_species+i))
+                num_sp=num_sp+this%gas_phase%num_gases_kin
+                do i=1,this%num_minerals_eq
+                    call this%species(num_sp+i)%assign_species(this%minerals(this%num_min_kin_reacts+i)%mineral)
+                end do
+                num_sp=num_sp+this%num_minerals_eq  
+                do i=1,this%gas_phase%num_gases_eq
+                    call this%species(num_sp+i)%assign_species(this%gas_phase%gases(i))
                 end do
             end if
         end subroutine
         
-        subroutine compute_z2(this) !> computes array squared species charges
+        subroutine compute_z2(this)
+        !> This subroutine computes attribute "z2"
             implicit none
-            class(chem_system_c) :: this
+            class(chem_system_c) :: this !< chemical system
+            
             integer(kind=4) :: i
             if (.not. allocated(this%z2)) then
                 allocate(this%z2(this%num_species))
