@@ -16,7 +16,7 @@ module RT_1D_m
         procedure, public :: write_python
         procedure, public :: compute_Delta_t_crit_RT
         procedure, public :: check_Delta_t_RT
-        procedure, public :: write_transport_data
+        !procedure, public :: write_transport_data
         procedure, public :: read_time_discretisation
     end type
 !***************************************************************************************************************************************************!
@@ -86,11 +86,11 @@ module RT_1D_m
             character(len=*), intent(in) :: file_tpt
         end subroutine
         
-        subroutine write_transport_data(this,unit)
-            import RT_1D_c
-            class(RT_1D_c) :: this
-            integer(kind=4), intent(in) :: unit
-        end subroutine
+        !subroutine write_transport_data(this,unit)
+        !    import RT_1D_c
+        !    class(RT_1D_c) :: this
+        !    integer(kind=4), intent(in) :: unit
+        !end subroutine
 
     end interface
     

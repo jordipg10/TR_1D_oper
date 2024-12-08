@@ -73,5 +73,4 @@ subroutine set_stoich_mat_gas(this)
                 end if
             end do
     end if
-    !print *, this%stoich_mat_gas
 end subroutine

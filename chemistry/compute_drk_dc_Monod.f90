@@ -5,14 +5,12 @@
 subroutine compute_drk_dc_Monod(this,conc,rk,drk_dc)
     use redox_kin_reaction_m
     implicit none
-    class(redox_kin_c), intent(in) :: this
+    class(redox_kin_c), intent(in) :: this !> redox kinetic reaction
     real(kind=8), intent(in) :: conc(:) !> concentrations of relevant species
-    real(kind=8), intent(in) :: rk
-    real(kind=8), intent(out) :: drk_dc(:) !> must be allocated
+    real(kind=8), intent(in) :: rk !> kinetic reaction rate
+    real(kind=8), intent(out) :: drk_dc(:) !> gradient of rk (must be already allocated)
     
-    
-    integer(kind=4) :: i,j,k,n,m,l,DOC_ind
-    type(species_c), allocatable :: stoich_mat_react_zonec_species(:)
+    integer(kind=4) :: i
 
     drk_dc=0d0
 !> Inhibitors

@@ -1,7 +1,7 @@
 !> Computes aqueous species concentrations after iteration of WMA using Euler fully implicit in chemical reactions for kinetic system
 !! We assume all primary species are aqueous
 !! The Jacobians are computed analytically
-subroutine water_mixing_iter_EfI_eq_kin_anal_ideal(this,c1_old,c2nc_ig,c_tilde,conc_nc,conc_comp,porosity,Delta_t)
+subroutine water_mixing_iter_EfI_eq_kin_anal_ideal(this,c1_old,c2nc_ig,c_tilde,conc_nc,porosity,Delta_t)
     use aqueous_chemistry_m
     implicit none
 !> Arguments
@@ -11,7 +11,7 @@ subroutine water_mixing_iter_EfI_eq_kin_anal_ideal(this,c1_old,c2nc_ig,c_tilde,c
     real(kind=8), intent(in) :: c2nc_ig(:)
     real(kind=8), intent(in) :: c_tilde(:)
     real(kind=8), intent(out) :: conc_nc(:)
-    real(kind=8), intent(out) :: conc_comp(:)
+    !real(kind=8), intent(out) :: conc_comp(:)
     real(kind=8), intent(in), optional :: porosity !> at this target
     real(kind=8), intent(inout), optional :: Delta_t !> time step
 !> Variables
@@ -59,7 +59,7 @@ subroutine water_mixing_iter_EfI_eq_kin_anal_ideal(this,c1_old,c2nc_ig,c_tilde,c
             end if
         end do
     !> We compute component concentrations
-        conc_comp=matmul(this%solid_chemistry%reactive_zone%speciation_alg%comp_mat,conc_nc)
+        !conc_comp=matmul(this%solid_chemistry%reactive_zone%speciation_alg%comp_mat,conc_nc)
 !< Post-process
     deallocate(c1)
 end subroutine

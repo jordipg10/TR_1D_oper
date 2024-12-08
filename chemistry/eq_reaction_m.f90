@@ -7,7 +7,6 @@ module eq_reaction_m
     implicit none
     save
     type, public, extends(reaction_c) :: eq_reaction_c !> equilibrium reaction subclass
-        !real(kind=8) :: active_frac_coeff !> esto no debería ir aquí
     contains
         procedure, public :: read_eq_reaction
         procedure, public :: read_dissolution_react_PHREEQC

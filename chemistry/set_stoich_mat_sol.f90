@@ -104,7 +104,6 @@ subroutine set_stoich_mat_sol(this)
                     exit
                 end if
             end do
-            !n_k=n_k+this%num_min_kin_reacts
         end if
     end if
 end subroutine

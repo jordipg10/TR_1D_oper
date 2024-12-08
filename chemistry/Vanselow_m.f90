@@ -10,14 +10,14 @@ module Vanselow_m
     end type
     
     contains
-        subroutine compute_log_act_coeff_Vanselow(this,exchangeable_cation,CEC,log_act_coeff)
+        subroutine compute_log_act_coeff_Vanselow(this,valence,CEC,log_act_coeff)
         !> Activity of surface complex = molar fraction
             implicit none
             class(Vanselow_c) :: this
-            class(species_c), intent(in) :: exchangeable_cation
+            integer(kind=4), intent(in) :: valence
             real(kind=8), intent(in) :: CEC
             real(kind=8), intent(out) :: log_act_coeff
-            log_act_coeff=log10(exchangeable_cation%valence/CEC)
+            log_act_coeff=log10(valence/CEC)
         end subroutine
     
     

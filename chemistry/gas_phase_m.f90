@@ -9,13 +9,16 @@ module gas_phase_m
         integer(kind=4) :: num_gases_eq=0 !> number of gases in equilibrium
         integer(kind=4) :: num_gases_kin=0 !> number of gases in kinetic reactions
     contains
+    !> Set
+        procedure, public :: set_num_gases_eq
+        procedure, public :: set_num_gases_kin
     !> Allocate
         procedure, public :: allocate_gases
     !> Is
         procedure, public :: is_gas_in_gas_phase
     !> Compute
-        procedure, public :: compute_log_act_coeffs_gas_phase
-        procedure, public :: compute_log_Jacobian_act_coeffs_gas_phase
+        !procedure, public :: compute_log_act_coeffs_gas_phase
+        !procedure, public :: compute_log_Jacobian_act_coeffs_gas_phase
     end type
     
 !>PFLOTRAN:
@@ -67,28 +70,24 @@ module gas_phase_m
   !
   !end type gas_type
     
-    interface
-        subroutine compute_log_act_coeffs_gas_phase(this,ionic_act,log_act_coeffs)
-            import gas_phase_c
-            implicit none
-            class(gas_phase_c) :: this
-            real(kind=8), intent(in) :: ionic_act
-            real(kind=8), intent(out) :: log_act_coeffs(:) !> must be allocated
-        end subroutine
-        
-        subroutine compute_log_Jacobian_act_coeffs_gas_phase(this,ionic_act,log_act_coeffs,conc,log_Jacobian_act_coeffs)
-            import gas_phase_c
-            implicit none
-            class(gas_phase_c) :: this
-            real(kind=8), intent(in) :: ionic_act
-            real(kind=8), intent(in) :: log_act_coeffs(:)
-            real(kind=8), intent(in) :: conc(:) !> concentration of gas species in a given target
-            real(kind=8), intent(out) :: log_Jacobian_act_coeffs(:,:) !> must be allocated
-        end subroutine
-    end interface
-    
-    contains
-
+    contains 
+        !subroutine compute_log_act_coeffs_gas_phase(this,ionic_act,log_act_coeffs)
+        !    import gas_phase_c
+        !    implicit none
+        !    class(gas_phase_c) :: this
+        !    real(kind=8), intent(in) :: ionic_act
+        !    real(kind=8), intent(out) :: log_act_coeffs(:) !> must be allocated
+        !end subroutine
+        !
+        !subroutine compute_log_Jacobian_act_coeffs_gas_phase(this,ionic_act,log_act_coeffs,conc,log_Jacobian_act_coeffs)
+        !    import gas_phase_c
+        !    implicit none
+        !    class(gas_phase_c) :: this
+        !    real(kind=8), intent(in) :: ionic_act
+        !    real(kind=8), intent(in) :: log_act_coeffs(:)
+        !    real(kind=8), intent(in) :: conc(:) !> concentration of gas species in a given target
+        !    real(kind=8), intent(out) :: log_Jacobian_act_coeffs(:,:) !> must be allocated
+        !end subroutine
     
         subroutine allocate_gases(this,num_species)
             implicit none
@@ -103,12 +102,27 @@ module gas_phase_m
             allocate(this%gases(this%num_species))
         end subroutine
         
+        subroutine set_num_gases_eq(this,num_gases_eq)
+            implicit none
+            class(gas_phase_c) :: this
+            integer(kind=4), intent(in) :: num_gases_eq
+            this%num_gases_eq=num_gases_eq
+        end subroutine
+
+        subroutine set_num_gases_kin(this,num_gases_kin)
+            implicit none
+            class(gas_phase_c) :: this
+            integer(kind=4), intent(in) :: num_gases_kin
+            this%num_gases_kin=num_gases_kin
+        end subroutine
+
+        
         subroutine is_gas_in_gas_phase(this,gas,flag,gas_ind) !> checks if gas belongs to gas phase
             implicit none
-            class(gas_phase_c), intent(in) :: this
+            class(gas_phase_c), intent(in) :: this !> gas phase
             class(gas_c), intent(in) :: gas !> gas
             logical, intent(out) :: flag !> TRUE if it belongs to gas phase, FALSE otherwise
-            integer(kind=4), intent(out), optional :: gas_ind !> index gas in gas phase
+            integer(kind=4), intent(out), optional :: gas_ind !> index gas in gas phase (0 if not present)
             
             integer(kind=4) :: i
             

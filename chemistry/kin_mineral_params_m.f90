@@ -9,7 +9,6 @@ module kin_mineral_params_m
         real(kind=8), allocatable :: k(:) !> reaction constants
         integer(kind=4) :: num_cat !> number of catalysers
         integer(kind=4), allocatable :: cat_indices(:) !> indices of catalysers in aqueous phase (dim=num_cat)
-        !class(species_c), allocatable :: catalysers(:) !> esto NO va aqui
         real(kind=8), allocatable :: p(:,:) !> experimental constants
         real(kind=8), allocatable :: theta(:) !> experimental constants (usually =1)
         real(kind=8), allocatable :: eta(:) !> experimental constants (usually =1)
@@ -17,8 +16,6 @@ module kin_mineral_params_m
     contains
         procedure, public :: allocate_constants
         procedure, public :: allocate_cat_indices
-        !procedure, public :: set_cat_indices
-        !procedure, public :: allocate_catalysers
     end type
 
 !> PFLOTRAN:
@@ -78,28 +75,4 @@ module kin_mineral_params_m
             allocate(this%cat_indices(this%num_cat))
         end subroutine
         
-        !subroutine set_cat_indices(this,aq_phase)
-        !    implicit none
-        !    class(kin_mineral_params_c) :: this
-        !    class(aq_phase_c), intent(in) :: aq_phase
-        !    
-        !    integer(kind=4) :: i,aq_species_ind
-        !    type(aq_species_c) :: DOC
-        !    logical :: flag
-        !    
-        !    call this%allocate_cat_indices()
-        !    
-        !    do i=1,this%num_cat
-        !        call aq_phase%is_species_in_aq_phase(this%catalysers(i),flag,aq_species_ind)
-        !        if (flag==.true.) then
-        !            this%cat_indices(i)=aq_species_ind
-        !        end if
-        !    end do
-        !end subroutine
-        
-        !subroutine allocate_catalysers(this)
-        !    implicit none
-        !    class(kin_mineral_params_c) :: this
-        !    allocate(this%catalysers(this%num_cat))
-        !end subroutine
 end module

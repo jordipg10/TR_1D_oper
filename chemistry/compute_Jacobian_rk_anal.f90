@@ -10,10 +10,12 @@ subroutine compute_Jacobian_rk_anal(this,drk_dc)
     real(kind=8), allocatable :: act_cat(:),drk_dc_loc(:)
     real(kind=8) :: saturation
 
-    drk_dc=0d0 !> chapuza
+    drk_dc=0d0 !> by default
+!> Linear kinetic reactions
     do i=1,this%solid_chemistry%reactive_zone%chem_syst%num_lin_kin_reacts
         call this%solid_chemistry%reactive_zone%chem_syst%lin_kin_reacts(i)%compute_drk_dc_lin(drk_dc(i,:))
     end do
+!> Mineral kinetic reactions
     do i=1,this%solid_chemistry%reactive_zone%chem_syst%num_min_kin_reacts
         indices=this%solid_chemistry%reactive_zone%chem_syst%min_kin_reacts(i)%indices_aq_phase
         allocate(drk_dc_loc(SIZE(indices)))
@@ -22,6 +24,7 @@ subroutine compute_Jacobian_rk_anal(this,drk_dc)
         drk_dc(this%solid_chemistry%reactive_zone%chem_syst%num_lin_kin_reacts+i,indices)=drk_dc_loc !> chapuza
         deallocate(indices,drk_dc_loc)
     end do
+!> Redox kinetic reactions
     do i=1,this%solid_chemistry%reactive_zone%chem_syst%num_redox_kin_reacts
         indices=this%solid_chemistry%reactive_zone%chem_syst%redox_kin_reacts(i)%indices_aq_phase
         allocate(drk_dc_loc(SIZE(indices)))

@@ -40,7 +40,7 @@ subroutine read_chem_system_PFLOTRAN(this,path,unit)
     type(eq_reaction_c) :: eq_react
     type(eq_reaction_c), allocatable :: eq_reacts(:)
     
-    type(reaction_c), allocatable :: reacts(:)
+    !type(reaction_c), allocatable :: reacts(:)
     !type(kin_lin_c), target :: linear
     !type(kin_mineral_c), target :: kin_mineral
     !type(glob_stoich_c), allocatable :: kin_stoich(:)
@@ -192,21 +192,21 @@ subroutine read_chem_system_PFLOTRAN(this,path,unit)
     end do
     
     call this%aq_phase%allocate_aq_species(num_aq_sp)
-    call this%allocate_cst_act_species(num_cst_act_sp)
-    call this%allocate_var_act_species(num_var_act_sp)
+    call this%allocate_cst_act_sp_indices(num_cst_act_sp)
+    call this%allocate_var_act_sp_indices(num_var_act_sp)
     call this%compute_num_species()
     !call this%allocate_species(num_sp)
     call this%allocate_minerals(num_mins)
     call this%gas_phase%allocate_gases(num_species)
     call this%cat_exch%allocate_surf_compl(num_surf_compl)
-    call this%cat_exch%allocate_exch_cats(num_exch_cats)
-    this%num_eq_reacts_homog=n_eq_homog !> falta un set aqui
+    call this%cat_exch%set_num_exch_cats(num_exch_cats)
+    !this%num_eq_reacts_homog=n_eq_homog !> falta un set aqui
     call this%allocate_reacts(n_eq,n_k)
     !call this%set_num_min_kin_reacts(n_min_kin)
     call this%allocate_min_kin_reacts(n_min_kin)
     call this%allocate_redox_kin_reacts(n_mr)
     call this%allocate_lin_kin_reacts(n_lin_kin)
-    call this%set_num_reacts()
+    call this%compute_num_reacts()
     
     !call this%solid_chemistry%reactive_zone%speciation_alg%set_dimensions(this%num_species,this%num_eq_reacts,this%num_cst_act_species,this%num_eq_reacts-this%cat_exch%num_surf_compl)
     
@@ -225,12 +225,12 @@ subroutine read_chem_system_PFLOTRAN(this,path,unit)
                 call this%aq_phase%aq_species(i)%set_name(str_trim)
                 if (str_trim=='h2o') then
                     call this%aq_phase%aq_species(this%aq_phase%num_species)%set_cst_act_flag(.true.)
-                    call this%cst_act_species(1)%set_name(str_trim)
+                    !call this%cst_act_species(1)%set_name(str_trim)
                     !num_cst_act_sp=num_cst_act_sp+1
                 else
                     ind_var_act_sp=ind_var_act_sp+1
                     call this%aq_phase%aq_species(i)%set_cst_act_flag(.false.)
-                    call this%var_act_species(ind_var_act_sp)%set_name(str_trim)
+                    !call this%var_act_species(ind_var_act_sp)%set_name(str_trim)
                     !num_var_act_sp=num_var_act_sp+1
                 end if
                 !call this%aq_phase%aq_species(i)%read_species(str_trim)
@@ -258,12 +258,12 @@ subroutine read_chem_system_PFLOTRAN(this,path,unit)
                 if (str_trim=='h2o') then
                     call this%aq_phase%aq_species(i)%set_cst_act_flag(.true.)
                     call this%aq_phase%aq_species(i)%set_name(str_trim)
-                    call this%cst_act_species(1)%set_name(str_trim)
+                    !call this%cst_act_species(1)%set_name(str_trim)
                 else
                     ind_var_act_sp=ind_var_act_sp+1
                     call this%aq_phase%aq_species(i)%set_cst_act_flag(.false.)
                     call this%aq_phase%aq_species(i)%set_name(str_trim)
-                    call this%var_act_species(ind_var_act_sp)%set_name(str_trim)
+                    !call this%var_act_species(ind_var_act_sp)%set_name(str_trim)
                 end if
                 !call this%aq_phase%aq_species(i)%set_cst_act_flag(.false.)
             end do
@@ -351,7 +351,7 @@ subroutine read_chem_system_PFLOTRAN(this,path,unit)
                     call exch_cat%set_name(exch_cat_name)
                     !call this%is_aq_species_in_chem_syst(exch_cat,exch_cat_flag,exch_cat_ind)
                     if (exch_cat_flag==.true.) then
-                        call this%cat_exch%exch_cats(j)%assign_species(this%aq_phase%aq_species(exch_cat_ind))
+                        !call this%cat_exch%exch_cats(j)%assign_species(this%aq_phase%aq_species(exch_cat_ind))
                     else
                         error stop "Exchangeable cation is not in the chemical system"
                     end if
@@ -448,7 +448,7 @@ subroutine read_chem_system_PFLOTRAN(this,path,unit)
     if (this%num_redox_kin_reacts>0) then
         call this%read_Monod_reacts(path,unit_redox)
     end if
-    call this%set_species()
+    !call this%set_species()
     call this%set_stoich_mat()
     
     

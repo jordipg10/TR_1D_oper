@@ -1,6 +1,7 @@
-!> Aqueous phase subclass:
-!!   contains the aqueous species in a solution
-!!   computes log_10 activity coefficients and its Jacobian
+!> Aqueous phase class (subclass of phase class):
+!!      contains the aqueous species in a solution
+!!      computes log_10 activity coefficients and its log_10-Jacobian
+!!      rearranges aqueous species in variable & constant activity, respectively
 module aq_phase_m
     use phase_m
     use aq_species_m
@@ -8,10 +9,9 @@ module aq_phase_m
     implicit none
     save
     type, public, extends(phase_c) :: aq_phase_c
-        !real(kind=8), allocatable :: z2(:) !> squared charges of aqueous species
         integer(kind=4) :: num_aq_complexes=0 !> number of aqueous complexes
         type(aq_species_c), allocatable :: aq_species(:) !> aqueous species in solution
-        integer(kind=4) :: wat_flag=0 !> 1 if water is present, 0 otherwise
+        integer(kind=4) :: wat_flag=0 !> 1 if water is present as a species, 0 otherwise
         integer(kind=4) :: ind_wat=0 !> index of water in 'aq_species' array
         integer(kind=4), allocatable :: ind_diss_solids(:) !> indices of dissolved solids
         integer(kind=4) :: ind_proton=0 !> index 'H+' in 'aq_species' array
@@ -29,6 +29,7 @@ module aq_phase_m
         procedure, public :: set_single_aq_species
     !> Allocate
         procedure, public :: allocate_aq_species
+        procedure, public :: allocate_ind_diss_solids
     !> Compute
         procedure, public :: compute_log_act_coeffs_aq_phase
         procedure, public :: compute_log_Jacobian_act_coeffs_aq_phase
@@ -39,6 +40,8 @@ module aq_phase_m
         procedure, public :: is_water_in_aq_phase
     !> Copy
         procedure, public :: copy_attributes
+    !> Get
+        procedure, public :: get_valences
     end type
     
     interface
@@ -56,24 +59,10 @@ module aq_phase_m
             import aq_phase_c
             implicit none
             class(aq_phase_c) :: this
-            !real(kind=8), intent(in) :: ionic_act
             real(kind=8), intent(in) :: out_prod(:,:) !> outer product between d_log_gamma_d_I and z^2
-            !real(kind=8), intent(in) :: dc2_dc1(:,:) !> Jacobian of secondary concentrations with respect to primary cocnentrationa
-            !real(kind=8), intent(in) :: log_act_coeffs(:)
             real(kind=8), intent(in) :: conc(:) !> concentration of species in a given target
             real(kind=8), intent(out) :: log_Jacobian_act_coeffs(:,:) !> must be allocated
-        end subroutine
-        
-        !subroutine compute_d_log_gamma_d_I(this,ionic_act,params_aq_sol,d_log_gamma_d_I)
-        !    import aq_phase_c
-        !    import params_aq_sol_t
-        !    implicit none
-        !    class(aq_phase_c) :: this
-        !    real(kind=8), intent(in) :: ionic_act
-        !    class(params_aq_sol_t), intent(in) :: params_aq_sol
-        !    real(kind=8), intent(out) :: d_log_gamma_d_I(:) !> must be allocated
-        !end subroutine
-        
+        end subroutine        
         
     end interface
     
@@ -108,22 +97,24 @@ module aq_phase_m
                 this%num_species=num_species
             end if
             if (allocated(this%aq_species)) then
-                print *, "hola"
                 deallocate(this%aq_species)
             end if
             allocate(this%aq_species(this%num_species))
         end subroutine
         
+        subroutine allocate_ind_diss_solids(this)
+            implicit none
+            class(aq_phase_c) :: this
+            allocate(this%ind_diss_solids(this%num_species-this%wat_flag))
+        end subroutine
+
+        
         subroutine set_aq_species(this,aq_species)
             implicit none
             class(aq_phase_c) :: this
             class(aq_species_c), intent(in) :: aq_species(:)
-            if (allocated(this%aq_species) .and. size(aq_species)>this%num_species) then
-                error stop "Number of aqueous species cannot be greater than number of species"
-            else
-                this%aq_species=aq_species
-                this%num_species=size(aq_species)
-            end if
+            this%aq_species=aq_species
+            this%num_species=size(aq_species)
         end subroutine
         
         subroutine set_single_aq_species(this,aq_species,index)
@@ -136,14 +127,14 @@ module aq_phase_m
             else if (index>this%num_species) then
                 error stop "Index is higher than number of aqueous species"
             else if (index<1) then
-                error stop "Index must be strictly positive"
+                error stop "Index must be positive"
             else
                 this%aq_species(index)=aq_species
             end if
         end subroutine
         
         subroutine rearrange_aq_species(this)
-    !> Rearranges aqueous species in primary and secondary, respectively
+    !> Rearranges aqueous species in variable and constant activity, respectively
             implicit none
             class(aq_phase_c) :: this
             
@@ -170,7 +161,6 @@ module aq_phase_m
                 end if
             end do
             call this%set_ind_diss_solids()
-            !call this%compute_z2()
         end subroutine
         
         subroutine append_aq_species(this,aq_species)
@@ -195,27 +185,27 @@ module aq_phase_m
             end if
         end subroutine
         
-        subroutine is_species_in_aq_phase(this,aq_species,flag,aq_species_ind)
+        subroutine is_species_in_aq_phase(this,species,flag,species_ind)
             implicit none
             class(aq_phase_c) :: this
-            class(species_c), intent(in) :: aq_species
+            class(species_c), intent(in) :: species
             logical, intent(out) :: flag
-            integer(kind=4), intent(out), optional :: aq_species_ind
+            integer(kind=4), intent(out), optional :: species_ind
             
             integer(kind=4) :: i
             
             flag=.false.
-            if (present(aq_species_ind)) then
-                aq_species_ind=0
+            if (present(species_ind)) then
+                species_ind=0
             end if
             do i=1,this%num_species
-                if (aq_species%name==this%aq_species(i)%name) then
+                if (species%name==this%aq_species(i)%name) then
                     flag=.true.
-                    if (aq_species%name=='h2o') then
+                    if (species%name=='h2o') then
                         this%ind_wat=i
                     end if
-                    if (present(aq_species_ind)) then
-                        aq_species_ind=i
+                    if (present(species_ind)) then
+                        species_ind=i
                     end if
                     exit
                 end if
@@ -274,61 +264,7 @@ module aq_phase_m
                 end if
             end do
         end subroutine
-        
-        !subroutine compute_z2(this) !> computes array squared aqueous species charges
-        !    implicit none
-        !    class(aq_phase_c) :: this
-        !    !real(kind=8), allocatable :: z2(:)
-        !    integer(kind=4) :: i
-        !    !allocate(this%z2(this%num_species))
-        !    do i=1,this%num_species
-        !        this%z2(i)=this%aq_species(i)%valence**2
-        !    end do
-        !end subroutine
-        
-        !subroutine compute_d_log_gamma_d_c1(this,d_log_gamma_d_I,dI_dc1,c1,d_log_gamma_d_c1)
-        !    implicit none
-        !    class(aq_phase_c), intent(in) :: this
-        !    real(kind=8), intent(in) :: d_log_gamma_d_I(:)  !> Jacobian of log_10(primary activity coefficients) with respect to ionic activity
-        !    real(kind=8), intent(in) :: dI_dc1(:) !> Jacobian of ionic activity with respect to primary cocnentrationa
-        !    real(kind=8), intent(in) :: c1(:)  
-        !    real(kind=8), intent(out) :: d_log_gamma_d_c1(:,:) 
-        !    
-        !    integer(kind=4) :: i,j,n_prim
-        !    real(kind=8), allocatable :: out_prod(:,:)
-        !    
-        !    n_prim=size(c1)
-        !                
-        !    do i=1,this%num_species
-        !        do j=1,n_prim
-        !            d_log_gamma_d_c1(i,j)=d_log_gamma_d_I(i)*dI_dc1(j)*c1(j)*log(1d1)
-        !        end do
-        !    end do
-        !end subroutine
-        
-        !subroutine compute_d_log_gamma_d_c2_aq(this,d_log_gamma_d_I,c2_aq,d_log_gamma_d_c2_aq)
-        !    implicit none
-        !    class(aq_phase_c), intent(in) :: this
-        !    real(kind=8), intent(in) :: d_log_gamma_d_I(:)  
-        !    real(kind=8), intent(in) :: c2_aq(:)  
-        !    real(kind=8), intent(out) :: d_log_gamma_d_c2_aq(:,:) 
-        !    
-        !    integer(kind=4) :: j,n_p_aq
-        !    
-        !    n_p_aq=this%num_species-size(c2_aq)
-        !    
-        !    !z2=this%get_z2()
-        !    !out_prod=outer_prod_vec(d_log_gamma_d_I,this%z2(n_prim+1:this%num_species))
-        !    
-        !    !do j=1,size(c2_aq)
-        !    !    d_log_gamma_d_c2_aq(:,j)=out_prod(:,j)*c2_aq(j)
-        !    !end do
-        !    !d_log_gamma_d_c2_aq=d_log_gamma_d_c2_aq*log(1d1)/2d0
-        !    do j=1,size(c2_aq)
-        !        d_log_gamma_d_c2_aq(:,j)=5d-1*this%z2(n_p_aq+j)*c2_aq(j)*log(1d1)*d_log_gamma_d_I
-        !    end do
-        !end subroutine
-        
+                
         subroutine copy_attributes(this,aq_phase)
             implicit none
             class(aq_phase_c) :: this
@@ -350,4 +286,17 @@ module aq_phase_m
                 call this%aq_species(i)%assign_species(aq_phase%aq_species(i))
             end do
         end subroutine
+        
+        function get_valences(this) result(valences)
+            implicit none
+            class(aq_phase_c), intent(in) :: this
+            integer(kind=4), allocatable :: valences(:)
+            
+            integer(kind=4) :: i
+            
+            allocate(valences(this%num_species))
+            do i=1,this%num_species
+                valences(i)=this%aq_species(i)%valence
+            end do
+        end function
 end module

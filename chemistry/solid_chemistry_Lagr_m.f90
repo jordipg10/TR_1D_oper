@@ -188,20 +188,7 @@ module solid_chemistry_m
         subroutine compute_activities_solids(this)
             implicit none
             class(solid_chemistry_c) :: this
-            integer(kind=4) :: i
-            real(kind=8), parameter :: eps=1d-15
-            !call this%reactive_zone%cat_exch_zone%compute_log_act_coeffs_ads_cats(this%log_act_coeffs(this%reactive_zone%num_minerals+2:this%reactive_zone%num_solids))
-            !this%activities=(10**this%log_act_coeffs)*this%concentrations
-            this%activities=this%concentrations
-            !do i=1,this%reactive_zone%cat_exch_zone%num_exch_cats-1
-            !    this%activities(this%reactive_zone%num_minerals+1+i)=(10**this%log_act_coeffs(this%reactive_zone%num_minerals+1+i))*this%concentrations(this%reactive_zone%num_minerals+1+i)
-            !end do
-            !this%activities(this%reactive_zone%num_solids)=1d0-sum(this%activities(this%reactive_zone%num_minerals+2:this%reactive_zone%num_solids-1))
-            !this%log_act_coeffs(this%reactive_zone%num_solids)=log10(this%activities(this%reactive_zone%num_solids))-log10(this%concentrations(this%reactive_zone%num_solids))
-            if (abs(sum(this%activities(this%reactive_zone%num_minerals+2:this%reactive_zone%num_solids))-1d0)>=eps) then
-                !print *, sum(this%activities(this%reactive_zone%num_minerals+2:this%reactive_zone%num_solids))
-                !error stop "Error in equivalent fractions"
-            end if
+            this%activities=this%concentrations*(10**this%log_act_coeffs)
         end subroutine
         
         subroutine compute_equivalents(this)
@@ -209,7 +196,7 @@ module solid_chemistry_m
             class(solid_chemistry_c) :: this
             integer(kind=4) :: i
             do i=1,this%reactive_zone%cat_exch_zone%num_exch_cats
-                this%equivalents(i)=this%reactive_zone%cat_exch_zone%exch_cats(i)%valence*this%concentrations(this%reactive_zone%num_minerals+1+i)
+                this%equivalents(i)=this%reactive_zone%cat_exch_zone%surf_compl(1+i)%valence*this%concentrations(this%reactive_zone%num_minerals+1+i)
             end do
         end subroutine
         

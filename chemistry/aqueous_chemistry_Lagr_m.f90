@@ -22,9 +22,6 @@ module aqueous_chemistry_m
         class(aq_phase_c), pointer :: aq_phase
         integer(kind=4), allocatable :: indices_aq_phase(:) !> indices in aqueous phase of chemical system object
         real(kind=8), allocatable :: U_SkT_prod(:,:) !> =U*S_k,nc^T
-        integer(kind=4), allocatable :: prim_species_indices(:) !> in aqueous phase
-        integer(kind=4), allocatable :: sec_var_act_species_indices(:) !> in aqueous phase
-        !class(CV_params_t), pointer :: CV_params !> convergence parameters for speciation and reactive mixing computations (should be a pointer)
     contains
         procedure, public :: read_wat_type_CHEPROO
     !> Set
@@ -40,30 +37,22 @@ module aqueous_chemistry_m
         procedure, public :: set_pe
         procedure, public :: set_ionic_act
         procedure, public :: set_conc_single_species
-        !procedure, public :: set_conc_comp_aq
         procedure, public :: set_log_act_coeffs
         procedure, public :: set_solid_chemistry
         procedure, public :: set_gas_chemistry
-        !procedure, public :: set_chem_syst_aq_chem
         procedure, public :: set_aq_phase
-        !procedure, public :: set_speciation_alg_dimensions
-        !procedure, public :: set_prim_species_indices
-        !procedure, public :: set_sec_var_act_species_indices
     !> Allocate
         procedure, public :: allocate_reaction_rates_aq_chem
         procedure, public :: allocate_conc_aq_species
         procedure, public :: allocate_activities_aq_species
-        !procedure, public :: allocate_conc_comp_aq
         procedure, public :: allocate_log_act_coeffs_aq_chem
     !> Compute
-        procedure, public :: compute_dI_dc1
         procedure, public :: compute_activities_aq_var_act_species
         procedure, public :: compute_activities_aq
         procedure, public :: compute_activities
         procedure, public :: compute_activity
         procedure, public :: compute_act_from_MAL
         procedure, public :: compute_act_water
-        !procedure, public :: compute_act_Henry
         procedure, public :: compute_molarities
         procedure, public :: compute_molalities
         procedure, public :: compute_salinity
@@ -93,11 +82,9 @@ module aqueous_chemistry_m
         procedure, public :: get_c2_exch
         procedure, public :: get_c2nc
         procedure, public :: get_conc_nc
-        !procedure, public :: get_conc_comp_exch
         procedure, public :: get_conc
         procedure, public :: get_log_gamma2nc
         procedure, public :: get_log_gamma2
-        procedure, public :: get_react_zone
     !> Speciation
         procedure, public :: compute_c2_from_c1_aq_ideal
         procedure, public :: compute_c2_from_c1_ideal
@@ -117,7 +104,6 @@ module aqueous_chemistry_m
         procedure, public :: compute_dc2nc_dc1
         procedure, public :: compute_dc2nc_dc1_aq
         procedure, public :: compute_dc2_dc1
-        !procedure, public :: compute_speciation_alg_arrays
     !> Reactive mixing
         procedure, public :: transport_iter_comp
         procedure, public :: transport_iter_comp_ideal
@@ -164,16 +150,7 @@ module aqueous_chemistry_m
     !> Rearrange
         procedure, public :: rearrange_state_vars
     end type
-    
-    interface 
-        !subroutine compute_c2nc_from_c1_aq_expl(this,c2nc)
-        !    import aqueous_chemistry_c
-        !    implicit none
-        !    class(aqueous_chemistry_c) :: this
-        !    real(kind=8), intent(out) :: c2nc(:)
-        !end subroutine 
-    end interface
-    
+        
     interface
         subroutine compute_c2nc_from_c1_aq_ideal(this,c2nc)
             import aqueous_chemistry_c
@@ -224,19 +201,10 @@ module aqueous_chemistry_m
             implicit none
             class(aqueous_chemistry_c) :: this
             real(kind=8), intent(in) :: c1_old(:) !> concentrations primary species previous two time steps
-            !character(len=*), intent(in) :: root
-            !integer(kind=4), intent(in) :: unit
-            !integer(kind=4), intent(in) :: i !> target water index
-            !class(real_array_c), intent(in) :: mixing_ratios
             real(kind=8), intent(in) :: mixing_ratios(:) !> mixing ratios array
-            !class(int_array_c), intent(in) :: mixing_waters_indices
-            !class(diag_matrix_c), intent(in) :: F_mat !> storage matrix
-            !real(kind=8), intent(in) :: F_mat(:) !> storage matrix (diagonal)
             real(kind=8), intent(in) :: conc_old(:,:) !> concentrations previous time step
             real(kind=8), intent(in) :: porosity !>
             real(kind=8), intent(in) :: Delta_t !> time step
-            !class(time_discr_c), intent(in) :: time_discr !> time discretisation object
-            !integer(kind=4), intent(in) :: int_method_chem_reacts !> integration method for chemical reactions
             external :: solver
         end subroutine
         
@@ -250,22 +218,22 @@ module aqueous_chemistry_m
             logical, intent(out) :: CV_flag !> TRUE if converges, FALSE otherwise
         end subroutine 
         
-        subroutine compute_c2_from_c1_aq_Picard(this,c2_init,c2,niter,CV_flag)
+        subroutine compute_c2_from_c1_aq_Picard(this,c2_ig,c2,niter,CV_flag)
             import aqueous_chemistry_c
             implicit none
             class(aqueous_chemistry_c) :: this
-            real(kind=8), intent(in) :: c2_init(:) !>  (dim=n_eq)
+            real(kind=8), intent(in) :: c2_ig(:) !>  (dim=n_eq)
             real(kind=8), intent(out) :: c2(:) !>  (dim=n_eq)
             integer(kind=4), intent(out) :: niter !> number of iterations
             logical, intent(out) :: CV_flag !> TRUE if converges, FALSE otherwise
         end subroutine
         
-        subroutine compute_c2_from_c1_Picard(this,c1,c2_init,c2,niter,CV_flag)
+        subroutine compute_c2_from_c1_Picard(this,c1,c2_ig,c2,niter,CV_flag)
             import aqueous_chemistry_c
             implicit none
             class(aqueous_chemistry_c) :: this
             real(kind=8), intent(in) :: c1(:) !>  (dim=n_p)
-            real(kind=8), intent(in) :: c2_init(:) !>  (dim=n_eq)
+            real(kind=8), intent(in) :: c2_ig(:) !>  (dim=n_eq)
             real(kind=8), intent(out) :: c2(:) !>  (dim=n_eq)
             integer(kind=4), intent(out) :: niter !> number of iterations
             logical, intent(out) :: CV_flag !> TRUE if converges, FALSE otherwise
@@ -302,28 +270,7 @@ module aqueous_chemistry_m
             integer(kind=4), intent(out) :: niter !> number of iterations
             logical, intent(out) :: CV_flag !> TRUE if converges, FALSE otherwise
         end subroutine
-        
-        subroutine compute_c_aq_from_u_aq_Newton(this,ind_comps,niter,CV_flag)
-            import aqueous_chemistry_c
-            implicit none
-            class(aqueous_chemistry_c) :: this
-            integer(kind=4), intent(in) :: ind_comps(:) !> nº aqueous species with icon=1
-            integer(kind=4), intent(out) :: niter !> number of iterations
-            logical, intent(out) :: CV_flag !> TRUE if converges, FALSE otherwise
-        end subroutine
-        
-        subroutine compute_c_from_u_Newton_CHEPROO(this,icon,n_icon,constrains,ctot,niter,CV_flag)
-            import aqueous_chemistry_c
-            implicit none
-            class(aqueous_chemistry_c) :: this
-            integer(kind=4), intent(in) :: icon(:)
-            integer(kind=4), intent(in) :: n_icon(:)
-            character(len=*), intent(in) :: constrains(:)
-            real(kind=8), intent(in) :: ctot(:)
-            integer(kind=4), intent(out) :: niter !> number of iterations
-            logical, intent(out) :: CV_flag !> TRUE if converges, FALSE otherwise
-        end subroutine
-        
+                
         subroutine initialise_conc_incr_coeff(this,icon,n_icon,indices_constrains,ctot,niter,CV_flag)
             import aqueous_chemistry_c
             implicit none
@@ -426,7 +373,7 @@ module aqueous_chemistry_m
             class(aqueous_chemistry_c) :: this
             real(kind=8), intent(in) :: c1(:) !> 
             real(kind=8), intent(in) :: c2nc(:) !> 
-            real(kind=8), intent(in) :: out_prod(:,:) !> outer product between d_log_gamma_nc_aq_d_I and z_nc_aq^2
+            real(kind=8), intent(in) :: out_prod(:,:) !> outer product between d_log_gamma_nc_d_I and z_nc^2
             real(kind=8), intent(out) :: dc2nc_dc1(:,:)
         end subroutine
         
@@ -438,14 +385,7 @@ module aqueous_chemistry_m
             real(kind=8), intent(in) :: out_prod(:,:) !> outer product between d_log_gamma_nc_d_I and z_nc^2
             real(kind=8), intent(out) :: dc2nc_dc1(:,:)
         end subroutine
-        
-        !subroutine compute_dc2_dc1(this,dc2_dc1)
-        !    import aqueous_chemistry_c
-        !    implicit none
-        !    class(aqueous_chemistry_c), intent(in) :: this
-        !    real(kind=8), intent(out) :: dc2_dc1(:,:)
-        !end subroutine
-        
+                
         subroutine compute_dc2_dc1(this,out_prod,c1,c2,dc2_dc1)
             import aqueous_chemistry_c
             implicit none
@@ -456,13 +396,6 @@ module aqueous_chemistry_m
             real(kind=8), intent(out) :: dc2_dc1(:,:)
         end subroutine
         
-        subroutine compute_dI_dc1(this,dc2aq_dc1,dI_dc1)
-            import aqueous_chemistry_c
-            implicit none
-            class(aqueous_chemistry_c) :: this
-            real(kind=8), intent(in) :: dc2aq_dc1(:,:)
-            real(kind=8), intent(out) :: dI_dc1(:) !> must be allocated
-        end subroutine
         
         subroutine compute_c2nc_from_c1_expl_homog(this)
             import aqueous_chemistry_c
@@ -624,16 +557,10 @@ module aqueous_chemistry_m
             import diag_matrix_c 
             implicit none
             class(aqueous_chemistry_c) :: this
-            !integer(kind=4), intent(in) :: ind                              !> index of object "this" in mixing ratios array
             real(kind=8), intent(in) :: c_tilde(:,:)
-            !class(aqueous_chemistry_c), intent(in) :: mixing_waters(:)
             real(kind=8), intent(in), optional :: rk_mat(:,:) !> rk matrix
             real(kind=8), intent(in), optional :: porosity !> storage matrix
             real(kind=8), intent(in), optional :: Delta_t !> time step
-            !real(kind=8), intent(in), optional :: tolerance !> for Newton CV
-            !real(kind=8), intent(in), optional :: rel_tolerance !> for Picard CV
-            !real(kind=8), intent(in), optional :: control_factor !> controls Delta_c1_j in Newton
-            !integer(kind=4), intent(in), optional :: niter_max !> number maximum of iterations
         end subroutine
         
         subroutine transport_iter_EfI_aq_chem(this,porosity,Delta_t,tolerance,rel_tolerance,control_factor,niter_max)
@@ -678,71 +605,7 @@ module aqueous_chemistry_m
             real(kind=8), intent(in), optional :: porosity !> storage matrix
             real(kind=8), intent(in), optional :: Delta_t !> time step
         end subroutine
-        
-        !subroutine water_mixing_iter_EI_tpt_EE_rk_eq_kin(this,ind,mixing_ratios,mixing_waters,rk_mat,porosity,Delta_t)
-        !    import aqueous_chemistry_c
-        !    import diag_matrix_c 
-        !    implicit none
-        !    class(aqueous_chemistry_c) :: this
-        !    integer(kind=4), intent(in) :: ind                              !> index of object "this" in mixing ratios array
-        !    real(kind=8), intent(in) :: mixing_ratios(:,:)
-        !    class(aqueous_chemistry_c), intent(in) :: mixing_waters(:)
-        !    real(kind=8), intent(in), optional :: rk_mat(:,:) !> rk matrix
-        !    real(kind=8), intent(in), optional :: porosity !> storage matrix
-        !    real(kind=8), intent(in), optional :: Delta_t !> time step
-        !    !real(kind=8), intent(in), optional :: tolerance !> for Newton CV
-        !    !real(kind=8), intent(in), optional :: rel_tolerance !> for Newton/Picard CV
-        !    !real(kind=8), intent(in), optional :: control_factor !> controls Delta_c1_j in Newton/Picard
-        !    !integer(kind=4), intent(in), optional :: niter_max !> number maximum of iterations
-        !end subroutine
-        
-        !subroutine water_mixing_iter_EI_tpt_EfI_rk_eq_kin(this,ind,mixing_ratios,mixing_waters,rk_mat,porosity,Delta_t)
-        !    import aqueous_chemistry_c
-        !    import diag_matrix_c 
-        !    implicit none
-        !    class(aqueous_chemistry_c) :: this
-        !    integer(kind=4), intent(in) :: ind                              !> index of object "this" in mixing ratios array
-        !    real(kind=8), intent(in) :: mixing_ratios(:,:)
-        !    class(aqueous_chemistry_c), intent(in) :: mixing_waters(:)
-        !    real(kind=8), intent(in), optional :: rk_mat(:,:) !> rk matrix
-        !    real(kind=8), intent(in), optional :: porosity !> storage matrix
-        !    real(kind=8), intent(in), optional :: Delta_t !> time step
-        !    !real(kind=8), intent(in), optional :: tolerance !> for Newton CV
-        !    !real(kind=8), intent(in), optional :: rel_tolerance !> for Newton/Picard CV
-        !    !real(kind=8), intent(in), optional :: control_factor !> controls Delta_c1_j in Newton/Picard
-        !    !integer(kind=4), intent(in), optional :: niter_max !> number maximum of iterations
-        !end subroutine
-        
-        !subroutine water_mixing_iter_EE_eq_heterog_kin(this,mixing_ratios,mixing_waters,porosity,Delta_t,tolerance,rel_tolerance,control_factor,niter_max)
-        !>    import aqueous_chemistry_c
-        !>    import diag_matrix_c 
-        !>    implicit none
-        !>    class(aqueous_chemistry_c) :: this
-        !>    real(kind=8), intent(in) :: mixing_ratios(:)
-        !>    class(aqueous_chemistry_c), intent(in) :: mixing_waters(:)
-        !>    real(kind=8), intent(in), optional :: porosity !> storage matrix
-        !>    real(kind=8), intent(in), optional :: Delta_t !> time step
-        !>    real(kind=8), intent(in), optional :: tolerance !> for Newton CV
-        !>    real(kind=8), intent(in), optional :: rel_tolerance !> for Newton/Picard CV
-        !>    real(kind=8), intent(in), optional :: control_factor !> controls Delta_c1_j in Newton/Picard
-        !>    integer(kind=4), intent(in), optional :: niter_max !> number maximum of iterations
-        !end subroutine
-        !
-        !subroutine water_mixing_iter_EE_eq_homog_kin(this,mixing_ratios,mixing_waters,porosity,Delta_t,tolerance,rel_tolerance,control_factor,niter_max)
-        !>    import aqueous_chemistry_c
-        !>    import diag_matrix_c 
-        !>    implicit none
-        !>    class(aqueous_chemistry_c) :: this
-        !>    real(kind=8), intent(in) :: mixing_ratios(:)
-        !>    class(aqueous_chemistry_c), intent(in) :: mixing_waters(:)
-        !>    real(kind=8), intent(in), optional :: porosity !> storage matrix
-        !>    real(kind=8), intent(in), optional :: Delta_t !> time step
-        !>    real(kind=8), intent(in), optional :: tolerance !> for Newton CV
-        !>    real(kind=8), intent(in), optional :: rel_tolerance !> for Newton/Picard CV
-        !>    real(kind=8), intent(in), optional :: control_factor !> controls Delta_c1_j in Newton/Picard
-        !>    integer(kind=4), intent(in), optional :: niter_max !> number maximum of iterations
-        !end subroutine
-        
+                
         subroutine water_mixing_iter_EE_kin(this,c1_old,c2nc_ig,c_tilde,conc_nc,conc_comp,porosity,Delta_t)
             import aqueous_chemistry_c
             import diag_matrix_c 
@@ -842,17 +705,7 @@ module aqueous_chemistry_m
             real(kind=8), intent(in) :: c_tilde(:) !> concentration of "mobile" species after mixing
             real(kind=8), allocatable :: u_tilde(:)
         end function
-        
-        !subroutine reaction_iteration_EE_WMA_eq_homog_kin_aq_chem(this,porosity,Delta_t,conc_comp_react)
-        !>    import aqueous_chemistry_c
-        !>    import diag_matrix_c
-        !>    implicit none
-        !>    class(aqueous_chemistry_c) :: this
-        !>    real(kind=8), intent(in) :: porosity
-        !>    real(kind=8), intent(in) :: Delta_t
-        !>    real(kind=8), intent(out) :: conc_comp_react(:) !> must be allocated
-        !end subroutine
-        
+            
         subroutine reaction_iteration_EE_eq_kin_aq_chem(this,porosity,Delta_t,conc_comp_react)
             import aqueous_chemistry_c
             import diag_matrix_c
@@ -1152,22 +1005,11 @@ module aqueous_chemistry_m
             integer(kind=4), intent(in) :: unit !> file unit
             integer(kind=4), intent(out) :: niter !> number of iterations in Newton method
             logical, intent(out) :: CV_flag !> TRUE if Newton method converges, FALSE otherwise
-            !real(kind=8), intent(in), optional :: c1_surf !> chapuza
-            !real(kind=8), intent(in), optional :: CEC !> chapuza
-            !real(kind=8), intent(out), optional :: conc_exch(:) !> chapuza
             class(solid_chemistry_c), intent(inout), optional :: surf_chem
         end subroutine
     end interface
     
-    contains
-        !subroutine set_model(this,model)
-        !    implicit none
-        !    class(aqueous_chemistry_c) :: this
-        !    integer(kind=4), intent(in) :: model
-        !    if (model<1 .or. model>5) error stop "model not implemnted yet"
-        !    this%act_coeffs_model=model
-        !end subroutine
-        
+    contains        
         subroutine allocate_conc_aq_species(this)
             implicit none
             class(aqueous_chemistry_c) :: this
@@ -1184,7 +1026,6 @@ module aqueous_chemistry_m
             implicit none
             class(aqueous_chemistry_c) :: this
             this%activities(this%aq_phase%ind_diss_solids)=this%concentrations(this%aq_phase%ind_diss_solids)*(10**(this%log_act_coeffs(this%aq_phase%ind_diss_solids)))
-            !this%activities(this%sec_var_act_species_indices)=this%concentrations(this%sec_var_act_species_indices)*(10**(this%log_act_coeffs(this%sec_var_act_species_indices)))
         end subroutine
         
         subroutine compute_activities_aq(this)
@@ -1216,39 +1057,7 @@ module aqueous_chemistry_m
                 this%activities(this%aq_phase%ind_wat)=1d0-0.018*sum(this%concentrations(this%aq_phase%ind_diss_solids)) !> 1st order approximation (chapuza)
             end if
         end subroutine
-        
-        !subroutine compute_act_Henry(this,ind_aq_sp,part_press,eq_cst) !> Henry's law
-        !    implicit none
-        !    class(aqueous_chemistry_c) :: this
-        !    integer(kind=4), intent(in) :: ind_aq_sp !> index of aqueous species in aqueous phase
-        !    real(kind=8), intent(in) :: part_press !> partial pressure gas equilibrium
-        !    real(kind=8), intent(in) :: eq_cst !> equilibrium constant gas reaction
-        !    this%activities(ind_aq_sp)=part_press/eq_cst
-        !end subroutine
-        
-        !subroutine allocate_conc_comp_aq(this,n_p_aq)
-        !    implicit none
-        !    class(aqueous_chemistry_c) :: this
-        !    integer(kind=4), intent(in), optional :: n_p_aq
-        !    if (present(n_p_aq)) then
-        !        this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species=n_p_aq
-        !    end if
-        !    if (allocated(this%conc_comp)) then
-        !        deallocate(this%conc_comp)
-        !    end if
-        !    allocate(this%conc_comp(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species))
-        !end subroutine
-        
-        !subroutine allocate_conc_comp(this,np)
-        !    implicit none
-        !    class(aqueous_chemistry_c) :: this
-        !    integer(kind=4), intent(in), optional :: n_p_aq
-        !    if (present(n_p_aq)) then
-        !        this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species=n_p_aq
-        !    end if
-        !    allocate(this%conc_comp(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species))
-        !end subroutine
-        
+                
         subroutine allocate_log_act_coeffs_aq_chem(this)
             implicit none
             class(aqueous_chemistry_c) :: this
@@ -1680,43 +1489,6 @@ module aqueous_chemistry_m
             end if
         end subroutine
         
-        subroutine set_prim_species_indices(this) !> indices in aqueous phase
-            implicit none
-            class(aqueous_chemistry_c) :: this
-            
-            integer(kind=4) :: i
-            
-            if (allocated(this%prim_species_indices)) then
-                deallocate(this%prim_species_indices)
-            end if
-            allocate(this%prim_species_indices(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species))      
-            do i=1,this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species
-                this%prim_species_indices(i)=i !> chapuza
-            end do
-
-        end subroutine
-        
-        subroutine set_sec_var_act_species_indices(this) !> indices in aqueous phase of aquoeus secondary variable activity species
-            implicit none
-            class(aqueous_chemistry_c) :: this
-            
-            integer(kind=4) :: i,j,k
-            logical :: flag
-            
-            if (allocated(this%sec_var_act_species_indices)) then
-                deallocate(this%sec_var_act_species_indices)
-            end if
-            allocate(this%sec_var_act_species_indices(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species))
-            
-            j=0
-            
-            do i=1,this%aq_phase%num_species-this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species
-                if (this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species+i/=this%aq_phase%ind_wat) then
-                    j=j+1
-                    this%sec_var_act_species_indices(j)=this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species+i
-                end if
-            end do
-        end subroutine
         
         subroutine compute_act_from_MAL(this,ind_act_aq_phase,eq_react,act_non_aq_sp) !> computes activity aqueous species from mass action law
             implicit none
@@ -2181,19 +1953,6 @@ module aqueous_chemistry_m
             end if
         end subroutine
         
-        !subroutine compute_d_log_gamma_nc_d_log_c1_aq(this,dc2nc_dc1_aq,d_log_gamma_d_I)
-        !    implicit none
-        !    class(aqueous_chemistry_c) :: this
-        !    real(kind=8), intent(in) :: dc2nc_dc1_aq(:,:)
-        !    real(kind=8), intent(in) :: d_log_gamma_d_I(:) 
-        !    
-        !    integer(kind=4) :: j
-        !                            
-        !    do j=1,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
-        !        this%log_Jacobian_act_coeffs(1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species,j)=5d-1*(this%aq_phase%z2(j)+dot_product(this%aq_phase%z2(1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species),dc2nc_dc1_aq(:,j)))*this%concentrations(j)*log(1d1)*d_log_gamma_d_I(1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species)
-        !    end do
-        !end subroutine
-
         subroutine compute_log_act_coeff_wat(this)
             implicit none
             class(aqueous_chemistry_c) :: this
@@ -2228,18 +1987,6 @@ module aqueous_chemistry_m
             this%solid_chemistry%concentrations(this%solid_chemistry%reactive_zone%num_minerals+2:this%solid_chemistry%reactive_zone%num_solids)=c_nc(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species+2:this%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species)
         end subroutine
         
-        function get_react_zone(this) result(react_zone)
-            implicit none
-            class(aqueous_chemistry_c) :: this
-            type(reactive_zone_c) :: react_zone
-            if (associated(this%solid_chemistry)) then
-                react_zone=this%solid_chemistry%reactive_zone
-            else if (associated(this%gas_chemistry)) then
-                react_zone=this%gas_chemistry%reactive_zone
-            else
-                continue
-            end if
-        end function
         
         
 end module 

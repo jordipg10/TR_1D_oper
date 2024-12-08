@@ -24,7 +24,7 @@ module transport_transient_m
         procedure, public :: mass_balance_error_ADE_trans_Dirichlet_disvalence
         procedure, public :: check_Delta_t
         procedure, public :: read_transport_data_WMA
-        !procedure, public :: read_discretisation_WMA
+        procedure, public :: write_transport_data_WMA
     end type
     
     interface
@@ -158,6 +158,13 @@ module transport_transient_m
             !character(len=*), intent(in) :: path
             integer(kind=4), intent(in) :: unit
             character(len=*), intent(in) :: root
+        end subroutine
+        
+        subroutine write_transport_data_WMA(this,unit)
+            import transport_1D_transient_c
+            implicit none
+            class(transport_1D_transient_c), intent(in) :: this                 !> 1D transient transport object                         
+            integer(kind=4), intent(in) :: unit                                 !> unit of output file
         end subroutine
     end interface
     

@@ -4,7 +4,7 @@ module mineral_m
     use solid_m
     implicit none
     save
-    type, public, extends(phase_c) :: mineral_c
+    type, public, extends(phase_c) :: mineral_c !> mineral class
         type(solid_c) :: mineral !> mineral that defines mineral phase
     contains
     end type

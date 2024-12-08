@@ -36,7 +36,7 @@ module chem_system_m
         real(kind=8), allocatable :: Se(:,:) !> equilibrium stoichiometric matrix
         real(kind=8), allocatable :: Sk(:,:) !> kinetic stoichiometric matrix
         integer(kind=4) :: num_eq_reacts=0 !> number of equilibrium reactions
-        integer(kind=4) :: num_eq_reacts_homog=0 !> number of homogeneous equilibrium reactions
+        !integer(kind=4) :: num_eq_reacts_homog=0 !> number of homogeneous equilibrium reactions
         integer(kind=4) :: num_redox_eq_reacts=0 !> number of redox equilibrium reactions
         type(eq_reaction_c), allocatable :: eq_reacts(:) !> equilibrium reactions
         type(speciation_algebra_c) :: speciation_alg !> speciation algebra object
@@ -51,18 +51,20 @@ module chem_system_m
     contains
     !> Set
         procedure, public :: set_num_species
-        procedure, public :: set_num_reacts
-        procedure, public :: set_species
-        procedure, public :: set_cat_exch_obj
-        procedure, public :: set_num_cst_act_species
-        procedure, public :: set_num_solids_chem_syst
-        procedure, public :: set_num_var_act_species
-        procedure, public :: set_redox_kin_reacts
-        procedure, public :: set_minerals
-        procedure, public :: set_eq_reacts
-        procedure, public :: set_kin_reacts
+        procedure, public :: set_num_minerals
+        procedure, public :: set_num_minerals_eq
+        procedure, public :: set_num_eq_reacts
+        procedure, public :: set_num_kin_reacts
         procedure, public :: set_num_lin_kin_reacts
         procedure, public :: set_num_min_kin_reacts
+        procedure, public :: set_num_redox_kin_reacts
+        procedure, public :: set_num_redox_eq_reacts
+        procedure, public :: set_num_cst_act_species
+        procedure, public :: set_num_var_act_species
+        procedure, public :: set_species
+        procedure, public :: set_cat_exch_obj
+        procedure, public :: set_eq_reacts
+        procedure, public :: set_kin_reacts
         procedure, public :: set_stoich_mat
         procedure, public :: set_stoich_mat_gas
         procedure, public :: set_stoich_mat_sol
@@ -70,16 +72,19 @@ module chem_system_m
         procedure, public :: allocate_species
         procedure, public :: allocate_cst_act_sp_indices
         procedure, public :: allocate_var_act_sp_indices
-        procedure, public :: allocate_eq_reacts
         procedure, public :: allocate_reacts
+        procedure, public :: allocate_eq_reacts
+        procedure, public :: allocate_kin_reacts
         procedure, public :: allocate_redox_kin_reacts
         procedure, public :: allocate_minerals
         procedure, public :: allocate_min_kin_reacts
         procedure, public :: allocate_lin_kin_reacts
     !> Compute
         procedure, public :: compute_num_kin_reacts
+        procedure, public :: compute_num_reacts
         procedure, public :: compute_num_species
         procedure, public :: compute_z2
+        procedure, public :: compute_num_solids
     !> Read
         procedure, public :: read_chem_system
         procedure, public :: read_chem_system_CHEPROO
@@ -214,8 +219,9 @@ module chem_system_m
         end subroutine
       
     end interface
-!****************************************************************************************************************************************************
+!***************************************************************************************************************************************************!
     contains
+!*********************** SET ***********************************************************************************************************************!
         subroutine set_num_species(this,num_species)
         !< This subroutine sets the attribute "num_species"
             implicit none
@@ -250,6 +256,151 @@ module chem_system_m
             end if
         end subroutine
         
+        subroutine set_num_eq_reacts(this,num_eq_reacts)
+        !< This subroutine sets the attribute "num_eq_reacts"
+            implicit none
+            class(chem_system_c) :: this
+            integer(kind=4), intent(in) :: num_eq_reacts
+            this%num_eq_reacts=num_eq_reacts
+        end subroutine
+
+        subroutine set_num_kin_reacts(this,num_kin_reacts)
+        !< This subroutine sets the attribute "num_kin_reacts"
+            implicit none
+            class(chem_system_c) :: this
+            integer(kind=4), intent(in) :: num_kin_reacts
+            this%num_kin_reacts=num_kin_reacts
+        end subroutine
+
+        
+        subroutine set_species(this,species)
+        !> This subroutine sets the "species" and "num_species" attributes 
+            implicit none
+            class(chem_system_c) :: this
+            class(species_c), intent(in) :: species(:)
+                        
+            if (allocated(this%species) .and. size(species)/=this%num_species) then
+                error stop "Wrong number of species"
+            else
+                this%species=species
+                this%num_species=size(species)
+            end if
+        end subroutine
+        
+        subroutine set_num_cst_act_species(this,num_cst_act_species)
+        !> This subroutine sets the "num_cst_act_species" attribute 
+            implicit none
+            class(chem_system_c) :: this
+            integer(kind=4), intent(in), optional :: num_cst_act_species
+            if (present(num_cst_act_species)) then
+                this%num_cst_act_species=num_cst_act_species
+            else
+                this%num_cst_act_species=size(this%cst_act_sp_indices)
+            end if
+        end subroutine
+        
+        
+        subroutine set_cat_exch_obj(this,cat_exch)
+        !> This subroutine sets the "cat_exch" attribute 
+            implicit none
+            class(chem_system_c) :: this
+            class(cat_exch_c), intent(in) :: cat_exch
+            this%cat_exch=cat_exch
+        end subroutine
+                
+        subroutine set_num_var_act_species(this,num_var_act_species)
+        !> This subroutine sets the "num_var_act_species" attribute 
+            implicit none
+            class(chem_system_c) :: this
+            integer(kind=4), intent(in), optional :: num_var_act_species
+            if (present(num_var_act_species)) then
+                this%num_var_act_species=num_var_act_species
+            else if (allocated(this%var_act_sp_indices)) then
+                this%num_var_act_species=size(this%var_act_sp_indices)
+            else if (allocated(this%species) .and. allocated(this%cst_act_sp_indices)) then
+                this%num_var_act_species=this%num_species-this%num_cst_act_species
+            else
+                error stop "Unable to compute the number of variable activity species"
+            end if
+        end subroutine
+        
+       
+        
+        subroutine set_num_minerals(this,num_minerals)
+        !> This subroutine sets the "num_minerals"
+            implicit none
+            class(chem_system_c) :: this
+            integer(kind=4), intent(in) :: num_minerals
+            if (num_minerals<0) error stop "Number of minerals cannot be negative"
+            this%num_minerals=num_minerals
+        end subroutine
+        
+        subroutine set_num_minerals_eq(this,num_minerals_eq)
+        !> This subroutine sets the "num_minerals_eq"
+            implicit none
+            class(chem_system_c) :: this
+            integer(kind=4), intent(in) :: num_minerals_eq
+            if (num_minerals_eq>this%num_minerals .AND. allocated(this%minerals)) error stop "Number of minerals in equilibrium cannot be greater than number of minerals"
+            this%num_minerals_eq=num_minerals_eq
+        end subroutine
+        
+        subroutine set_eq_reacts(this,eq_reacts)
+        !> This subroutine sets the "eq_reacts" and "num_eq_reacts" attributes 
+            implicit none
+            class(chem_system_c) :: this
+            class(eq_reaction_c), intent(in) :: eq_reacts(:)
+            if (allocated(this%eq_reacts)) then
+                deallocate(this%eq_reacts)
+            end if
+            this%eq_reacts=eq_reacts
+            this%num_eq_reacts=size(this%eq_reacts)
+        end subroutine
+        
+        subroutine set_kin_reacts(this,kin_reacts)
+        !> This subroutine sets the "kin_reacts" and "num_kin_reacts" attributes 
+            implicit none
+            class(chem_system_c) :: this
+            class(kin_reaction_poly_c), intent(in) :: kin_reacts(:)
+            if (allocated(this%kin_reacts)) then
+                deallocate(this%kin_reacts)
+            end if
+            this%kin_reacts=kin_reacts
+            this%num_kin_reacts=size(this%kin_reacts)
+        end subroutine
+        
+       subroutine set_num_lin_kin_reacts(this,num_lin_kin_reacts)
+        !> This subroutine sets the "num_lin_kin_reacts" attribute 
+            implicit none
+            class(chem_system_c) :: this
+            integer(kind=4), intent(in) :: num_lin_kin_reacts
+            this%num_lin_kin_reacts=num_lin_kin_reacts
+       end subroutine
+       
+       subroutine set_num_min_kin_reacts(this,num_min_kin_reacts)
+        !> This subroutine sets the "num_lin_kin_reacts" attribute
+            implicit none
+            class(chem_system_c) :: this
+            integer(kind=4), intent(in) :: num_min_kin_reacts
+            this%num_min_kin_reacts=num_min_kin_reacts
+       end subroutine
+       
+       subroutine set_num_redox_kin_reacts(this,num_redox_kin_reacts)
+        !> This subroutine sets the "num_redox_kin_reacts" attribute
+            implicit none
+            class(chem_system_c) :: this
+            integer(kind=4), intent(in) :: num_redox_kin_reacts
+            this%num_redox_kin_reacts=num_redox_kin_reacts
+       end subroutine
+       
+       subroutine set_num_redox_eq_reacts(this,num_redox_eq_reacts)
+        !> This subroutine sets the "num_redox_eq_reacts" attribute
+            implicit none
+            class(chem_system_c) :: this
+            integer(kind=4), intent(in) :: num_redox_eq_reacts
+            this%num_redox_eq_reacts=num_redox_eq_reacts
+       end subroutine
+       
+!*********************** ALLOCATE ******************************************************************************************************************!
         subroutine allocate_species(this,num_species)
         !< This subroutine allocates the attribute "species"
             implicit none
@@ -261,6 +412,8 @@ module chem_system_m
                 else
                     this%num_species=num_species
                 end if
+            else
+                call this%compute_num_species()
             end if
             if (allocated(this%species)) then
                 deallocate(this%species)
@@ -293,51 +446,18 @@ module chem_system_m
             allocate(this%var_act_sp_indices(this%num_var_act_species))
         end subroutine
         
-        subroutine set_species(this,species)
-        !> This subroutine sets the "species" attribute 
-            implicit none
-            class(chem_system_c) :: this
-            class(species_c), intent(in) :: species(:)
-                        
-            if (allocated(this%species) .and. size(species)/=this%num_species) then
-                error stop "Wrong number of species"
-            else
-                this%species=species
-                this%num_species=size(species)
-            end if
-        end subroutine
-        
-
-        
-        subroutine compute_num_species(this)
-            implicit none
-            class(chem_system_c) :: this
-            this%num_species=this%num_var_act_species+this%num_cst_act_species
-        end subroutine
-        
-        subroutine compute_num_kin_reacts(this)
-            implicit none
-            class(chem_system_c) :: this
-            this%num_kin_reacts=this%num_lin_kin_reacts+this%num_min_kin_reacts+this%num_redox_kin_reacts
-        end subroutine
-        
         subroutine allocate_reacts(this,num_eq_reacts,num_kin_reacts)
+        !< This subroutine allocates the attributes "eq_reacts" & "kin_reacts"
             implicit none
             class(chem_system_c) :: this
-            integer(kind=4), intent(in), optional :: num_eq_reacts,num_kin_reacts
-            if (present(num_eq_reacts) .and. present(num_kin_reacts)) then
-                this%num_eq_reacts=num_eq_reacts
-                this%num_kin_reacts=num_kin_reacts
-            else if (.not. present(num_eq_reacts) .and. .not. present(num_kin_reacts)) then
-                continue
-            else
-                error stop "Both optional parameters must be present in subroutine 'allocate_reacts'"
-            end if
-            allocate(this%eq_reacts(this%num_eq_reacts))
-            allocate(this%kin_reacts(this%num_kin_reacts))
+            integer(kind=4), intent(in) :: num_eq_reacts,num_kin_reacts
+            call this%allocate_eq_reacts(num_eq_reacts)
+            call this%allocate_kin_reacts(num_kin_reacts)
+            !call this%compute_num_reacts()
         end subroutine
         
         subroutine allocate_eq_reacts(this,num_eq_reacts)
+        !< This subroutine allocates the attribute "eq_reacts"
             implicit none
             class(chem_system_c) :: this
             integer(kind=4), intent(in), optional :: num_eq_reacts
@@ -347,7 +467,19 @@ module chem_system_m
             allocate(this%eq_reacts(this%num_eq_reacts))
         end subroutine
         
+        subroutine allocate_kin_reacts(this,num_kin_reacts)
+        !< This subroutine allocates the attribute "kin_reacts"
+            implicit none
+            class(chem_system_c) :: this
+            integer(kind=4), intent(in), optional :: num_kin_reacts
+            if (present(num_kin_reacts)) then
+                this%num_kin_reacts=num_kin_reacts
+            end if
+            allocate(this%kin_reacts(this%num_kin_reacts))
+        end subroutine
+        
         subroutine allocate_redox_kin_reacts(this,num_redox_kin_reacts)
+        !< This subroutine allocates the attribute "redox_kin_reacts"
             implicit none
             class(chem_system_c) :: this
             integer(kind=4), intent(in), optional :: num_redox_kin_reacts
@@ -358,6 +490,7 @@ module chem_system_m
         end subroutine
         
         subroutine allocate_lin_kin_reacts(this,num_lin_kin_reacts)
+        !< This subroutine allocates the attribute "lin_kin_reacts"
             implicit none
             class(chem_system_c) :: this
             integer(kind=4), intent(in), optional :: num_lin_kin_reacts
@@ -368,16 +501,18 @@ module chem_system_m
         end subroutine
         
         subroutine allocate_minerals(this,num_minerals)
+        !< This subroutine allocates the attribute "minerals"
             implicit none
             class(chem_system_c) :: this
             integer(kind=4), intent(in), optional :: num_minerals
             if (present(num_minerals)) then
-                this%num_minerals=num_minerals
+                call this%set_num_minerals(num_minerals)
             end if
             allocate(this%minerals(this%num_minerals))
         end subroutine
         
         subroutine allocate_min_kin_reacts(this,num_min_kin)
+        !< This subroutine allocates the attribute "min_kin_reacts"
             implicit none
             class(chem_system_c) :: this
             integer(kind=4), intent(in), optional :: num_min_kin
@@ -386,156 +521,30 @@ module chem_system_m
                 this%num_min_kin_reacts=num_min_kin
             end if
             allocate(this%min_kin_reacts(this%num_min_kin_reacts))
-        end subroutine
-        
-        
-        subroutine set_num_cst_act_species(this,num_cst_act_species)
-        !> This subroutine sets the "num_cst_act_species" attribute 
-            implicit none
-            class(chem_system_c) :: this
-            integer(kind=4), intent(in), optional :: num_cst_act_species
-            if (present(num_cst_act_species)) then
-                this%num_cst_act_species=num_cst_act_species
-            else
-                this%num_cst_act_species=size(this%cst_act_sp_indices)
-            end if
-        end subroutine
-        
-        subroutine set_num_solids_chem_syst(this,num_solids)
-        !> This subroutine sets the "num_solids" attribute 
-            implicit none
-            class(chem_system_c) :: this
-            integer(kind=4), intent(in), optional :: num_solids
-            if (present(num_solids)) then
-                this%num_solids=num_solids
-            else
-                this%num_solids=this%num_minerals+this%cat_exch%num_surf_compl
-            end if
-        end subroutine
-        
-        !subroutine set_cst_act_species(this,cst_act_species) !> first water, then minerals
-        !    implicit none
-        !    class(chem_system_c) :: this
-        !    type(species_c), intent(in), optional :: cst_act_species(:)
-        !    
-        !    integer(kind=4) :: i,wat_ind,j
-        !    type(aq_species_c) :: water
-        !    logical :: wat_flag
-        !    
-        !    if (present(cst_act_species)) then
-        !        if (size(cst_act_species)>this%num_species) then
-        !            error stop "Number of constant activity species cannot be greater than number of species"
-        !        else
-        !            this%cst_act_species=cst_act_species
-        !        end if
-        !    else
-        !        j=0 !> counter constant activity species
-        !        call this%aq_phase%is_water_in_aq_phase(wat_flag)
-        !        if (wat_flag==.true.) then
-        !            j=j+1
-        !            call this%cst_act_species(j)%assign_species(this%aq_phase%aq_species(this%aq_phase%ind_wat))
-        !        end if
-        !        do i=1,this%num_minerals
-        !            call this%cst_act_species(j+i)%assign_species(this%minerals(i)%mineral) !> we assume minerals are pure
-        !        end do
-        !        j=j+this%num_minerals
-        !    end if
-        !end subroutine
-        
+        end subroutine        
 
-        
-        subroutine set_cat_exch_obj(this,cat_exch)
-        !> This subroutine sets the "cat_exch" attribute 
+!*********************** COMPUTE ***********************************************************************************************************************!
+        subroutine compute_num_species(this)
+        !< This subroutine computes the attribute "num_species"
             implicit none
             class(chem_system_c) :: this
-            class(cat_exch_c), intent(in) :: cat_exch
-            this%cat_exch=cat_exch
+            this%num_species=this%num_var_act_species+this%num_cst_act_species
         end subroutine
         
-      
-        
-        subroutine set_num_var_act_species(this,num_var_act_species)
-        !> This subroutine sets the "num_var_act_species" attribute 
+        subroutine compute_num_kin_reacts(this)
+        !< This subroutine computes the attribute "num_kin_reacts"
             implicit none
             class(chem_system_c) :: this
-            integer(kind=4), intent(in), optional :: num_var_act_species
-            if (present(num_var_act_species)) then
-                this%num_var_act_species=num_var_act_species
-            else if (allocated(this%var_act_sp_indices)) then
-                this%num_var_act_species=size(this%var_act_sp_indices)
-            else if (allocated(this%species) .and. allocated(this%cst_act_sp_indices)) then
-                this%num_var_act_species=this%num_species-this%num_cst_act_species
-            else
-                error stop "Unable to compute the number of variable activity species"
-            end if
+            this%num_kin_reacts=this%num_lin_kin_reacts+this%num_min_kin_reacts+this%num_redox_kin_reacts
         end subroutine
         
-       
         
-        subroutine set_minerals(this,minerals)
-        !> This subroutine sets the "minerals" and "num_minerals" attributes 
-            implicit none
-            class(chem_system_c) :: this
-            class(mineral_c), intent(in) :: minerals(:)
-            this%minerals=minerals
-            this%num_minerals=size(this%minerals) 
-        end subroutine
         
-     
-        
-        subroutine set_eq_reacts(this,eq_reacts)
-        !> This subroutine sets the "eq_reacts" and "num_eq_reacts" attributes 
-            implicit none
-            class(chem_system_c) :: this
-            class(eq_reaction_c), intent(in) :: eq_reacts(:)
-            if (allocated(this%eq_reacts)) then
-                deallocate(this%eq_reacts)
-            end if
-            this%eq_reacts=eq_reacts
-            this%num_eq_reacts=size(this%eq_reacts)
-        end subroutine
-        
-        subroutine set_kin_reacts(this,kin_reacts)
-        !> This subroutine sets the "kin_reacts" and "num_kin_reacts" attributes 
-            implicit none
-            class(chem_system_c) :: this
-            class(kin_reaction_poly_c), intent(in) :: kin_reacts(:)
-            if (allocated(this%kin_reacts)) then
-                deallocate(this%kin_reacts)
-            end if
-            this%kin_reacts=kin_reacts
-            this%num_kin_reacts=size(this%kin_reacts)
-        end subroutine
-        
-       subroutine set_num_lin_kin_reacts(this,num_lin_kin_reacts)
-            implicit none
-            class(chem_system_c) :: this
-            integer(kind=4), intent(in) :: num_lin_kin_reacts
-            this%num_lin_kin_reacts=num_lin_kin_reacts
-       end subroutine
-       
-       subroutine set_num_min_kin_reacts(this,num_min_kin_reacts)
-            implicit none
-            class(chem_system_c) :: this
-            integer(kind=4), intent(in) :: num_min_kin_reacts
-            this%num_min_kin_reacts=num_min_kin_reacts
-       end subroutine
-       
-       subroutine set_redox_kin_reacts(this,redox_kin_reacts)
-            implicit none
-            class(chem_system_c) :: this
-            class(redox_kin_c), intent(in) :: redox_kin_reacts(:)
-            if (allocated(this%redox_kin_reacts)) then
-                deallocate(this%redox_kin_reacts)
-            end if
-            this%redox_kin_reacts=redox_kin_reacts
-            this%num_redox_kin_reacts=size(redox_kin_reacts)
-        end subroutine
         
        
         
         
-!***********************************IS************************************************************!
+!********************************** IS *************************************************************************************************************!
         subroutine is_mineral_in_chem_syst(this,mineral,flag,mineral_ind)
         !> This subroutine checks if a mineral belongs to the chemical system
             implicit none
@@ -641,7 +650,7 @@ module chem_system_m
                 end if
             end do
         end subroutine
-!*********************** GET ***********************************************************************************************************************!        
+!*********************** GET ***********************************************************************************************************************!
         function get_eq_csts(this) result(K)
         !> This function returns equilibrium constants of equilibrium reactions
             implicit none
@@ -666,7 +675,7 @@ module chem_system_m
         !<      cation exchange
         !<      variable activity gases
             implicit none
-            class(chem_system_c) :: this
+            class(chem_system_c) :: this                            !> chemical system
             
             integer(kind=4) :: i,ind_min_cst_act,ind_aq,ind_gas_var_act,ind_surf,ind_gas_cst_act,ind_min_var_act,ind_redox
             type(eq_reaction_c), allocatable :: aux_eq_reacts(:)
@@ -674,13 +683,14 @@ module chem_system_m
             aux_eq_reacts=this%eq_reacts
             deallocate(this%eq_reacts)
             allocate(this%eq_reacts(this%num_eq_reacts))
-            ind_min_cst_act=1
-            ind_gas_cst_act=this%num_minerals_cst_act+1
-            ind_redox=this%num_cst_act_species+1
-            ind_aq=ind_redox+this%num_redox_eq_reacts
-            ind_min_var_act=ind_aq+this%aq_phase%num_aq_complexes
-            ind_surf=ind_min_var_act+this%num_minerals-this%num_minerals_cst_act
-            ind_gas_var_act=ind_surf+this%cat_exch%num_exch_cats
+        !> we initialise counters
+            ind_min_cst_act=1                                                                               !> constant activity minerals in equilibrium
+            ind_gas_cst_act=ind_min_cst_act+MIN(THIS%num_minerals_eq,this%num_minerals_cst_act)             !> constant activity gases in equilibrium
+            ind_redox=ind_gas_cst_act+MIN(THIS%gas_phase%num_gases_eq,this%gas_phase%num_cst_act_species)   !> redox equilibrium reactions
+            ind_aq=ind_redox+this%num_redox_eq_reacts                                                       !> aqueous complexes
+            ind_min_var_act=ind_aq+this%aq_phase%num_aq_complexes                                           !> variable activity minerals
+            ind_surf=ind_min_var_act+MIN(THIS%num_minerals_eq,this%num_minerals-this%num_minerals_cst_act)  !> cation exchange
+            ind_gas_var_act=ind_surf+this%cat_exch%num_exch_cats                                            !> variable activity gases
             do i=1,this%num_eq_reacts
                 if (aux_eq_reacts(i)%react_type==2) then !> mineral dissolution/precipitation
                     if (aux_eq_reacts(i)%species(aux_eq_reacts(i)%num_species)%cst_act_flag==.true.) then
@@ -712,8 +722,10 @@ module chem_system_m
         end subroutine
         
         subroutine rearrange_species(this)
+        !< This subroutine rearranges the "species" attribute depending on the definition of the component matrix and the presence of surface complexes
             implicit none
-            class(chem_system_c) :: this
+            class(chem_system_c) :: this                                            !> chemical system
+            
             integer(kind=4) :: i,num_sp,num_aq_sec,num_var_act_sp,num_cst_act_sp
             num_sp=0 !> counter number of species
             num_var_act_sp=0 !> counter number of variable activity species
@@ -770,7 +782,7 @@ module chem_system_m
                 do i=1,this%speciation_alg%num_aq_prim_species
                     call this%species(i)%assign_species(this%aq_phase%aq_species(i))
                 end do
-                call this%species(this%speciation_alg%num_prim_species)%assign_species(this%cat_exch%surf_compl(1))
+                call this%species(this%speciation_alg%num_prim_species)%assign_species(this%cat_exch%surf_compl(1)) !> free surface
                 do i=1,this%speciation_alg%num_aq_sec_var_act_species
                     call this%species(this%speciation_alg%num_prim_species+i)%assign_species(this%aq_phase%aq_species(this%speciation_alg%num_aq_prim_species+i))
                 end do
@@ -837,21 +849,16 @@ module chem_system_m
                     end if
                 end do
             else
-            !<      primary species
-            !<      secondary aqueous species
+            !<      primary aqueous species
             !<      minerals NOT in equilibrium
             !<      gases NOT in equilibrium
+            !<      aqueous complexes
             !<      minerals in equilibrium
             !<      gases in equilibrium
-                num_aq_sec=this%speciation_alg%num_sec_aq_species
-                do i=1,this%speciation_alg%num_prim_species
+                do i=1,this%speciation_alg%num_aq_prim_species
                     call this%species(i)%assign_species(this%aq_phase%aq_species(i))
                 end do
-                num_sp=num_sp+this%speciation_alg%num_prim_species
-                do i=1,num_aq_sec
-                    call this%species(num_sp+i)%assign_species(this%aq_phase%aq_species(this%speciation_alg%num_aq_prim_species+i))
-                end do
-                num_sp=num_sp+num_aq_sec
+                num_sp=num_sp+this%speciation_alg%num_aq_prim_species
                 do i=1,this%num_min_kin_reacts
                     call this%species(num_sp+i)%assign_species(this%minerals(i)%mineral)
                 end do
@@ -860,6 +867,10 @@ module chem_system_m
                     call this%species(num_sp+i)%assign_species(this%gas_phase%gases(this%gas_phase%num_gases_eq+i))
                 end do
                 num_sp=num_sp+this%gas_phase%num_gases_kin
+                do i=1,this%speciation_alg%num_sec_aq_species
+                    call this%species(num_sp+i)%assign_species(this%aq_phase%aq_species(this%speciation_alg%num_aq_prim_species+i))
+                end do
+                num_sp=num_sp+this%speciation_alg%num_sec_aq_species
                 do i=1,this%num_minerals_eq
                     call this%species(num_sp+i)%assign_species(this%minerals(this%num_min_kin_reacts+i)%mineral)
                 end do
@@ -882,6 +893,20 @@ module chem_system_m
             do i=1,this%num_species
                 this%z2(i)=this%species(i)%valence**2
             end do
+        end subroutine
+        
+        subroutine compute_num_solids(this)
+        !> This subroutine computes the "num_solids" attribute 
+            implicit none
+            class(chem_system_c) :: this
+            this%num_solids=this%num_minerals+this%cat_exch%num_surf_compl
+        end subroutine
+        
+        subroutine compute_num_reacts(this)
+        !> This subroutine computes the "num_reacts" attribute 
+            implicit none
+            class(chem_system_c) :: this
+            this%num_reacts=this%num_eq_reacts+this%num_kin_reacts
         end subroutine
         
 end module 

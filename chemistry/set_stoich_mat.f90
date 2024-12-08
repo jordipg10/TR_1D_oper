@@ -1,4 +1,8 @@
-!> This subroutine sets the stoichiometric matrices of the chemical system from its equilibrium and kinetic reactions
+!> This subroutine sets the attributes "stoich_mat", "Se" & "Sk" of a chemical system from its equilibrium and kinetic reactions
+!> The kinetic stoichiometrix matrix has the following order:
+!>      linear kinetic reactions
+!>      redox kinetic reactions
+!>      mineral kinetic reactions
 subroutine set_stoich_mat(this)
     use chem_system_m
     implicit none
@@ -32,7 +36,6 @@ subroutine set_stoich_mat(this)
         do
             if (this%species(i)%name==this%eq_reacts(j)%species(k)%name) then
                 this%Se(j,i)=this%eq_reacts(j)%stoichiometry(k)
-                !print *, this%species(i)%name
                 if (j<this%num_eq_reacts) then
                     j=j+1
                     k=1

@@ -14,7 +14,6 @@ subroutine compute_dc2nc_dc1(this,c1,c2nc,out_prod,dc2nc_dc1)
     integer(kind=4) :: i,j
     type(diag_matrix_c) :: diag_c1,diag_c2nc
     real(kind=8), allocatable :: aux_mat(:,:),mat_lin_syst(:,:),indep_mat(:,:),log_Jacobian(:,:),log_dc2nc_dc1(:,:)
-    !real(kind=8), allocatable :: d_log_gamma1_d_log_c1(:,:),d_log_gamma1_d_log_c2nc(:,:),d_log_gamma2nc_d_log_c1(:,:),d_log_gamma2nc_d_log_c2nc(:,:),d_log_gamma_surf_d_log_c_surf(:,:)
     
     !> We compute linear system with logarithms
     allocate(log_dc2nc_dc1(this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species))
@@ -37,49 +36,4 @@ subroutine compute_dc2nc_dc1(this,c1,c2nc,out_prod,dc2nc_dc1)
             dc2nc_dc1(i,j)=c2nc(i)*log_dc2nc_dc1(i,j)/c1(j)
         end do
     end do
-    
-    
-!    allocate(d_log_gamma1_d_log_c1(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species))
-!    allocate(d_log_gamma1_d_log_c2nc(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species,this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions))
-!    allocate(d_log_gamma2nc_d_log_c1(this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species))
-!    allocate(d_log_gamma2nc_d_log_c2nc(this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions,this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions))
-!    allocate(d_log_gamma_surf_d_log_c_surf(this%solid_chemistry%reactive_zone%cat_exch_zone%num_exch_cats,this%solid_chemistry%reactive_zone%cat_exch_zone%num_exch_cats))
-!!> We compute Jacobian logarithm activity coefficients
-!    call this%aq_phase%compute_log_Jacobian_act_coeffs_aq_phase(out_prod,this%concentrations(1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species),this%log_Jacobian_act_coeffs(1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species,1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species))
-!    call this%solid_chemistry%reactive_zone%cat_exch_zone%compute_log_Jacobian_act_coeffs_ads_cats(this%solid_chemistry%log_act_coeffs(this%solid_chemistry%reactive_zone%num_minerals+2:this%solid_chemistry%reactive_zone%num_solids),d_log_gamma_surf_d_log_c_surf)
-!!> log Jacobiano primarias-primarias
-!    d_log_gamma1_d_log_c1(1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species,1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species)=this%log_Jacobian_act_coeffs(1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species,1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species)
-!    !> Chapuza
-!    d_log_gamma1_d_log_c1(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species,:)=0d0
-!    d_log_gamma1_d_log_c1(:,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species)=0d0
-!!> log Jacobiano primarias-secundarias actividad variable
-!    d_log_gamma1_d_log_c2nc(1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species,1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species)=this%log_Jacobian_act_coeffs(1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species,this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species)
-!    !> Chapuza
-!    d_log_gamma1_d_log_c2nc(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species,:)=0d0
-!    d_log_gamma1_d_log_c2nc(:,this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species+1:this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions)=0d0
-!!> log Jacobiano secundarias actividad variable-primarias
-!    d_log_gamma2nc_d_log_c1(1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species,1:this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species-1)=this%log_Jacobian_act_coeffs(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species,1:this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species-1)
-!    !> Chapuza
-!    d_log_gamma2nc_d_log_c1(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species+1:this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions,:)=0d0
-!    d_log_gamma2nc_d_log_c1(:,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species)=0d0
-!!> log Jacobiano secundarias actividad variable-secundarias actividad variable    
-!    d_log_gamma2nc_d_log_c2nc(1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species,1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species)=this%log_Jacobian_act_coeffs(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species)
-!    !> Chapuza
-!    d_log_gamma2nc_d_log_c2nc(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species+1:this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions,:)=0d0
-!    d_log_gamma2nc_d_log_c2nc(:,this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species+1:this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions)=0d0
-!!> We solve linear system logarithms
-!    mat_lin_syst=id_matrix(this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions)-matmul(this%solid_chemistry%reactive_zone%speciation_alg%Se_nc_1_star,d_log_gamma1_d_log_c2nc)+d_log_gamma2nc_d_log_c2nc
-!    indep_term=matmul(this%solid_chemistry%reactive_zone%speciation_alg%Se_nc_1_star,d_log_gamma1_d_log_c1+id_matrix(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species))-d_log_gamma2nc_d_log_c1
-!    allocate(log_Jacobian(this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species))
-!    do j=1,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
-!        call LU_lin_syst(mat_lin_syst,indep_term(:,j),this%solid_chemistry%reactive_zone%CV_params%zero,log_Jacobian(:,j))
-!    end do
-!> We apply chain rule to obtain dc2nc_dc1
-    !c1=this%get_c1()
-    !c2nc=this%get_c2nc_exch()
-    !do i=1,this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions
-    !    do j=1,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
-    !        dc2nc_dc1(i,j)=c2nc(i)*log_Jacobian(i,j)/c1(j)
-    !    end do
-    !end do
 end subroutine

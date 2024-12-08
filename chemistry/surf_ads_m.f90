@@ -1,18 +1,18 @@
 !> Surface complexation module
-!!> Contains properties of surface sites and complexes
+!! Contains properties of surface sites and complexes
 module surf_compl_m
     use solid_m
     use aq_phase_m
     use exch_sites_conv_m
     implicit none
     save
-    type, public, extends(solid_c) :: surf_site_c !> surface site subclass
-        type(solid_c) :: surf_site
-    contains
-   
-    end type
+    !type, public, extends(solid_c) :: surf_site_c !> surface site subclass
+    !    type(solid_c) :: surf_site
+    !contains
+    !
+    !end type
     
-    type, public, extends(phase_c) :: surface_c !> surface subclass
+    type, public, extends(phase_c) :: surface_c !> surface (subclass of phase class)
         type(solid_c) :: free_site
         integer(kind=4) :: num_surf_compl=0 !> number of surface complexes
         type(solid_c), allocatable :: surf_compl(:) !> surface complexes
@@ -23,17 +23,16 @@ module surf_compl_m
         procedure, public :: is_surf_compl_in
     end type
     
-    type, public, extends(surface_c) :: cat_exch_c !> cation exchange subclass
+    type, public, extends(surface_c) :: cat_exch_c !> cation exchange (subclass of surface class)
         integer(kind=4) :: num_exch_cats=0 !> number of exchangeable cations
-        type(aq_species_c), allocatable :: exch_cats(:) !> exchangeable cations (NOT NECESSARY)
+        integer(kind=4), allocatable :: exch_cat_indices(:) !> indices of exchangeable cations in aqueous phase object
         class(exch_sites_conv_c), pointer :: convention !> to compute activity
     contains
     !> Set
         procedure, public :: set_convention
         procedure, public :: set_num_exch_cats
-        procedure, public :: set_exch_cats
     !> Allocate
-        procedure, public :: allocate_exch_cats
+        procedure, public :: allocate_exch_cat_indices
     !> Compute
         procedure, public :: compute_log_act_coeffs_ads_cats
         procedure, public :: compute_log_Jacobian_act_coeffs_ads_cats
@@ -132,12 +131,20 @@ module surf_compl_m
 !>  type(ion_exchange_cation_type), pointer :: next
 !end type ion_exchange_cation_type
     
-    interface
-        subroutine compute_log_act_coeffs_ads_cats(this,log_act_coeffs)
+    contains
+        subroutine compute_log_act_coeffs_ads_cats(this,valences,CEC,log_act_coeffs)
             import cat_exch_c
             implicit none
-            class(cat_exch_c) :: this
-            real(kind=8), intent(out) :: log_act_coeffs(:) !> must be allocated
+            class(cat_exch_c), intent(in) :: this
+            integer(kind=4), intent(in) :: valences(:) !> valences of exchangeable cations (dim=num_exch_cats)
+            REAL(kind=8), intent(in) :: CEC !> cation exchange capacity
+            real(kind=8), intent(out) :: log_act_coeffs(:) !> must be allocated previously (dim=num_exch_cats)
+    
+            integer(kind=4) :: i
+        
+            do i=1,this%num_exch_cats
+                call this%convention%compute_log_act_coeff_ads_cat(valences(I),CEC,log_act_coeffs(i))
+            end do
         end subroutine
         
         subroutine compute_log_Jacobian_act_coeffs_ads_cats(this,log_act_coeffs,log_Jacobian_act_coeffs)
@@ -145,44 +152,27 @@ module surf_compl_m
             implicit none
             class(cat_exch_c) :: this
             real(kind=8), intent(in) :: log_act_coeffs(:)
-            real(kind=8), intent(out) :: log_Jacobian_act_coeffs(:,:) !> must be allocated
+            real(kind=8), intent(out) :: log_Jacobian_act_coeffs(:,:) !> must be allocated (dim=num_exch_cats x num_species)
+            log_Jacobian_act_coeffs=0d0
         end subroutine
-    end interface
     
-    contains
     
       
         subroutine set_num_exch_cats(this,num_exch_cats)
             implicit none
             class(cat_exch_c) :: this
             integer(kind=4), intent(in), optional :: num_exch_cats
-            if (present(num_exch_cats)) then
-                this%num_exch_cats=num_exch_cats
-            else
-                this%num_exch_cats=size(this%exch_cats)
-            end if
+            this%num_exch_cats=num_exch_cats
         end subroutine
-        
-        subroutine set_exch_cats(this,exch_cats)
-            implicit none
-            class(cat_exch_c) :: this
-            class(aq_species_c), intent(in) :: exch_cats(:)
-            if (allocated(this%exch_cats) .and. size(exch_cats)>this%num_exch_cats) then
-                error stop "Dimension error in exchangeable cations"
-            else
-                this%exch_cats=exch_cats
-                this%num_exch_cats=size(exch_cats)
-            end if
-        end subroutine
-        
-        subroutine allocate_exch_cats(this,num_exch_cats)
+                
+        subroutine allocate_exch_cat_indices(this,num_exch_cats)
             implicit none
             class(cat_exch_c) :: this
             integer(kind=4), intent(in), optional :: num_exch_cats
             if (present(num_exch_cats)) then
                 this%num_exch_cats=num_exch_cats
             end if
-            allocate(this%exch_cats(this%num_exch_cats))
+            allocate(this%exch_cat_indices(this%num_exch_cats))
         end subroutine
         
         subroutine set_num_surf_compl(this,num_surf_compl)
@@ -218,25 +208,7 @@ module surf_compl_m
             end if
             allocate(this%surf_compl(this%num_surf_compl))
         end subroutine
-        
-        !subroutine set_CEC(this,CEC)
-        !    implicit none
-        !    class(cat_exch_c) :: this
-        !    real(kind=8), intent(in) :: CEC
-        !    if (CEC<0d0) then
-        !        error stop "CEC cannot be negative"
-        !    else
-        !        this%CEC=CEC
-        !    end if
-        !end subroutine
-        !
-        !subroutine compute_CEC(this,equivalents)
-        !    implicit none
-        !    class(cat_exch_c) :: this
-        !    real(kind=8), intent(in) :: equivalents(:)
-        !    this%CEC=sum(equivalents)
-        !end subroutine
-        
+                
         subroutine set_convention(this,convention)
             implicit none
             class(cat_exch_c) :: this

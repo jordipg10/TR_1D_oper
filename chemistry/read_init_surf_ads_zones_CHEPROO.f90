@@ -8,7 +8,7 @@ subroutine read_init_cat_exch_zones_CHEPROO(this,unit,init_cat_exch_zones,reacti
     type(reactive_zone_c), intent(inout), allocatable, optional :: reactive_zones(:)
     
     integer(kind=4) :: i,j,k,ndtype,idtype,nrwtype,icon,num_ads_zones,num_mins_glob,num_mins_loc
-    integer(kind=4), allocatable :: init_min_zones_indices(:)
+    integer(kind=4), allocatable :: valences(:)
     character(len=256) :: str,constrain,label
     real(kind=8) :: c_int,c_ext,spec_sorb_surf,CEC
     logical :: min_zone_flag
@@ -38,21 +38,15 @@ subroutine read_init_cat_exch_zones_CHEPROO(this,unit,init_cat_exch_zones,reacti
         call react_zone%set_num_solids()
         call react_zone%set_stoich_mat_react_zone()
         call init_cat_exch_zones(idtype)%set_reactive_zone(react_zone)
-        !call init_cat_exch_zones(idtype)%set_CEC(CEC)
         call init_cat_exch_zones(idtype)%allocate_conc_solids()
-        !call init_cat_exch_zones(idtype)%allocate_conc_comp_solids(1) !> chapuza
-        init_cat_exch_zones(idtype)%CEC=CEC !> falta un set
+        call init_cat_exch_zones(idtype)%set_CEC(CEC) !> cation exchanghe capacity
         call init_cat_exch_zones(idtype)%allocate_equivalents()
         call init_cat_exch_zones(idtype)%allocate_log_act_coeffs_solid_chem()
-        !allocate(init_cat_exch_zones(idtype)%log_act_coeffs(init_cat_exch_zones(idtype)%reactive_zone%num_solids))
-        init_cat_exch_zones(idtype)%log_act_coeffs=0d0 !> chapuza
-        init_cat_exch_zones(idtype)%log_Jacobian_act_coeffs=0d0 !> chapuza
-        !init_cat_exch_zones(idtype)%log_act_coeffs=-log10(init_cat_exch_zones(idtype)%concentrations) !> chapuza
-        !call init_cat_exch_zones(idtype)%reactive_zone%cat_exch_zone%compute_log_act_coeffs_ads_cats(init_cat_exch_zones(idtype)%log_act_coeffs(2:init_cat_exch_zones(idtype)%reactive_zone%cat_exch_zone%num_surf_compl))
+        valences=this%chem_syst%aq_phase%get_valences()
+        call init_cat_exch_zones(idtype)%reactive_zone%cat_exch_zone%compute_log_act_coeffs_ads_cats(valences(init_cat_exch_zones(idtype)%reactive_zone%cat_exch_zone%exch_cat_indices),CEC,init_cat_exch_zones(idtype)%log_act_coeffs(2:init_cat_exch_zones(idtype)%reactive_zone%cat_exch_zone%num_surf_compl))
         call init_cat_exch_zones(idtype)%allocate_activities()
         init_cat_exch_zones(idtype)%concentrations(1)=1d-16 !> 'x-', chapuza
-        !call init_cat_exch_zones(idtype)%compute_activities_ads_cats() !> chapuza
-        !init_cat_exch_zones(idtype)%activities(init_cat_exch_zones(idtype)%reactive_zone%num_solids)=1d0-       
+        call init_cat_exch_zones(idtype)%compute_activities_solids() !> 
         num_ads_zones=num_ads_zones+1
         if (num_ads_zones==ndtype) exit
     end do

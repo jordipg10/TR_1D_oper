@@ -1,4 +1,4 @@
-!> Creates new reactive zone
+!> Creates new reactive zone (UNFINISHED)
 subroutine update_reactive_zone(this,old_nf_ind)
     use reactive_zone_Lagr_m
     implicit none

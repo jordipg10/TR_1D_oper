@@ -17,6 +17,9 @@ module redox_kin_reaction_m
         procedure, public :: rearrange_indices_aq_phase_Monod
     !> Check
         !procedure, public :: check_indices_aq_phase_Monod
+    !> Write
+        procedure, public :: write_params=>write_Monod_params
+        procedure, public :: write_reaction=>write_redox_reaction
     end type
     
     !type, public :: monod_type
@@ -60,46 +63,7 @@ module redox_kin_reaction_m
             this%params=Monod_params
         end subroutine
         
-        !subroutine set_indices_aq_phase_Monod(this,aq_phase)
-        !!> First inhibitors, then TEAs, and finally DOC
-        !    implicit none
-        !    class(redox_kin_c) :: this
-        !    class(aq_phase_c), intent(in) :: aq_phase
-        !    
-        !    integer(kind=4) :: i,aq_species_ind
-        !    type(aq_species_c) :: DOC
-        !    logical :: flag
-        !    
-        !    call DOC%set_name('ch2o(aq)')
-        !    do i=1,this%params%n_inh
-        !    !> chapuza (puede haber especies no acuosas)
-        !        call aq_phase%is_species_in_aq_phase(this%params%inhibitors(i),flag,aq_species_ind)
-        !        if (flag==.true.) then
-        !            this%indices_aq_phase(i)=aq_species_ind
-        !        end if
-        !    end do
-        !    do i=1,this%params%n_M
-        !    !> chapuza (puede haber especies no acuosas)
-        !        call aq_phase%is_species_in_aq_phase(this%params%TEAs(i),flag,aq_species_ind)
-        !        if (flag==.true.) then
-        !            this%indices_aq_phase(this%params%n_inh+i)=aq_species_ind
-        !        end if
-        !    end do
-        !    call aq_phase%is_species_in_aq_phase(DOC,flag,aq_species_ind)
-        !    if (flag==.true.) then
-        !        this%indices_aq_phase(this%params%num_terms+1)=aq_species_ind
-        !    end if
-        !end subroutine
         
-        !function get_Monod(this) result(Monod)
-        !>    implicit none
-        !>    class(kin_reaction_c), intent(in) :: this
-        !>    type(redox_kin_c) :: Monod
-        !>    select type (kin_params=>this%kin_params)
-        !>    type is (redox_kin_c)
-        !>        Monod=kin_params
-        !>    end select
-        !end function
         
         subroutine rearrange_indices_aq_phase_Monod(this,aq_phase_old,aq_phase_new)
             implicit none
@@ -111,7 +75,6 @@ module redox_kin_reaction_m
             type(aq_species_c) :: DOC
             logical :: flag
             
-            !allocate(THIS%indices_aq_phase(this%params%num_terms))
             do i=1,this%params%num_terms
                 call aq_phase_new%is_species_in_aq_phase(aq_phase_old%aq_species(this%indices_aq_phase(i)),flag,ind_new)
                 if (flag==.true.) then
@@ -120,5 +83,22 @@ module redox_kin_reaction_m
                     error stop "Inhibitor/electron acceptor/electron donor is not in aqueous phase"
                 end if
             end do
+        end subroutine
+        
+        subroutine write_Monod_params(this,unit)
+            import redox_kin_c
+            implicit none
+            class(redox_kin_c) :: this
+            integer(kind=4), intent(in) :: unit !> file unit
+            write(unit,*) this%params%k_inh
+        end subroutine
+        
+        subroutine write_redox_reaction(this,unit)
+            import redox_kin_c
+            implicit none
+            class(redox_kin_c) :: this
+            integer(kind=4), intent(in) :: unit !> file unit
+            call write_reaction_sup(this,unit)
+            call this%write_params(unit)
         end subroutine
 end module

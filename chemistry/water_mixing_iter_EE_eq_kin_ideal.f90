@@ -1,6 +1,6 @@
 !> Computes aqueous variable activity species concentrations and aqueous component concentrations after iteration of WMA-EE method for equilibrium-kinetic chemical system
 !! We assume all variable activity spècies are auqoeus
-subroutine water_mixing_iter_EE_eq_kin_ideal(this,c1_old,c2nc_ig,c_tilde,conc_nc,conc_comp,porosity,Delta_t)
+subroutine water_mixing_iter_EE_eq_kin_ideal(this,c1_old,c2nc_ig,c_tilde,conc_nc,porosity,Delta_t)
     use aqueous_chemistry_m
     implicit none
 !> Arguments
@@ -9,18 +9,20 @@ subroutine water_mixing_iter_EE_eq_kin_ideal(this,c1_old,c2nc_ig,c_tilde,conc_nc
     real(kind=8), intent(in) :: c2nc_ig(:)
     real(kind=8), intent(in) :: c_tilde(:)
     real(kind=8), intent(out) :: conc_nc(:)
-    real(kind=8), intent(out) :: conc_comp(:)
+    !real(kind=8), intent(out) :: conc_comp(:)
     real(kind=8), intent(in), optional :: porosity
     real(kind=8), intent(in), optional :: Delta_t !> time step
 !> Variables
     real(kind=8), allocatable :: u_tilde(:)
     real(kind=8), allocatable :: conc_comp_react(:)
+    real(kind=8), allocatable :: conc_comp(:)
     real(kind=8), allocatable :: c1(:)
     integer(kind=4) :: niter !> number of iterations in Newton speciation
     logical :: CV_flag !> convergence flag
     real(kind=8) :: mu=0d0 !> Newton initialistaion parameter
 !> Pre-process
     allocate(conc_comp_react(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species))
+    allocate(conc_comp(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species))
     c1=this%concentrations(1:this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species)
 !> Components concentrations
     u_tilde=this%compute_u_tilde(c_tilde) !> transport part: concentrations of variable activity species after mixing
@@ -48,5 +50,5 @@ subroutine water_mixing_iter_EE_eq_kin_ideal(this,c1_old,c2nc_ig,c_tilde,conc_nc
         !call this%check_conc_var_act_species(conc_nc,conc_comp)
         !call this%check_act_aq_species()
 !> Post-process
-    deallocate(conc_comp_react,c1,u_tilde)
+    deallocate(conc_comp_react,conc_comp,c1,u_tilde)
 end subroutine

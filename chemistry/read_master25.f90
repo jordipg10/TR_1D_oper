@@ -129,10 +129,10 @@ subroutine read_master25(this,path,unit)
                 call this%species(this%aq_phase%num_species+min_ind)%assign_species(this%minerals(min_ind)%mineral)
                 if (this%minerals(min_ind)%mineral%cst_act_flag==.true.) then
                     num_cst_act_mins=num_cst_act_mins+1
-                    call this%cst_act_sp_indices(num_cst_act_sp+min_ind)=this%aq_phase%num_species+min_ind
+                    this%cst_act_sp_indices(num_cst_act_sp+min_ind)=this%aq_phase%num_species+min_ind
                 else
                     num_var_act_mins=num_var_act_mins+1
-                    call this%cst_act_sp_indices(num_var_act_sp+min_ind)=this%aq_phase%num_species+min_ind
+                    this%cst_act_sp_indices(num_var_act_sp+min_ind)=this%aq_phase%num_species+min_ind
                 end if
                 if (min_ind>this%num_min_kin_reacts) then
                     call this%eq_reacts(num_eq_reacts+min_ind-this%num_min_kin_reacts)%allocate_reaction(num_reactants+1)
@@ -141,6 +141,7 @@ subroutine read_master25(this,path,unit)
                     call this%eq_reacts(num_eq_reacts+min_ind-this%num_min_kin_reacts)%species(num_reactants+1)%assign_species(this%minerals(min_ind)%mineral)
                     this%eq_reacts(num_eq_reacts+min_ind-this%num_min_kin_reacts)%stoichiometry(num_reactants+1)=-1d0
                 else
+                    call this%kin_reacts(this%num_lin_kin_reacts+this%num_redox_kin_reacts+min_ind)%set_kin_reaction(this%min_kin_reacts(min_ind))
                     call this%min_kin_reacts(min_ind)%allocate_reaction(num_reactants+1)
                     call this%min_kin_reacts(min_ind)%set_react_type(2)
                     call this%min_kin_reacts(min_ind)%set_react_name(mineral%name)
@@ -172,10 +173,10 @@ subroutine read_master25(this,path,unit)
                 num_gases=num_gases+1
                 call this%species(this%aq_phase%num_species+this%num_minerals+gas_ind)%assign_species(gas)
                 if (this%gas_phase%gases(gas_ind)%cst_act_flag==.false.) then
-                    call this%var_act_sp_indices(num_var_act_sp+gas_ind)=this%aq_phase%num_species+this%num_minerals+gas_ind
+                    this%var_act_sp_indices(num_var_act_sp+gas_ind)=this%aq_phase%num_species+this%num_minerals+gas_ind
                     num_var_act_gases=num_var_act_gases+1
                 else
-                    call this%cst_act_sp_indices(num_cst_act_sp+gas_ind)=this%aq_phase%num_species+this%num_minerals+gas_ind
+                    this%cst_act_sp_indices(num_cst_act_sp+gas_ind)=this%aq_phase%num_species+this%num_minerals+gas_ind
                     num_cst_act_gases=num_cst_act_gases+1
                 end if
                 if (gas_ind<=this%gas_phase%num_gases_eq) then
@@ -385,7 +386,7 @@ subroutine read_master25(this,path,unit)
                 read(unit,*,iostat=int_var) surf_compl%name, num_reactants, ((this%eq_reacts(ind_reacts)%stoichiometry(j), this%eq_reacts(ind_reacts)%species(j)%name), j=1,num_reactants), log_K, surf_compl%valence
                 this%cat_exch%surf_compl(indices_exch_cats(ind_exch_cats))=surf_compl
                 call this%species(this%num_species-this%cat_exch%num_surf_compl+indices_exch_cats(ind_exch_cats))%assign_species(surf_compl)
-                call this%var_act_species(ind_var_act_sp+indices_exch_cats(ind_exch_cats))%assign_species(surf_compl)
+                !call this%var_act_species(ind_var_act_sp+indices_exch_cats(ind_exch_cats))%assign_species(surf_compl)
                 call this%eq_reacts(ind_reacts)%set_eq_cst(10**(-log_K))
                 call this%eq_reacts(ind_reacts)%set_react_name(surf_compl%name)
                 call this%eq_reacts(ind_reacts)%set_single_species(surf_compl,this%eq_reacts(ind_reacts)%num_species)

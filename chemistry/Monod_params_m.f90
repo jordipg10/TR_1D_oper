@@ -7,12 +7,8 @@ module Monod_params_m
         integer(kind=4) :: num_terms !> number of terms
         integer(kind=4) :: n_inh !> number of inhibitors
         real(kind=8), allocatable :: conc_thr(:) !> threshold concentration electron donors & acceptors
-        !type(species_c), allocatable :: TEAs(:) !> terminal electron acceptors
-        !type(species_c), allocatable :: inhibitors(:)
-        !type(species_c), allocatable :: catalysts(:)
         real(kind=8), allocatable :: k_M(:) !> half-saturation constants
         real(kind=8), allocatable :: k_inh(:) !> inhibition constants
-        !integer(kind=4) :: n_cat !> number of catalysts
         real(kind=8), allocatable :: conc_thr_inh(:) !> threshold concentration inhibitors
         
     contains

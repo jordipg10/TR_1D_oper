@@ -37,7 +37,7 @@ program main
     unit_out=4
     unit_res=6
 !> Choose problem
-    problem=1
+    problem=3
     if (problem==1) then
         root='C:\Users\Jordi\source\repos\jordipg10\TR_1D_oper\examples\gypsum_eq\gypsum_eq' !> name of path containing user input (must be written by the user)
     else if (problem==2) then
@@ -49,7 +49,7 @@ program main
     end if
     root_trim=trim(root)
 !> Initialise transport
-    option_tpt=1
+    option_tpt=0
     if (option_tpt==0) then
     !> we read transport data, BCs and discretisations
         !> in the explicit case, we also compute stability parameters
@@ -67,7 +67,7 @@ program main
     !> we read transport data for WMA
         call my_tpt_trans%read_transport_data_WMA(unit_tpt,root_trim)
     !> we set transport attribute in reactive transport object
-        call my_RT_trans%set_transport(my_tpt_trans)
+        call my_RT_trans%set_transport_trans(my_tpt_trans)
     !> we read temporal discretisation
         call my_RT_trans%read_time_discretisation(unit_discr,root_trim)
     else

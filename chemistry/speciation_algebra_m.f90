@@ -5,7 +5,7 @@ module speciation_algebra_m
     implicit none
     save
     type, public :: speciation_algebra_c
-        logical :: flag_comp !> TRUE if component matrix has no constant activity species (De Simoni et al, 2005), FALSE otherwise
+        logical :: flag_comp !> TRUE if component matrix has no constant activity species (De Simoni et al, 2005)
         logical :: flag_cat_exch !> TRUE if there are cation exchange reactions in reactive zone, FALSE otherwise
         integer(kind=4) :: num_species !> number of species
         integer(kind=4) :: num_eq_reactions !> number of equilibrium reactions
@@ -22,8 +22,8 @@ module speciation_algebra_m
         real(kind=8), allocatable :: Se_nc_1_star(:,:) !> =-inv_Se_nc_2*S_e_1
         real(kind=8), allocatable :: logK_star(:) !> =inv_Se_nc_2*log(K)
         real(kind=8), allocatable :: logK_tilde(:) !> =inv_Se_2*log(K)
-        real(kind=8), allocatable :: comp_mat_cst_act(:,:) !> component matrix with constant activity species
-        real(kind=8), allocatable :: comp_mat(:,:) !> component matrix without constant activity species
+        real(kind=8), allocatable :: comp_mat_cst_act(:,:) !> component matrix with constant activity species (Saaltink et al, 1998)
+        real(kind=8), allocatable :: comp_mat(:,:) !> component matrix without constant activity species (De Simoni et al, 2005)
     contains
     !> Set
         procedure, public :: set_flag_comp

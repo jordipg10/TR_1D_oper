@@ -4,7 +4,7 @@ module reaction_m
     use species_m
     implicit none
     save
-    type, public :: reaction_c !> reaction superclass
+    type, public, abstract :: reaction_c !> reaction superclass
         class(species_c), allocatable :: species(:) !> species involved
         real(kind=8), allocatable :: stoichiometry(:) !> same dimension and order as "species" attribute
         character(len=256) :: name !> name of reaction (eg. denitrification)
@@ -15,7 +15,7 @@ module reaction_m
                                         !! 4: redox
                                         !! 5: linear
                                         !! 6: gas
-                                        !! 7: nonlinear (chapuza)
+                                        !! 7: nonlinear
         real(kind=8) :: eq_cst !> equilibrium constant
         real(kind=8), allocatable :: coeffs_logK_T(:) !> 6 coefficients to compute analytical expression of logK(T)
         real(kind=8) :: delta_h !> enthalpy
@@ -24,7 +24,6 @@ module reaction_m
         procedure, public :: set_stoichiometry
         procedure, public :: set_all_species
         procedure, public :: set_single_species
-        procedure, public :: set_reactants
         procedure, public :: set_eq_cst
         procedure, public :: set_delta_h
         procedure, public :: set_react_name
@@ -37,6 +36,8 @@ module reaction_m
         procedure, public :: are_species_in_react
     !> Compute
         procedure, public :: compute_logK_dep_T
+    !> Write
+        procedure, public :: write_reaction=>write_reaction_sup
     !> Others
         procedure, public :: copy_attributes
         procedure, public :: change_sign_stoichiometry
@@ -86,15 +87,7 @@ module reaction_m
             if (index<1 .or. index>this%num_species) error stop
             call this%species(index)%assign_species(species)
        end subroutine
-       
-       subroutine set_reactants(this,reactants)
-            implicit none
-            class(reaction_c) :: this
-            class(species_c), intent(in) :: reactants(:)
-            if (size(reactants)>=this%num_species) error stop "Number of reactants too large"
-            !this%species(1:size(reactants))=reactants
-       end subroutine
-       
+              
        subroutine set_eq_cst(this,eq_cst)
             implicit none
             class(reaction_c) :: this
@@ -133,6 +126,9 @@ module reaction_m
             integer(kind=4) :: i
             
             flag=.false.
+            if (present(species_ind)) then
+                species_ind=0
+            end if
             do i=1,this%num_species
                 if (species%name==this%species(i)%name) then
                     flag=.true.
@@ -144,7 +140,7 @@ module reaction_m
             end do
        end subroutine
        
-       subroutine are_species_in_react(this,species,flag,species_ind) !> checks if all species participate in reaction
+       subroutine are_species_in_react(this,species,flag,species_ind) !> checks if a set of species participates in a reaction
             implicit none
             class(reaction_c), intent(in) :: this
             class(species_c), intent(in) :: species(:)
@@ -216,5 +212,15 @@ module reaction_m
             do i=1,this%num_species
                 this%stoichiometry(i)=-this%stoichiometry(i)
             end do
+        end subroutine
+        
+        subroutine write_reaction_sup(this,unit)
+            implicit none
+            class(reaction_c) :: this  
+            integer(kind=4), intent(in) :: unit
+            write(unit,"(10x,A30/)") this%name
+            write(unit,"(10x,I5/)") this%react_type
+            write(unit,"(10x,I5/)") this%num_species
+            write(unit,"(10x,ES15.5/)") this%eq_cst
        end subroutine
 end module

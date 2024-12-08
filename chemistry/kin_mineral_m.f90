@@ -7,27 +7,20 @@ module kin_mineral_m
     implicit none
     save
     type, public, extends(kin_reaction_c) :: kin_mineral_c
-        !type(solid_c) :: mineral !> mineral that dissolves or precipitates
         type(kin_mineral_params_c) :: params !> parameters to compute reaction rate
     contains
     !> Set
         procedure, public :: set_mineral_params
-        !procedure, public :: set_mineral
         procedure, public :: set_indices_aq_phase_min
     !> Compute
         procedure, public :: compute_rk_mineral
         procedure, public :: compute_drk_dc_mineral
+    !> Write
+        procedure, public :: write_params=>write_min_params
+        procedure, public :: write_reaction=>write_min_reaction
     end type
         
-    interface
-        !subroutine compute_rk_mineral(this,conc,rk)
-        !    import kin_mineral_c
-        !    implicit none
-        !    class(kin_mineral_c), intent(in) :: this
-        !    real(kind=8), intent(in) :: conc(:)
-        !    real(kind=8), intent(out) :: rk
-        !end subroutine
-        
+    interface        
         subroutine compute_rk_mineral(this,act_cat,saturation,react_surf,temp,rk)
             import kin_mineral_c
             implicit none
@@ -38,24 +31,7 @@ module kin_mineral_m
             real(kind=8), intent(in) :: temp
             real(kind=8), intent(out) :: rk
         end subroutine
-        
-        !subroutine compute_rk_j_mineral(this,j,rk_j)
-        !>    import kin_mineral_c
-        !>    implicit none
-        !>    class(kin_mineral_c), intent(in) :: this
-        !>    integer(kind=4), intent(in) :: j
-        !>    real(kind=8), intent(out) :: rk_j
-        !end subroutine
-        
-        !subroutine compute_drk_dc_mineral(this,conc,rk,drk_dc)
-        !    import kin_mineral_c
-        !    implicit none
-        !    class(kin_mineral_c), intent(in) :: this
-        !    real(kind=8), intent(in) :: conc(:)
-        !    real(kind=8), intent(in) :: rk
-        !    real(kind=8), intent(out) :: drk_dc(:)
-        !end subroutine
-        
+                
         subroutine compute_drk_dc_mineral(this,conc,act_cat,saturation,react_surf,temp,drk_dc)
             import kin_mineral_c
             implicit none
@@ -67,50 +43,7 @@ module kin_mineral_m
             real(kind=8), intent(in) :: temp !> Kelvin
             real(kind=8), intent(out) :: drk_dc(:) !> must be already allocated
         end subroutine
-        
-        subroutine read_kin_mineral(this)
-            import kin_mineral_c
-            implicit none
-            class(kin_mineral_c) :: this
-            !character(len=*), intent(in) :: react_name
-            !integer(kind=4), intent(in) :: n_paths
-            !character(len=*), intent(in) :: filename
-        end subroutine
-        
-        subroutine get_conc_kin_mineral(this,species,conc,conc_kin,kin_ind)
-            import kin_mineral_c
-            import species_c
-            implicit none
-            class(kin_mineral_c), intent(in) :: this
-            class(species_c), intent(in) :: species(:)
-            real(kind=8), intent(in) :: conc(:) !> species concentrations
-            real(kind=8), intent(out) :: conc_kin(:) !> concentration of species relevant to kinetic reaction rates
-            integer(kind=4), intent(out), optional :: kin_ind(:)
-        end subroutine
-        
-        !subroutine get_aq_species_indices(this,aq_species,conc,aq_species_ind)
-        !>    import kin_mineral_c
-        !>    import species_c
-        !>    implicit none
-        !>    class(kin_mineral_c), intent(in) :: this
-        !>    class(aq_species_c), intent(in) :: aq_species(:)
-        !>    !real(kind=8), intent(in) :: conc(:) !> species concentrations
-        !>    real(kind=8), intent(out) :: aq_species_ind(:) !> concentration of species relevant to kinetic reaction rates
-        !end subroutine
-        
-        subroutine get_solid_chem_mineral(this,aq_species,activities,act_cat,aq_species_ind)!,react_surf,temp)
-            import kin_mineral_c
-            import aq_species_c
-            implicit none
-            class(kin_mineral_c), intent(in) :: this
-            class(aq_species_c), intent(in) :: aq_species(:)
-            real(kind=8), intent(in) :: activities(:) !> aqueous species activities
-            real(kind=8), intent(out) :: act_cat(:)
-            integer(kind=4), intent(out), optional :: aq_species_ind(:)
-            !real(kind=8), intent(out) :: react_surf
-            !real(kind=8), intent(out) :: temp
-        end subroutine
-
+                
     end interface
     
     contains
@@ -120,28 +53,7 @@ module kin_mineral_m
             class(kin_mineral_params_c), intent(in) :: mineral_params
             this%params=mineral_params
         end subroutine
-        
-        !subroutine set_mineral(this,mineral)
-        !    implicit none
-        !    class(kin_mineral_c) :: this
-        !    class(solid_c), intent(in) :: mineral
-        !    this%mineral=mineral
-        !end subroutine
-        
-       subroutine append_kin_min_reaction(this,kin_reactions)
-        implicit none
-        class(kin_mineral_c), intent(in) :: this
-        type(kin_mineral_c), intent(inout), allocatable :: kin_reactions(:)
-        
-        type(kin_mineral_c), allocatable :: aux(:)
-        
-        aux=kin_reactions
-        deallocate(kin_reactions)
-        allocate(kin_reactions(size(aux)+1))
-        kin_reactions(1:size(aux))=aux
-        kin_reactions(size(kin_reactions))=this
-       end subroutine
-       
+                       
        subroutine set_indices_aq_phase_min(this,aq_phase)
             implicit none
             class(kin_mineral_c) :: this
@@ -160,5 +72,24 @@ module kin_mineral_m
                     error stop "Mineral reactant is not in aqueous phase"
                 end if
             end do
+       end subroutine
+       
+       subroutine write_min_params(this,unit)
+            import kin_mineral_c
+            implicit none
+            class(kin_mineral_c) :: this
+            integer(kind=4), intent(in) :: unit !> file unit
+            write(unit,*) this%params%act_energy
+            write(unit,*) this%params%num_par_reacts
+            write(unit,*) this%params%k
+       end subroutine
+       
+       subroutine write_min_reaction(this,unit)
+            import kin_mineral_c
+            implicit none
+            class(kin_mineral_c) :: this
+            integer(kind=4), intent(in) :: unit !> file unit
+            call write_reaction_sup(this,unit)
+            call this%write_params(unit)
         end subroutine
 end module

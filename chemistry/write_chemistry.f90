@@ -33,15 +33,18 @@ subroutine write_chemistry(this,unit)
         write(unit,"(10x,A30/)") this%chem_syst%eq_reacts(i)%name
     end do
     write(unit,"(2x,'Kinetic reactions:'/)")
-    do i=1,this%chem_syst%num_lin_kin_reacts
-        write(unit,"(10x,A30/)") this%chem_syst%lin_kin_reacts(i)%name
+    do i=1,this%chem_syst%num_kin_reacts
+        call this%chem_syst%kin_reacts(i)%kin_reaction%write_reaction(unit)
     end do
-    do i=1,this%chem_syst%num_min_kin_reacts
-        write(unit,"(10x,A30/)") this%chem_syst%min_kin_reacts(i)%name
-    end do
-    do i=1,this%chem_syst%num_redox_kin_reacts
-        write(unit,"(10x,A30/)") this%chem_syst%redox_kin_reacts(i)%name
-    end do
+    !do i=1,this%chem_syst%num_lin_kin_reacts
+    !    write(unit,"(10x,A30/)") this%chem_syst%lin_kin_reacts(i)%name
+    !end do
+    !do i=1,this%chem_syst%num_min_kin_reacts
+    !    write(unit,"(10x,A30/)") this%chem_syst%min_kin_reacts(i)%name
+    !end do
+    !do i=1,this%chem_syst%num_redox_kin_reacts
+    !    write(unit,"(10x,A30/)") this%chem_syst%redox_kin_reacts(i)%name
+    !end do
     write(unit,"(2x,'Global stoichiometric matrix:',/)")
     do i=1,this%chem_syst%num_reacts
         write(unit,"(10x,*(F15.5))") (this%chem_syst%stoich_mat(i,j), j=1,this%chem_syst%num_species)
@@ -110,7 +113,7 @@ subroutine write_chemistry(this,unit)
     !write(unit,"(/,2x,'Final alkalinity:'/)")
     !write(unit,"(10x,*(ES15.5))") (this%target_waters_init(j)%alkalinity, j=1,this%num_target_waters_init)
     write(unit,"(/,2x,'Aqueous equilibrium reaction rates:'/)")
-    do i=1,this%chem_syst%num_eq_reacts_homog
+    do i=1,this%chem_syst%aq_phase%num_aq_complexes
         write(unit,"(10x,*(ES15.5))") (this%target_waters(j)%r_eq(i), j=this%num_ext_waters+1,this%num_target_waters)
     end do
     write(unit,"(/,2x,'Kinetic reaction rates:'/)")

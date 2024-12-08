@@ -5,7 +5,6 @@ module reactive_zone_Lagr_m
     use chem_system_m
     use surf_compl_m
     use array_ops_m
-    use gas_zone_m
     use CV_params_m
     implicit none
     save
@@ -21,7 +20,7 @@ module reactive_zone_Lagr_m
         type(gas_phase_c) :: gas_phase !> gas phase
         real(kind=8), allocatable :: stoich_mat(:,:) !> stoichiometric matrix
         real(kind=8), allocatable :: stoich_mat_sol(:,:) !> solid stoichiometric matrix
-        integer(kind=4) :: num_eq_reactions=0 !> number of equilibrium reactions
+        !integer(kind=4) :: num_eq_reactions=0 !> number of equilibrium reactions
         type(eq_reaction_c), allocatable :: eq_reactions(:) !> equilibrium heterogeneous reactions
         class(chem_system_c), pointer :: chem_syst !>  (same chemical system as chemistry class)
         type(speciation_algebra_c) :: speciation_alg !> speciation algebra object
@@ -301,8 +300,8 @@ module reactive_zone_Lagr_m
             
             integer(kind=4) :: i
           
-            allocate(K(this%num_eq_reactions))
-            do i=1,this%num_eq_reactions
+            allocate(K(this%speciation_alg%num_eq_reactions))
+            do i=1,this%speciation_alg%num_eq_reactions
                 K(i)=this%eq_reactions(i)%eq_cst
             end do
            
@@ -360,7 +359,7 @@ module reactive_zone_Lagr_m
             !allocate(eq_react_indices(0))
             if (present(eq_reactions_ind)) then
                 !call this%allocate_eq_reactions(size(eq_reactions_ind))
-                if (size(eq_reactions_ind)/=this%num_eq_reactions) error stop
+                if (size(eq_reactions_ind)/=this%speciation_alg%num_eq_reactions) error stop
                 this%eq_reactions=this%chem_syst%eq_reacts(eq_reactions_ind)
             else
                 !i=1 !> counter equilibrium reactions reactive zone
@@ -518,7 +517,7 @@ module reactive_zone_Lagr_m
             implicit none
             class(reactive_zone_c) :: this
             integer(kind=4), intent(in) :: num_eq_reacts
-            this%num_eq_reactions=num_eq_reacts
+            this%speciation_alg%num_eq_reactions=num_eq_reacts
         end subroutine
         
         !subroutine set_num_kin_reactions(this,num_kin_reacts)
@@ -532,17 +531,17 @@ module reactive_zone_Lagr_m
             implicit none
             class(reactive_zone_c) :: this
             integer(kind=4), intent(in) :: num_old_eq_reacts
-            this%num_eq_reactions=this%num_eq_reactions-num_old_eq_reacts
+            this%speciation_alg%num_eq_reactions=this%speciation_alg%num_eq_reactions-num_old_eq_reacts
         end subroutine
         
         subroutine allocate_eq_reactions(this)
             implicit none
             class(reactive_zone_c) :: this
-            this%num_eq_reactions=this%num_minerals+this%cat_exch_zone%num_exch_cats+this%chem_syst%aq_phase%num_aq_complexes+this%gas_phase%num_gases_eq+this%chem_syst%num_redox_eq_reacts
+            this%speciation_alg%num_eq_reactions=this%num_minerals+this%cat_exch_zone%num_exch_cats+this%chem_syst%aq_phase%num_aq_complexes+this%gas_phase%num_gases_eq+this%chem_syst%num_redox_eq_reacts
             if (allocated(this%eq_reactions)) then
                 deallocate(this%eq_reactions)
             end if
-            allocate(this%eq_reactions(this%num_eq_reactions))
+            allocate(this%eq_reactions(this%speciation_alg%num_eq_reactions))
         end subroutine
         
         !subroutine allocate_kin_reactions(this,num_kin_reactions)
@@ -731,7 +730,7 @@ module reactive_zone_Lagr_m
                         n_c=n_c+1
                     end if
                 end do
-                n_eq=this%num_eq_reactions
+                n_eq=this%speciation_alg%num_eq_reactions
                 if (this%cat_exch_zone%num_surf_compl>0) then
                     flag_cat_exch=.true.
                 else
@@ -766,7 +765,7 @@ module reactive_zone_Lagr_m
                         
             !call aq_phase_new%copy_attributes(this%aq_phase)
             
-            if (this%num_eq_reactions>0) then
+            if (this%speciation_alg%num_eq_reactions>0) then
                 Se=this%stoich_mat
                 aux_Se=Se
                 K=this%get_eq_csts_react_zone()

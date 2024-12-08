@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Wed Dec  4 18:35:15 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Sun Dec  8 18:04:03 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE PROD_TOTAL__genmod
