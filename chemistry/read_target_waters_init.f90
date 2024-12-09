@@ -64,7 +64,7 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
                         !call this%target_waters(tar_wat_ind)%set_prim_species_indices()
                         !call this%target_waters(tar_wat_ind)%set_sec_var_act_species_indices()
                         call this%target_waters(tar_wat_ind)%compute_U_SkT_prod()
-                        call this%target_waters(tar_wat_ind)%allocate_reaction_rates_aq_chem()
+                        call this%target_waters(tar_wat_ind)%allocate_reaction_rates()
                     end if
                 end do
             end if
@@ -234,7 +234,7 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
                                 !call this%target_waters_init(tar_wat_ind)%compute_conc_comp_aq()
                             end if
                         end if
-                        call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%allocate_reaction_rates_aq_chem()
+                        call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%allocate_reaction_rates()
                         !call this%ext_waters(tar_wat_ind)%set_aq_phase(this%target_waters_init(tar_wat_ind)%aq_phase)
                         !call this%ext_waters(tar_wat_ind)%set_solid_chemistry(this%target_waters_init(tar_wat_ind)%solid_chemistry)
                         !call this%ext_waters(tar_wat_ind)%set_solid_chemistry%reactive_zone%speciation_alg(this%target_waters_init(tar_wat_ind)%solid_chemistry%reactive_zone%speciation_alg)
@@ -346,7 +346,7 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
                     !else
                     !    call this%target_waters_init(tar_wat_ind)%compute_conc_comp_aq()
                     !end if
-                    call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%allocate_reaction_rates_aq_chem()
+                    call this%target_waters_init(tar_wat_ind-this%num_ext_waters)%allocate_reaction_rates()
                     !call this%ext_waters(tar_wat_ind)%set_aq_phase(this%target_waters_init(tar_wat_ind)%aq_phase)
                     !!call this%ext_waters(tar_wat_ind)%set_solid_chemistry(this%target_waters_init(tar_wat_ind)%solid_chemistry)
                     !call this%ext_waters(tar_wat_ind)%set_solid_chemistry%reactive_zone%speciation_alg(this%target_waters_init(tar_wat_ind)%solid_chemistry%reactive_zone%speciation_alg)

@@ -24,7 +24,7 @@ module reactive_zone_Lagr_m
         type(eq_reaction_c), allocatable :: eq_reactions(:) !> equilibrium heterogeneous reactions
         class(chem_system_c), pointer :: chem_syst !>  (same chemical system as chemistry class)
         type(speciation_algebra_c) :: speciation_alg !> speciation algebra object
-        class(CV_params_t), pointer :: CV_params !> convergence parameters for speciation and reactive mixing computations (chapuza)
+        class(CV_params_s), pointer :: CV_params !> convergence parameters for speciation and reactive mixing computations (chapuza)
     contains
     !> Set
         procedure, public :: set_minerals_react_zone
@@ -34,7 +34,7 @@ module reactive_zone_Lagr_m
         procedure, public :: set_num_non_flowing_species
         procedure, public :: set_num_solids
         procedure, public :: set_chem_syst_react_zone
-        procedure, public :: set_num_eq_reactions
+        !procedure, public :: set_num_eq_reactions
         procedure, public :: set_cat_exch_zone
         procedure, public :: set_eq_reactions
         procedure, public :: set_stoich_mat_react_zone
@@ -56,8 +56,8 @@ module reactive_zone_Lagr_m
     !> Get
         procedure, public :: get_eq_csts_react_zone
     !> Compute
-        procedure, public :: compute_num_species_react_zone
-        procedure, public :: compute_num_cst_act_species_react_zone
+        !procedure, public :: compute_num_species_react_zone
+        !procedure, public :: compute_num_cst_act_species_react_zone
         !procedure, public :: compute_Delta_t_crit_reactive_zone
         procedure, public :: compute_speciation_alg_arrays
     !> Is
@@ -513,12 +513,12 @@ module reactive_zone_Lagr_m
         !>    this%mineral_zone=mineral_zone
         !end subroutine
         
-        subroutine set_num_eq_reactions(this,num_eq_reacts)
-            implicit none
-            class(reactive_zone_c) :: this
-            integer(kind=4), intent(in) :: num_eq_reacts
-            this%speciation_alg%num_eq_reactions=num_eq_reacts
-        end subroutine
+        !subroutine set_num_eq_reactions(this,num_eq_reacts)
+        !    implicit none
+        !    class(reactive_zone_c) :: this
+        !    integer(kind=4), intent(in) :: num_eq_reacts
+        !    this%speciation_alg%num_eq_reactions=num_eq_reacts
+        !end subroutine
         
         !subroutine set_num_kin_reactions(this,num_kin_reacts)
         !>    implicit none
@@ -574,24 +574,24 @@ module reactive_zone_Lagr_m
             end do
         end subroutine
         
-        function compute_num_species_react_zone(this) result(n_sp)
-            implicit none
-            class(reactive_zone_c), intent(in) :: this
-            integer(kind=4) :: n_sp
-            n_sp=this%chem_syst%aq_phase%num_species+this%num_non_flowing_species+this%chem_syst%num_min_kin_reacts
-        end function
+        !function compute_num_species_react_zone(this) result(n_sp)
+        !    implicit none
+        !    class(reactive_zone_c), intent(in) :: this
+        !    integer(kind=4) :: n_sp
+        !    n_sp=this%chem_syst%aq_phase%num_species+this%num_non_flowing_species+this%chem_syst%num_min_kin_reacts
+        !end function
         
-        function compute_num_cst_act_species_react_zone(this) result(n_c)
-            implicit none
-            class(reactive_zone_c), intent(in) :: this
-            integer(kind=4) :: n_c
-            logical :: flag
-            n_c=this%num_non_flowing_species    !> we assume:    1) all non-flowing species are pure minerals
-            call this%chem_syst%aq_phase%is_water_in_aq_phase(flag)
-            if (flag==.true.) then
-                n_c=n_c+1 
-            end if
-        end function
+        !function compute_num_cst_act_species_react_zone(this) result(n_c)
+        !    implicit none
+        !    class(reactive_zone_c), intent(in) :: this
+        !    integer(kind=4) :: n_c
+        !    logical :: flag
+        !    n_c=this%num_non_flowing_species    !> we assume:    1) all non-flowing species are pure minerals
+        !    call this%chem_syst%aq_phase%is_water_in_aq_phase(flag)
+        !    if (flag==.true.) then
+        !        n_c=n_c+1 
+        !    end if
+        !end function
         
         
         
@@ -789,7 +789,7 @@ module reactive_zone_Lagr_m
         subroutine set_CV_params(this,CV_params)
             implicit none
             class(reactive_zone_c) :: this
-            class(CV_params_t), intent(in), target :: CV_params
+            class(CV_params_s), intent(in), target :: CV_params
             this%CV_params=>CV_params
         end subroutine
 end module

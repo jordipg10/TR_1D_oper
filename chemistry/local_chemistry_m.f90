@@ -8,7 +8,6 @@ module local_chemistry_m
         real(kind=8) :: density !> [kg/L]
         real(kind=8) :: pressure !> [atm]
         real(kind=8), allocatable :: concentrations(:) !> species concentrations
-        !real(kind=8), allocatable :: conc_comp(:) !> component concentrations
         real(kind=8), allocatable :: activities(:) !> species activities
         real(kind=8), allocatable :: log_act_coeffs(:) !> log_10 activity coefficients
         real(kind=8), allocatable :: log_Jacobian_act_coeffs(:,:) !> log_10 Jacobian activity coefficients
@@ -23,12 +22,21 @@ module local_chemistry_m
         procedure, public :: set_pressure
         procedure, public :: set_temp
         procedure, public :: set_volume
-        procedure, public :: set_concentrations
+        procedure(set_concentrations), public, deferred :: set_concentrations
     !> Allocate
         procedure, public :: allocate_var_act_species_indices
         procedure, public :: allocate_cst_act_species_indices
     end type
     
+    abstract interface
+        subroutine set_concentrations(this,conc)
+            import local_chemistry_c
+            implicit none
+            class(local_chemistry_c) :: this
+            real(kind=8), intent(in) :: conc(:)
+        end subroutine
+    end interface
+        
     contains
         subroutine set_temp(this,temp)
             implicit none
@@ -74,12 +82,12 @@ module local_chemistry_m
             end if
         end subroutine
         
-        subroutine set_concentrations(this,conc)
-            implicit none
-            class(local_chemistry_c) :: this
-            real(kind=8), intent(in) :: conc(:)
-            this%concentrations=conc
-        end subroutine
+        !subroutine set_concentrations(this,conc)
+        !    implicit none
+        !    class(local_chemistry_c) :: this
+        !    real(kind=8), intent(in) :: conc(:)
+        !    this%concentrations=conc
+        !end subroutine
         
         subroutine allocate_var_act_species_indices(this,num_var)
             implicit none

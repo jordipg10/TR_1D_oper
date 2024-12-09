@@ -7,18 +7,18 @@ subroutine set_stoich_mat_sol_rz(this)
     integer(kind=4) :: i,j,k,l
     logical :: flag
 
-    if (this%num_eq_reactions>0) then
+    if (this%speciation_alg%num_eq_reactions>0) then
         i=1 !> counter total surface complexes
         j=1 !> counter equilibrium reactions reactive zone
         k=1 !> counter species of each equilibrium reaction in reactive zone
-        allocate(this%stoich_mat_sol(this%num_eq_reactions,this%num_solids))
+        allocate(this%stoich_mat_sol(this%speciation_alg%num_eq_reactions,this%num_solids))
         this%stoich_mat_sol=0d0 !> initialisation
     !> We set surface complexes
         if (this%cat_exch_zone%num_surf_compl>0) then
             do
                 if (this%cat_exch_zone%surf_compl(i)%name==this%eq_reactions(j)%species(k)%name) then
                     this%stoich_mat_sol(j,i)=this%eq_reactions(j)%stoichiometry(k)
-                    if (j<this%num_eq_reactions) then
+                    if (j<this%speciation_alg%num_eq_reactions) then
                         j=j+1 
                         k=1
                     else if (i<this%cat_exch_zone%num_surf_compl) then
@@ -30,7 +30,7 @@ subroutine set_stoich_mat_sol_rz(this)
                     end if
                 else if (k<this%eq_reactions(j)%num_species) then
                     k=k+1
-                else if (j<this%num_eq_reactions) then
+                else if (j<this%speciation_alg%num_eq_reactions) then
                     j=j+1
                     k=1
                 else if (i<this%cat_exch_zone%num_surf_compl) then
@@ -50,7 +50,7 @@ subroutine set_stoich_mat_sol_rz(this)
             do
                 if (this%minerals(i)%mineral%name==this%eq_reactions(j)%species(k)%name) then
                     this%stoich_mat_sol(j,this%cat_exch_zone%num_surf_compl+i)=this%eq_reactions(j)%stoichiometry(k)
-                    if (j<this%num_eq_reactions) then
+                    if (j<this%speciation_alg%num_eq_reactions) then
                         j=j+1 
                         k=1
                     else if (i<this%num_minerals) then
@@ -62,7 +62,7 @@ subroutine set_stoich_mat_sol_rz(this)
                     end if
                 else if (k<this%eq_reactions(j)%num_species) then
                     k=k+1
-                else if (j<this%num_eq_reactions) then
+                else if (j<this%speciation_alg%num_eq_reactions) then
                     j=j+1
                     k=1
                 else if (i<this%num_minerals) then

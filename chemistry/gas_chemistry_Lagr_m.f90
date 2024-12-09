@@ -1,7 +1,6 @@
 !> This class contains the partial pressures (activities) of gases
 module gas_chemistry_m
     use local_chemistry_m
-    use gas_zone_m
     use reactive_zone_Lagr_m
     implicit none
     save
@@ -12,6 +11,7 @@ module gas_chemistry_m
     !> Set
         procedure, public :: set_reactive_zone
         procedure, public :: set_indices_gases
+        procedure, public :: set_concentrations=>set_conc_gases
     !> Allocate
         procedure, public :: allocate_partial_pressures
         procedure, public :: allocate_conc_gases
@@ -26,9 +26,6 @@ module gas_chemistry_m
         procedure, public :: compute_pressure
     !> Update
         procedure, public :: update_conc_gases
-    !> Initialise
-        !procedure, public :: initialise_log_act_coeffs_gas_chem
-        !procedure, public :: initialise_log_Jacobian_act_coeffs_gas_chem
     end type
     
     interface
@@ -203,6 +200,15 @@ module gas_chemistry_m
             class(gas_chemistry_c) :: this
             real(kind=8), intent(in) :: conc_gases(:)
             this%concentrations=conc_gases
+       end subroutine
+       
+       subroutine set_conc_gases(this,conc)
+       !> Sets concentration of gases
+            implicit none
+            class(gas_chemistry_c) :: this
+            real(kind=8), intent(in) :: conc(:)
+            if (size(conc)/=this%reactive_zone%gas_phase%num_species) error stop "Dimension error in set_conc_gases"
+            this%concentrations=conc
        end subroutine
        
         !subroutine initialise_log_act_coeffs_gas_chem(this)

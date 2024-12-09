@@ -39,7 +39,7 @@ subroutine solve_reactive_mixing_bis(this,root,unit,mixing_ratios,mixing_waters_
     !> primary concentrations
     !procedure(get_c1_aq), pointer :: p_prim=>NULL()
     !> reactive mixing subroutines
-    procedure(transport_iter_comp), pointer :: p_solver=>null()
+    procedure(mixing_iter_comp), pointer :: p_solver=>null()
     !> mobile species mixing
     !procedure(compute_c_tilde), pointer :: p_c_tilde=>null()
     !p_c_tilde=>compute_c_tilde !> by default
@@ -82,12 +82,12 @@ subroutine solve_reactive_mixing_bis(this,root,unit,mixing_ratios,mixing_waters_
                     error stop "Integration method for chemical reactions not implemented yet"
                 end if
             else if (react_zone%cat_exch_zone%num_surf_compl>0) then !> variable activity species are aqueous and solid
-                p_solver=>transport_iter_comp_exch !> only equilibrium reactions
+                p_solver=>mixing_iter_comp_exch !> only equilibrium reactions
             else !> faltan los gases en equilibrio
                 if (this%act_coeffs_model==0) then !> ideal
-                    p_solver=>transport_iter_comp_ideal !> only equilibrium reactions
+                    p_solver=>mixing_iter_comp_ideal !> only equilibrium reactions
                 else
-                    p_solver=>transport_iter_comp !> only equilibrium reactions
+                    p_solver=>mixing_iter_comp !> only equilibrium reactions
                 end if
             end if
             !allocate(conc_nc(this%target_waters(i)%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species))

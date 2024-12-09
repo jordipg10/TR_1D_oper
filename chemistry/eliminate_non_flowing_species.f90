@@ -1,13 +1,11 @@
 subroutine eliminate_non_flowing_species(this,nf_ind)
     use reactive_zone_Lagr_m
-    use mineral_zone_m
     implicit none
     class(reactive_zone_c) :: this
     integer(kind=4), intent(in) :: nf_ind(:) ! indices of non-flowing species to be eliminated from reactive zone
     
     integer(kind=4) :: i,j,k,l,flag,new_num_non_flowing_species
     integer(kind=4), allocatable :: solid_ind(:),old_min_ind(:)
-    type(mineral_zone_c) :: old_mineral_zone
     type(reactive_zone_c) :: new_react_zone
     type(species_c), allocatable :: new_non_flowing_species(:)
 

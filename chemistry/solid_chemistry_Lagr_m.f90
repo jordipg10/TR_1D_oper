@@ -13,7 +13,7 @@ module solid_chemistry_m
         real(kind=8) :: CEC !> Cation exchange capacity [eq/L] (we assume we have one or zero adsorption surfaces)
     contains
     !> Set
-        procedure, public :: set_conc_solids
+        procedure, public :: set_concentrations=>set_conc_solids
         procedure, public :: set_indices_solids
         procedure, public :: set_vol_fracts
         procedure, public :: set_react_surfaces
@@ -79,12 +79,12 @@ module solid_chemistry_m
         
        
         
-        subroutine set_conc_solids(this,conc_solids)
+        subroutine set_conc_solids(this,conc)
             implicit none
             class(solid_chemistry_c) :: this
-            real(kind=8), intent(in) :: conc_solids(:)
-            if (this%reactive_zone%chem_syst%num_solids<size(conc_solids)) error stop "Dimension error in set_conc_solids"
-            this%concentrations=conc_solids
+            real(kind=8), intent(in) :: conc(:)
+            if (this%reactive_zone%chem_syst%num_solids<size(conc)) error stop "Dimension error in set_conc_solids"
+            this%concentrations=conc
         end subroutine
         
         subroutine set_vol_fracts(this,vol_fracts)

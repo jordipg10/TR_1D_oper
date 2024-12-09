@@ -1,9 +1,9 @@
-!> Convergence parameters type
-!! This type contains numerical parameters related to convergence of iterative methods
+!> Convergence parameters module
+!! This structure contains numerical parameters related to convergence of iterative methods
 module CV_params_m
     implicit none
     save
-    type, public :: CV_params_t !> convergence parameters type
+    type, public :: CV_params_s !> convergence parameters structure
         real(kind=8) :: abs_tol=1d-14 !> arithmetic absolute tolerance (residual Newton method)
         real(kind=8) :: log_abs_tol=1d-9 !> logarithmic absolute tolerance (residual Newton method)
         real(kind=8) :: rel_tol=1d-14 !> relative tolerance

@@ -39,7 +39,7 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
     !> primary concentrations
     procedure(get_c1_aq), pointer :: p_prim=>NULL()
     !> reactive mixing subroutines
-    procedure(transport_iter_comp), pointer :: p_solver=>null()
+    procedure(mixing_iter_comp), pointer :: p_solver=>null()
     !> mobile species mixing
     procedure(compute_c_tilde), pointer :: p_c_tilde=>null()
     p_c_tilde=>compute_c_tilde !> by default
@@ -69,7 +69,6 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
                     if (abs(mixing_ratios%cols(i-this%num_ext_waters)%col_1(1)-1d0)<this%target_waters(i)%solid_chemistry%reactive_zone%CV_params%abs_tol .and. inf_norm_vec_real(mixing_ratios%cols(i-this%num_ext_waters)%col_1(2:mixing_ratios%cols(i-this%num_ext_waters)%dim))<this%target_waters(i)%solid_chemistry%reactive_zone%CV_params%abs_tol) then
                         continue
                     else
-                        react_zone=this%target_waters(i)%get_react_zone()
                         if (this%target_waters(i)%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species==this%target_waters(i)%solid_chemistry%reactive_zone%speciation_alg%num_prim_species) then
                             p_prim=>get_c1_aq !> chapuza
                         else
@@ -92,12 +91,12 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
                                 error stop "Integration method for chemical reactions not implemented yet"
                             end if
                         else if (react_zone%cat_exch_zone%num_surf_compl>0) then !> variable activity species are aqueous and solid
-                            p_solver=>transport_iter_comp_exch !> only equilibrium reactions
+                            p_solver=>mixing_iter_comp_exch !> only equilibrium reactions
                         else !> faltan los gases en equilibrio
                             if (this%act_coeffs_model==0) then !> ideal
-                                p_solver=>transport_iter_comp_ideal !> only equilibrium reactions
+                                p_solver=>mixing_iter_comp_ideal !> only equilibrium reactions
                             else
-                                p_solver=>transport_iter_comp !> only equilibrium reactions
+                                p_solver=>mixing_iter_comp !> only equilibrium reactions
                             end if
                         end if
                         allocate(conc_nc(this%target_waters(i)%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species))
@@ -162,7 +161,7 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
                     error stop "Integration method for chemical reactions not implemented yet"
                 end if
             else
-                p_solver=>transport_iter_comp !> only equilibrium reactions
+                p_solver=>mixing_iter_comp !> only equilibrium reactions
             end if
         else if (this%chem_syst%num_kin_reacts>0) then !> only kinetic reactions
             if (int_method_chem_reacts==1) then !> Euler explicit
@@ -173,7 +172,7 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
                 error stop "Integration method for chemical reactions not implemented yet"
             end if
         else !> no chemical reactions
-            !p_solver=>transport_iter_species !> conservative transport
+            !p_solver=>mixing_iter_species !> conservative transport
         end if
         allocate(tar_wat_indices(this%num_target_waters))
     !> Time loop

@@ -1,4 +1,4 @@
-!> This type:
+!> This structure:
 !!>   contains algebraic information relevant for speciation: dimensions and arrays
 module speciation_algebra_m
     use matrices_m
@@ -77,7 +77,7 @@ module speciation_algebra_m
             this%comp_mat(:,this%num_prim_species+1:this%num_var_act_species)=transpose(this%Se_nc_1_star)
         end subroutine
         
-        subroutine compute_comp_mat_cst_act(this) !> computes component matrix with constant activity species
+        subroutine compute_comp_mat_cst_act(this) !> computes component matrix with constant activity species (Saaltink et al, 1998)
             implicit none
             class(speciation_algebra_c) :: this
             if (allocated(this%comp_mat_cst_act)) then
