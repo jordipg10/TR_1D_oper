@@ -30,7 +30,7 @@ subroutine update_eq_reactions(this,old_eq_reacts_ind)
         end do
         if (flag==.true.) then
             this%eq_reactions(k)=aux(j)
-            if (k<this%num_eq_reactions) then
+            if (k<this%speciation_alg%num_eq_reactions) then
                 k=k+1
             end if
         end if

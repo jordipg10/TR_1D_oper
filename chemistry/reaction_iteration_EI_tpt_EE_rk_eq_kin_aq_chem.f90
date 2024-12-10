@@ -11,5 +11,5 @@
 !    real(kind=8), intent(out) :: conc_comp_react(:) !> reaction part of component concentrations (must be allocated)
 !            
 !    !call this%compute_rk_aq_chem() !> we compute kinetic reaction rates
-!    conc_comp_react=Delta_t*matmul(this%U_SkT_prod,matmul(rk_mat,mixing_ratios))/porosity
+!    conc_comp_react=Delta_t*matmul(solid_chemistry%reactive_zone%U_SkT_prod,matmul(rk_mat,mixing_ratios))/porosity
 !end subroutine

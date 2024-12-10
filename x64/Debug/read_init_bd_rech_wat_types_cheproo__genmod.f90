@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Mon Dec  9 15:38:57 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Tue Dec 10 19:08:35 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE READ_INIT_BD_RECH_WAT_TYPES_CHEPROO__genmod
@@ -15,10 +15,11 @@
      &NUM_AQ_PRIM_ARRAY(:)
               INTEGER(KIND=4) ,ALLOCATABLE, INTENT(OUT) ::              &
      &NUM_CSTR_ARRAY(:)
-              , INTENT(INOUT) :: INIT_CAT_EXCH_ZONES(:)
+              TYPE (SOLID_CHEMISTRY_C), INTENT(INOUT) ::                &
+     &INIT_CAT_EXCH_ZONES(:)
               TYPE (AQUEOUS_CHEMISTRY_C) ,ALLOCATABLE, INTENT(OUT) ::   &
      &WAT_TYPES(:)
-              CLASS (GAS_CHEMISTRY_C) ,OPTIONAL, INTENT(IN) :: GAS_CHEM
+              TYPE (GAS_CHEMISTRY_C) ,OPTIONAL, INTENT(IN) :: GAS_CHEM
             END SUBROUTINE READ_INIT_BD_RECH_WAT_TYPES_CHEPROO
           END INTERFACE 
         END MODULE READ_INIT_BD_RECH_WAT_TYPES_CHEPROO__genmod

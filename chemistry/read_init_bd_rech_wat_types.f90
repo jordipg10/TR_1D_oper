@@ -6,9 +6,9 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
     integer(kind=4), intent(out), allocatable :: ind_wat_type(:)
     integer(kind=4), intent(out), allocatable :: num_aq_prim_array(:)
     integer(kind=4), intent(out), allocatable :: num_cstr_array(:)
-    class(solid_chemistry_c), intent(inout) :: init_cat_exch_zones(:)
+    type(solid_chemistry_c), intent(inout) :: init_cat_exch_zones(:)
     type(aqueous_chemistry_c), intent(out), allocatable :: wat_types(:)
-    class(gas_chemistry_c), intent(in), optional :: gas_chem !> chapuza
+    type(gas_chemistry_c), intent(in), optional :: gas_chem !> chapuza
     
     integer(kind=4) :: i,j,k,l,nwtype,icon,n_p_aq,gas_ind,min_ind,model,niter
     integer(kind=4), allocatable :: cols(:)

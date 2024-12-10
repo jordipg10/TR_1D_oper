@@ -1,14 +1,13 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Mon Dec  9 15:39:13 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Tue Dec 10 16:51:17 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE WATER_MIXING_ITER_EFI_EQ_KIN_ANAL_IDEAL__genmod
           INTERFACE 
             SUBROUTINE WATER_MIXING_ITER_EFI_EQ_KIN_ANAL_IDEAL(THIS,    &
-     &C1_OLD,C2NC_IG,C_TILDE,CONC_NC,POROSITY,DELTA_T)
+     &C1_OLD,C_TILDE,CONC_NC,POROSITY,DELTA_T)
               USE AQUEOUS_CHEMISTRY_M
               CLASS (AQUEOUS_CHEMISTRY_C) :: THIS
               REAL(KIND=8), INTENT(IN) :: C1_OLD(:)
-              REAL(KIND=8), INTENT(IN) :: C2NC_IG(:)
               REAL(KIND=8), INTENT(IN) :: C_TILDE(:)
               REAL(KIND=8), INTENT(OUT) :: CONC_NC(:)
               REAL(KIND=8) ,OPTIONAL, INTENT(IN) :: POROSITY

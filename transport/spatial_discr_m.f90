@@ -2,12 +2,13 @@
 module spatial_discr_m
     implicit none
     save
-    type, public, abstract :: spatial_discr_c !> spatial discretisation superclass
+    type, public, abstract :: spatial_discr_c !> spatial discretisation abstract superclass
         integer(kind=4) :: Num_targets      !> number of targets
         logical :: Num_targets_defined      !> TRUE if Num_targets defined, FALse otherwise
         integer(kind=4) :: targets_flag     !> 0: cells
                                             !> 1: interfaces
         real(kind=8) :: measure
+        real(kind=8) :: init_point          !> initial point
         integer(kind=4) :: scheme           !> Spatial discretisation scheme:
                                                 !> 1: CFD
                                                 !> 2: IFD
@@ -20,6 +21,7 @@ module spatial_discr_m
         procedure, public :: set_scheme
         procedure(read_mesh), public, deferred :: read_mesh
         procedure(get_mesh_size), public, deferred :: get_mesh_size
+        !procedure(get_init_point), public, deferred :: get_init_point
         procedure(get_dim), public, deferred :: get_dim
         procedure(compute_measure), public, deferred :: compute_measure
         !procedure(compute_Num_targets), public, deferred :: compute_Num_targets
@@ -47,6 +49,13 @@ module spatial_discr_m
             class(spatial_discr_c) :: this
             integer(kind=4), intent(in), optional :: i
             real(kind=8) :: Delta_x
+        end function
+        
+        function get_init_point(this) result(init_point)
+            import spatial_discr_c
+            implicit none
+            class(spatial_discr_c) :: this
+            real(kind=8) :: init_point
         end function
         
         function get_dim(this) result(dim)

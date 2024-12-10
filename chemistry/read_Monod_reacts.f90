@@ -28,7 +28,7 @@ subroutine read_Monod_reacts(this,path,unit)
             rewind(unit)
             exit
         else
-            call this%is_redox_kin_reaction_in_chem_syst(label,flag,react_ind)
+            call this%is_kin_reaction_in_chem_syst(label,flag,react_ind)
             if (flag==.true.) then
                 read(unit,*) n_inh(react_ind)
                 call this%redox_kin_reacts(react_ind)%params%allocate_k_inh(n_inh(react_ind))
@@ -46,12 +46,6 @@ subroutine read_Monod_reacts(this,path,unit)
                 end do
                 read(unit,*) n_sp
                 call this%redox_kin_reacts(react_ind)%allocate_reaction(n_sp)
-                !if (react_ind<this%num_redox_kin_reacts) then
-                !    react_ind=react_ind+1
-                !else
-                !    rewind(unit)
-                !    exit
-                !end if
             else
                 call this%is_eq_reaction_in_chem_syst(label,flag,react_ind)
                 if (flag==.true.) then
@@ -72,7 +66,7 @@ subroutine read_Monod_reacts(this,path,unit)
         if (label=='end') then
             exit
         else
-            call this%is_redox_kin_reaction_in_chem_syst(label,flag,react_ind)
+            call this%is_kin_reaction_in_chem_syst(label,flag,react_ind)
             if (flag==.true.) then
                 if (n_inh(react_ind)>0) then
                     allocate(inhibitors(n_inh(react_ind)))

@@ -42,7 +42,7 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
     !type(redox_kin_c), target :: Monod
     type(eq_reaction_c) :: eq_react
     type(eq_reaction_c), allocatable :: eq_reacts(:)
-    !type(kin_lin_c), target :: linear
+    logical :: flag_comp
     !type(kin_mineral_c), target :: kin_mineral
     
     class(chem_system_c), pointer :: p_chem_syst=>null()
@@ -51,7 +51,7 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
     
     !type(surface_c), allocatable :: init_cat_exch_zones(:)
     
-
+    flag_comp=.true.
     
 !> Chemical system
     open(unit_chem_syst_file,file=root//'_sist_quim.dat',status='old',action='read')
@@ -71,7 +71,7 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
         else if (label=='INITIAL SURFACE ADSORPTION ZONES') then
             call this%read_init_cat_exch_zones_CHEPROO(unit_loc_chem_file,init_cat_exch_zones_bis,reactive_zones)
         else if (label=='INITIAL GAS ZONES') then
-            call this%read_init_gas_zones_CHEPROO(unit_loc_chem_file,init_gas_zones)
+            call this%read_init_gas_zones_CHEPROO(unit_loc_chem_file,init_gas_zones,reactive_zones)
         else
             continue
         end if
@@ -134,36 +134,37 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
     do i=1,size(reactive_zones)
         call reactive_zones(i)%set_num_solids()
         call reactive_zones(i)%set_non_flowing_species()
+        call reactive_zones(i)%set_speciation_alg_dimensions(flag_comp)
         call reactive_zones(i)%set_eq_reactions()
         call reactive_zones(i)%set_stoich_mat_react_zone()
         call reactive_zones(i)%set_stoich_mat_sol_rz()
-        !call reactive_zones(i)%chem_syst%set_stoich_mat_gas()
+        call reactive_zones(i)%set_CV_params(this%CV_params) !> chapuza
     end do
 !> We verify pointers (chapuza)
+    !if (size(reactive_zones)>0) then
+    !    do i=1,size(init_sol_zones)
+    !        if (.not. associated(init_sol_zones(i)%reactive_zone%chem_syst)) then
+    !            call init_sol_zones(i)%reactive_zone%set_chem_syst_react_zone(this%chem_syst)
+    !            !print *, associated(init_sol_zones(i)%solid_chem%reactive_zone%chem_syst)
+    !        end if
+    !        call init_sol_zones(i)%set_reactive_zone(reactive_zones(i))
+    !    end do
+    !    do i=1,size(init_gas_zones)
+    !        if (.not. associated(init_gas_zones(i)%reactive_zone%chem_syst)) then
+    !            call init_gas_zones(i)%reactive_zone%set_chem_syst_react_zone(this%chem_syst)
+    !            !print *, associated(init_sol_zones(i)%solid_chem%reactive_zone%chem_syst)
+    !        end if
+    !        call init_gas_zones(i)%set_reactive_zone(reactive_zones(i))
+    !    end do
+    !end if
+!> Chapuza
     if (size(reactive_zones)>0) then
-        do i=1,size(init_sol_zones)
-            if (.not. associated(init_sol_zones(i)%reactive_zone%chem_syst)) then
-                call init_sol_zones(i)%reactive_zone%set_chem_syst_react_zone(this%chem_syst)
-                !print *, associated(init_sol_zones(i)%solid_chem%reactive_zone%chem_syst)
-            end if
-            call init_sol_zones(i)%set_reactive_zone(reactive_zones(i))
-        end do
-        do i=1,size(init_gas_zones)
-            if (.not. associated(init_gas_zones(i)%reactive_zone%chem_syst)) then
-                call init_gas_zones(i)%reactive_zone%set_chem_syst_react_zone(this%chem_syst)
-                !print *, associated(init_sol_zones(i)%solid_chem%reactive_zone%chem_syst)
-            end if
-            call init_gas_zones(i)%set_reactive_zone(reactive_zones(i))
-        end do
+        call this%set_reactive_zones(reactive_zones)
     end if
 !> Target waters
     open(unit_target_waters_init_file,file=root//'_tar_wat.dat',status='old',action='read')
-    call this%read_target_waters_init(unit_target_waters_init_file,wat_types,init_sol_zones,init_gas_zones,niter,CV_flag)
+    call this%read_target_waters_init(unit_target_waters_init_file,wat_types,init_sol_zones,init_gas_zones,this%reactive_zones,niter,CV_flag)
     close(unit_target_waters_init_file)
 !> Output data
     call this%chem_out_options%read_chem_out_options(root,unit_output_file,this%target_waters)
-!> Chapuza
-    if (this%chem_syst%num_minerals>0 .or. this%chem_syst%gas_phase%num_species>0) then
-        call this%set_reactive_zones()
-    end if
 end subroutine

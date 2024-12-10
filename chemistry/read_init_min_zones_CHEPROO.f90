@@ -6,14 +6,14 @@ subroutine read_init_min_zones_CHEPROO(this,unit,init_min_zones,reactive_zones)
     type(solid_chemistry_c), intent(out), allocatable :: init_min_zones(:)
     type(reactive_zone_c), intent(inout), allocatable, optional :: reactive_zones(:)
     
-    integer(kind=4) :: i,j,k,nmtype,nrwtype,icon,num_min_zones,num_mins_rz,num_mins_glob,num_mins_loc,num_mins_loc_eq,ind_rz,imtype,num_rz,min_ind,num_mins_var_eq,num_mins_cst_eq
+    integer(kind=4) :: num_surf_rz,num_gas_rz,num_rz_old,i,j,k,nmtype,nrwtype,icon,num_min_zones,num_mins_rz,num_mins_glob,num_mins_loc,num_mins_loc_eq,ind_rz,imtype,num_rz,min_ind,num_mins_var_eq,num_mins_cst_eq
     integer(kind=4), allocatable :: init_min_zones_indices(:),min_indices(:,:)
     character(len=256) :: str,constrain,label,min_name
-    real(kind=8) :: guess,c_tot,temp,vol_frac,react_surf,conc 
+    real(kind=8) :: guess,c_tot,temp,vol_frac,react_surf,conc
     logical :: min_flag
     type(mineral_c) :: mineral
-    type(reactive_zone_c) :: react_zone
-    type(reactive_zone_c), allocatable :: react_zones(:)
+    type(reactive_zone_c) :: aux_react_zone
+    type(reactive_zone_c), allocatable :: react_zones(:),aux_react_zones(:)
     
 
     
@@ -66,6 +66,7 @@ subroutine read_init_min_zones_CHEPROO(this,unit,init_min_zones,reactive_zones)
                             call init_min_zones(imtype)%allocate_vol_fracts()
                             call init_min_zones(imtype)%allocate_react_surfaces()
                             call init_min_zones(imtype)%allocate_conc_solids()
+                            call init_min_zones(imtype)%allocate_log_act_coeffs_solid_chem()
                             call init_min_zones(imtype)%allocate_activities()
                             call init_min_zones(imtype)%set_temp(temp+273.18) !> Kelvin
                             call init_min_zones(imtype)%allocate_var_act_species_indices(react_zones(imtype)%num_minerals_var_act)
@@ -142,25 +143,49 @@ subroutine read_init_min_zones_CHEPROO(this,unit,init_min_zones,reactive_zones)
             end if
         end do
         if (present(reactive_zones)) then
-            !print *, allocated(reactive_zones)
             if (allocated(reactive_zones)) then
+                num_rz_old=size(reactive_zones)
+                allocate(aux_react_zones(num_rz_old))
+                num_gas_rz=0
+                do i=1,num_rz_old
+                    call aux_react_zones(i)%assign_react_zone(reactive_zones(i))
+                    if (reactive_zones(i)%gas_phase%num_gases_eq>0 .and. reactive_zones(i)%num_solids==0) then
+                        num_gas_rz=num_gas_rz+1
+                    end if
+                end do
+                num_surf_rz=(num_rz_old-num_gas_rz)/(1+num_gas_rz)
+                num_rz=num_rz_old+nmtype*(1+num_gas_rz)
                 deallocate(reactive_zones)
-                allocate(reactive_zones(nmtype))
-                !if (size(reactive_zones)==nmtype) then
-                    do i=1,nmtype
-                        call reactive_zones(i)%set_chem_syst_react_zone(this%chem_syst)
-                        call reactive_zones(i)%allocate_minerals_react_zone(init_min_zones(i)%reactive_zone%num_minerals)
-                        reactive_zones(i)%minerals=init_min_zones(i)%reactive_zone%minerals
-                        call reactive_zones(i)%set_num_mins_cst_act(init_min_zones(i)%reactive_zone%num_minerals_cst_act)
-                        call reactive_zones(i)%set_num_mins_var_act(init_min_zones(i)%reactive_zone%num_minerals_var_act)
+                allocate(reactive_zones(num_rz))
+                do i=1,num_gas_rz+num_surf_rz
+                    call reactive_zones(i)%assign_react_zone(aux_react_zones(i))
+                end do
+                do i=1,nmtype
+                    call reactive_zones(num_gas_rz+num_surf_rz+i)%set_chem_syst_react_zone(this%chem_syst)
+                    call reactive_zones(num_gas_rz+num_surf_rz+i)%allocate_minerals_react_zone(init_min_zones(i)%reactive_zone%num_minerals)
+                    reactive_zones(num_gas_rz+num_surf_rz+i)%minerals=init_min_zones(i)%reactive_zone%minerals
+                    call reactive_zones(num_gas_rz+num_surf_rz+i)%set_num_mins_cst_act(init_min_zones(i)%reactive_zone%num_minerals_cst_act)
+                    call reactive_zones(num_gas_rz+num_surf_rz+i)%set_num_mins_var_act(init_min_zones(i)%reactive_zone%num_minerals_var_act)
+                end do
+                do i=1,num_gas_rz
+                    do j=1,num_surf_rz
+                        call reactive_zones(num_gas_rz+num_surf_rz+nmtype+(i-1)*num_surf_rz+j)%assign_react_zone(aux_react_zones(num_gas_rz+num_surf_rz+(i-1)*num_surf_rz+j))
                     end do
-                !end if
+                    do j=1,nmtype
+                        call reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%set_chem_syst_react_zone(this%chem_syst)
+                        call reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%set_gas_phase(reactive_zones(i)%gas_phase)
+                        call reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%allocate_minerals_react_zone(init_min_zones(i)%reactive_zone%num_minerals)
+                        reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%minerals=init_min_zones(i)%reactive_zone%minerals
+                        call reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%set_num_mins_cst_act(init_min_zones(i)%reactive_zone%num_minerals_cst_act)
+                        call reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%set_num_mins_var_act(init_min_zones(i)%reactive_zone%num_minerals_var_act)
+                    end do
+                end do
             else
                 allocate(reactive_zones(nmtype))
                 do i=1,nmtype
-                    reactive_zones(i)=init_min_zones(i)%reactive_zone
+                    call reactive_zones(i)%assign_react_zone(init_min_zones(i)%reactive_zone)
                 end do
             end if
         end if
     end if
-end subroutine
+ end subroutine

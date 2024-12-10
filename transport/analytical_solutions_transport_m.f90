@@ -1,11 +1,29 @@
 module analytical_solutions_transport_m
+    use analytical_solutions_diffusion_m
     use transport_transient_m
     use transport_m
-    use transport_properties_heterog_m
-    use special_fcts_m
     implicit none
     save
     contains
+        function fund_sol_tpt_eqn_1D(c0,M,Delta_x,x,mu,t,phi,D,q) result(conc)
+            implicit none
+            real(kind=8), intent(in) :: c0
+            real(kind=8), intent(in) :: M
+            real(kind=8), intent(in) :: Delta_x
+            real(kind=8), intent(in) :: x
+            real(kind=8), intent(in) :: mu
+            real(kind=8), intent(in) :: t
+            real(kind=8), intent(in) :: phi
+            real(kind=8), intent(in) :: D
+            real(kind=8), intent(in) :: q
+            real(kind=8) :: conc
+            
+            real(kind=8), parameter :: eps=1d-12
+
+                conc=exp(5d-1*(q/D)*(x-mu-t*q/(2*phi)))
+                conc=conc*fund_sol_diff_eqn_1D(M,Delta_x,x,mu,t,phi,D)+c0
+        end function
+        
         function anal_sol_tpt_1D_stat_flujo_lin(this,x) result(conc)
         !> Analytical solution 1D stationary transport equation with:
         !>   D=cst

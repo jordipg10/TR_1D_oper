@@ -57,7 +57,7 @@ subroutine Newton_EfI_rk_eq_kin_aq_anal_ideal(this,c_tilde,porosity,Delta_t,conc
         !> We compute kinetic reaction rates and its Jacobian analitically
             call this%compute_rk_Jac_rk_anal(drk_dc)
         !> Newton residual
-            fk=matmul(this%solid_chemistry%reactive_zone%speciation_alg%comp_mat,conc_nc)-u_tilde-(Delta_t/porosity)*matmul(this%U_SkT_prod,this%rk) 
+            fk=matmul(this%solid_chemistry%reactive_zone%speciation_alg%comp_mat,conc_nc)-u_tilde-(Delta_t/porosity)*matmul(this%solid_chemistry%reactive_zone%U_SkT_prod,this%rk) 
         !> Check convergence
             if (inf_norm_vec_real(fk)<this%solid_chemistry%reactive_zone%CV_params%abs_tol) then !> CV reached
                 CV_flag=.true.

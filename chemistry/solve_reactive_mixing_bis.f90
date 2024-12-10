@@ -68,13 +68,13 @@ subroutine solve_reactive_mixing_bis(this,root,unit,mixing_ratios,mixing_waters_
             if (this%chem_syst%num_kin_reacts>0) then !> equilibrium and kinetic reactions
                 if (int_method_chem_reacts==1) then !> Euler explicit
                     if (this%act_coeffs_model==0) then !> ideal
-                        p_solver=>water_mixing_iter_EE_eq_kin_ideal
+                        !p_solver=>water_mixing_iter_EE_eq_kin_ideal
                     else
                         p_solver=>water_mixing_iter_EE_eq_kin
                     end if
                 else if (int_method_chem_reacts==2 .and. this%Jac_flag==1) then !> Euler fully implicit, analytical Jacobian
                     if (this%act_coeffs_model==0) then !> ideal
-                        p_solver=>water_mixing_iter_EfI_eq_kin_anal_ideal
+                        !p_solver=>water_mixing_iter_EfI_eq_kin_anal_ideal
                     else
                         p_solver=>water_mixing_iter_EfI_eq_kin_anal
                     end if
@@ -85,7 +85,7 @@ subroutine solve_reactive_mixing_bis(this,root,unit,mixing_ratios,mixing_waters_
                 p_solver=>mixing_iter_comp_exch !> only equilibrium reactions
             else !> faltan los gases en equilibrio
                 if (this%act_coeffs_model==0) then !> ideal
-                    p_solver=>mixing_iter_comp_ideal !> only equilibrium reactions
+                    !p_solver=>mixing_iter_comp_ideal !> only equilibrium reactions
                 else
                     p_solver=>mixing_iter_comp !> only equilibrium reactions
                 end if

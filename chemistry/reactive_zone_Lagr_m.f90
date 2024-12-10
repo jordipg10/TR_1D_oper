@@ -25,6 +25,7 @@ module reactive_zone_Lagr_m
         class(chem_system_c), pointer :: chem_syst !>  (same chemical system as chemistry class)
         type(speciation_algebra_c) :: speciation_alg !> speciation algebra object
         class(CV_params_s), pointer :: CV_params !> convergence parameters for speciation and reactive mixing computations (chapuza)
+        real(kind=8), allocatable :: U_SkT_prod(:,:) !> =U*S_k,nc^T
     contains
     !> Set
         procedure, public :: set_minerals_react_zone
@@ -56,9 +57,9 @@ module reactive_zone_Lagr_m
     !> Get
         procedure, public :: get_eq_csts_react_zone
     !> Compute
-        !procedure, public :: compute_num_species_react_zone
+        !procedure, public :: compute_num_eq_reactions
         !procedure, public :: compute_num_cst_act_species_react_zone
-        !procedure, public :: compute_Delta_t_crit_reactive_zone
+        procedure, public :: compute_U_SkT_prod
         procedure, public :: compute_speciation_alg_arrays
     !> Is
         procedure, public :: is_nf_species_in_react_zone
@@ -399,7 +400,6 @@ module reactive_zone_Lagr_m
                             k=k+1
                         end if
                         call this%chem_syst%eq_reacts(j)%is_species_in_react(this%non_flowing_species(k),flag,sp_ind)
-                        !call this%chem_syst%is_eq_reaction_in_chem_syst(this%non_flowing_species(i),flag,eq_react_ind)
                         if (flag==.true.) then
                             if (this%non_flowing_species(k)%cst_act_flag==.true.) then
                                 this%eq_reactions(i)=this%chem_syst%eq_reacts(j)
@@ -408,19 +408,12 @@ module reactive_zone_Lagr_m
                                 this%eq_reactions(this%num_minerals_cst_act+this%gas_phase%num_gases_eq+this%chem_syst%num_redox_eq_reacts+this%chem_syst%aq_phase%num_aq_complexes+l)=this%chem_syst%eq_reacts(j)
                                 l=l+1
                             end if
-                        !!> Chapuza
-                        !>    if (k==this%num_minerals) then
-                        !>        this%eq_reactions(k+1:k+this%chem_syst%aq_phase%num_aq_complexes)=this%chem_syst%eq_reacts(this%chem_syst%num_minerals_eq+1:this%chem_syst%num_minerals_eq+this%chem_syst%aq_phase%num_aq_complexes)
-                        !>        i=i+this%chem_syst%aq_phase%num_aq_complexes
-                        !>    end if
                             if (k<this%num_non_flowing_species) then
-                                !i=i+1
                                 k=k+1
                                 j=1
                             else
                                 exit
                             end if
-                            !call append_int_1D_array(eq_react_indices,eq_react_ind)
                         else if (j<this%chem_syst%num_eq_reacts) then
                             j=j+1
                         else
@@ -428,48 +421,9 @@ module reactive_zone_Lagr_m
                         end if
                     end do
                 end if
-                !this%eq_reactions(i+1:this%num_eq_reactions)=this%chem_syst%eq_reacts(this%chem_syst%num_eq_reacts-this%chem_syst%num_eq_reacts_homog+1:this%chem_syst%num_eq_reacts)
-                !call this%chem_syst%is_water_dissoc_in_chem_syst(flag,eq_react_ind)
-                !if (flag==.true.) then
-                !>    call append_int_1D_array(eq_react_indices,eq_react_ind)
-                !end if
-                !call this%allocate_eq_reactions(size(eq_react_indices))
-                !this%eq_reactions=this%chem_syst%eq_reacts(eq_react_indices)
             end if
         end subroutine
-        
-        !subroutine set_kin_reactions(this,kin_reactions)
-        !>    implicit none
-        !>    class(reactive_zone_c) :: this
-        !>    class(kin_reaction_poly_c), intent(in), optional :: kin_reactions(:)
-        !>    if (present(kin_reactions)) then
-        !>        this%kin_reactions=kin_reactions
-        !>    else
-        !>        this%kin_reactions=this%chem_syst%kin_reacts !> we assume all kinetic reactions take place in this reactive zone
-        !>        !this%num_kin_reactions=size(this%kin_reactions)
-        !>    end if
-        !end subroutine
-        
-        !subroutine set_min_kin_reactions(this,min_kin_reactions)
-        !>    implicit none
-        !>    class(reactive_zone_c) :: this
-        !>    class(kin_mineral_c), intent(in), optional :: min_kin_reactions(:)
-        !>    if (present(min_kin_reactions)) then
-        !>        this%min_kin_reactions=min_kin_reactions
-        !>    else
-        !>        this%min_kin_reactions=this%chem_syst%min_kin_reacts !> we assume all kinetic reactions take place in this reactive zone
-        !>        this%num_min_kin_reactions=size(this%min_kin_reactions)
-        !>    end if
-        !end subroutine
-        
-        !subroutine compute_num_reactions(this)
-        !>    implicit none
-        !>    class(reactive_zone_c) :: this
-        !>    !this%num_kin_reactions=size(this%kin_reactions)
-        !>    !this%num_eq_reactions=size(this%eq_reactions)
-        !>    this%num_reactions=this%chem_syst%num_kin_reacts+this%num_eq_reactions !> faltan reacciones homgeneas equilibrio
-        !end subroutine
-        
+                
         subroutine set_minerals_react_zone(this,mineral_indices)
             implicit none
             class(reactive_zone_c) :: this
@@ -537,7 +491,7 @@ module reactive_zone_Lagr_m
         subroutine allocate_eq_reactions(this)
             implicit none
             class(reactive_zone_c) :: this
-            this%speciation_alg%num_eq_reactions=this%num_minerals+this%cat_exch_zone%num_exch_cats+this%chem_syst%aq_phase%num_aq_complexes+this%gas_phase%num_gases_eq+this%chem_syst%num_redox_eq_reacts
+            !this%speciation_alg%num_eq_reactions=this%num_minerals+this%cat_exch_zone%num_exch_cats+this%chem_syst%aq_phase%num_aq_complexes+this%gas_phase%num_gases_eq+this%chem_syst%num_redox_eq_reacts
             if (allocated(this%eq_reactions)) then
                 deallocate(this%eq_reactions)
             end if
@@ -689,7 +643,10 @@ module reactive_zone_Lagr_m
             this%stoich_mat=react_zone%stoich_mat
             this%stoich_mat_sol=react_zone%stoich_mat_sol
             this%speciation_alg=react_zone%speciation_alg
-            call this%set_eq_reactions()
+            if (allocated(react_zone%eq_reactions)) then
+                call this%set_eq_reactions()
+            end if
+            this%U_SkT_prod=react_zone%U_SkT_prod
         end subroutine
         
         subroutine set_speciation_alg(this,speciation_alg)
@@ -724,13 +681,12 @@ module reactive_zone_Lagr_m
                         n_c=n_c+1
                     end if
                 end do
-                !n_gas_kin=this%gas_phase%num_species-this%gas_phase%num_gases_eq
                 do i=1,this%gas_phase%num_species
                     if (this%gas_phase%gases(i)%cst_act_flag==.true.) then
                         n_c=n_c+1
                     end if
                 end do
-                n_eq=this%speciation_alg%num_eq_reactions
+                n_eq=this%num_minerals+this%gas_phase%num_gases_eq+this%cat_exch_zone%num_exch_cats+this%chem_syst%aq_phase%num_aq_complexes
                 if (this%cat_exch_zone%num_surf_compl>0) then
                     flag_cat_exch=.true.
                 else
@@ -792,4 +748,19 @@ module reactive_zone_Lagr_m
             class(CV_params_s), intent(in), target :: CV_params
             this%CV_params=>CV_params
         end subroutine
+        
+        subroutine compute_U_SkT_prod(this)
+            implicit none
+            class(reactive_zone_c) :: this
+            if (this%speciation_alg%num_eq_reactions==0) then
+                this%U_SkT_prod=transpose(this%chem_syst%Sk) !> chapuza
+            else
+                this%U_SkT_prod=matmul(this%speciation_alg%comp_mat,transpose(this%chem_syst%Sk(:,1:this%speciation_alg%num_var_act_species)))
+            end if
+        end subroutine
+        
+        !subroutine compute_num_eq_reactions(this)
+        !    implicit none
+        !    class(reactive_zone_c) :: this
+
 end module

@@ -30,7 +30,7 @@ subroutine compute_dfk_dc1_aq_EfI_ideal(this,c2nc,drk_dc,porosity,Delta_t,dfk_dc
         drk_dc1=drk_dc(:,1:this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species)
         drk_dc2nc=drk_dc(:,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species+1:this%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species)
     !> We compute Jacobian Newton residual
-        dfk_dc1=this%solid_chemistry%reactive_zone%speciation_alg%comp_mat(:,1:this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species)+matmul(this%solid_chemistry%reactive_zone%speciation_alg%comp_mat(:,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species+1:this%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species),dc2nc_dc1)-(Delta_t/porosity)*matmul(this%U_SkT_prod,drk_dc1+matmul(drk_dc2nc,dc2nc_dc1))
+        dfk_dc1=this%solid_chemistry%reactive_zone%speciation_alg%comp_mat(:,1:this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species)+matmul(this%solid_chemistry%reactive_zone%speciation_alg%comp_mat(:,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species+1:this%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species),dc2nc_dc1)-(Delta_t/porosity)*matmul(this%solid_chemistry%reactive_zone%U_SkT_prod,drk_dc1+matmul(drk_dc2nc,dc2nc_dc1))
 !> Post-process
     deallocate(dc2nc_dc1,drk_dc1,drk_dc2nc)
 end subroutine

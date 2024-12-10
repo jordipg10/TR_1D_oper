@@ -65,7 +65,7 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
                     write(unit,"(20x,*(A15))") (this%chem_syst%aq_phase%aq_species(this%chem_out_options%ind_aq_species(j))%name, j=1,this%chem_out_options%num_aq_species)
                 end if
             !> Target waters loop
-                do i=this%num_ext_waters+1,this%num_target_waters
+                do i=1,this%num_target_waters_dom
                     if (abs(mixing_ratios%cols(i-this%num_ext_waters)%col_1(1)-1d0)<this%target_waters(i)%solid_chemistry%reactive_zone%CV_params%abs_tol .and. inf_norm_vec_real(mixing_ratios%cols(i-this%num_ext_waters)%col_1(2:mixing_ratios%cols(i-this%num_ext_waters)%dim))<this%target_waters(i)%solid_chemistry%reactive_zone%CV_params%abs_tol) then
                         continue
                     else
@@ -77,13 +77,13 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
                         if (this%chem_syst%num_kin_reacts>0) then !> equilibrium and kinetic reactions
                             if (int_method_chem_reacts==1) then !> Euler explicit
                                 if (this%act_coeffs_model==0) then !> ideal
-                                    p_solver=>water_mixing_iter_EE_eq_kin_ideal
+                                    !p_solver=>water_mixing_iter_EE_eq_kin_ideal
                                 else
                                     p_solver=>water_mixing_iter_EE_eq_kin
                                 end if
                             else if (int_method_chem_reacts==2 .and. this%Jac_flag==1) then !> Euler fully implicit, analytical Jacobian
                                 if (this%act_coeffs_model==0) then !> ideal
-                                    p_solver=>water_mixing_iter_EfI_eq_kin_anal_ideal
+                                    !p_solver=>water_mixing_iter_EfI_eq_kin_anal_ideal
                                 else
                                     p_solver=>water_mixing_iter_EfI_eq_kin_anal
                                 end if
@@ -94,7 +94,7 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
                             p_solver=>mixing_iter_comp_exch !> only equilibrium reactions
                         else !> faltan los gases en equilibrio
                             if (this%act_coeffs_model==0) then !> ideal
-                                p_solver=>mixing_iter_comp_ideal !> only equilibrium reactions
+                                !p_solver=>mixing_iter_comp_ideal !> only equilibrium reactions
                             else
                                 p_solver=>mixing_iter_comp !> only equilibrium reactions
                             end if

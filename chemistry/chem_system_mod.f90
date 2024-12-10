@@ -41,7 +41,7 @@ module chem_system_m
         type(eq_reaction_c), allocatable :: eq_reacts(:) !> equilibrium reactions
         type(speciation_algebra_c) :: speciation_alg !> speciation algebra object
         integer(kind=4) :: num_kin_reacts=0 !> number of kinetic reactions
-        type(kin_reaction_poly_c), allocatable :: kin_reacts(:) !> kinetic reactions pointer array (not used at the moment)
+        type(kin_reaction_poly_c), allocatable :: kin_reacts(:) !> kinetic reactions pointer array
         integer(kind=4) :: num_lin_kin_reacts=0 !> number of linear kinetic reactions
         type(lin_kin_reaction_c), allocatable :: lin_kin_reacts(:) !> linear kinetic reactions
         integer(kind=4) :: num_min_kin_reacts=0 !> number of mineral kinetic reactions
@@ -53,6 +53,7 @@ module chem_system_m
         procedure, public :: set_num_species
         procedure, public :: set_num_minerals
         procedure, public :: set_num_minerals_eq
+        procedure, public :: set_num_minerals_cst_act
         procedure, public :: set_num_eq_reacts
         procedure, public :: set_num_kin_reacts
         procedure, public :: set_num_lin_kin_reacts
@@ -336,12 +337,21 @@ module chem_system_m
         end subroutine
         
         subroutine set_num_minerals_eq(this,num_minerals_eq)
-        !> This subroutine sets the "num_minerals_eq"
+        !> This subroutine sets the "num_minerals_eq" attribute
             implicit none
             class(chem_system_c) :: this
             integer(kind=4), intent(in) :: num_minerals_eq
             if (num_minerals_eq>this%num_minerals .AND. allocated(this%minerals)) error stop "Number of minerals in equilibrium cannot be greater than number of minerals"
             this%num_minerals_eq=num_minerals_eq
+        end subroutine
+        
+        subroutine set_num_minerals_cst_act(this,num_minerals_cst_act)
+        !> This subroutine sets the "num_minerals_cst_act" attribute
+            implicit none
+            class(chem_system_c) :: this
+            integer(kind=4), intent(in) :: num_minerals_cst_act
+            if (num_minerals_cst_act>this%num_minerals .AND. allocated(this%minerals)) error stop "Number of minerals with constant activity cannot be greater than number of minerals"
+            this%num_minerals_cst_act=num_minerals_cst_act
         end subroutine
         
         subroutine set_eq_reacts(this,eq_reacts)

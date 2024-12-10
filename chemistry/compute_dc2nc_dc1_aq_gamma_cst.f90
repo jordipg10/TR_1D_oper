@@ -6,7 +6,6 @@ subroutine compute_dc2nc_dc1_aq_gamma_cst(this,dc2nc_dc1)
     implicit none
 !> Arguments
     class(aqueous_chemistry_c), intent(in) :: this
-    !real(kind=8), intent(in) :: c2(:) !> chapuza (dim=n_eq)
     real(kind=8), intent(out) :: dc2nc_dc1(:,:)
 !> Variables
     integer(kind=4) :: i,j    

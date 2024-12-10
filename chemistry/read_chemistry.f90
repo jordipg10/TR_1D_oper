@@ -30,7 +30,7 @@ subroutine read_chemistry(this,root,path_DB,unit_chem_syst_file,unit_loc_chem_fi
 !> Autentica chapuza
     if (this%num_reactive_zones==1) then
         do i=1,this%num_target_solids
-            call this%target_solids_init(i)%set_reactive_zone(this%reactive_zones(1))
+            !call this%target_solids_init(i)%set_reactive_zone(this%reactive_zones(1))
             call this%target_solids(i)%set_reactive_zone(this%reactive_zones(1))
         end do
         do i=1,this%num_target_gases
@@ -38,16 +38,16 @@ subroutine read_chemistry(this,root,path_DB,unit_chem_syst_file,unit_loc_chem_fi
         end do
     else if (this%num_reactive_zones==3) then
         !print *, this%num_target_solids/2
-        do i=1,this%num_target_solids/2
-            call this%target_solids_init(i)%set_reactive_zone(this%reactive_zones(1))
-            call this%target_solids(i)%set_reactive_zone(this%reactive_zones(1))
-        end do
-        call this%target_solids_init(this%num_target_solids/2+1)%set_reactive_zone(this%reactive_zones(2))
-        call this%target_solids(this%num_target_solids/2+1)%set_reactive_zone(this%reactive_zones(2))
-        do i=this%num_target_solids/2+2,this%num_target_solids
-            call this%target_solids_init(i)%set_reactive_zone(this%reactive_zones(3))
-            call this%target_solids(i)%set_reactive_zone(this%reactive_zones(3))
-        end do
+        !do i=1,this%num_target_solids/2
+        !    !call this%target_solids_init(i)%set_reactive_zone(this%reactive_zones(1))
+        !    call this%target_solids(i)%set_reactive_zone(this%reactive_zones(1))
+        !end do
+        !!call this%target_solids_init(this%num_target_solids/2+1)%set_reactive_zone(this%reactive_zones(2))
+        !call this%target_solids(this%num_target_solids/2+1)%set_reactive_zone(this%reactive_zones(2))
+        !do i=this%num_target_solids/2+2,this%num_target_solids
+        !    !call this%target_solids_init(i)%set_reactive_zone(this%reactive_zones(3))
+        !    call this%target_solids(i)%set_reactive_zone(this%reactive_zones(3))
+        !end do
         !do i=1,this%num_target_gases
         !    call this%target_gases(i)%set_reactive_zone(this%reactive_zones(1))
         !end do

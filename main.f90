@@ -26,7 +26,7 @@ program main
     character(len=:), allocatable :: root_trim !> root of problem to solve trimmed
 !**************************************************************************************************
 !> Name of path containing chemical and transport information
-    path_DB = 'C:\Users\Jordi\source\repos\jordipg10\TR_1D_oper\BBDD\' !> must be written by the user
+    path_DB = 'C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\BBDD\' !> must be written by the user
     path_DB_trim = trim(path_DB)
 !> File units (arbitrary)
     unit_chem_syst=1
@@ -37,19 +37,21 @@ program main
     unit_out=4
     unit_res=6
 !> Choose problem
-    problem=3
+    problem=4
     if (problem==1) then
-        root='C:\Users\Jordi\source\repos\jordipg10\TR_1D_oper\examples\gypsum_eq\gypsum_eq' !> name of path containing user input (must be written by the user)
+        root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\gypsum_eq\gypsum_eq' !> name of path containing user input (must be written by the user)
     else if (problem==2) then
-        root='C:\Users\Jordi\source\repos\jordipg10\TR_1D_oper\examples\cc_anh_eq\cc_anh' !> name of path containing user input (must be written by the user)
+        root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\cc_anh_eq\cc_anh' !> name of path containing user input (must be written by the user)
     else if (problem==3) then
-        root='C:\Users\Jordi\source\repos\jordipg10\TR_1D_oper\examples\cc_anh_kin\cc_anh' !> name of path containing user input (must be written by the user)
+        root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\cc_anh_kin\cc_anh' !> name of path containing user input (must be written by the user)
+    else if (problem==4) then
+        root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\denit\denit' !> name of path containing user input (must be written by the user)
     else
         error stop "Problem not implemented yet"
     end if
     root_trim=trim(root)
 !> Initialise transport
-    option_tpt=0
+    option_tpt=1
     if (option_tpt==0) then
     !> we read transport data, BCs and discretisations
         !> in the explicit case, we also compute stability parameters
@@ -81,7 +83,11 @@ program main
     !> we read chemistry
     call my_chem%read_chemistry(root_trim,path_DB_trim,unit_chem_syst,unit_loc_chem,unit_tw,unit_out)
 !> We call the main solver
-    call my_chem%solve_reactive_mixing(root_trim,unit_res,my_RT_trans%transport%mixing_ratios,my_RT_trans%transport%mixing_waters_indices,my_RT_trans%transport%F_mat%diag,my_RT_trans%transport%time_discr,my_RT_trans%int_method_chem_reacts)
+    if (my_chem%act_coeffs_model==0) then !> ideal
+        call my_chem%solve_reactive_mixing_ideal(root_trim,unit_res,my_RT_trans%transport%mixing_ratios,my_RT_trans%transport%mixing_waters_indices,my_RT_trans%transport%F_mat%diag,my_RT_trans%transport%time_discr,my_RT_trans%int_method_chem_reacts)!,my_RT_trans%transport%spatial_discr,my_RT_trans%transport%tpt_props_heterog%dispersion(1),my_RT_trans%transport%tpt_props_heterog%flux(1),my_RT_trans%transport%tpt_props_heterog%porosity(1),fund_sol_tpt_eqn_1D)
+    else
+        call my_chem%solve_reactive_mixing(root_trim,unit_res,my_RT_trans%transport%mixing_ratios,my_RT_trans%transport%mixing_waters_indices,my_RT_trans%transport%F_mat%diag,my_RT_trans%transport%time_discr,my_RT_trans%int_method_chem_reacts)!,my_RT_trans%transport%spatial_discr,my_RT_trans%transport%tpt_props_heterog%dispersion(1),my_RT_trans%transport%tpt_props_heterog%flux(1),my_RT_trans%transport%tpt_props_heterog%porosity(1),fund_sol_tpt_eqn_1D)
+    end if
 !> We set chemistry attribute in reactive transport object
     call my_RT_trans%set_chemistry(my_chem)
 !> We write data and results

@@ -42,7 +42,7 @@
 !        call this%compute_c2nc_from_c1_aq_Picard(niter_spec,CV_flag) !> computes concentration of secondary non constant activity species from concentration of primary species using mass action law
 !        call this%compute_Jacobian_rk_anal(drk_dc) !> we compute kinetic Jacobian
 !        !call this%compute_Jacobian_rk_incr_coeff(drk_dc) !> we compute kinetic reaction rate and Jacobian
-!        fk=matmul(this%solid_chemistry%reactive_zone%speciation_alg%comp_mat,this%concentrations(1:n_nc))-u_tilde-(Delta_t/porosity)*matmul(this%U_SkT_prod,MATMUL(rk_mat,mixing_ratios(:,n_col_mix))) !> Newton residual
+!        fk=matmul(this%solid_chemistry%reactive_zone%speciation_alg%comp_mat,this%concentrations(1:n_nc))-u_tilde-(Delta_t/porosity)*matmul(solid_chemistry%reactive_zone%U_SkT_prod,MATMUL(rk_mat,mixing_ratios(:,n_col_mix))) !> Newton residual
 !        if (inf_norm_vec_real(fk)<this%solid_chemistry%reactive_zone%CV_params%abs_tol) then !> CV reached
 !            CV_flag=.true.
 !            exit

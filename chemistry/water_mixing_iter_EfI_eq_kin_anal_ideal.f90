@@ -1,14 +1,14 @@
 !> Computes aqueous species concentrations after iteration of WMA using Euler fully implicit in chemical reactions for kinetic system
 !! We assume all primary species are aqueous
 !! The Jacobians are computed analytically
-subroutine water_mixing_iter_EfI_eq_kin_anal_ideal(this,c1_old,c2nc_ig,c_tilde,conc_nc,porosity,Delta_t)
+subroutine water_mixing_iter_EfI_eq_kin_anal_ideal(this,c1_old,c_tilde,conc_nc,porosity,Delta_t)
     use aqueous_chemistry_m
     implicit none
 !> Arguments
     class(aqueous_chemistry_c) :: this !> aqueous chemistry object at current time step
     !class(aqueous_chemistry_c), intent(in) :: this_old !> aqueous chemistry object at previous time step (nombre muy malo)
     real(kind=8), intent(in) :: c1_old(:)
-    real(kind=8), intent(in) :: c2nc_ig(:)
+    !real(kind=8), intent(in) :: c2nc_ig(:)
     real(kind=8), intent(in) :: c_tilde(:)
     real(kind=8), intent(out) :: conc_nc(:)
     !real(kind=8), intent(out) :: conc_comp(:)

@@ -71,6 +71,7 @@ module spatial_discr_1D_m
             read(1,*) this%targets_flag
             read(1,*) this%measure
             read(1,*) this%Num_targets
+            read(1,*) this%init_point
             read(1,*) this%adapt_ref
             close(1)
             this%Num_targets_defined=.true.

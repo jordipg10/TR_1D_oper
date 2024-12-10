@@ -9,5 +9,5 @@ subroutine reaction_iteration_EE_eq_kin_aq_chem(this,porosity,Delta_t,conc_comp_
     real(kind=8), intent(out) :: conc_comp_react(:) !> reaction part of component concentrations (must be already allocated)
 !> Process
     call this%compute_rk() !> we compute kinetic reactions rates
-    conc_comp_react=Delta_t*matmul(this%U_SkT_prod,this%rk)/porosity
+    conc_comp_react=Delta_t*matmul(this%solid_chemistry%reactive_zone%U_SkT_prod,this%rk)/porosity
 end subroutine
