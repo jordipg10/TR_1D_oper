@@ -95,7 +95,7 @@ subroutine read_transport_data_WMA(this,unit,root)!,tpt_props,BCs,mesh,time_disc
                 end if
             end do
         else if (label=='MIXING WATERS') then
-            i=0 !> counter nº targets init (we assume they are in increasing order)
+            i=0 !> counter nº targets domain
             do while (i<this%mixing_waters_indices%num_cols)
                 i=i+1
                 if (this%mixing_waters_indices%cols(i)%dim<this%mixing_waters_indices%num_cols-1) then
@@ -103,6 +103,7 @@ subroutine read_transport_data_WMA(this,unit,root)!,tpt_props,BCs,mesh,time_disc
                 else
                     allocate(mix_wat_indices(this%mixing_ratios%cols(i)%dim))
                     read(unit,*) mix_wat_ind, mix_wat_indices
+                    this%mixing_waters_indices%cols(I)%col_1(1)=mix_wat_ind
                     do j=1,this%mixing_ratios%cols(i)%dim
                         if (mix_wat_indices(j)==mix_wat_ind) then
                             pos=j
@@ -112,10 +113,10 @@ subroutine read_transport_data_WMA(this,unit,root)!,tpt_props,BCs,mesh,time_disc
                     do j=1,this%mixing_ratios%cols(i)%dim
                         if (j<pos) then
                             this%mixing_ratios%cols(I)%col_1(1+j)=mixing_ratios%cols(I)%col_1(J)
-                            this%mixing_waters_indices%cols(I)%col_1(j)=mix_wat_indices(J)
+                            this%mixing_waters_indices%cols(I)%col_1(1+j)=mix_wat_indices(J)
                         else if (j>pos) then
                             this%mixing_ratios%cols(I)%col_1(j)=mixing_ratios%cols(I)%col_1(J)
-                            this%mixing_waters_indices%cols(I)%col_1(j-1)=mix_wat_indices(J)
+                            this%mixing_waters_indices%cols(I)%col_1(j)=mix_wat_indices(J)
                         end if
                     end do
                     deallocate(mix_wat_indices)

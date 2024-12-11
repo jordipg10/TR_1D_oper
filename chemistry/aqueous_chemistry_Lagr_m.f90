@@ -191,10 +191,11 @@ module aqueous_chemistry_m
     
     interface
         
-        subroutine compute_c2nc_from_c1_Picard(this,c2nc_ig,c2nc,niter,CV_flag)
+        subroutine compute_c2nc_from_c1_Picard(this,c1,c2nc_ig,c2nc,niter,CV_flag)
             import aqueous_chemistry_c
             implicit none
             class(aqueous_chemistry_c) :: this
+            real(kind=8), intent(in) :: c1(:) !> primary concentrations
             real(kind=8), intent(in) :: c2nc_ig(:) !> initial guess secondary variable activity concentrations
             real(kind=8), intent(out) :: c2nc(:) !> secondary variable activity concentrations (must be already allocated)
             integer(kind=4), intent(out) :: niter !> number of iterations

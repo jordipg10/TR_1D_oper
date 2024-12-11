@@ -11,33 +11,20 @@ module chemistry_Lagr_m
         integer(kind=4) :: option !> option for reading chemical data (1: CHEPROO-based, 2: PHREEQC, 3: PFLOTRAN)
         integer(kind=4) :: act_coeffs_model !> model to compute activity coefficients
         type(chem_system_c) :: chem_syst !> chemical system object
-        !integer(kind=4) :: num_wat_types=0 !> number of initial water types
-        !type(aqueous_chemistry_c), allocatable :: wat_types(:)
-        !integer(kind=4) :: num_init_wat_types=0 !> number of initial water types
-        !type(aqueous_chemistry_c), allocatable :: init_wat_types(:)
-        !integer(kind=4) :: num_bd_wat_types=0 !> number of boundary water types
-        !type(aqueous_chemistry_c), allocatable :: bd_wat_types(:)
-        !integer(kind=4) :: num_rech_wat_types=0 !> number of recharge water types
-        !type(aqueous_chemistry_c), allocatable :: rech_wat_types(:)
-        !integer(kind=4) :: num_init_sol_zones=0 !> number of initial solid zones
-        !type(solid_chemistry_c), allocatable :: init_sol_zones(:)
-        !integer(kind=4) :: num_init_gas_zones=0 !> number of initial gas zones
-        !type(gas_chemistry_c), allocatable :: init_gas_zones(:)
         integer(kind=4) :: num_target_waters=0 !> number of target waters
         type(aqueous_chemistry_c), allocatable :: target_waters(:) !> target waters
         type(aqueous_chemistry_c), allocatable :: target_waters_init(:) !> target waters initial
         integer(kind=4) :: num_target_waters_dom=0 !> number of initial target waters
-        !type(aqueous_chemistry_c), allocatable :: target_waters_dom(:) !> initial target waters
         integer(kind=4) :: num_ext_waters=0 !> number of external waters
         integer(kind=4), allocatable :: ext_waters_indices(:) !> external waters indices
         integer(kind=4), allocatable :: dom_tar_wat_indices(:) !> domain target waters indices
         integer(kind=4) :: num_target_solids=0 !> number of target solids (<= num_target_waters)
         integer(kind=4) :: num_target_solids_dom=0 !> number of target solids init (<= num_target_waters_dom)
         type(solid_chemistry_c), allocatable :: target_solids(:) !> target solids
-        !type(solid_chemistry_c), allocatable :: target_solids_dom(:) !> initial target solids
+        type(solid_chemistry_c), allocatable :: target_solids_init(:) !> initial target solids
         integer(kind=4) :: num_target_gases=0 !> number of target gases
         type(gas_chemistry_c), allocatable :: target_gases(:) !> target gases
-        !type(gas_chemistry_c), allocatable :: target_gases_dom(:) !> target gases init
+        type(gas_chemistry_c), allocatable :: target_gases_init(:) !> target gases init
         integer(kind=4) :: num_reactive_zones=0 !> number of reactive zones (<=num_target_solids)
         type(reactive_zone_c), allocatable :: reactive_zones(:) !> reactive zones
         integer(kind=4) :: Jac_flag !> model to compute Jacobians (0: incremental coefficnets, 1: analytical)
@@ -49,10 +36,9 @@ module chemistry_Lagr_m
         procedure, public :: set_num_target_waters_dom
         procedure, public :: set_num_target_solids
         procedure, public :: set_num_ext_waters
-        !procedure, public :: set_ext_waters
         procedure, public :: set_target_waters
-        !procedure, public :: set_target_waters_dom
         procedure, public :: set_target_solids
+        procedure, public :: set_target_gases
         procedure, public :: set_option
         procedure, public :: set_reactive_zones
         procedure, public :: set_Jac_flag
@@ -61,9 +47,7 @@ module chemistry_Lagr_m
         procedure, public :: allocate_dom_tar_wat_indices
         procedure, public :: allocate_ext_waters_indices
         procedure, public :: allocate_target_solids
-        !procedure, public :: allocate_target_solids_dom
         procedure, public :: allocate_target_gases
-        !procedure, public :: allocate_wat_types
         procedure, public :: allocate_reactive_zones
     !> Read
         procedure, public :: read_target_waters_init
@@ -77,7 +61,6 @@ module chemistry_Lagr_m
         procedure, public :: read_init_gas_zones_CHEPROO
     !> Initialisation
         procedure, public :: initialise_chemistry
-        !procedure, public :: manipulation
     !> Write
         procedure, public :: write_chemistry
     !> Solve
@@ -85,14 +68,11 @@ module chemistry_Lagr_m
         procedure, public :: solve_reactive_mixing_ideal !> main solver
         procedure, public :: solve_reactive_mixing_bis !> main solver
         procedure, public :: solve_reactive_mixing_BCs_dep_t !> main solver
-        !procedure, public :: solve_reactive_mixing_iter !> 
     !> Link
-        procedure, public :: link_target_waters_target_solid
         procedure, public :: link_target_waters_target_solids
-        !procedure, public :: link_target_waters_target_gases
+        procedure, public :: link_target_waters_target_gases
         procedure, public :: link_target_solids_reactive_zone
         procedure, public :: link_target_gases_reactive_zone
-        !procedure, public :: link_target_waters_dom_reactive_zone
         procedure, public :: link_target_waters_reactive_zone
     !> Check
         procedure, public :: check_new_reactive_zones
@@ -101,11 +81,6 @@ module chemistry_Lagr_m
    
     
     interface
-        subroutine manipulation(this)
-            import chemistry_c
-            implicit none
-            class(chemistry_c) :: this
-        end subroutine
         
         subroutine solve_reactive_mixing_bis(this,root,unit,mixing_ratios,mixing_waters_indices,F_mat,time_discr,int_method_chem_reacts)
             import chemistry_c
@@ -161,26 +136,6 @@ module chemistry_Lagr_m
             integer(kind=4), intent(in) :: int_method_chem_reacts !> integration method for chemical reactions
         end subroutine
         
-        !subroutine solve_reactive_mixing_iter(this,root,unit,i,mixing_ratios,mixing_waters_indices,F_mat,Delta_t,solver)
-        !    import chemistry_c
-        !    import real_array_c
-        !    import int_array_c
-        !    import diag_matrix_c
-        !    import time_discr_c
-        !    implicit none
-        !    class(chemistry_c) :: this
-        !    character(len=*), intent(in) :: root
-        !    integer(kind=4), intent(in) :: unit
-        !    integer(kind=4), intent(in) :: i !> target water index
-        !    class(real_array_c), intent(in) :: mixing_ratios
-        !    class(int_array_c), intent(in) :: mixing_waters_indices
-        !    !class(diag_matrix_c), intent(in) :: F_mat !> storage matrix
-        !    real(kind=8), intent(in) :: F_mat(:) !> storage matrix (diagonal)
-        !    real(kind=8), intent(in) :: Delta_t !> time step
-        !    !class(time_discr_c), intent(in) :: time_discr !> time discretisation object
-        !    !integer(kind=4), intent(in) :: int_method_chem_reacts !> integration method for chemical reactions
-        !    external :: solver
-        !end subroutine
         
         subroutine solve_reactive_mixing_BCs_dep_t(this,root,unit,mixing_ratios,mixing_waters_indices,time_discr_tpt,int_method_chem_reacts,spatial_discr_tpt,D,q,phi,anal_sol)
             import chemistry_c
@@ -244,21 +199,7 @@ module chemistry_Lagr_m
             integer(kind=4), intent(in) :: unit_output_file
             !character(len=*), intent(in) :: output_file
         end subroutine
-        
-        !subroutine read_PHREEQC_DB_opc1(this,filename)
-        !    import chemistry_c
-        !    implicit none
-        !    class(chemistry_c) :: this
-        !    character(len=*), intent(in) :: filename
-        !end subroutine
-        !
-        !subroutine read_PHREEQC_DB_opc2(this,filename)
-        !    import chemistry_c
-        !    implicit none
-        !    class(chemistry_c) :: this
-        !    character(len=*), intent(in) :: filename
-        !end subroutine
-        
+                
         subroutine read_reactive_zones_Lagr(this,unit)
             import chemistry_c
             implicit none
@@ -337,7 +278,7 @@ module chemistry_Lagr_m
             class(aqueous_chemistry_c), intent(in) :: initial_water_types(:)
         end subroutine
         
-        subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas_types,react_zones,niter,CV_flag)
+        subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas_types,niter,CV_flag)
             import chemistry_c
             import aqueous_chemistry_c
             import solid_chemistry_c
@@ -352,7 +293,7 @@ module chemistry_Lagr_m
             type(aqueous_chemistry_c), intent(in) :: water_types(:)
             type(solid_chemistry_c), intent(in) :: init_sol_types(:)
             type(gas_chemistry_c), intent(in) :: init_gas_types(:)
-            type(reactive_zone_c), intent(in) :: react_zones(:) !> all possible reactive zones
+            !type(reactive_zone_c), intent(in) :: react_zones(:) !> all possible reactive zones
             integer(kind=4), intent(out) :: niter !> number of iterations
             logical, intent(out) :: CV_flag !> TRUE if converges, FALSE otherwise
             !class(aq_phase_c), intent(out), optional :: aq_phase_new
@@ -583,9 +524,17 @@ module chemistry_Lagr_m
         subroutine set_target_solids(this,target_solids)
             implicit none
             class(chemistry_c) :: this
-            class(solid_chemistry_c), intent(in) :: target_solids(:)
+            type(solid_chemistry_c), intent(in) :: target_solids(:)
             this%target_solids=target_solids
             this%num_target_solids=size(target_solids)
+        end subroutine
+        
+        subroutine set_target_gases(this,target_gases)
+            implicit none
+            class(chemistry_c) :: this
+            type(gas_chemistry_c), intent(in) :: target_gases(:)
+            this%target_gases=target_gases
+            this%num_target_gases=size(target_gases)
         end subroutine
         
        subroutine allocate_target_waters(this,num_tar_wat)
@@ -615,18 +564,9 @@ module chemistry_Lagr_m
             if (present(n)) then
                 this%num_target_solids=n
             end if
-            allocate(this%target_solids(this%num_target_solids))!,this%target_solids_dom(this%num_target_solids))
+            allocate(this%target_solids(this%num_target_solids),this%target_solids_init(this%num_target_solids))
         end subroutine
         
-        !subroutine allocate_target_solids_dom(this,n)
-        !    implicit none
-        !    class(chemistry_c) :: this
-        !    integer(kind=4), intent(in), optional :: n
-        !    if (present(n)) then
-        !        this%num_target_solids_dom=n
-        !    end if
-        !    allocate(this%target_solids_dom(this%num_target_solids_dom))
-        !end subroutine
         
         subroutine allocate_target_gases(this,n)
             implicit none
@@ -635,7 +575,7 @@ module chemistry_Lagr_m
             if (present(n)) then
                 this%num_target_gases=n
             end if
-            allocate(this%target_gases(this%num_target_gases))
+            allocate(this%target_gases(this%num_target_gases),this%target_gases_init(this%num_target_gases))
         end subroutine
         
         subroutine allocate_ext_waters_indices(this,num_ext_waters)
@@ -653,7 +593,7 @@ module chemistry_Lagr_m
         subroutine set_target_waters(this,target_waters)
             implicit none
             class(chemistry_c) :: this
-            class(aqueous_chemistry_c), intent(in) :: target_waters(:)
+            type(aqueous_chemistry_c), intent(in) :: target_waters(:)
             this%target_waters=target_waters
             this%num_target_waters=size(target_waters)
         end subroutine
@@ -714,12 +654,9 @@ module chemistry_Lagr_m
                 end do
                 rz_indices(j)=1
                 call this%allocate_reactive_zones()
-                !print *, this%target_solids(1)%reactive_zone%non_flowing_species(1)%name
-                !call this%reactive_zones(1)%assign_react_zone=this%target_solids(1)%reactive_zone%stoich_mat
                 l=1
                 do i=1,this%num_target_solids
                     if (rz_indices(i)==1) then
-                        !print *, this%target_solids(i)%reactive_zone%non_flowing_species(1)%name
                         call this%reactive_zones(l)%assign_react_zone(this%target_solids(i)%reactive_zone)
                         l=l+1
                     end if
@@ -763,13 +700,4 @@ module chemistry_Lagr_m
                 call this%allocate_reactive_zones(0)
             end if
        end subroutine
-       
-
-       
-       !subroutine allocate_wat_types(this)
-       !     implicit none
-       !     class(chemistry_c) :: this
-       !     allocate(this%wat_types(this%num_wat_types))
-       !     !allocate(this%init_wat_types(this%num_init_wat_types),this%bd_wat_types(this%num_bd_wat_types),this%rech_wat_types(this%num_rech_wat_types))
-       !end subroutine
 end module

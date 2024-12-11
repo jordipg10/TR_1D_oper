@@ -45,8 +45,7 @@ subroutine compute_c_nc_from_u_Newton(this,c1_ig,c2nc_ig,conc_comp,conc_nc,niter
                 print *, "Too many Newton iterations in speciation"
                 exit
             end if
-            call this%compute_c2nc_from_c1_Picard(c2nc_old,c2nc_new,niter_Picard,CV_flag_Picard)
-            conc_nc(n_p+1:n_nc)=c2nc_new !> chapuza
+            call this%compute_c2nc_from_c1_Picard(conc_nc(1:n_p),c2nc_old,conc_nc(n_p+1:n_nc),niter_Picard,CV_flag_Picard)
             call this%compute_residual(conc_comp,conc_nc,residual)
             if (inf_norm_vec_real(residual)<this%solid_chemistry%reactive_zone%CV_params%abs_tol) then !> CV reached
                 CV_flag=.true.
@@ -76,7 +75,7 @@ subroutine compute_c_nc_from_u_Newton(this,c1_ig,c2nc_ig,conc_comp,conc_nc,niter
                 exit
             else
                 call this%update_conc_prim_species(conc_nc(1:n_p),Delta_c1)
-                c2nc_old=c2nc_new
+                c2nc_old=conc_nc(n_p+1:n_nc)
             end if
             !call this%compute_salinity()
             !call this%compute_molarities()

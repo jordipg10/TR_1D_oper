@@ -42,14 +42,14 @@ subroutine link_target_waters_reactive_zone(this,i,dom_indices,ext_indices)
                 exit
             end if
         else if (this%target_waters(this%dom_tar_wat_indices(j))%solid_chemistry%reactive_zone%num_non_flowing_species==0 .and. this%target_waters(this%dom_tar_wat_indices(j))%solid_chemistry%reactive_zone%num_non_flowing_species==this%reactive_zones(i)%num_non_flowing_species) then
-            if (j<this%num_target_waters) then
+            if (j<this%num_target_waters_dom) then
                 call append_int_1D_array(dom_indices,this%dom_tar_wat_indices(j))
                 j=j+1
             else
                 call append_int_1D_array(dom_indices,this%dom_tar_wat_indices(j))
                 exit
             end if
-        else if (j<this%num_target_waters) then
+        else if (j<this%num_target_waters_dom) then
             j=j+1
         else
             exit

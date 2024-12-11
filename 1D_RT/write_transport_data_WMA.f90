@@ -9,13 +9,6 @@ subroutine write_transport_data_WMA(this,unit)
     integer(kind=4) :: i,j,num_cells
 
     num_cells=this%spatial_discr%Num_targets-this%spatial_discr%targets_flag !> number of cells
-    !if (this%int_method_chem_reacts==1) then
-    !    write(unit,"(2x,'Integration method chemical reactions:',10x,'Euler explicit',/)")
-    !else if (this%int_method_chem_reacts==2) then
-    !    write(unit,"(2x,'Integration method chemical reactions:',10x,'Euler fully implicit',/)")
-    !else
-    !    error stop "Integration method not implemented yet for RT"
-    !end if
     write(unit,"(2x,'Number of targets:',I5/)") this%spatial_discr%Num_targets
     write(unit,"(/,2x,'Time step:'/)")
     write(unit,"(2x,ES15.5/)") this%time_discr%get_Delta_t()

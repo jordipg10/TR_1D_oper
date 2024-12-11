@@ -248,8 +248,7 @@ module PDE_transient_m
             integer(kind=4) :: i
             call this%mixing_waters_indices%allocate_matrix(this%mixing_ratios%num_cols)
             do i=1,this%mixing_waters_indices%num_cols
-                this%mixing_waters_indices%cols(i)%dim=this%mixing_ratios%cols(i)%dim-1
-                call this%mixing_waters_indices%cols(i)%allocate_vector()
+                call this%mixing_waters_indices%cols(i)%allocate_vector(this%mixing_ratios%cols(i)%dim)
             end do
        end subroutine
 end module

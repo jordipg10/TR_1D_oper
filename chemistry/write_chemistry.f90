@@ -5,11 +5,9 @@ subroutine write_chemistry(this,unit)
     implicit none
     class(chemistry_c), intent(in) :: this !> chemistry object
     integer(kind=4), intent(in) :: unit !> file unit
-    !character(len=*), intent(in) :: file_out !> file output
     
-    integer(kind=4) :: i,j,n,l,k
-    integer(kind=4), allocatable :: tar_sol_indices(:),dom_indices(:),ext_indices(:)
-    real(kind=8), allocatable :: conc_comp(:,:)
+    integer(kind=4) :: i,j,n,l,k,num_dom,num_ext
+    integer(kind=4), allocatable :: dom_indices(:),ext_indices(:)
     
 
     write(unit,"(/,2x,'Aqueous species:'/)")
@@ -36,15 +34,6 @@ subroutine write_chemistry(this,unit)
     do i=1,this%chem_syst%num_kin_reacts
         call this%chem_syst%kin_reacts(i)%kin_reaction%write_reaction(unit)
     end do
-    !do i=1,this%chem_syst%num_lin_kin_reacts
-    !    write(unit,"(10x,A30/)") this%chem_syst%lin_kin_reacts(i)%name
-    !end do
-    !do i=1,this%chem_syst%num_min_kin_reacts
-    !    write(unit,"(10x,A30/)") this%chem_syst%min_kin_reacts(i)%name
-    !end do
-    !do i=1,this%chem_syst%num_redox_kin_reacts
-    !    write(unit,"(10x,A30/)") this%chem_syst%redox_kin_reacts(i)%name
-    !end do
     write(unit,"(2x,'Global stoichiometric matrix:',/)")
     do i=1,this%chem_syst%num_reacts
         write(unit,"(10x,*(F15.5))") (this%chem_syst%stoich_mat(i,j), j=1,this%chem_syst%num_species)
@@ -57,134 +46,88 @@ subroutine write_chemistry(this,unit)
     do i=1,this%chem_syst%speciation_alg%num_prim_species
         write(unit,"(10x,*(F15.5))") (this%chem_syst%speciation_alg%comp_mat(i,j), j=1,this%chem_syst%speciation_alg%num_var_act_species)
     end do
-    !write(unit,"(/,2x,'Concentration of external waters: (rows -> aqueous species, columns -> targets)'/)")
-    !do i=1,this%aq_phase%num_species
-    !    write(unit,"(10x,*(ES15.5))") (this%ext_waters(j)%concentrations(i), j=1,this%num_ext_waters)
-    !end do
-    write(unit,"(/,2x,'Initial concentration of aqueous species in the domain:'/)")
-    !print *, this%target_waters_init(19)%indices_aq_phase(3)
-    !write(unit,"(10x,*(I15))") (this%chem_out_options%targets(j), j=1,this%chem_out_options%num_target_waters)
+    write(unit,"(/,2x,'Concentration of external waters: (rows -> aqueous species, columns -> targets)'/)")
     do i=1,this%chem_syst%aq_phase%num_species
-        !write(unit,"(10x,*(ES15.5))") (this%target_waters_init(this%chem_out_options%target_waters(j))%concentrations(i), j=1,this%chem_out_options%num_target_waters)
-        write(unit,"(10x,*(ES15.5))") (this%target_waters_init(j)%concentrations(this%target_waters_init(j)%indices_aq_phase(i)), j=1,this%num_target_waters)
+        write(unit,"(10x,*(ES15.5))") (this%target_waters(this%ext_waters_indices(j))%concentrations(i), j=1,this%num_ext_waters)
+    end do
+    write(unit,"(/,2x,'Initial concentration of aqueous species in the domain:'/)")
+    do i=1,this%chem_syst%aq_phase%num_species
+        write(unit,"(10x,*(ES15.5))") (this%target_waters_init(this%dom_tar_wat_indices(j))%concentrations(this%target_waters_init(j)%indices_aq_phase(i)), j=1,this%num_target_waters_dom)
     end do
     write(unit,"(/,2x,'Initial activity coefficients aqueous species domain:'/)")
     do i=1,this%chem_syst%aq_phase%num_species
-        write(unit,"(10x,*(ES15.5))") (10**this%target_waters_init(j)%log_act_coeffs(this%target_waters_init(j)%indices_aq_phase(i)), j=1,this%num_target_waters)
+        write(unit,"(10x,*(ES15.5))") (10**this%target_waters_init(this%dom_tar_wat_indices(j))%log_act_coeffs(this%target_waters_init(j)%indices_aq_phase(i)), j=1,this%num_target_waters_dom)
     end do
-    !write(unit,"(/,2x,'Initial concentration of aqueous species (transposed):'/)")
-    !do i=this%num_ext_waters+1,this%num_target_waters
-    !    write(unit,"(10x,*(ES15.5))") (this%target_waters_init(i)%concentrations(j), j=1,this%aq_phase%num_species)
-    !end do
     if (this%chem_syst%aq_phase%ind_wat>0) then
         write(unit,"(/,2x,'Initial activity water domain:'/)")
-        write(unit,"(10x,*(ES15.5))") (this%target_waters_init(j)%activities(this%chem_syst%aq_phase%ind_wat), j=1,this%num_target_waters)
+        write(unit,"(10x,*(ES15.5))") (this%target_waters_init(this%dom_tar_wat_indices(j))%activities(this%chem_syst%aq_phase%ind_wat), j=1,this%num_target_waters_dom)
         write(unit,"(/,2x,'Initial salinity domain:'/)")
-        write(unit,"(10x,*(ES15.5))") (this%target_waters_init(j)%salinity, j=1,this%num_target_waters)
+        write(unit,"(10x,*(ES15.5))") (this%target_waters_init(this%dom_tar_wat_indices(j))%salinity, j=1,this%num_target_waters_dom)
+        write(unit,"(/,2x,'Activity water domain:'/)")
+        write(unit,"(10x,*(ES15.5))") (this%target_waters(this%dom_tar_wat_indices(j))%activities(this%chem_syst%aq_phase%ind_wat), j=1,this%num_target_waters_dom)
+        write(unit,"(/,2x,'Final salinity domain:'/)")
+        write(unit,"(10x,*(ES15.5))") (this%target_waters(this%dom_tar_wat_indices(j))%salinity, j=this%num_ext_waters+1,this%num_target_waters_dom)
     end if
     if (this%chem_syst%aq_phase%ind_proton>0) then
         write(unit,"(/,2x,'Initial pH domain:'/)")
-        write(unit,"(10x,*(ES15.5))") (this%target_waters_init(j)%pH, j=1,this%num_target_waters)
-    end if
-    !write(unit,"(/,2x,'Initial alkalinity:'/)")
-    !write(unit,"(10x,*(ES15.5))") (this%target_waters_init(j)%alkalinity, j=1,this%num_target_waters)
-    !write(unit,"(/,2x,'Final concentration of aqueous species:'/)")
-    !do i=1,this%aq_phase%num_species
-    !    write(unit,"(10x,*(ES15.5))") (this%target_waters(j)%concentrations(i), j=this%num_ext_waters+1,this%num_target_waters)
-    !end do
-    !write(unit,"(/,2x,'Final concentration of aqueous species (transposed):'/)")
-    !do i=this%num_ext_waters+1,this%num_target_waters
-    !    write(unit,"(10x,*(ES15.5))") (this%target_waters(i)%concentrations(j), j=1,this%aq_phase%num_species)
-    !end do
-    !write(unit,"(/,2x,'Final activity coefficients aqueous species:'/)")
-    !do i=1,this%aq_phase%num_species
-    !    write(unit,"(10x,*(ES15.5))") (10**this%target_waters(j)%log_act_coeffs(i), j=this%num_ext_waters+1,this%num_target_waters)
-    !end do
-    if (this%chem_syst%aq_phase%ind_wat>0) then
-        write(unit,"(/,2x,'Activity water domain:'/)")
-        write(unit,"(10x,*(ES15.5))") (this%target_waters(j)%activities(this%chem_syst%aq_phase%ind_wat), j=1,this%num_target_waters)
-        write(unit,"(/,2x,'Final salinity domain:'/)")
-        write(unit,"(10x,*(ES15.5))") (this%target_waters(j)%salinity, j=this%num_ext_waters+1,this%num_target_waters)
-    end if
-    if (this%chem_syst%aq_phase%ind_proton>0) then
+        write(unit,"(10x,*(ES15.5))") (this%target_waters_init(this%dom_tar_wat_indices(j))%pH, j=1,this%num_target_waters_dom)
         write(unit,"(/,2x,'Final pH domain:'/)")
-        write(unit,"(10x,*(ES15.5))") (this%target_waters(j)%pH, j=this%num_ext_waters+1,this%num_target_waters)
+        write(unit,"(10x,*(ES15.5))") (this%target_waters(this%dom_tar_wat_indices(j))%pH, j=1,this%num_target_waters_dom)
     end if
-    !write(unit,"(/,2x,'Final alkalinity:'/)")
-    !write(unit,"(10x,*(ES15.5))") (this%target_waters_init(j)%alkalinity, j=1,this%num_target_waters)
     write(unit,"(/,2x,'Aqueous equilibrium reaction rates:'/)")
     do i=1,this%chem_syst%aq_phase%num_aq_complexes
-        write(unit,"(10x,*(ES15.5))") (this%target_waters(j)%r_eq(i), j=this%num_ext_waters+1,this%num_target_waters)
+        write(unit,"(10x,*(ES15.5))") (this%target_waters(j)%r_eq(i), j=1,this%num_target_waters_dom)
     end do
     write(unit,"(/,2x,'Kinetic reaction rates:'/)")
     do i=1,this%chem_syst%num_kin_reacts
-        write(unit,"(10x,*(ES15.5))") (this%target_waters(j)%rk(i), j=this%num_ext_waters+1,this%num_target_waters)
+        write(unit,"(10x,*(ES15.5))") (this%target_waters(j)%rk(i), j=1,this%num_target_waters_dom)
     end do
-    if (this%num_reactive_zones>0) then
-        do l=1,this%num_reactive_zones
+    do l=1,this%num_reactive_zones
+        call this%link_target_waters_reactive_zone(l,dom_indices,ext_indices)
+        num_dom=size(dom_indices)
+        num_ext=size(ext_indices)
+        if (num_dom>0) then
             write(unit,"(/,2x,'Reactive zone',I5,':'/)") l
-            !call this%link_target_waters_init_reactive_zone(l,dom_indices)
-            call this%link_target_waters_reactive_zone(l,dom_indices,ext_indices)
             write(unit,"(10x,'Non-flowing species:'/)")
             do i=1,this%reactive_zones(l)%num_non_flowing_species
                 write(unit,"(20x,A15/)") this%reactive_zones(l)%non_flowing_species(i)%name
             end do
             write(unit,"(10x,'Number of equilibrium reactions:',I10/)") this%reactive_zones(l)%speciation_alg%num_eq_reactions
             write(unit,"(10x,'Se:',/)")
-            !print *, this%target_waters_init(dom_indices(1))%speciation_alg%num_species
             do i=1,this%reactive_zones(l)%speciation_alg%num_eq_reactions
-                write(unit,"(10x,*(F15.5))") (this%reactive_zones(l)%stoich_mat(i,j), j=1,this%target_waters_init(dom_indices(1))%solid_chemistry%reactive_zone%speciation_alg%num_species)
+                write(unit,"(10x,*(F15.5))") (this%reactive_zones(l)%stoich_mat(i,j), j=1,this%reactive_zones(l)%speciation_alg%num_species)
             end do
             write(unit,"(10x,'Sk:',/)")
             do i=1,this%reactive_zones(l)%chem_syst%num_kin_reacts
-                write(unit,"(10x,*(F15.5))") (this%reactive_zones(l)%chem_syst%Sk(i,j), j=1,this%target_waters_init(dom_indices(1))%solid_chemistry%reactive_zone%chem_syst%num_species)
+                write(unit,"(10x,*(F15.5))") (this%reactive_zones(l)%chem_syst%Sk(i,j), j=1,this%reactive_zones(l)%chem_syst%num_species)
             end do
             write(unit,"(10x,'U*Sk^T:',/)")
-            do i=1,this%target_waters_init(dom_indices(1))%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species
-                write(unit,"(10x,*(F15.5))") (this%target_waters_init(dom_indices(1))%solid_chemistry%reactive_zone%U_SkT_prod(i,j), j=1,this%target_waters_init(dom_indices(1))%solid_chemistry%reactive_zone%chem_syst%num_kin_reacts)
+            do i=1,this%reactive_zones(l)%speciation_alg%num_aq_prim_species
+                write(unit,"(10x,*(F15.5))") (this%reactive_zones(l)%U_SkT_prod(i,j), j=1,this%reactive_zones(l)%chem_syst%num_kin_reacts)
             end do
             write(unit,"(/,10x,'Equilibrium constants:',/)")
             do i=1,this%reactive_zones(l)%speciation_alg%num_eq_reactions
                 write(unit,"(10x,*(ES15.5))") this%reactive_zones(l)%eq_reactions(i)%eq_cst
             end do
             write(unit,"(/,10x,'Aqueous species:',/)")
-            !print *, this%target_waters(dom_indices(1))%aq_phase%num_species
             do i=1,this%chem_syst%aq_phase%num_species
-                write(unit,"(20x,A15)") this%target_waters(dom_indices(1))%solid_chemistry%reactive_zone%chem_syst%aq_phase%aq_species(this%target_waters(dom_indices(1))%indices_aq_phase(i))%name
+                write(unit,"(20x,A15)") this%reactive_zones(l)%chem_syst%aq_phase%aq_species(this%target_waters(dom_indices(1))%indices_aq_phase(i))%name
             end do
             write(unit,"(/,10x,'Primary species:',/)")
-            !print *, this%target_waters(dom_indices(1))%aq_phase%num_species
-            do i=1,this%target_waters(dom_indices(1))%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species
-                write(unit,"(20x,A15)") this%target_waters(dom_indices(1))%aq_phase%aq_species(this%target_waters(dom_indices(1))%indices_aq_phase(i))%name
+            do i=1,this%reactive_zones(l)%speciation_alg%num_aq_prim_species
+                write(unit,"(20x,A15)") this%reactive_zones(l)%chem_syst%aq_phase%aq_species(this%target_waters(dom_indices(1))%indices_aq_phase(i))%name
             end do
-            !if (associated(this%target_waters_init(dom_indices(1))%solid_chemistry)) then
-            !    if (this%target_waters_init(dom_indices(1))%cat_exch_zone%num_surf_compl>0) then
-            !        write(unit,"(20x,A15)") this%target_waters_init(dom_indices(1))%cat_exch_zone%surf_compl(1)%name
-            !    !else
-            !    !    write(unit,"(20x,A15/)") this%target_waters_init(dom_indices(1))%aq_phase%aq_species(this%target_waters_init(dom_indices(1))%prim_species_indices(this%target_waters_init(dom_indices(1))%solid_chemistry%reactive_zone%speciation_alg%num_prim_species))%name
-            !    end if
-            !end if
             write(unit,"(10x,'Component matrix:'/)")
-            do i=1,this%target_waters_init(dom_indices(1))%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
-                write(unit,"(10x,*(F15.5))") (this%target_waters_init(dom_indices(1))%solid_chemistry%reactive_zone%speciation_alg%comp_mat(i,j), j=1,this%target_waters_init(dom_indices(1))%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species)
+            do i=1,this%reactive_zones(l)%speciation_alg%num_prim_species
+                write(unit,"(10x,*(F15.5))") (this%reactive_zones(l)%speciation_alg%comp_mat(i,j), j=1,this%reactive_zones(l)%speciation_alg%num_var_act_species)
             end do           
             write(unit,"(/,10x,'Initial concentration of components:'/)")
-            !allocate(conc_comp(this%target_waters_init(dom_indices(1))%speciation_alg%num_aq_prim_species,size(dom_indices)))
-            !do j=1,size(dom_indices)
-                do i=1,this%target_waters_init(dom_indices(1))%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
-                    !conc_comp(i,j)=dot_product(this%target_waters_init(dom_indices(j))%solid_chemistry%reactive_zone%speciation_alg%comp_mat(i,:),this%target_waters_init(dom_indices(j))%concentrations(1:this%target_waters_init(dom_indices(j))%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species))
-                    write(unit,"(10x,*(ES15.5))") (dot_product(this%target_waters_init(dom_indices(j))%solid_chemistry%reactive_zone%speciation_alg%comp_mat(i,:),this%target_waters_init(dom_indices(j))%get_conc_nc()), j=1,size(dom_indices))
+                do i=1,this%reactive_zones(l)%speciation_alg%num_prim_species
+                    write(unit,"(10x,*(ES15.5))") (dot_product(this%reactive_zones(l)%speciation_alg%comp_mat(i,:),this%target_waters_init(dom_indices(j))%get_conc_nc()), j=1,size(dom_indices))
                 end do
-            !end do
-            !write(unit,"(/,10x,'Initial concentration of solid components:'/)")
-            !do i=1,this%target_waters_init(dom_indices(1))%speciation_alg%num_prim_species-this%target_waters_init(dom_indices(1))%speciation_alg%num_aq_prim_species
-            !    write(unit,"(10x,*(ES15.5))") (this%target_waters_init(dom_indices(j))%solid_chemistry%conc_comp(i), j=1,size(dom_indices))
-            !end do
             write(unit,"(/,10x,'Final concentration of components:'/)")
-            !do j=1,size(dom_indices)
-                do i=1,this%target_waters(dom_indices(1))%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
-                    !conc_comp(i,j)=dot_product(this%target_waters_init(dom_indices(j))%speciation_alg%comp_mat(i,:),this%target_waters_init(dom_indices(j))%concentrations(1:this%target_waters_init(dom_indices(j))%speciation_alg%num_var_act_species))
-                    write(unit,"(10x,*(ES15.5))") (dot_product(this%target_waters(dom_indices(j))%solid_chemistry%reactive_zone%speciation_alg%comp_mat(i,:),this%target_waters(dom_indices(j))%get_conc_nc()), j=1,size(dom_indices))
+                do i=1,this%reactive_zones(l)%speciation_alg%num_prim_species
+                    write(unit,"(10x,*(ES15.5))") (dot_product(this%reactive_zones(l)%speciation_alg%comp_mat(i,:),this%target_waters(dom_indices(j))%get_conc_nc()), j=1,size(dom_indices))
                 end do
             write(unit,"(/,10x,'Final concentration of aqueous species:'/)")
             do i=1,this%chem_syst%aq_phase%num_species
@@ -194,18 +137,9 @@ subroutine write_chemistry(this,unit)
             do i=1,this%chem_syst%aq_phase%num_species
                 write(unit,"(10x,*(ES15.5))") (10**this%target_waters(dom_indices(j))%log_act_coeffs(i), j=1,size(dom_indices))
             end do
-            !write(unit,"(/,10x,'Concentration of components (transposed):'/)")
-            !do i=1,size(dom_indices)
-            !    write(unit,"(10x,*(ES15.5))") (dot_product(this%target_waters(dom_indices(i))%speciation_alg%comp_mat(j,:),this%target_waters(dom_indices(i))%get_conc_nc()), j=1,this%target_waters(dom_indices(1))%speciation_alg%num_prim_species)
-            !end do
-            !end do
-            !write(unit,"(/,10x,'Concentration of solid components:'/)")
-            !do i=1,this%target_waters_init(dom_indices(1))%speciation_alg%num_prim_species-this%target_waters_init(dom_indices(1))%speciation_alg%num_aq_prim_species
-            !    write(unit,"(10x,*(ES15.5))") (this%target_waters_init(dom_indices(j))%solid_chemistry%conc_comp(i), j=1,size(dom_indices))
-            !end do
             write(unit,"(/,10x,'Initial volumetric fractions of minerals:'/)")
             do i=1,this%reactive_zones(l)%num_minerals
-                write(unit,"(10x,*(ES15.5))") (this%target_solids(dom_indices(j))%vol_fracts(i), j=1,size(dom_indices))
+                write(unit,"(10x,*(ES15.5))") (this%target_solids_init(dom_indices(j))%vol_fracts(i), j=1,size(dom_indices))
             end do
             write(unit,"(/,10x,'Volumetric fractions of minerals:'/)")
             do i=1,this%reactive_zones(l)%num_minerals
@@ -213,23 +147,19 @@ subroutine write_chemistry(this,unit)
             end do
             write(unit,"(/,10x,'Initial concentration of minerals:'/)")
             do i=1,this%reactive_zones(l)%num_minerals
-                write(unit,"(10x,*(ES15.5))") (this%target_solids(dom_indices(j))%concentrations(i), j=1,size(dom_indices))
+                write(unit,"(10x,*(ES15.5))") (this%target_solids_init(dom_indices(j))%concentrations(i), j=1,size(dom_indices))
             end do
             write(unit,"(/,10x,'Concentration of minerals:'/)")
             do i=1,this%reactive_zones(l)%num_minerals
                 write(unit,"(10x,*(ES15.5))") (this%target_waters(dom_indices(j))%solid_chemistry%concentrations(i), j=1,size(dom_indices))
             end do
-            !write(unit,"(/,10x,'Initial concentration of surface complexes:'/)")
-            !do i=1,this%reactive_zones(l)%cat_exch_zone%num_surf_compl
-            !    write(unit,"(10x,*(ES15.5))") (this%target_waters_init(dom_indices(j))%solid_chemistry%concentrations(this%reactive_zones(l)%num_minerals+i), j=1,size(dom_indices))
-            !end do
             write(unit,"(/,10x,'Concentration of surface complexes:'/)")
             do i=1,this%reactive_zones(l)%cat_exch_zone%num_surf_compl
                 write(unit,"(10x,*(ES15.5))") (this%target_waters(dom_indices(j))%solid_chemistry%concentrations(this%reactive_zones(l)%num_minerals+i), j=1,size(dom_indices))
             end do
             write(unit,"(/,10x,'Initial concentration of gases:'/)")
             do i=1,this%reactive_zones(l)%gas_phase%num_species
-                write(unit,"(10x,*(ES15.5))") (this%target_gases(dom_indices(j))%concentrations(i), j=1,size(dom_indices))
+                write(unit,"(10x,*(ES15.5))") (this%target_gases_init(dom_indices(j))%concentrations(i), j=1,size(dom_indices))
             end do
             write(unit,"(/,10x,'Concentration of gases:'/)")
             do i=1,this%reactive_zones(l)%gas_phase%num_species
@@ -237,7 +167,7 @@ subroutine write_chemistry(this,unit)
             end do
             write(unit,"(/,10x,'Initial partial pressures of gases:'/)")
             do i=1,this%reactive_zones(l)%gas_phase%num_species
-                write(unit,"(10x,*(ES15.5))") (this%target_gases(dom_indices(j))%activities(i), j=1,size(dom_indices))
+                write(unit,"(10x,*(ES15.5))") (this%target_gases_init(dom_indices(j))%activities(i), j=1,size(dom_indices))
             end do
             write(unit,"(/,10x,'Partial pressures of gases:'/)")
             do i=1,this%reactive_zones(l)%gas_phase%num_species
@@ -245,7 +175,7 @@ subroutine write_chemistry(this,unit)
             end do
             write(unit,"(/,10x,'Initial volume of gas:'/)")
             if (this%reactive_zones(l)%gas_phase%num_species>0) then
-                write(unit,"(10x,*(ES15.5))") (this%target_gases(dom_indices(j))%volume, j=1,size(dom_indices))
+                write(unit,"(10x,*(ES15.5))") (this%target_gases_init(dom_indices(j))%volume, j=1,size(dom_indices))
             end if
             write(unit,"(/,10x,'Volume of gas:'/)")
             if (this%reactive_zones(l)%gas_phase%num_species>0) then
@@ -263,32 +193,7 @@ subroutine write_chemistry(this,unit)
             do i=1,this%reactive_zones(l)%gas_phase%num_species
                 write(unit,"(10x,*(ES15.5))") (this%target_waters(dom_indices(j))%gas_chemistry%r_eq(i), j=1,size(dom_indices))
             end do
-            deallocate(dom_indices)
-        end do
-    else if (this%chem_syst%num_eq_reacts>0 .and. this%chem_syst%gas_phase%num_gases_kin>0) then
-        write(unit,"(/,2x,'Initial gas concentrations:'/)")
-        do i=1,this%chem_syst%gas_phase%num_species
-            write(unit,"(10x,*(ES15.5))") (this%target_gases(j)%concentrations(i), j=this%num_ext_waters+1,this%num_target_waters)
-        end do
-        write(unit,"(/,2x,'Gas concentrations:'/)")
-        do i=1,this%chem_syst%gas_phase%num_species
-            write(unit,"(10x,*(ES15.5))") (this%target_waters(j)%gas_chemistry%concentrations(i), j=this%num_ext_waters+1,this%num_target_waters)
-        end do
-        write(unit,"(/,2x,'Gas volume:'/)")
-        write(unit,"(10x,*(ES15.5))") (this%target_waters(j)%gas_chemistry%volume, j=this%num_ext_waters+1,this%num_target_waters)
-        allocate(conc_comp(this%target_waters_init(1)%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species,this%num_target_waters))
-        write(unit,"(/,2x,'Initial concentration of components:'/)")
-        !do j=1,this%num_target_waters
-            do i=1,this%target_waters_init(1)%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species
-                write(unit,"(10x,*(ES15.5))") (dot_product(this%target_waters_init(j)%solid_chemistry%reactive_zone%speciation_alg%comp_mat(i,:),this%target_waters_init(j)%concentrations(1:this%target_waters_init(j)%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species)), j=1,this%num_target_waters) !(this%target_waters_init(dom_indices(j))%concentrations(i), j=1,size(dom_indices))
-            end do
-        !end do
-        write(unit,"(/,2x,'Concentration of components:'/)")
-        !do j=1,this%num_target_waters
-            do i=1,this%target_waters(1)%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species
-                write(unit,"(10x,*(ES15.5))") (dot_product(this%target_waters(j)%solid_chemistry%reactive_zone%speciation_alg%comp_mat(i,:),this%target_waters(j)%concentrations(1:this%target_waters(j)%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species)), j=1,this%num_target_waters) !(this%target_waters_init(dom_indices(j))%concentrations(i), j=1,size(dom_indices))
-            end do
-        !end do
-        deallocate(conc_comp)
-    end if
+            deallocate(dom_indices,ext_indices)
+        end if
+    end do
 end subroutine 

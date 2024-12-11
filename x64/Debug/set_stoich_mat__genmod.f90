@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Dec 10 16:32:15 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Wed Dec 11 17:51:48 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE SET_STOICH_MAT__genmod

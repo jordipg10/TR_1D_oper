@@ -99,9 +99,9 @@ subroutine solve_reactive_mixing_ideal(this,root,unit,mixing_ratios,mixing_water
                         allocate(conc_nc(this%target_waters(this%dom_tar_wat_indices(i))%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species))
                         allocate(conc_comp(this%target_waters(this%dom_tar_wat_indices(i))%solid_chemistry%reactive_zone%speciation_alg%num_prim_species))
                         allocate(conc_old(this%target_waters(this%dom_tar_wat_indices(i))%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species,mixing_ratios%cols(i)%dim)) !> chapuza
-                        conc_old(:,1)=target_waters_old(this%dom_tar_wat_indices(i))%get_conc_nc() !> chapuza
+                        !conc_old(:,1)=target_waters_old(this%dom_tar_wat_indices(i))%get_conc_nc() !> chapuza
                         do j=1,mixing_waters_indices%cols(i)%dim
-                            conc_old(:,1+j)=target_waters_old(mixing_waters_indices%cols(i)%col_1(j))%get_conc_nc() !> chapuza
+                            conc_old(:,j)=target_waters_old(mixing_waters_indices%cols(i)%col_1(j))%get_conc_nc() !> chapuza
                         end do
                     !> We solve mixing caused by transport
                         c_tilde=p_c_tilde(target_waters_old(this%dom_tar_wat_indices(i)),mixing_ratios%cols(i)%col_1,conc_old)

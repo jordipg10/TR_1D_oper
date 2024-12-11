@@ -1,18 +1,19 @@
 !> Computes concentration of secondary species with variable activity from concentration of primary species using Picard method and mass action law
 !! This subroutine is meant to be used when primary species are aqueous & solid
-subroutine compute_c2nc_from_c1_Picard(this,c2nc_ig,c2nc,niter,CV_flag)
+subroutine compute_c2nc_from_c1_Picard(this,c1,c2nc_ig,c2nc,niter,CV_flag)
     use vectors_m
     use aqueous_chemistry_m
     implicit none
 !> Arguments
     class(aqueous_chemistry_c) :: this
+    real(kind=8), intent(in) :: c1(:) !> chapuza (dim=n_p)
     real(kind=8), intent(in) :: c2nc_ig(:) !> initial guess secondary variable activity concentrations
     real(kind=8), intent(out) :: c2nc(:) !> secondary variable activity concentrations (must be already allocated)
     integer(kind=4), intent(out) :: niter !> number of iterations
     logical, intent(out) :: CV_flag !> TRUE if converges, FALSE otherwise
 !> Variables
     integer(kind=4) :: n_p,n_p_aq,n_nc2_aq,n_nc,n_e,n_nc_aq,i
-    real(kind=8), allocatable :: log_gamma1_old(:),log_gamma2nc_old(:),log_c2nc_new(:),c2nc_old(:),c1(:)
+    real(kind=8), allocatable :: log_gamma1_old(:),log_gamma2nc_old(:),log_c2nc_new(:),c2nc_old(:)
 !> Pre-process
     n_p=this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
     n_p_aq=this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species
@@ -25,7 +26,7 @@ subroutine compute_c2nc_from_c1_Picard(this,c2nc_ig,c2nc,niter,CV_flag)
     log_gamma1_old=0d0 !> chapuza
     log_gamma2nc_old=this%get_log_gamma2nc() !> chapuza
     
-    c1=this%get_c1()
+    !c1=this%get_c1()
     c2nc_old=c2nc_ig
     
     niter=0 !> we initialise number of iterations
