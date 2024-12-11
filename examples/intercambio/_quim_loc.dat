@@ -1,0 +1,29 @@
+'TITLE OF THE PROBLEM: Intercambio '
+'-----------------------------------------------------------------------------'
+'INITIAL AND BOUNDARY WATER TYPES'
+3						! activity coefficients model
+1   						!niwtype, nbwtype, nrwtype= number of ini, bound, rech waters
+1     25.0					!iwtype initial, temp (C)
+'inicial'					! name
+'       icon        guess         ctot          constrain'
+'h2o'		1	5.555555555d1	5.555555555d1		''
+'na+'		1		1d-3		1d-3		''
+'cl-'	1		1d-3		1d-3		''
+'k+'	1		1d-7		1d-7		''
+'*'      0         0.0           0.0              ' '
+'----------------------------------------------------------------------------'
+'INITIAL SURFACE ADSORPTION ZONES'
+1                       !ndtype= number of sorption zones
+1                       !idtype
+'C int (F/m2)'                  0.00 
+'C ext (F/m2)'                  0.00
+'sorbent surf. (m2/kg)'         0.00 
+'total sorp. sites (mol/dm3)'  60.7d-3    ! or exchange capacity (eq/dm3)
+'----------------------------------------------------------------------------'
+'end'
+
+
+
+
+
+

@@ -37,7 +37,7 @@ program main
     unit_out=4
     unit_res=6
 !> Choose problem
-    problem=4
+    problem=5
     if (problem==1) then
         root='C:\Users\Jordi\source\repos\jordipg10\TR_1D_oper\examples\gypsum_eq\gypsum_eq' !> name of path containing user input (must be written by the user)
     else if (problem==2) then
@@ -46,12 +46,14 @@ program main
         root='C:\Users\Jordi\source\repos\jordipg10\TR_1D_oper\examples\cc_anh_kin\cc_anh' !> name of path containing user input (must be written by the user)
     else if (problem==4) then
         root='C:\Users\Jordi\source\repos\jordipg10\TR_1D_oper\examples\denit\denit' !> name of path containing user input (must be written by the user)
+    else if (problem==5) then
+        root='C:\Users\Jordi\source\repos\jordipg10\TR_1D_oper\examples\intercambio\' !> name of path containing user input (must be written by the user)
     else
         error stop "Problem not implemented yet"
     end if
     root_trim=trim(root)
 !> Initialise transport
-    option_tpt=1
+    option_tpt=0
     if (option_tpt==0) then
     !> we read transport data, BCs and discretisations
         !> in the explicit case, we also compute stability parameters

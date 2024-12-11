@@ -195,6 +195,7 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
     call this%gas_phase%set_num_cst_act_species_phase(num_cst_act_gases)
     !> Cation exchange
     call this%cat_exch%allocate_surf_compl(num_surf_compl)
+    call this%cat_exch%allocate_exch_cat_indices(num_exch_cats)
     call this%cat_exch%set_num_exch_cats(num_exch_cats)
     !> Chemical system
     call this%allocate_cst_act_sp_indices(num_cst_act_sp)
@@ -298,7 +299,7 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
                 call this%cat_exch%surf_compl(i)%set_name(str_trim)
                 call this%cat_exch%surf_compl(i)%set_cst_act_flag(.false.)
                 exch_cat_ind=index(str_trim,'-')
-                if (exch_cat_ind>0 .and. exch_cat_ind<len(str_trim)-1) then
+                if (exch_cat_ind>0 .and. exch_cat_ind<len(str_trim)) then
                     j=j+1
                     if (exch_cat_ind>1) then
                         if (exch_cat_ind==2) then

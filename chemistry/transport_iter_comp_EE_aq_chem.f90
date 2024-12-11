@@ -1,16 +1,14 @@
 !> Computes component and variable activity concentrations after iteration of WMA method for equilibrium chemical system
 !> We assume all primary species are aqueous
-subroutine mixing_iter_comp(this,c1_old,c2nc_ig,c_tilde,conc_nc,conc_comp,porosity,Delta_t)
+subroutine mixing_iter_comp(this,c1_old,c2nc_ig,c_tilde,conc_nc,porosity,Delta_t)
     use aqueous_chemistry_m
     implicit none
 !> Arguments
     class(aqueous_chemistry_c) :: this !> aqueous chemistry object at current time step
-    !class(aqueous_chemistry_c), intent(in) :: this_old !> aqueous chemistry object at previous time step (nombre muy malo)
     real(kind=8), intent(in) :: c1_old(:)
     real(kind=8), intent(in) :: c2nc_ig(:)
     real(kind=8), intent(in) :: c_tilde(:)
     real(kind=8), intent(out) :: conc_nc(:)
-    real(kind=8), intent(out) :: conc_comp(:) !> concentration components
     real(kind=8), intent(in), optional :: porosity
     real(kind=8), intent(in), optional :: Delta_t !> time step
 !> Variables
@@ -18,10 +16,10 @@ subroutine mixing_iter_comp(this,c1_old,c2nc_ig,c_tilde,conc_nc,conc_comp,porosi
     logical :: CV_flag !> convergence flag
     real(kind=8) :: mu=0d0 !> Newton initialistaion parameter
     real(kind=8), allocatable :: c1(:) !> concentration primary species
-    !real(kind=8), allocatable :: conc_nc(:) !> concentration variable activity species
+    real(kind=8), allocatable :: conc_comp(:) !> concentration components
 !> Pre-process
     c1=this%concentrations(1:this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species)
-    !allocate(conc_nc(1:this%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species))
+    allocate(conc_comp(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species))
 !> Process  
     !> We compute component concentrations after mixing
         conc_comp=MATMUL(THIS%solid_chemistry%reactive_zone%speciation_alg%comp_mat,c_tilde)

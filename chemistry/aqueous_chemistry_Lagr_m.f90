@@ -1052,7 +1052,7 @@ module aqueous_chemistry_m
             integer(kind=4), intent(in) :: unit !> file unit
             integer(kind=4), intent(out) :: niter !> number of iterations in Newton method
             logical, intent(out) :: CV_flag !> TRUE if Newton method converges, FALSE otherwise
-            class(solid_chemistry_c), intent(inout), optional :: surf_chem
+            type(solid_chemistry_c), intent(inout), optional :: surf_chem
         end subroutine
     end interface
     
@@ -1668,15 +1668,15 @@ module aqueous_chemistry_m
             do i=1,this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species
                 c2nc(i)=this%concentrations(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species+i)
             end do
-            if (associated(this%solid_chemistry) .and. this%solid_chemistry%reactive_zone%speciation_alg%flag_cat_exch==.true.) then
+            if (this%solid_chemistry%reactive_zone%speciation_alg%flag_cat_exch==.true.) then
                 c2nc(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species+1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species+this%solid_chemistry%reactive_zone%cat_exch_zone%num_exch_cats)=this%solid_chemistry%concentrations(this%solid_chemistry%reactive_zone%num_minerals+2:this%solid_chemistry%reactive_zone%num_solids)
             end if
             if (associated(this%gas_chemistry)) then
-                if (associated(this%solid_chemistry)) then
+                !if (associated(this%solid_chemistry)) then
                     c2nc(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species+this%solid_chemistry%reactive_zone%cat_exch_zone%num_exch_cats+1:this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions)=this%gas_chemistry%concentrations
-                else
-                    c2nc(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species+1:this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions)=this%gas_chemistry%concentrations
-                end if
+                !else
+                !    c2nc(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species+1:this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions)=this%gas_chemistry%concentrations
+                !end if
             end if
         end function
         

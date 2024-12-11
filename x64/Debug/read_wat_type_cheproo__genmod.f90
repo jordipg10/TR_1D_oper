@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Wed Dec 11 19:10:05 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Wed Dec 11 20:14:54 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE READ_WAT_TYPE_CHEPROO__genmod
@@ -14,7 +14,7 @@
               INTEGER(KIND=4), INTENT(IN) :: UNIT
               INTEGER(KIND=4), INTENT(OUT) :: NITER
               LOGICAL(KIND=4), INTENT(OUT) :: CV_FLAG
-              CLASS (SOLID_CHEMISTRY_C) ,OPTIONAL, INTENT(INOUT) ::     &
+              TYPE (SOLID_CHEMISTRY_C) ,OPTIONAL, INTENT(INOUT) ::      &
      &SURF_CHEM
             END SUBROUTINE READ_WAT_TYPE_CHEPROO
           END INTERFACE 

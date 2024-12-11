@@ -262,13 +262,14 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
                 read(unit,*) j, temp !> we read index water type and temperature (in Celsius)
                 read(unit,*) name
             !> Chapuza
-                if (SIZE(init_cat_exch_zones)==1) then
-                    call wat_types(j)%read_wat_type_CHEPROO(num_aq_prim_array(j),num_cstr_array(j),this%act_coeffs_model,this%Jac_flag,unit,niter,CV_flag,init_cat_exch_zones(1))
-                end if
                 if (present(gas_chem)) then
                     call wat_types(j)%set_gas_chemistry(gas_chem)
                 end if
-                call wat_types(j)%read_wat_type_CHEPROO(num_aq_prim_array(j),num_cstr_array(j),this%act_coeffs_model,this%Jac_flag,unit,niter,CV_flag)
+                if (SIZE(init_cat_exch_zones)==1) then
+                    call wat_types(j)%read_wat_type_CHEPROO(num_aq_prim_array(j),num_cstr_array(j),this%act_coeffs_model,this%Jac_flag,unit,niter,CV_flag,init_cat_exch_zones(1))
+                else
+                    call wat_types(j)%read_wat_type_CHEPROO(num_aq_prim_array(j),num_cstr_array(j),this%act_coeffs_model,this%Jac_flag,unit,niter,CV_flag)
+                end if
             end do
             !read(unit,*) this%num_init_wat_types, this%num_bd_wat_types, this%num_rech_wat_types
             !do i=1,this%num_init_wat_types

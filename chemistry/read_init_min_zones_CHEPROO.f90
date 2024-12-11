@@ -169,7 +169,7 @@ subroutine read_init_min_zones_CHEPROO(this,unit,init_min_zones,reactive_zones)
                 end do
                 do i=1,num_gas_rz
                     do j=1,num_surf_rz
-                        call reactive_zones(num_gas_rz+num_surf_rz+nmtype+(i-1)*num_surf_rz+j)%assign_react_zone(aux_react_zones(num_gas_rz+num_surf_rz+(i-1)*num_surf_rz+j))
+                        call reactive_zones(num_gas_rz+nmtype+i*num_surf_rz+j)%assign_react_zone(aux_react_zones(num_gas_rz+num_surf_rz+(i-1)*num_surf_rz+j))
                     end do
                     do j=1,nmtype
                         call reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%set_chem_syst_react_zone(this%chem_syst)

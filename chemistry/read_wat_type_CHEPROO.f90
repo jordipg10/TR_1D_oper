@@ -11,7 +11,7 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
     integer(kind=4), intent(in) :: unit !> file unit
     integer(kind=4), intent(out) :: niter !> number of iterations
     logical, intent(out) :: CV_flag !> TRUE if converges, FALSE otherwise
-    class(solid_chemistry_c), intent(inout), optional :: surf_chem !> surface chemistry (if there are exchange reactions)
+    type(solid_chemistry_c), intent(inout), optional :: surf_chem !> surface chemistry (if there are exchange reactions)
     !real(kind=8), intent(in), optional :: c1_surf !> chapuza
     !real(kind=8), intent(in), optional :: CEC !> chapuza
     !real(kind=8), intent(out), optional :: conc_exch(:) !> chapuza
@@ -120,8 +120,6 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
             end do
             !call this%gas_chemistry%compute_pressure()
             !call this%gas_chemistry%compute_log_act_coeffs_gases()
-        else
-            error stop
         end if
     do i=1,this%aq_phase%num_species
         call this%aq_phase%aq_species(i)%params_act_coeff%compute_csts(this%aq_phase%aq_species(i)%valence,this%params_aq_sol,model)

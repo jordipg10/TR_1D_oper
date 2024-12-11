@@ -29,13 +29,13 @@ subroutine read_chemistry(this,root,path_DB,unit_chem_syst_file,unit_loc_chem_fi
     end if
 !> Autentica chapuza
     if (this%num_reactive_zones==1) then
-        do i=1,this%num_target_solids
-            !call this%target_solids_init(i)%set_reactive_zone(this%reactive_zones(1))
-            call this%target_solids(i)%set_reactive_zone(this%reactive_zones(1))
-        end do
-        do i=1,this%num_target_gases
-            call this%target_gases(i)%set_reactive_zone(this%reactive_zones(1))
-        end do
+        !do i=1,this%num_target_solids
+        !    !call this%target_solids_init(i)%set_reactive_zone(this%reactive_zones(1))
+        !    !call this%target_solids(i)%set_reactive_zone(this%reactive_zones(1))
+        !end do
+        !do i=1,this%num_target_gases
+        !    call this%target_gases(i)%set_reactive_zone(this%reactive_zones(1))
+        !end do
     else if (this%num_reactive_zones==3) then
         !print *, this%num_target_solids/2
         !do i=1,this%num_target_solids/2

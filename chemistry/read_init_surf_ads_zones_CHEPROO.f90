@@ -7,13 +7,12 @@ subroutine read_init_cat_exch_zones_CHEPROO(this,unit,init_cat_exch_zones,reacti
     type(solid_chemistry_c), intent(out), allocatable :: init_cat_exch_zones(:)
     type(reactive_zone_c), intent(inout), allocatable, optional :: reactive_zones(:)
     
-    integer(kind=4) :: i,j,k,ndtype,idtype,nrwtype,icon,num_ads_zones,num_mins_glob,num_mins_loc
+    integer(kind=4) :: i,j,k,ndtype,idtype,num_gas_rz,icon,num_ads_zones,num_mins_glob,num_rz
     integer(kind=4), allocatable :: valences(:)
     character(len=256) :: str,constrain,label
     real(kind=8) :: c_int,c_ext,spec_sorb_surf,CEC
-    logical :: min_zone_flag
-    type(mineral_c) :: mineral
     type(reactive_zone_c) :: react_zone
+    type(reactive_zone_c), allocatable :: aux_react_zones(:)
     type(Gaines_Thomas_c), target :: Gaines_Thomas
 
     read(unit,*) ndtype !> number of surface adsorption zones
@@ -31,10 +30,9 @@ subroutine read_init_cat_exch_zones_CHEPROO(this,unit,init_cat_exch_zones,reacti
         read(unit,*) str, CEC
         call react_zone%set_chem_syst_react_zone(this%chem_syst)
         call react_zone%set_cat_exch_zone()
-        !call react_zone%cat_exch_zone%set_CEC(CEC)
         react_zone%cat_exch_zone%convention=>Gaines_Thomas !> by default
         call react_zone%set_non_flowing_species()
-        call react_zone%set_eq_reactions()
+        !call react_zone%set_eq_reactions()
         call react_zone%set_num_solids()
         call react_zone%set_stoich_mat_react_zone()
         call init_cat_exch_zones(idtype)%set_reactive_zone(react_zone)
@@ -51,9 +49,34 @@ subroutine read_init_cat_exch_zones_CHEPROO(this,unit,init_cat_exch_zones,reacti
         if (num_ads_zones==ndtype) exit
     end do
     if (present(reactive_zones)) then
-        allocate(reactive_zones(ndtype))
-        do i=1,ndtype
-            reactive_zones(i)=init_cat_exch_zones(i)%reactive_zone
-        end do
+        if (allocated(reactive_zones)) then
+            num_gas_rz=size(reactive_zones)
+            allocate(aux_react_zones(num_gas_rz))
+            do i=1,num_gas_rz
+                call aux_react_zones(i)%assign_react_zone(reactive_zones(i))
+            end do
+            num_rz=num_gas_rz+ndtype*(1+num_gas_rz)
+            deallocate(reactive_zones)
+            allocate(reactive_zones(num_rz))
+            do i=1,num_gas_rz
+                call reactive_zones(i)%assign_react_zone(aux_react_zones(i))
+            end do
+            do i=1,ndtype
+                call reactive_zones(num_gas_rz+i)%set_chem_syst_react_zone(this%chem_syst)
+                call reactive_zones(num_gas_rz+i)%set_cat_exch_zone(init_cat_exch_zones(i)%reactive_zone%cat_exch_zone)
+            end do
+            do i=1,num_gas_rz
+                do j=1,ndtype
+                    call reactive_zones(num_gas_rz+i*ndtype+j)%set_chem_syst_react_zone(this%chem_syst)
+                    call reactive_zones(num_gas_rz+i*ndtype+j)%set_gas_phase(reactive_zones(i)%gas_phase)
+                    call reactive_zones(num_gas_rz+i*ndtype+j)%set_cat_exch_zone(init_cat_exch_zones(i)%reactive_zone%cat_exch_zone)
+                end do
+            end do
+        else
+            allocate(reactive_zones(ndtype))
+            do i=1,ndtype
+                call reactive_zones(i)%assign_react_zone(init_cat_exch_zones(i)%reactive_zone)
+            end do
+        end if
     end if
 end subroutine
