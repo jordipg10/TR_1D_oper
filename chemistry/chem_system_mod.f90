@@ -743,9 +743,9 @@ module chem_system_m
             if (this%speciation_alg%flag_comp==.false. .and. this%speciation_alg%flag_cat_exch==.true.) then
             !<      primary aqueous species
             !<      free surface
-            !<      secondary aqueous species
             !<      minerals NOT in equilibrium
             !<      gases NOT in equilibrium
+            !<      aqueous complexes
             !<      minerals in equilibrium
             !<      surface complexes
             !<      gases in equilibrium

@@ -18,7 +18,7 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
     
     integer(kind=4) :: i,j,k,l,m,niwtype,nbwtype,nrwtype,gas_ind,min_ind,n_comp_aq,ind_cstr,n_gas_constr,n_aq_comp,icon,sp_ind
     integer(kind=4), allocatable :: icons(:),indices_constrains(:),gas_indices(:),n_icons(:),prim_indices(:),cols(:)
-    real(kind=8), allocatable :: ctots(:)
+    real(kind=8), allocatable :: ctots(:),c2_init(:),c2_ig(:),c1(:)
     character(len=256) :: prim_sp_name,label,aq_sp_name
     character(len=256), allocatable :: constrains(:)
     real(kind=8) :: temp,conc,ionic_act,guess,ctot
@@ -31,7 +31,10 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
     type(aq_species_c) :: aq_species
     type(species_c) :: constrain
     
-    !do
+    if (present(surf_chem)) then
+        call this%set_solid_chemistry(surf_chem)
+    end if
+    
     !    read(unit,*) label
     !    if (label=='INITIAL AND BOUNDARY WATER TYPES') then
     !        i=0 !> counter initial water types
@@ -126,31 +129,26 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
     end do
 !> We set speciation algebra
     call this%solid_chemistry%reactive_zone%speciation_alg%set_flag_comp(.false.)
-    if (this%solid_chemistry%reactive_zone%chem_syst%cat_exch%num_surf_compl>0) then
+    if (this%solid_chemistry%reactive_zone%cat_exch_zone%num_surf_compl>0) then
         flag_surf=.true.
     else
         flag_surf=.false.
     end if
     call this%solid_chemistry%reactive_zone%speciation_alg%set_flag_cat_exch(flag_surf)
-    call this%solid_chemistry%reactive_zone%speciation_alg%set_dimensions(this%solid_chemistry%reactive_zone%chem_syst%num_species,this%solid_chemistry%reactive_zone%chem_syst%num_eq_reacts,this%solid_chemistry%reactive_zone%chem_syst%num_cst_act_species,this%aq_phase%num_species,this%aq_phase%num_species-this%aq_phase%wat_flag,this%solid_chemistry%reactive_zone%chem_syst%num_min_kin_reacts,this%solid_chemistry%reactive_zone%chem_syst%gas_phase%num_species-this%solid_chemistry%reactive_zone%chem_syst%gas_phase%num_gases_eq)
-    call this%solid_chemistry%reactive_zone%speciation_alg%compute_arrays(this%solid_chemistry%reactive_zone%chem_syst%Se,this%solid_chemistry%reactive_zone%chem_syst%get_eq_csts(),this%solid_chemistry%reactive_zone%CV_params%abs_tol,flag_Se,cols)
+    call this%solid_chemistry%reactive_zone%set_speciation_alg_dimensions()
+    call this%solid_chemistry%reactive_zone%set_eq_reactions()
+    call this%solid_chemistry%reactive_zone%set_stoich_mat_react_zone()
+    call this%solid_chemistry%reactive_zone%compute_speciation_alg_arrays(flag_Se,cols)
             
-    !call this%set_prim_species_indices()
-    !call this%set_sec_var_act_species_indices()
     call this%aq_phase%set_ind_diss_solids()
-    
-    !call this%allocate_conc_comp_aq()
-    !call this%allocate_log_act_coeffs_aq_chem()
-
+!> Primary concentrations
+    c1=this%get_c1()
 !> Initial guess c2
-    !call this%compute_c2_from_c1_aq_ideal() !> initial guess c2_aq
-!> Initial guess activities
-    !call this%compute_activities_aq_var_act_species() !> initial guess activities
-    !call this%compute_act_water() !> initial guess activity water
+    allocate(c2_init(this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions),c2_ig(this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions))
 !> We compute initial concentrations (in molalities)
     !> aqui podrias usar polimorifsmo
     if (sum(n_icons(2:4))>0) then
-        if (present(surf_chem)) then
+        if (flag_surf==.true.) then
             if (Jac_flag==1) then
                 call this%initialise_conc_anal_exch(icons,n_icons,indices_constrains,ctots,surf_chem,niter,CV_flag)
             else
@@ -167,5 +165,10 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
                 error stop
             end if
         end if
+    else if (model==0) then
+        call this%compute_c2_from_c1_ideal(c1,c2_init)
+    else
+        c2_ig=1d-16 !> chapuza
+        call this%compute_c2_from_c1_Picard(c1,c2_ig,c2_init,niter,CV_flag)
     end if
 end subroutine

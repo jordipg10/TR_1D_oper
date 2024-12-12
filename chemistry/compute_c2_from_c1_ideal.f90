@@ -16,11 +16,5 @@ subroutine compute_c2_from_c1_ideal(this,c1,c2)
             
     log_c2=matmul(this%solid_chemistry%reactive_zone%speciation_alg%Se_1_star,log10(c1))+this%solid_chemistry%reactive_zone%speciation_alg%logK_tilde !> mass action law
     c2=10**log_c2
-    call this%set_conc_sec_aq_species(c2(1:n_sec_aq)) 
-        if (associated(this%gas_chemistry)) then
-        if (this%gas_chemistry%reactive_zone%gas_phase%num_var_act_species>0) then !> chapuza
-            call this%gas_chemistry%update_conc_gases(c2(n_sec_aq+1:n_e)*this%volume) !> we update moles of gases
-            !call this%gas_chemistry%compute_vol_gas() !> we compute total volume of gas
-        end if
-    end if
+    call this%set_conc_sec_species(c2)
  end subroutine

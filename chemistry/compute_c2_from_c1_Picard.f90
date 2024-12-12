@@ -48,12 +48,12 @@ subroutine compute_c2_from_c1_Picard(this,c1,c2_ig,c2,niter,CV_flag)
     !> We apply mass action law to compute concentration secondary variable activity species
         log_c2_new=matmul(this%solid_chemistry%reactive_zone%speciation_alg%Se_1_star,log_gamma1_old+log10(c1))+this%solid_chemistry%reactive_zone%speciation_alg%logK_tilde-log_gamma2_old !> mass action law
         c2=10**log_c2_new
-    !> We update secondary aqueous variable activity concentrations in aqueous chemistry object
-        call this%update_conc_sec_aq_species(c2(1:n_2_aq))
-        if (associated(this%gas_chemistry)) then !> chapuza
-            call this%gas_chemistry%update_conc_gases(c2(n_2_aq+1:n_e)*this%volume) !> we update moles of gases
-            call this%gas_chemistry%compute_vol_gas_conc() !> we compute total volume of gas
-        end if
+    !> We update secondary concentrations
+        call this%update_conc_sec_species(c2)
+        !if (associated(this%gas_chemistry)) then !> chapuza
+        !    !call this%gas_chemistry%update_conc_gases(c2(n_2_aq+1:n_e)*this%volume) !> we update moles of gases
+        !    call this%gas_chemistry%compute_vol_gas_conc() !> we compute total volume of gas
+        !end if
     !< We check convergence
          if (inf_norm_vec_real((c2-c2_old)/c2_old)<this%solid_chemistry%reactive_zone%CV_params%rel_tol) then
             CV_flag=.true.
@@ -76,9 +76,9 @@ subroutine compute_c2_from_c1_Picard(this,c1,c2_ig,c2,niter,CV_flag)
     !call this%compute_molarities()
     if (associated(this%gas_chemistry)) then !> chapuza
         !call this%gas_chemistry%update_conc_gases(c2nc(n_nc2_aq+1:n_e)*this%volume) !> we update moles of gases
-        !call this%gas_chemistry%compute_vol_gas() !> we compute total volume of gas
         call this%gas_chemistry%compute_log_act_coeffs_gases() !> we compute log_10 activity coefficients of gases
         call this%gas_chemistry%compute_partial_pressures() !> we compute activities (ie. partial pressures)
         call this%gas_chemistry%compute_pressure() !> we compute activities (ie. partial pressures)
+        call this%gas_chemistry%compute_vol_gas_conc() !> we compute total volume of gas
     end if
  end subroutine

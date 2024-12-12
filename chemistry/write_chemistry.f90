@@ -189,6 +189,10 @@ subroutine write_chemistry(this,unit)
             do i=1,this%reactive_zones(l)%num_minerals
                 write(unit,"(10x,*(ES15.5))") (this%target_waters(dom_indices(j))%solid_chemistry%r_eq(i), j=1,size(dom_indices))
             end do
+            write(unit,"(/,10x,'Exchange equilibrium reaction rates:'/)")
+            do i=1,this%reactive_zones(l)%cat_exch_zone%num_exch_cats
+                write(unit,"(10x,*(ES15.5))") (this%target_waters(dom_indices(j))%solid_chemistry%r_eq(this%reactive_zones(l)%num_minerals+i), j=1,size(dom_indices))
+            end do
             write(unit,"(/,10x,'Gas equilibrium reaction rates:'/)")
             do i=1,this%reactive_zones(l)%gas_phase%num_species
                 write(unit,"(10x,*(ES15.5))") (this%target_waters(dom_indices(j))%gas_chemistry%r_eq(i), j=1,size(dom_indices))

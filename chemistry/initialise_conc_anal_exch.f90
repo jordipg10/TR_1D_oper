@@ -1,7 +1,7 @@
 !> Computes species concentrations with data from water type definition using Newton method
 !> We assume the initial guess of primary aqueous species is already set in the aqueous chemistry object
 !> This subroutine is only used to read water types and initial surface adsorption zones based in CHEPROO
-subroutine initialise_conc_anal_exch(this,icon,n_icon,indices_constrains,ctot,surf_chem,niter,CV_flag)
+subroutine initialise_conc_anal_exch(this,icon,n_icon,indices_constrains,ctot,niter,CV_flag)
     use metodos_sist_lin_m
     use aqueous_chemistry_m
     use vectors_m, only : inf_norm_vec_real
@@ -15,7 +15,7 @@ subroutine initialise_conc_anal_exch(this,icon,n_icon,indices_constrains,ctot,su
     !real(kind=8), intent(in) :: c1_surf !> chapuza
     !real(kind=8), intent(in) :: CEC
     !real(kind=8), intent(out) :: conc_exch(:) !> chapuza
-    class(solid_chemistry_c), intent(inout) :: surf_chem !> surface chemistry
+    !type(solid_chemistry_c), intent(inout) :: surf_chem !> surface chemistry
     integer(kind=4), intent(out) :: niter !> number of iterations Newton-Raphson
     logical, intent(out) :: CV_flag !> TRUE if converges, FALSE otherwise
 !> Variables
@@ -77,7 +77,7 @@ subroutine initialise_conc_anal_exch(this,icon,n_icon,indices_constrains,ctot,su
     allocate(dc2_dc1(this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species)) !> chapuza
     allocate(out_prod_aq(this%aq_phase%num_species,this%aq_phase%num_species))
     
-    c1(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species)=surf_chem%concentrations(1)
+    c1(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species)=this%solid_chemistry%concentrations(1)
     c1(1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species)=this%concentrations(1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species) !> chapuza
     
     c2_old=1d-16 !> chapuza
@@ -148,8 +148,8 @@ subroutine initialise_conc_anal_exch(this,icon,n_icon,indices_constrains,ctot,su
     !> We update primary concentrations
         call this%update_conc_prim_species(c1,Delta_c1)
     end do
-    surf_chem%concentrations(1)=c1(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species)
-    surf_chem%concentrations(2:surf_chem%reactive_zone%num_solids)=c2_new(this%solid_chemistry%reactive_zone%speciation_alg%num_sec_aq_species+1:this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions)
+    this%solid_chemistry%concentrations(1)=c1(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species)
+    this%solid_chemistry%concentrations(2:this%solid_chemistry%reactive_zone%num_solids)=c2_new(this%solid_chemistry%reactive_zone%speciation_alg%num_sec_aq_species+1:this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions)
     call this%compute_pH()
     call this%compute_salinity()
     call this%compute_alkalinity()

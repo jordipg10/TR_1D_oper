@@ -659,7 +659,7 @@ module reactive_zone_Lagr_m
         subroutine set_speciation_alg_dimensions(this,flag_comp)
             implicit none
             class(reactive_zone_c) :: this
-            logical, intent(in) :: flag_comp !> TRUE if component matrix has no constant activity species (De Simoni et al, 2005), FALSE otherwise
+            logical, intent(in), optional :: flag_comp !> TRUE if component matrix has no constant activity species (De Simoni et al, 2005), FALSE otherwise
             
             integer(kind=4) :: i,n_sp,n_c,n_eq,n_gas_kin
             logical :: flag_cat_exch
@@ -702,7 +702,9 @@ module reactive_zone_Lagr_m
                     flag_cat_exch=.false.
                 end if
             end if
-            call this%speciation_alg%set_flag_comp(flag_comp)
+            if (present(flag_comp)) then
+                call this%speciation_alg%set_flag_comp(flag_comp)
+            end if
             call this%speciation_alg%set_flag_cat_exch(flag_cat_exch)
             call this%speciation_alg%set_dimensions(n_sp,n_eq,n_c,this%chem_syst%aq_phase%num_species,this%chem_syst%aq_phase%num_species-this%chem_syst%aq_phase%wat_flag,this%chem_syst%num_min_kin_reacts,this%gas_phase%num_gases_kin)
         end subroutine

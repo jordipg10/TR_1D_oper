@@ -21,6 +21,9 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
     integer(kind=4) :: ii !> counter target waters chem_out_options
     integer(kind=4) :: num_tar_wat !> number of target waters
     integer(kind=4) :: num_tar_sol !> number of target solids
+    integer(kind=4) :: n_p !> number of primary species
+    integer(kind=4) :: n_nc !> number of variable activity species
+    integer(kind=4) :: n_nc_aq !> number of aqueous variable activity species
     integer(kind=4), allocatable :: tar_gas_indices(:) !> indices target gases in each reactive zone
     integer(kind=4), allocatable :: tar_sol_indices(:) !> indices target solids in each reactive zone
     integer(kind=4), allocatable :: tar_wat_indices(:) !> indices target waters in each reactive zone
@@ -37,7 +40,7 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
     type(aq_phase_c), target :: aq_phase
 !> Procedure pointers
     !> primary concentrations
-    procedure(get_c1_aq), pointer :: p_prim=>NULL()
+    procedure(get_c1), pointer :: p_prim=>NULL()
     !> reactive mixing subroutines
     procedure(mixing_iter_comp), pointer :: p_solver=>null()
     !> mobile species mixing
@@ -55,7 +58,18 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
             
     open(unit,file=root//'.out',form="formatted",access="sequential",status="unknown")
 !> We select reactive mixing subroutine depending on the nature of the chemical system and the methods to compute Jacobians and integrate in time
-    !> Time loop
+    if (this%chem_syst%num_kin_reacts>0) then !> equilibrium and kinetic reactions
+        if (int_method_chem_reacts==1) then !> Euler explicit
+            p_solver=>water_mixing_iter_EE_eq_kin
+        else if (int_method_chem_reacts==2 .and. this%Jac_flag==1) then !> Euler fully implicit, analytical Jacobian
+            p_solver=>water_mixing_iter_EfI_eq_kin_anal
+        else
+            error stop "Integration method for chemical reactions not implemented yet"
+        end if
+    else
+        p_solver=>mixing_iter_comp !> only equilibrium reactions
+    end if
+!> Time loop
         do k=1,time_discr_tpt%Num_time
             Delta_t=time_discr_tpt%get_Delta_t(k)
             time=time+Delta_t
@@ -65,62 +79,36 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
             end if
         !> Target waters loop
             do i=1,this%num_target_waters_dom
+                n_p=this%target_waters(this%dom_tar_wat_indices(i))%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
+                n_nc=this%target_waters(this%dom_tar_wat_indices(i))%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species
+                n_nc_aq=this%target_waters(this%dom_tar_wat_indices(i))%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species
                 if (abs(mixing_ratios%cols(i)%col_1(1)-1d0)<this%target_waters(this%dom_tar_wat_indices(i))%solid_chemistry%reactive_zone%CV_params%abs_tol .and. inf_norm_vec_real(mixing_ratios%cols(i)%col_1(2:mixing_ratios%cols(i)%dim))<this%target_waters(this%dom_tar_wat_indices(i))%solid_chemistry%reactive_zone%CV_params%abs_tol) then
                     continue
                 else
-                    if (this%target_waters(this%dom_tar_wat_indices(i))%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species==this%target_waters(i)%solid_chemistry%reactive_zone%speciation_alg%num_prim_species) then
-                        p_prim=>get_c1_aq !> chapuza
-                    else
-                        p_prim=>get_c1
-                    end if
-                    if (this%chem_syst%num_kin_reacts>0) then !> equilibrium and kinetic reactions
-                        if (int_method_chem_reacts==1) then !> Euler explicit
-                            if (this%act_coeffs_model==0) then !> ideal
-                                !p_solver=>water_mixing_iter_EE_eq_kin_ideal
-                            else
-                                p_solver=>water_mixing_iter_EE_eq_kin
-                            end if
-                        else if (int_method_chem_reacts==2 .and. this%Jac_flag==1) then !> Euler fully implicit, analytical Jacobian
-                            if (this%act_coeffs_model==0) then !> ideal
-                                !p_solver=>water_mixing_iter_EfI_eq_kin_anal_ideal
-                            else
-                                p_solver=>water_mixing_iter_EfI_eq_kin_anal
-                            end if
-                        else
-                            error stop "Integration method for chemical reactions not implemented yet"
-                        end if
-                    else if (this%target_waters(this%dom_tar_wat_indices(i))%solid_chemistry%reactive_zone%cat_exch_zone%num_surf_compl>0) then !> variable activity species are aqueous and solid
+                    if (this%target_waters(this%dom_tar_wat_indices(i))%solid_chemistry%reactive_zone%cat_exch_zone%num_surf_compl>0) then !> variable activity species are aqueous and solid
                         p_solver=>mixing_iter_comp_exch !> only equilibrium reactions
-                    else !> faltan los gases en equilibrio
-                        if (this%act_coeffs_model==0) then !> ideal
-                            !p_solver=>mixing_iter_comp_ideal !> only equilibrium reactions
-                        else
-                            p_solver=>mixing_iter_comp !> only equilibrium reactions
-                        end if
                     end if
-                    allocate(conc_nc(this%target_waters(this%dom_tar_wat_indices(i))%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species))
-                    allocate(conc_comp(this%target_waters(this%dom_tar_wat_indices(i))%solid_chemistry%reactive_zone%speciation_alg%num_prim_species))
-                    allocate(conc_old(this%target_waters(this%dom_tar_wat_indices(i))%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species,mixing_ratios%cols(i)%dim)) !> chapuza
-                    !conc_old(:,1)=target_waters_old(i)%get_conc_nc() !> chapuza
+                    allocate(conc_nc(n_nc))
+                    allocate(conc_old(n_nc,mixing_ratios%cols(i)%dim)) !> chapuza
                     do j=1,mixing_waters_indices%cols(i)%dim
                         conc_old(:,j)=target_waters_old(mixing_waters_indices%cols(i)%col_1(j))%get_conc_nc() !> chapuza
                     end do
                 !> We solve mixing caused by transport
-                    c_tilde=p_c_tilde(target_waters_old(this%dom_tar_wat_indices(i)),mixing_ratios%cols(this%dom_tar_wat_indices(i))%col_1,conc_old)
+                    c_tilde=target_waters_old(i)%get_conc_nc()
+                    c_tilde(1:n_nc_aq)=compute_c_tilde(target_waters_old(this%dom_tar_wat_indices(i)),mixing_ratios%cols(this%dom_tar_wat_indices(i))%col_1,conc_old(1:n_nc_aq,:))
                 !> We solve reactive mixing iteration
-                    call p_solver(target_waters_new(this%dom_tar_wat_indices(i)),p_prim(target_waters_old_old(this%dom_tar_wat_indices(i))),target_waters_old(this%dom_tar_wat_indices(i))%get_c2nc(),c_tilde(target_waters_new(this%dom_tar_wat_indices(i))%indices_aq_phase(1:target_waters_new(this%dom_tar_wat_indices(i))%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species)),conc_nc,F_mat(i),Delta_t)
+                    call p_solver(target_waters_new(this%dom_tar_wat_indices(i)),get_c1(target_waters_old_old(this%dom_tar_wat_indices(i))),target_waters_old(this%dom_tar_wat_indices(i))%get_c2nc(),c_tilde,conc_nc,F_mat(i),Delta_t)
                 !> We compute equilibrium reaction rates from mass balance equation
-                    call target_waters_new(this%dom_tar_wat_indices(i))%compute_r_eq(c_tilde(target_waters_new(this%dom_tar_wat_indices(i))%indices_aq_phase(target_waters_new(this%dom_tar_wat_indices(i))%solid_chemistry%reactive_zone%speciation_alg%num_prim_species+1:target_waters_new(this%dom_tar_wat_indices(i))%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species)),Delta_t,F_mat(i))
-                !> Chapuza
-                    if (associated(target_waters_new(this%dom_tar_wat_indices(i))%solid_chemistry)) then
-                    !> We compute mass volumetric fractions of minerals from mass balance equation
-                        call target_waters_new(this%dom_tar_wat_indices(i))%solid_chemistry%compute_mass_bal_mins(Delta_t)
-                    !> We compute concentrations of minerals
-                        call target_waters_new(this%dom_tar_wat_indices(i))%solid_chemistry%compute_conc_minerals_iter(Delta_t)
-                    end if
+                    call target_waters_new(this%dom_tar_wat_indices(i))%compute_r_eq(c_tilde(n_p+1:n_nc),Delta_t,F_mat(i))
+            !> We compute solid chemistry state variables
+                !> We compute mass volumetric fractions of minerals from mass balance equation
+                    call target_waters_new(this%dom_tar_wat_indices(i))%solid_chemistry%compute_mass_bal_mins(Delta_t)
+                !> We compute concentrations of minerals
+                    call target_waters_new(this%dom_tar_wat_indices(i))%solid_chemistry%compute_conc_minerals_iter(Delta_t)
+                !> We compute gas chemistry state variables
                     if (associated(target_waters_new(this%dom_tar_wat_indices(i))%gas_chemistry)) then
                     !> We compute concentrations of gases
-                        call target_waters_new(this%dom_tar_wat_indices(i))%gas_chemistry%compute_conc_gases_iter(Delta_t,F_mat(this%dom_tar_wat_indices(i)),target_waters_new(i)%volume,[target_waters_new(i)%r_eq,target_waters_new(i)%rk])
+                        call target_waters_new(this%dom_tar_wat_indices(i))%gas_chemistry%compute_conc_gases_iter(Delta_t,F_mat(i),target_waters_new(i)%volume,[target_waters_new(i)%r_eq,target_waters_new(i)%rk])
                     !> We compute volume of gas   
                         call target_waters_new(this%dom_tar_wat_indices(i))%gas_chemistry%compute_vol_gas_conc()
                     !> We compute activity coefficients of gases    
@@ -151,4 +139,4 @@ subroutine solve_reactive_mixing(this,root,unit,mixing_ratios,mixing_waters_indi
 !> We set the new target waters to the chemistry object
     this%target_waters=target_waters_new
     close(unit)
-end subroutine
+ end subroutine

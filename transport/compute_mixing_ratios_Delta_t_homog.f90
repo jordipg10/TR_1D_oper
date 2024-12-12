@@ -52,7 +52,7 @@ subroutine compute_mixing_ratios_Delta_t_homog(this,A_mat_lumped)
         do i=1,this%mixing_ratios%num_cols
             call this%mixing_ratios%cols(i)%set_dim(this%mixing_ratios%num_cols)
             call this%mixing_ratios%cols(i)%allocate_vector()
-            call this%mixing_waters_indices%cols(i)%allocate_vector(this%mixing_ratios%cols(i)%dim-1)
+            call this%mixing_waters_indices%cols(i)%allocate_vector(this%mixing_ratios%cols(i)%dim)
         end do
         if (this%time_discr%int_method==2) then
             theta=1d0
@@ -81,13 +81,14 @@ subroutine compute_mixing_ratios_Delta_t_homog(this,A_mat_lumped)
         end if
         do i=1,this%mixing_ratios%num_cols
             this%mixing_ratios%cols(i)%col_1(1)=this%mixing_ratios_mat(i,i)
+            this%mixing_waters_indices%cols(i)%col_1(1)=i
             do j=1,i-1
                 this%mixing_ratios%cols(i)%col_1(1+j)=this%mixing_ratios_mat(j,i)
-                this%mixing_waters_indices%cols(i)%col_1(j)=j
+                this%mixing_waters_indices%cols(i)%col_1(1+j)=j
             end do
             do j=i+1,this%mixing_ratios%cols(i)%dim
                 this%mixing_ratios%cols(i)%col_1(j)=this%mixing_ratios_mat(j,i)
-                this%mixing_waters_indices%cols(i)%col_1(j-1)=j
+                this%mixing_waters_indices%cols(i)%col_1(j)=j
             end do
         end do
     else

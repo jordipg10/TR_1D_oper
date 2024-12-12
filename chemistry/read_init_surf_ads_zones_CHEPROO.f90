@@ -32,9 +32,9 @@ subroutine read_init_cat_exch_zones_CHEPROO(this,unit,init_cat_exch_zones,reacti
         call react_zone%set_cat_exch_zone()
         react_zone%cat_exch_zone%convention=>Gaines_Thomas !> by default
         call react_zone%set_non_flowing_species()
-        !call react_zone%set_eq_reactions()
         call react_zone%set_num_solids()
-        call react_zone%set_stoich_mat_react_zone()
+        !call react_zone%set_stoich_mat_react_zone()
+        call react_zone%set_CV_params(this%CV_params)
         call init_cat_exch_zones(idtype)%set_reactive_zone(react_zone)
         call init_cat_exch_zones(idtype)%allocate_conc_solids()
         call init_cat_exch_zones(idtype)%set_CEC(CEC) !> cation exchanghe capacity

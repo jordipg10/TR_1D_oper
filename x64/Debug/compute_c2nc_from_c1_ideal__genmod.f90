@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Wed Dec 11 20:14:46 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Dec 12 16:16:57 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPUTE_C2NC_FROM_C1_IDEAL__genmod

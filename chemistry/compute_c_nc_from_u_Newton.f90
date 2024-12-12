@@ -56,7 +56,7 @@ subroutine compute_c_nc_from_u_Newton(this,c1_ig,c2nc_ig,conc_comp,conc_nc,niter
         !> Outer product d_log_gamma_nc_d_I and z_nc^2
             out_prod=outer_prod_vec(d_log_gamma_d_I,this%solid_chemistry%reactive_zone%chem_syst%z2(1:n_nc))
         !> We compute Jacobian secondary variable activity-primary concentrations
-            call this%compute_dc2nc_dc1_aq(conc_nc(n_p+1:n_nc),out_prod,dc2nc_dc1)
+            call this%compute_dc2nc_dc1(conc_nc(1:n_p),conc_nc(n_p+1:n_nc),out_prod,dc2nc_dc1)
         !> We compute log-Jacobian variable activity coefficients-variable activity concentrations
             out_prod_aq(1:n_p_aq,1:n_p_aq)=out_prod(1:n_p_aq,1:n_p_aq)
             out_prod_aq(n_p_aq+1:n_nc_aq,n_p_aq+1:n_nc_aq)=out_prod(n_p+1:n_nc_aq+1,n_p+1:n_nc_aq+1)

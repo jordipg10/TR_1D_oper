@@ -3,7 +3,7 @@ subroutine compute_d_log_gamma_d_I_aq_chem(this,d_log_gamma_d_I)
     use aqueous_chemistry_m
     implicit none
     class(aqueous_chemistry_c) :: this
-    real(kind=8), intent(out) :: d_log_gamma_d_I(:) !> derivative of log_10(activity coefficients) with respect to ionic activity (must be already allocated)
+    real(kind=8), intent(inout) :: d_log_gamma_d_I(:) !> derivative of log_10(activity coefficients) with respect to ionic activity (must be already allocated)
     
     integer(kind=4) :: i
     

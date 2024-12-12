@@ -76,6 +76,9 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
             continue
         end if
     end do
+    do i=1,size(init_cat_exch_zones)
+        call init_cat_exch_zones(i)%set_reactive_zone(reactive_zones(size(init_gas_zones)+1))
+    end do
     do
         read(unit_loc_chem_file,*) label
         if (label=='end') then

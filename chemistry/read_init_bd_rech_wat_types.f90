@@ -16,9 +16,9 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
     real(kind=8) :: guess,c_tot,temp,conc
     logical :: CV_flag,flag,flag_surf,flag_comp,flag_Se
     
-    type(reactive_zone_c) :: react_zone
+    type(reactive_zone_c) :: react_zone !> default object
     !type(gas_chemistry_c) :: gas_chem
-    type(solid_chemistry_c) :: solid_chem
+    type(solid_chemistry_c) :: solid_chem !> default object
     type(aq_species_c) :: aq_species
     type(mineral_c) :: mineral
     type(aq_phase_c) :: old_aq_phase
@@ -30,12 +30,9 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
     read(unit,*) this%act_coeffs_model
     
     read(unit,*) nwtype
-    
-    !read(unit,*) this%num_init_wat_types, this%num_bd_wat_types, this%num_rech_wat_types
-    
+        
     allocate(wat_types(nwtype))
     allocate(cols(2))
-    !this%nwtype=this%num_init_wat_types+this%num_bd_wat_types+this%num_rech_wat_types !> total number of water types
     allocate(num_aq_prim_array(nwtype),num_cstr_array(nwtype),ind_wat_type(nwtype))
     
     num_aq_prim_array=0

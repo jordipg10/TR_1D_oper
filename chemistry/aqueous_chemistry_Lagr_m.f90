@@ -30,7 +30,7 @@ module aqueous_chemistry_m
         procedure, public :: set_conc_var_act_species
         procedure, public :: set_conc_sec_var_act_species
         procedure, public :: set_conc_sec_aq_species
-        procedure, public :: set_conc_cst_act_species
+        procedure, public :: set_conc_sec_species
         procedure, public :: set_ind_aq_phase
         procedure, public :: set_pH
         procedure, public :: set_pe
@@ -134,6 +134,7 @@ module aqueous_chemistry_m
         procedure, public :: update_conc_aq_prim_species
         procedure, public :: update_conc_prim_species
         procedure, public :: update_conc_aq_species
+        procedure, public :: update_conc_sec_species
         procedure, public :: update_conc_sec_aq_species
         procedure, public :: update_conc_sec_var_act_species
         procedure, public :: update_conc_sec_aq_var_act_species
@@ -963,7 +964,7 @@ module aqueous_chemistry_m
             class(aqueous_chemistry_c) :: this
             !real(kind=8), intent(in) :: ionic_act
             !class(params_aq_sol_t), intent(in) :: params_aq_sol
-            real(kind=8), intent(out) :: d_log_gamma_d_I(:) !> must be allocated
+            real(kind=8), intent(inout) :: d_log_gamma_d_I(:) !> must be allocated
         end subroutine
         
         subroutine compute_res_Jac_res_anal_exch(this,conc,indices_icon,n_icon,indices_constrains,ctot,dc2_dc1,log_Jacobian_act_coeffs,CEC,res,Jac_res)
@@ -1226,18 +1227,40 @@ module aqueous_chemistry_m
             this%concentrations(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species+1:this%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species)=c2nc_aq
         end subroutine
         
-       subroutine set_conc_cst_act_species(this,c_c)
+       subroutine set_conc_sec_species(this,c2)
             implicit none
             class(aqueous_chemistry_c) :: this
-            real(kind=8), intent(in) :: c_c(:)
+            real(kind=8), intent(in) :: c2(:)
 
-            if (size(c_c)/=this%aq_phase%num_species-this%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species) then
-                error stop "Dimension error in concentration of aqueous constant activity species"
-            else
-                this%concentrations(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species+1:this%aq_phase%num_species)=c_c
+            if (size(c2)/=this%solid_chemistry%reactive_zone%speciation_alg%num_species-this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species) then
+                error stop "Dimension error in 'set_conc_sec_species'"
+            else if (this%solid_chemistry%reactive_zone%speciation_alg%flag_comp==.false.) then
+                this%concentrations(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species+1:this%aq_phase%num_species)=c2(1:this%aq_phase%num_aq_complexes)
+                this%solid_chemistry%concentrations(1:this%solid_chemistry%reactive_zone%num_minerals)=c2(this%aq_phase%num_aq_complexes+1:this%aq_phase%num_aq_complexes+this%solid_chemistry%reactive_zone%num_minerals)
+                if (this%solid_chemistry%reactive_zone%speciation_alg%flag_cat_exch==.true.) then
+                    this%solid_chemistry%concentrations(this%solid_chemistry%reactive_zone%num_minerals+2:this%solid_chemistry%reactive_zone%num_solids)=c2(this%aq_phase%num_aq_complexes+this%solid_chemistry%reactive_zone%num_minerals+1:this%aq_phase%num_aq_complexes+this%solid_chemistry%reactive_zone%num_minerals+this%solid_chemistry%reactive_zone%cat_exch_zone%num_exch_cats)
+                end if
+                if (associated(this%gas_chemistry)) then
+                    this%gas_chemistry%concentrations(1:this%gas_chemistry%reactive_zone%gas_phase%num_gases_eq)=c2(this%gas_chemistry%reactive_zone%speciation_alg%num_eq_reactions-this%gas_chemistry%reactive_zone%gas_phase%num_gases_eq+1:this%gas_chemistry%reactive_zone%speciation_alg%num_eq_reactions)
+                end if
             end if
-
        end subroutine
+       
+       subroutine update_conc_sec_species(this,c2)
+            implicit none
+            class(aqueous_chemistry_c) :: this
+            real(kind=8), intent(in) :: c2(:)
+
+                this%concentrations(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species+1:this%aq_phase%num_species)=c2(1:this%aq_phase%num_aq_complexes)
+                this%solid_chemistry%concentrations(1:this%solid_chemistry%reactive_zone%num_minerals)=c2(this%aq_phase%num_aq_complexes+1:this%aq_phase%num_aq_complexes+this%solid_chemistry%reactive_zone%num_minerals)
+                if (this%solid_chemistry%reactive_zone%speciation_alg%flag_cat_exch==.true.) then
+                    this%solid_chemistry%concentrations(this%solid_chemistry%reactive_zone%num_minerals+2:this%solid_chemistry%reactive_zone%num_solids)=c2(this%aq_phase%num_aq_complexes+this%solid_chemistry%reactive_zone%num_minerals+1:this%aq_phase%num_aq_complexes+this%solid_chemistry%reactive_zone%num_minerals+this%solid_chemistry%reactive_zone%cat_exch_zone%num_exch_cats)
+                end if
+                if (associated(this%gas_chemistry)) then
+                    this%gas_chemistry%concentrations(1:this%gas_chemistry%reactive_zone%gas_phase%num_gases_eq)=c2(this%gas_chemistry%reactive_zone%speciation_alg%num_eq_reactions-this%gas_chemistry%reactive_zone%gas_phase%num_gases_eq+1:this%gas_chemistry%reactive_zone%speciation_alg%num_eq_reactions)
+                end if
+       end subroutine
+
        
        function compute_conc_comp(this,c_nc) result(conc_comp)
             implicit none
@@ -1300,7 +1323,7 @@ module aqueous_chemistry_m
         subroutine set_solid_chemistry(this,solid_chemistry)
             implicit none
             class(aqueous_chemistry_c) :: this
-            class(solid_chemistry_c), intent(in), target :: solid_chemistry
+            type(solid_chemistry_c), intent(in), target :: solid_chemistry
             if (associated(solid_chemistry%reactive_zone)) then
                 this%solid_chemistry=>solid_chemistry
             else
@@ -1694,18 +1717,12 @@ module aqueous_chemistry_m
             do i=1,this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species
                 conc_nc(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species+i)=this%concentrations(this%indices_aq_phase(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species+i))
             end do
-            if (associated(this%solid_chemistry)) then
                 if (this%solid_chemistry%reactive_zone%speciation_alg%flag_cat_exch==.true.) then
                     conc_nc(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species)=this%solid_chemistry%concentrations(this%solid_chemistry%reactive_zone%num_minerals+1)
                     conc_nc(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species+this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_Species+1:this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species+this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_Species+this%solid_chemistry%reactive_zone%cat_exch_zone%num_exch_cats)=this%solid_chemistry%concentrations(this%solid_chemistry%reactive_zone%num_minerals+2:this%solid_chemistry%reactive_zone%num_solids)
                 end if
-            end if
             if (associated(this%gas_chemistry)) then
-                if (associated(this%solid_chemistry)) then
-                    conc_nc(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species+this%solid_chemistry%reactive_zone%cat_exch_zone%num_surf_compl+1:this%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species)=this%gas_chemistry%concentrations
-                else
-                    conc_nc(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species+1:this%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species)=this%gas_chemistry%concentrations
-                end if
+                conc_nc(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species+this%solid_chemistry%reactive_zone%cat_exch_zone%num_surf_compl+1:this%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species)=this%gas_chemistry%concentrations
             end if
         end function
         

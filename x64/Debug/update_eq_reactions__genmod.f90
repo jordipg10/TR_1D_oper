@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Wed Dec 11 19:35:20 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Dec 12 16:16:56 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE UPDATE_EQ_REACTIONS__genmod

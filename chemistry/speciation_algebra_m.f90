@@ -16,6 +16,7 @@ module speciation_algebra_m
         integer(kind=4) :: num_aq_var_act_species !> number of aqueous variable activity species
         integer(kind=4) :: num_prim_species !> number of primary species
         integer(kind=4) :: num_aq_prim_species !> number of aqueous primary species
+        integer(kind=4) :: num_sec_species !> number of secondary species
         real(kind=8), allocatable :: inv_Se_2(:,:) !> inverse of equilibrium secondary species stoichiometric submatrix
         real(kind=8), allocatable :: Se_1_star(:,:) !> =-inv_Se_2*S_e_1
         real(kind=8), allocatable :: inv_Se_nc_2(:,:) !> inverse of equilibrium variable activity secondary species stoichiometric submatrix
