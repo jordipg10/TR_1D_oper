@@ -157,6 +157,10 @@ subroutine write_chemistry(this,unit)
             do i=1,this%reactive_zones(l)%cat_exch_zone%num_surf_compl
                 write(unit,"(10x,*(ES15.5))") (this%target_waters(dom_indices(j))%solid_chemistry%concentrations(this%reactive_zones(l)%num_minerals+i), j=1,size(dom_indices))
             end do
+            write(unit,"(/,10x,'Activity of surface complexes:'/)")
+            do i=1,this%reactive_zones(l)%cat_exch_zone%num_surf_compl
+                write(unit,"(10x,*(ES15.5))") (this%target_waters(dom_indices(j))%solid_chemistry%activities(this%reactive_zones(l)%num_minerals+i), j=1,size(dom_indices))
+            end do
             write(unit,"(/,10x,'Initial concentration of gases:'/)")
             do i=1,this%reactive_zones(l)%gas_phase%num_species
                 write(unit,"(10x,*(ES15.5))") (this%target_gases_init(dom_indices(j))%concentrations(i), j=1,size(dom_indices))

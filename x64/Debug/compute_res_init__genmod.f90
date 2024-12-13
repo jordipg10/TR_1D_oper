@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Thu Dec 12 16:17:13 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Fri Dec 13 13:22:44 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPUTE_RES_INIT__genmod

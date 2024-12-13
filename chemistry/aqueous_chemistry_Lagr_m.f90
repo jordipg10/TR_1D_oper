@@ -1735,11 +1735,11 @@ module aqueous_chemistry_m
             do i=1,this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species
                 log_gamma2nc(i)=this%log_act_coeffs(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species+i)
             end do
-            if (associated(this%solid_chemistry)) then
+            !if (associated(this%solid_chemistry)) then
                 do i=1,this%solid_chemistry%reactive_zone%cat_Exch_zone%num_exch_cats
                     log_gamma2nc(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species+i)=this%solid_chemistry%log_act_coeffs(this%solid_chemistry%reactive_zone%num_minerals+1+i)
                 end do
-            end if
+            !end if
             if (associated(this%gas_chemistry)) then
                 !if (associated(this%solid_chemistry)) then
                 !    do i=1,this%gas_chemistry%reactive_zone%gas_phase%num_species

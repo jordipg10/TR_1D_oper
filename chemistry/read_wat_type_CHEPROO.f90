@@ -166,9 +166,9 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
             end if
         end if
     else if (model==0) then
-        call this%compute_c2_from_c1_ideal(c1,c2_init)
+        !call this%compute_c2_from_c1_ideal(c1,c2_init)
     else
         c2_ig=1d-16 !> chapuza
-        call this%compute_c2_from_c1_Picard(c1,c2_ig,c2_init,niter,CV_flag)
+        !call this%compute_c2_from_c1_Picard(c1,c2_ig,c2_init,niter,CV_flag)
     end if
 end subroutine

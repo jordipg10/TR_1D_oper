@@ -21,7 +21,7 @@ subroutine compute_c2nc_from_c1_Picard(this,c1,c2nc_ig,c2nc,niter,CV_flag)
     n_nc2_aq=this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species
     n_nc_aq=this%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species
     
-    allocate(log_gamma1_old(n_p),log_gamma2nc_old(n_e),log_c2nc_new(n_e),c2nc_old(n_e))
+    allocate(log_gamma1_old(n_p),log_c2nc_new(n_e),c2nc_old(n_e))
     
     log_gamma1_old=0d0 !> chapuza
     log_gamma2nc_old=this%get_log_gamma2nc() !> chapuza
@@ -41,20 +41,20 @@ subroutine compute_c2nc_from_c1_Picard(this,c1,c2nc_ig,c2nc,niter,CV_flag)
     !> We compute log_10 of activity coefficients of variable activity species
         call this%aq_phase%compute_log_act_coeffs_aq_phase(this%ionic_act,this%params_aq_sol,this%log_act_coeffs(1:n_nc_aq))
         log_gamma1_old(1:n_p_aq)=this%log_act_coeffs(1:n_p_aq)
-        log_gamma2nc_old(1:n_nc2_aq)=this%log_act_coeffs(n_p+1:n_nc_aq)
-        if (associated(this%gas_chemistry)) then !> chapuza
-            call this%gas_chemistry%compute_log_act_coeffs_gases()
-            log_gamma2nc_old(n_nc2_aq+1:n_e)=this%gas_chemistry%log_act_coeffs
-        end if
+        log_gamma2nc_old(1:n_nc2_aq)=this%log_act_coeffs(n_p_aq+1:n_nc_aq)
+        !if (associated(this%gas_chemistry)) then !> chapuza
+        !    call this%gas_chemistry%compute_log_act_coeffs_gases()
+        !    log_gamma2nc_old(n_nc2_aq+1:n_e)=this%gas_chemistry%log_act_coeffs
+        !end if
     !> We apply mass action law to compute concentration secondary variable activity species
         log_c2nc_new=matmul(this%solid_chemistry%reactive_zone%speciation_alg%Se_nc_1_star,log_gamma1_old+log10(c1))+this%solid_chemistry%reactive_zone%speciation_alg%logK_star-log_gamma2nc_old !> mass action law
         c2nc=10**log_c2nc_new
     !> We update secondary aqueous variable activity concentrations in aqueous chemistry object
         call this%update_conc_sec_var_act_species(c2nc)
-        if (associated(this%gas_chemistry)) then !> chapuza
-            call this%gas_chemistry%update_conc_gases(c2nc(n_nc2_aq+1:n_e)*this%volume) !> we update moles of gases
-            call this%gas_chemistry%compute_vol_gas_conc() !> we compute total volume of gas
-        end if
+        !if (associated(this%gas_chemistry)) then !> chapuza
+        !    call this%gas_chemistry%update_conc_gases(c2nc(n_nc2_aq+1:n_e)*this%volume) !> we update moles of gases
+        !    call this%gas_chemistry%compute_vol_gas_conc() !> we compute total volume of gas
+        !end if
     !< We check convergence
          if (inf_norm_vec_real((c2nc-c2nc_old)/c2nc_old)<this%solid_chemistry%reactive_zone%CV_params%rel_tol) then
             CV_flag=.true.

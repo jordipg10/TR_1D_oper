@@ -81,19 +81,6 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
                             call this%target_gases(tar_wat_ind)%set_reactive_zone(this%reactive_zones(ngzns+nstype*igzn+istype))
                             call this%target_waters(tar_wat_ind)%set_gas_chemistry(this%target_gases(tar_wat_ind))
                         end if
-                        if (init_sol_types(istype)%reactive_zone%cat_exch_zone%num_exch_cats>0) then
-                            c1_init=this%target_waters(tar_wat_ind)%get_c1()
-                            allocate(c2_init(this%target_waters(tar_wat_ind)%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions))
-                            if (THIS%act_coeffs_model==0) then
-                                call this%target_waters(tar_wat_ind)%compute_c2nc_from_c1_ideal(c1_init,c2_init)
-                            else
-                                allocate(c2_ig(this%target_waters(tar_wat_ind)%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions))
-                                c2_ig=1d-16
-                                call this%target_waters(tar_wat_ind)%compute_c2nc_from_c1_Picard(c1_init,c2_ig,c2_init,niter,CV_flag)
-                                deallocate(c2_ig)
-                            end if
-                            deallocate(c1_init,c2_init)
-                        end if
                     else if (igzn>0) then
                         call init_gas_types(igzn)%allocate_conc_gases() !> chapuza
                         call init_gas_types(igzn)%compute_vol_gas_act_coeffs() !> chapuza
@@ -109,6 +96,19 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
                     end if
                     call this%target_waters(tar_wat_ind)%solid_chemistry%reactive_zone%set_speciation_alg_dimensions(flag_comp)
                     call this%target_waters(tar_wat_ind)%solid_chemistry%reactive_zone%compute_speciation_alg_arrays(flag_aq_phase,cols)
+                    if (this%target_waters(tar_wat_ind)%solid_chemistry%reactive_zone%cat_exch_zone%num_exch_cats>0) then
+                        c1_init=this%target_waters(tar_wat_ind)%get_c1()
+                        allocate(c2_init(this%target_waters(tar_wat_ind)%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions))
+                        if (THIS%act_coeffs_model==0) then
+                            call this%target_waters(tar_wat_ind)%compute_c2nc_from_c1_ideal(c1_init,c2_init)
+                        else
+                            allocate(c2_ig(this%target_waters(tar_wat_ind)%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions))
+                            c2_ig=1d-16
+                            call this%target_waters(tar_wat_ind)%compute_c2nc_from_c1_Picard(c1_init,c2_ig,c2_init,niter,CV_flag)
+                            deallocate(c2_ig)
+                        end if
+                        deallocate(c1_init,c2_init)
+                    end if
                     if (flag_aq_phase==.true.) then
                         counter_cols=counter_cols+1
                         aux_cols=cols

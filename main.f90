@@ -37,7 +37,7 @@ program main
     unit_out=4
     unit_res=6
 !> Choose problem
-    problem=5
+    problem=2
     if (problem==1) then
         root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\gypsum_eq\gypsum_eq' !> name of path containing user input (must be written by the user)
     else if (problem==2) then
