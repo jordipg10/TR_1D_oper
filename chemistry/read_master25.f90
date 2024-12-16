@@ -406,6 +406,6 @@ subroutine read_master25(this,path,unit)
         end do
     end if
     close(unit)
-    call this%rearrange_species()
-    call this%compute_z2() !> chapuza
+    !call this%rearrange_species()
+    !call this%compute_z2() !> chapuza
 end subroutine

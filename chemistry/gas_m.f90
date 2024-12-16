@@ -35,4 +35,5 @@ module gas_m
             real(kind=8), intent(in) :: acentric_fact
             this%acentric_fact=acentric_fact
         end subroutine
+        
 end module

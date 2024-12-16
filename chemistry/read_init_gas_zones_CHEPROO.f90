@@ -1,18 +1,19 @@
-subroutine read_init_gas_zones_CHEPROO(this,unit,gas_zones,reactive_zones)
+subroutine read_init_gas_zones_CHEPROO(this,unit,gas_zones)
     use chemistry_Lagr_m
     implicit none
     class(chemistry_c) :: this
     integer(kind=4), intent(in) :: unit !> file
     type(gas_chemistry_c), intent(out), allocatable :: gas_zones(:)
-    type(reactive_zone_c), intent(inout), allocatable, optional :: reactive_zones(:)
+    !type(reactive_zone_c), intent(inout), allocatable, optional :: reactive_zones(:)
     
-    integer(kind=4) :: i,j,k,ngtype,igtype,nrwtype,gas_ind,num_gas_zones,num_gases_loc,num_gases_var,num_gases_cst,n_gas_eq,n_gas_kin
+    integer(kind=4) :: num_rz,i,j,k,ngtype,igtype,nrwtype,gas_ind,num_gas_zones,num_gases_loc,num_gases_var,num_gases_cst,n_gas_eq,n_gas_kin,num_surf_rz
     integer(kind=4), allocatable :: ind_gases(:)
     character(len=256) :: str,constrain,label
     real(kind=8) :: guess,conc,temp,part_press,vol
     type(gas_c) :: gas
     type(gas_phase_c) :: gas_phase
     type(reactive_zone_c) :: react_zone
+    type(reactive_zone_c), allocatable :: aux_react_zones(:)
     logical :: flag
 
     read(unit,*) ngtype !> number of gas zones
@@ -123,13 +124,37 @@ subroutine read_init_gas_zones_CHEPROO(this,unit,gas_zones,reactive_zones)
             continue
         end if
     end do
-    if (present(reactive_zones)) then
-        if (.not. allocated(reactive_zones)) then
-            allocate(reactive_zones(ngtype))
+    !if (present(reactive_zones)) then
+        if (allocated(this%reactive_zones)) then
+            num_surf_rz=size(this%reactive_zones)
+            allocate(aux_react_zones(num_surf_rz))
+            do i=1,num_surf_rz
+                call aux_react_zones(i)%assign_react_zone(this%reactive_zones(i))
+            end do
+            num_rz=num_surf_rz+ngtype*(1+num_surf_rz)
+            deallocate(this%reactive_zones)
+            allocate(this%reactive_zones(num_rz))
+            do i=1,num_surf_rz
+                call this%reactive_zones(ngtype+i)%assign_react_zone(aux_react_zones(i))
+            end do
+            do i=1,ngtype
+                call this%reactive_zones(i)%set_chem_syst_react_zone(gas_zones(i)%reactive_zone%chem_syst)
+                call this%reactive_zones(i)%set_gas_phase(gas_zones(i)%reactive_zone%gas_phase)
+                call gas_zones(i)%set_reactive_zone(this%reactive_zones(i))
+            end do
+            do i=1,ngtype
+                do j=1,num_surf_rz
+                    call this%reactive_zones(ngtype+i*num_surf_rz+j)%set_chem_syst_react_zone(gas_zones(I)%reactive_zone%chem_syst)
+                    call this%reactive_zones(ngtype+i*num_surf_rz+j)%set_gas_phase(gas_zones(i)%reactive_zone%gas_phase)
+                    call this%reactive_zones(ngtype+i*num_surf_rz+j)%set_cat_exch_zone(aux_react_zones(i)%cat_exch_zone)
+                end do
+            end do
+        else
+            allocate(this%reactive_zones(ngtype))
+            do i=1,ngtype
+                call this%reactive_zones(i)%assign_react_zone(gas_zones(i)%reactive_zone)
+                call gas_zones(i)%set_reactive_zone(this%reactive_zones(i))
+            end do
         end if
-        do i=1,size(reactive_zones)
-            call reactive_zones(i)%set_chem_syst_react_zone(gas_zones(i)%reactive_zone%chem_syst)
-            call reactive_zones(i)%set_gas_phase(gas_zones(i)%reactive_zone%gas_phase)
-        end do
-    end if
+    !end if
 end subroutine

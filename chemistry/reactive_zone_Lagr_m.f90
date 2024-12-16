@@ -66,6 +66,8 @@ module reactive_zone_Lagr_m
         procedure, public :: is_mineral_in_react_zone
     !> ASsign
         procedure, public :: assign_react_zone
+    !> Rearrange
+        procedure, public :: rearrange_non_flowing_species
     end type
 !**************************************************************************************************
     interface
@@ -278,6 +280,55 @@ module reactive_zone_Lagr_m
             end if
         end subroutine
         
+        subroutine rearrange_non_flowing_species(this)
+        !< This subroutine rearranges the "non_flowing_species" attribute in the following order:
+        !<      constant activity minerals
+        !<      constant activity gases
+        !<      variable activity minerals
+        !<      surface complexes
+        !<      variable activity gases
+            implicit none
+            class(reactive_zone_c) :: this
+            
+            integer(kind=4) :: i,j,k,l,m,n
+            type(species_c), allocatable :: old_non_flow_species(:)
+            LOGICAL :: flag_gas,flag_surf
+            
+            old_non_flow_species=this%non_flowing_species
+            deallocate(this%non_flowing_species)
+            call this%allocate_non_flowing_species()
+            
+            j=0 !> counter constant activity gases
+            k=0 !> counter variable activity gases
+            l=0 !> counter surface complexes
+            m=0 !> counter constant activity minerals
+            n=0 !> counter variable activity minerals
+            do i=1,this%num_non_flowing_species
+                call old_non_flow_species(I)%is_gas(flag_gas)
+                if (flag_gas==.true.) then
+                    if (old_non_flow_species(i)%cst_act_flag==.true.) then
+                        j=j+1
+                        call this%non_flowing_species(this%num_minerals_cst_act+j)%assign_species(old_non_flow_species(I))
+                    else
+                        k=k+1
+                        call this%non_flowing_species(this%num_non_flowing_species-this%gas_phase%num_gases_eq_var_act+k)%assign_species(old_non_flow_species(I))
+                    end if
+                else
+                    call old_non_flow_species(I)%is_surf_compl(flag_surf)
+                    if (flag_surf==.true.) then
+                        l=l+1
+                        call this%non_flowing_species(this%num_minerals+this%gas_phase%num_gases_eq_cst_act+l)%assign_species(old_non_flow_species(I))
+                    else if (old_non_flow_species(i)%cst_act_flag==.true.) then
+                        m=m+1
+                        call this%non_flowing_species(m)%assign_species(old_non_flow_species(I))
+                    else
+                        n=n+1
+                        call this%non_flowing_species(this%num_minerals_cst_act+this%gas_phase%num_gases_eq_cst_act+n)%assign_species(old_non_flow_species(I))
+                    end if
+                end if
+            end do
+        end subroutine
+        
         subroutine set_single_non_flowing_species(this,non_flowing_species_ind,chem_syst_ind)
             implicit none
             class(reactive_zone_c) :: this
@@ -346,7 +397,15 @@ module reactive_zone_Lagr_m
       
        
         
-        subroutine set_eq_reactions(this,eq_reactions_ind) 
+        subroutine set_eq_reactions(this,eq_reactions_ind)
+        !< This subroutine sets the "eq_reactions" attribute in the following order:
+        !<      constant activity minerals
+        !<      constant activity gases
+        !<      redox equilibrium reactions
+        !<      aqueous complexes
+        !<      variable activity minerals
+        !<      cation exchange
+        !<      variable activity gases
             implicit none
             class(reactive_zone_c) :: this
             integer(kind=4), intent(in), optional :: eq_reactions_ind(:)
@@ -393,7 +452,7 @@ module reactive_zone_Lagr_m
                 l=1 !> counter exchange & gas reactions reactive zone
                 j=1 !> counter equilibrium reactions chemical system
                 k=1 !> counter non flowing species
-                this%eq_reactions(this%num_minerals_cst_act+this%gas_phase%num_gases_eq+1:this%num_minerals+this%gas_phase%num_gases_eq+this%chem_syst%num_redox_eq_reacts+this%chem_syst%aq_phase%num_aq_complexes)=this%chem_syst%eq_reacts(this%chem_syst%num_minerals_eq+this%chem_syst%gas_phase%num_gases_eq+1:this%chem_syst%num_minerals_eq+this%chem_syst%gas_phase%num_gases_eq+this%chem_syst%num_redox_eq_reacts+this%chem_syst%aq_phase%num_aq_complexes)
+                this%eq_reactions(this%num_minerals_cst_act+this%gas_phase%num_gases_eq_cst_act+1:this%num_minerals_cst_act+this%gas_phase%num_gases_eq_cst_act+this%chem_syst%num_redox_eq_reacts+this%chem_syst%aq_phase%num_aq_complexes)=this%chem_syst%eq_reacts(this%chem_syst%num_minerals_eq+this%chem_syst%gas_phase%num_gases_eq+1:this%chem_syst%num_minerals_eq+this%chem_syst%gas_phase%num_gases_eq+this%chem_syst%num_redox_eq_reacts+this%chem_syst%aq_phase%num_aq_complexes)
                 if (this%num_non_flowing_species>0) then
                     do
                         if (this%non_flowing_species(k)%name=='x-') then !> chapuza
@@ -405,7 +464,7 @@ module reactive_zone_Lagr_m
                                 this%eq_reactions(i)=this%chem_syst%eq_reacts(j)
                                 i=i+1
                             else
-                                this%eq_reactions(this%num_minerals_cst_act+this%gas_phase%num_gases_eq+this%chem_syst%num_redox_eq_reacts+this%chem_syst%aq_phase%num_aq_complexes+l)=this%chem_syst%eq_reacts(j)
+                                this%eq_reactions(this%num_minerals_cst_act+this%gas_phase%num_gases_eq_cst_act+this%chem_syst%num_redox_eq_reacts+this%chem_syst%aq_phase%num_aq_complexes+l)=this%chem_syst%eq_reacts(j)
                                 l=l+1
                             end if
                             if (k<this%num_non_flowing_species) then
@@ -670,22 +729,22 @@ module reactive_zone_Lagr_m
                 error stop "Chemical system not associated with reactive zone"
             else if (this%num_non_flowing_species>0) then
                 n_sp=this%chem_syst%aq_phase%num_species+this%num_non_flowing_species+this%chem_syst%num_min_kin_reacts
-                n_c=this%chem_syst%aq_phase%wat_flag
-                do i=1,this%num_minerals
-                    if (this%minerals(I)%mineral%cst_act_flag==.true.) then
-                        n_c=n_c+1
-                    end if
-                end do
+                n_c=this%chem_syst%aq_phase%wat_flag+this%num_minerals_cst_act+this%gas_phase%num_cst_act_species
+                !do i=1,this%num_minerals
+                !    if (this%minerals(I)%mineral%cst_act_flag==.true.) then
+                !        n_c=n_c+1
+                !    end if
+                !end do
                 do i=1,this%chem_syst%num_min_kin_reacts
                     if (this%chem_syst%minerals(i)%mineral%cst_act_flag==.true.) then
                         n_c=n_c+1
                     end if
                 end do
-                do i=1,this%gas_phase%num_species
-                    if (this%gas_phase%gases(i)%cst_act_flag==.true.) then
-                        n_c=n_c+1
-                    end if
-                end do
+                !do i=1,this%gas_phase%num_species
+                !    if (this%gas_phase%gases(i)%cst_act_flag==.true.) then
+                !        n_c=n_c+1
+                !    end if
+                !end do
                 n_eq=this%num_minerals+this%gas_phase%num_gases_eq+this%cat_exch_zone%num_exch_cats+this%chem_syst%aq_phase%num_aq_complexes
                 if (this%cat_exch_zone%num_surf_compl>0) then
                     flag_cat_exch=.true.

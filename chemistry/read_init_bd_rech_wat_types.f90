@@ -46,7 +46,7 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
         call wat_types(j)%set_aq_phase(this%chem_syst%aq_phase)
         call wat_types(j)%set_temp(temp+273.18) !> Kelvin
         call wat_types(j)%set_density()
-        call wat_types(j)%set_solid_chemistry(solid_chem)
+        !call wat_types(j)%set_solid_chemistry(solid_chem)
         call wat_types(j)%allocate_conc_aq_species()
         call wat_types(j)%allocate_log_act_coeffs_aq_chem()
         call wat_types(j)%allocate_activities_aq_species()
@@ -255,19 +255,17 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
             read(unit,*) model
             read(unit,*) nwtype
             do i=1,nwtype
-                !i=i+1
                 read(unit,*) j, temp !> we read index water type and temperature (in Celsius)
                 read(unit,*) name
-            !> Chapuza
-                if (present(gas_chem)) then
-                    call wat_types(j)%set_gas_chemistry(gas_chem)
-                end if
+                call wat_types(j)%set_solid_chemistry(solid_chem)
                 if (SIZE(init_cat_exch_zones)==1) then
                     call wat_types(j)%read_wat_type_CHEPROO(num_aq_prim_array(j),num_cstr_array(j),this%act_coeffs_model,this%Jac_flag,unit,niter,CV_flag,init_cat_exch_zones(1))
                 else
                     call wat_types(j)%read_wat_type_CHEPROO(num_aq_prim_array(j),num_cstr_array(j),this%act_coeffs_model,this%Jac_flag,unit,niter,CV_flag)
                 end if
+                nullify(wat_types(j)%solid_chemistry)
             end do
+            !
             !read(unit,*) this%num_init_wat_types, this%num_bd_wat_types, this%num_rech_wat_types
             !do i=1,this%num_init_wat_types
             !    !i=i+1

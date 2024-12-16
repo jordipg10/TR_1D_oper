@@ -8,9 +8,13 @@ module gas_phase_m
         type(gas_c), allocatable :: gases(:) !> gases (first equilibrium, then kinetic)
         integer(kind=4) :: num_gases_eq=0 !> number of gases in equilibrium
         integer(kind=4) :: num_gases_kin=0 !> number of gases in kinetic reactions
+        integer(kind=4) :: num_gases_eq_cst_act=0 !> number of gases in equilibrium with constant activity
+        integer(kind=4) :: num_gases_eq_var_act=0 !> number of gases in equilibrium with variable activity
     contains
     !> Set
         procedure, public :: set_num_gases_eq
+        procedure, public :: set_num_gases_eq_cst_act
+        procedure, public :: set_num_gases_eq_var_act
         procedure, public :: set_num_gases_kin
     !> Allocate
         procedure, public :: allocate_gases
@@ -107,6 +111,20 @@ module gas_phase_m
             class(gas_phase_c) :: this
             integer(kind=4), intent(in) :: num_gases_eq
             this%num_gases_eq=num_gases_eq
+        end subroutine
+        
+        subroutine set_num_gases_eq_cst_act(this,num_gases_eq_cst_act)
+            implicit none
+            class(gas_phase_c) :: this
+            integer(kind=4), intent(in) :: num_gases_eq_cst_act
+            this%num_gases_eq_cst_act=num_gases_eq_cst_act
+        end subroutine
+        
+        subroutine set_num_gases_eq_var_act(this,num_gases_eq_var_act)
+            implicit none
+            class(gas_phase_c) :: this
+            integer(kind=4), intent(in) :: num_gases_eq_var_act
+            this%num_gases_eq_var_act=num_gases_eq_var_act
         end subroutine
 
         subroutine set_num_gases_kin(this,num_gases_kin)

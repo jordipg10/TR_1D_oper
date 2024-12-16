@@ -32,6 +32,9 @@ module species_m
         procedure, public :: assign_species
     !> Read
         procedure, public :: read_species
+    !> Is
+        procedure, public :: is_gas
+        procedure, public :: is_surf_compl
     end type
 
 !> PFLOTRAN:    
@@ -155,6 +158,35 @@ module species_m
             end if
         end subroutine
         
+        subroutine is_gas(this,flag)
+            implicit none
+            class(species_c), intent(in) :: this
+            LOGICAL, intent(out) :: flag
+            
+            integer(KIND=4) :: ind
+            
+            ind=index(this%name,'(g)')
+            if (ind>0) then
+                flag=.true.
+            else
+                flag=.false.
+            end if
+        end subroutine
+        
+        subroutine is_surf_compl(this,flag)
+            implicit none
+            class(species_c), intent(in) :: this
+            LOGICAL, intent(out) :: flag
+            
+            integer(KIND=4) :: ind
+            
+            ind=index(this%name,'x-')
+            if (ind>0) then
+                flag=.true.
+            else
+                flag=.false.
+            end if
+        end subroutine
 
         
         subroutine set_mol_vol(this,mol_vol)

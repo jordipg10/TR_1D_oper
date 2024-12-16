@@ -16,13 +16,13 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
     !real(kind=8), intent(in), optional :: CEC !> chapuza
     !real(kind=8), intent(out), optional :: conc_exch(:) !> chapuza
     
-    integer(kind=4) :: i,j,k,l,m,niwtype,nbwtype,nrwtype,gas_ind,min_ind,n_comp_aq,ind_cstr,n_gas_constr,n_aq_comp,icon,sp_ind
+    integer(kind=4) :: i,j,k,l,m,niwtype,nbwtype,nrwtype,gas_ind,min_ind,n_comp_aq,ind_cstr,n_gas_constr,n_aq_comp,icon,aq_sp_ind,ind_sp
     integer(kind=4), allocatable :: icons(:),indices_constrains(:),gas_indices(:),n_icons(:),prim_indices(:),cols(:)
     real(kind=8), allocatable :: ctots(:),c2_init(:),c2_ig(:),c1(:)
     character(len=256) :: prim_sp_name,label,aq_sp_name
     character(len=256), allocatable :: constrains(:)
     real(kind=8) :: temp,conc,ionic_act,guess,ctot
-    logical :: flag_gas,flag_min,flag,flag_comp,flag_surf,flag_Se
+    logical :: flag_gas,flag_min,flag,flag_comp,flag_surf,flag_Se,flag_sp
     
     type(reactive_zone_c) :: react_zone
     type(gas_chemistry_c) :: gas_chem
@@ -34,6 +34,8 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
     if (present(surf_chem)) then
         call this%set_solid_chemistry(surf_chem)
     end if
+    
+    call this%solid_chemistry%reactive_zone%allocate_non_flowing_species(num_cstr)
     
     !    read(unit,*) label
     !    if (label=='INITIAL AND BOUNDARY WATER TYPES') then
@@ -74,9 +76,9 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
                 if (aq_species%name=='*') then
                     exit
                 else
-                    call this%aq_phase%is_species_in_aq_phase(aq_species,flag,sp_ind)
+                    call this%aq_phase%is_species_in_aq_phase(aq_species,flag,aq_sp_ind)
                     if (flag==.true.) then
-                        prim_indices(k)=sp_ind
+                        prim_indices(k)=aq_sp_ind
                         !> Chapuza
                         if (icon==1) then
                             n_icons(1)=n_icons(1)+1
@@ -90,7 +92,7 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
                         else if (icon==3) then
                             n_icons(3)=n_icons(3)+1
                             if (aq_species%name=='h+') then
-                                call this%aq_phase%set_ind_proton(sp_ind)
+                                call this%aq_phase%set_ind_proton(aq_sp_ind)
                                 call this%set_pH(-log10(ctot))
                             end if
                         else if (icon==4) then
@@ -98,10 +100,37 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
                             call this%solid_chemistry%reactive_zone%chem_syst%is_eq_reaction_in_chem_syst(constrain%name,flag,ind_cstr)
                             if (flag==.true.) then
                                 indices_constrains(l)=ind_cstr
-                                l=l+1
-                                if (ind_cstr>this%solid_chemistry%reactive_zone%chem_syst%num_minerals_eq+this%aq_phase%num_aq_complexes+this%solid_chemistry%reactive_zone%chem_syst%num_redox_eq_reacts) then
-                                    this%gas_chemistry%activities(ind_cstr-this%solid_chemistry%reactive_zone%chem_syst%num_minerals_eq-this%aq_phase%num_aq_complexes-this%solid_chemistry%reactive_zone%chem_syst%num_redox_eq_reacts)=ctot
+                                call this%solid_chemistry%reactive_zone%chem_syst%is_species_in_chem_syst(constrain,flag_sp,ind_sp)
+                                if (flag_sp==.true.) then
+                                    call THIS%solid_chemistry%reactive_zone%non_flowing_species(l)%assign_species(this%solid_chemistry%reactive_zone%chem_syst%species(ind_sp))
+                                    l=l+1
+                                    if (ind_cstr<=this%solid_chemistry%reactive_zone%chem_syst%num_minerals_eq_cst_act) then
+                                        this%solid_chemistry%reactive_zone%num_minerals_cst_act=this%solid_chemistry%reactive_zone%num_minerals_cst_act+1
+                                        this%solid_chemistry%reactive_zone%num_minerals=this%solid_chemistry%reactive_zone%num_minerals+1
+                                    else if (ind_cstr<=this%solid_chemistry%reactive_zone%chem_syst%num_minerals_eq+this%solid_chemistry%reactive_zone%chem_syst%gas_phase%num_gases_eq_cst_act) then
+                                        this%solid_chemistry%reactive_zone%gas_phase%num_gases_eq_cst_act=this%solid_chemistry%reactive_zone%gas_phase%num_gases_eq_cst_act+1
+                                    else if (ind_cstr<this%solid_chemistry%reactive_zone%chem_syst%num_eq_reacts-this%solid_chemistry%reactive_zone%chem_syst%gas_phase%num_gases_eq_var_act) then
+                                        this%solid_chemistry%reactive_zone%cat_exch_zone%num_exch_cats=this%solid_chemistry%reactive_zone%cat_exch_zone%num_exch_cats+1
+                                    else
+                                        this%solid_chemistry%reactive_zone%gas_phase%num_gases_eq_var_act=this%solid_chemistry%reactive_zone%gas_phase%num_gases_eq_var_act+1
+                                    end if
+                                else
+                                    error stop
                                 end if
+                                        
+                                !call constrain%is_gas(flag_gas)
+                                !if (flag_gas==.true.) then
+                                !    call gas%set_name(constrain%name)
+                                !    call this%gas_chemistry%reactive_zone%gas_phase%is_gas_in_gas_phase(gas,flag,gas_ind)
+                                !    this%gas_chemistry%activities(gas_ind)=ctot
+                                !else if (ind_cstr<=this%solid_chemistry%reactive_zone%chem_syst%num_minerals_eq) then
+                                !    call THIS%solid_chemistry%reactive_zone%non_flowing_species(ind_cstr)%assign_species(this%solid_chemistry%reactive_zone%chem_syst%minerals(this%solid_chemistry%reactive_zone%chem_syst%num_min_kin_reacts+ind_cstr)%mineral)
+                                !else
+                                !    call THIS%solid_chemistry%reactive_zone%non_flowing_species(ind_cstr-this%solid_chemistry%reactive_zone%chem_syst%num_minerals_eq-this%solid_chemistry%reactive_zone%chem_syst%gas_phase%num_gases_eq_cst_act)%assign_species(this%solid_chemistry%reactive_zone%chem_syst%cat_exch%surf_compl(this%solid_chemistry%reactive_zone%chem_syst%num_min_kin_reacts+ind_cstr)%mineral)
+                                !end if
+                                !if (ind_cstr>this%solid_chemistry%reactive_zone%chem_syst%num_minerals_cst_act .AND. ind_cstr<this%solid_chemistry%reactive_zone%chem_syst%num_redox_eq_reacts) then
+                                !else if (ind_cstr>this%solid_chemistry%reactive_zone%chem_syst%num_eq_reacts .AND. ind_cstr<this%solid_chemistry%reactive_zone%chem_syst%num_eq_reacts) then
+                                !end if
                                 !call this%solid_chemistry%reactive_zone%chem_syst%gas_phase%is_gas_in_gas_phase(gas,flag,gas_ind)
                             else
                                 error stop
@@ -111,18 +140,18 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
                         else
                             error stop "icon option not implemented yet"
                         end if
-                        this%concentrations(sp_ind)=guess
-                        icons(sp_ind)=icon
-                        ctots(sp_ind)=ctot
-                        !constrains(sp_ind)=constrain
+                        this%concentrations(aq_sp_ind)=guess
+                        icons(aq_sp_ind)=icon
+                        ctots(aq_sp_ind)=ctot
+                        !constrains(aq_sp_ind)=constrain
                         k=k+1 !> aqui hay que verificar dimension
                     else
                         error stop 
                     end if
                 end if
             end do
-            !call this%gas_chemistry%compute_pressure()
-            !call this%gas_chemistry%compute_log_act_coeffs_gases()
+            call this%solid_chemistry%reactive_zone%cat_exch_zone%compute_num_surf_compl()
+            call this%solid_chemistry%reactive_zone%rearrange_non_flowing_species()
         end if
     do i=1,this%aq_phase%num_species
         call this%aq_phase%aq_species(i)%params_act_coeff%compute_csts(this%aq_phase%aq_species(i)%valence,this%params_aq_sol,model)
@@ -139,6 +168,11 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_flag,unit,niter,
     call this%solid_chemistry%reactive_zone%set_eq_reactions()
     call this%solid_chemistry%reactive_zone%set_stoich_mat_react_zone()
     call this%solid_chemistry%reactive_zone%compute_speciation_alg_arrays(flag_Se,cols)
+    
+    call this%solid_chemistry%allocate_conc_solids()
+    call this%solid_chemistry%allocate_activities()
+    call this%solid_chemistry%allocate_equivalents()
+    call this%solid_chemistry%allocate_log_act_coeffs_solid_chem()
             
     call this%aq_phase%set_ind_diss_solids()
 !> Primary concentrations

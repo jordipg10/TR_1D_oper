@@ -8,8 +8,8 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
     integer(kind=4), intent(in) :: unit !> file unit
     
     real(kind=8), allocatable :: Sk(:,:),logK(:),gamma_1(:),gamma_2(:)
-    integer(kind=4) :: n_gas_kin,exch_cat_valence,n_eq_homog,unit_master_25,unit_kinetics,unit_redox,i,j,num_sp,ind_var_act_sp,num_var_act_sp,num_cst_act_sp,k,num_aq_sp,num_sec_aq_sp,exch_cat_ind, n_min_kin, n_gas_eq,index,kin_react_type,n_r,num_mins,num_gases,num_surf_compl,num_exch_cats,n_eq,n_k,num_mins_eq_indices,n_redox,n_lin_kin,n_lin_eq,num_aq_compl,num_mins_eq,num_cst_act_gases,num_var_act_gases
-    integer(kind=4) :: num_cst_act_mins,num_var_act_mins,n_redox_eq,n_redox_kin
+    integer(kind=4) :: n_gas_eq_cst_act,n_gas_eq_var_act,n_gas_kin,exch_cat_valence,n_eq_homog,unit_master_25,unit_kinetics,unit_redox,i,j,num_sp,ind_var_act_sp,num_var_act_sp,num_cst_act_sp,k,num_aq_sp,num_sec_aq_sp,exch_cat_ind, n_min_kin, n_gas_eq,index,kin_react_type,n_r,num_mins,num_gases,num_surf_compl,num_exch_cats,n_eq,n_k,num_mins_eq_indices,n_redox,n_lin_kin,n_lin_eq,num_aq_compl,num_mins_eq,num_cst_act_gases,num_var_act_gases
+    integer(kind=4) :: num_eq_cst_act_mins,num_var_act_mins,n_redox_eq,n_redox_kin
     integer(kind=4), allocatable :: n_tar(:),mins_eq_indices(:),gases_eq_indices(:),indices_lin_reacts(:,:)
     real(kind=8) :: aux,conc,temp,SI,lambda
     character(len=256) :: str,str1,str2,str3,str4,str5,Monod_name,file_kin_params,label
@@ -42,8 +42,8 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
     num_cst_act_sp=0
     num_cst_act_gases=0
     num_var_act_gases=0
-    num_cst_act_mins=0
-    num_var_act_mins=0
+    num_eq_cst_act_mins=0
+    !num_var_act_mins=0
     num_var_act_sp=0
     num_surf_compl=0
     num_exch_cats=0
@@ -54,6 +54,8 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
     n_k=0
     n_min_kin=0
     n_gas_eq=0
+    n_gas_eq_cst_act=0
+    n_gas_eq_var_act=0
     n_gas_kin=0
     n_lin_kin=0
     n_lin_eq=0
@@ -105,17 +107,21 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
                 if (str=='*') exit
                 num_mins=num_mins+1
                 num_sp=num_sp+1
-                if (cst_act_label==.true.) then
-                    num_cst_act_mins=num_cst_act_mins+1
-                    num_cst_act_sp=num_cst_act_sp+1
-                else
-                    num_var_act_mins=num_var_act_mins+1
-                    num_var_act_sp=num_var_act_sp+1
-                end if
-                if (eq_label==.true.) then
+                if (cst_act_label==.true. .AND. eq_label==.true.) then
                     n_eq=n_eq+1
                     num_mins_eq=num_mins_eq+1
+                    num_eq_cst_act_mins=num_eq_cst_act_mins+1
+                    num_cst_act_sp=num_cst_act_sp+1
+                else if (cst_act_label==.false. .AND. eq_label==.true.) then
+                    !num_var_act_mins=num_var_act_mins+1
+                    num_var_act_sp=num_var_act_sp+1
+                else if (cst_act_label==.true. .AND. eq_label==.false.) then
+                    num_cst_act_sp=num_cst_act_sp+1
+                    n_k=n_k+1
+                    n_min_kin=n_min_kin+1
                 else
+                    !num_var_act_mins=num_var_act_mins+1
+                    num_var_act_sp=num_var_act_sp+1
                     n_k=n_k+1
                     n_min_kin=n_min_kin+1
                 end if
@@ -126,18 +132,24 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
                 if (str=='*') exit
                 num_gases=num_gases+1
                 num_sp=num_sp+1
-                if (cst_act_label==.true.) then 
+                if (cst_act_label==.true. .AND. eq_label==.true.) then 
+                    n_gas_eq=n_gas_eq+1
+                    n_gas_eq_cst_act=n_gas_eq_cst_act+1
+                    num_cst_act_gases=num_cst_act_gases+1
+                    num_cst_act_sp=num_cst_act_sp+1
+                else if (cst_act_label==.false. .AND. eq_label==.true.) then 
+                    n_gas_eq=n_gas_eq+1
+                    n_gas_eq_var_act=n_gas_eq_var_act+1
+                    num_var_act_gases=num_var_act_gases+1
+                    num_var_act_sp=num_var_act_sp+1
+                else if (cst_act_label==.true. .AND. eq_label==.false.) then 
+                    n_gas_kin=n_gas_kin+1
                     num_cst_act_gases=num_cst_act_gases+1
                     num_cst_act_sp=num_cst_act_sp+1
                 else
+                    n_gas_kin=n_gas_kin+1
                     num_var_act_gases=num_var_act_gases+1
                     num_var_act_sp=num_var_act_sp+1
-                end if
-                if (eq_label==.true.) then
-                    n_eq=n_eq+1
-                    n_gas_eq=n_gas_eq+1
-                else
-                    n_gas_kin=n_gas_kin+1
                 end if
             end do 
         else if (label=='SURFACE COMPLEXES') then
@@ -190,6 +202,8 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
     !> Gas phase
     call this%gas_phase%allocate_gases(num_gases)
     call this%gas_phase%set_num_gases_eq(n_gas_eq) !> 
+    call this%gas_phase%set_num_gases_eq_cst_act(n_gas_eq_cst_act) !> 
+    call this%gas_phase%set_num_gases_eq_var_act(n_gas_eq_cst_act) !> 
     call this%gas_phase%set_num_gases_kin(n_gas_kin) !> 
     call this%gas_phase%set_num_var_act_species_phase(num_var_act_gases)
     call this%gas_phase%set_num_cst_act_species_phase(num_cst_act_gases)
@@ -203,7 +217,7 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
     call this%allocate_species()
     call this%allocate_minerals(num_mins)
     call this%set_num_minerals_eq(num_mins_eq)
-    call this%set_num_minerals_cst_act(num_cst_act_mins)
+    call this%set_num_minerals_eq_cst_act(num_eq_cst_act_mins)
     call this%allocate_reacts(n_eq,n_k)
     call this%allocate_min_kin_reacts(n_min_kin)
     call this%set_num_redox_eq_reacts(n_redox_eq)
@@ -401,6 +415,10 @@ subroutine read_chem_system_CHEPROO(this,path_DB,unit)
             call this%lin_kin_reacts(i)%set_stoichiometry([-1d0,1d0])
         end do
     end if
+!> We rearrange species and equilibrium reactions
+    call this%rearrange_species()
+    call this%compute_z2()
+    call this%rearrange_eq_reacts()
 !> We set stoichiometric matrices
     call this%set_stoich_mat()
     call this%set_stoich_mat_gas()

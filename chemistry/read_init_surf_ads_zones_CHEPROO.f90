@@ -1,11 +1,11 @@
-subroutine read_init_cat_exch_zones_CHEPROO(this,unit,init_cat_exch_zones,reactive_zones)
+subroutine read_init_cat_exch_zones_CHEPROO(this,unit,init_cat_exch_zones)
     use chemistry_Lagr_m
     use Gaines_Thomas_m
     implicit none
     class(chemistry_c) :: this
     integer(kind=4), intent(in) :: unit !> file
     type(solid_chemistry_c), intent(out), allocatable :: init_cat_exch_zones(:)
-    type(reactive_zone_c), intent(inout), allocatable, optional :: reactive_zones(:)
+    !type(reactive_zone_c), intent(inout), allocatable, optional :: reactive_zones(:)
     
     integer(kind=4) :: i,j,k,ndtype,idtype,num_gas_rz,icon,num_ads_zones,num_mins_glob,num_rz
     integer(kind=4), allocatable :: valences(:)
@@ -48,35 +48,37 @@ subroutine read_init_cat_exch_zones_CHEPROO(this,unit,init_cat_exch_zones,reacti
         num_ads_zones=num_ads_zones+1
         if (num_ads_zones==ndtype) exit
     end do
-    if (present(reactive_zones)) then
-        if (allocated(reactive_zones)) then
-            num_gas_rz=size(reactive_zones)
+    !if (present(reactive_zones)) then
+        if (allocated(this%reactive_zones)) then
+            num_gas_rz=size(this%reactive_zones)
             allocate(aux_react_zones(num_gas_rz))
             do i=1,num_gas_rz
-                call aux_react_zones(i)%assign_react_zone(reactive_zones(i))
+                call aux_react_zones(i)%assign_react_zone(this%reactive_zones(i))
             end do
             num_rz=num_gas_rz+ndtype*(1+num_gas_rz)
-            deallocate(reactive_zones)
-            allocate(reactive_zones(num_rz))
+            deallocate(this%reactive_zones)
+            allocate(this%reactive_zones(num_rz))
             do i=1,num_gas_rz
-                call reactive_zones(i)%assign_react_zone(aux_react_zones(i))
+                call this%reactive_zones(i)%assign_react_zone(aux_react_zones(i))
             end do
             do i=1,ndtype
-                call reactive_zones(num_gas_rz+i)%set_chem_syst_react_zone(this%chem_syst)
-                call reactive_zones(num_gas_rz+i)%set_cat_exch_zone(init_cat_exch_zones(i)%reactive_zone%cat_exch_zone)
+                call this%reactive_zones(num_gas_rz+i)%set_chem_syst_react_zone(this%chem_syst)
+                call this%reactive_zones(num_gas_rz+i)%set_cat_exch_zone(init_cat_exch_zones(i)%reactive_zone%cat_exch_zone)
+                call init_cat_exch_zones(i)%set_reactive_zone(this%reactive_zones(num_gas_rz+i))
             end do
             do i=1,num_gas_rz
                 do j=1,ndtype
-                    call reactive_zones(num_gas_rz+i*ndtype+j)%set_chem_syst_react_zone(this%chem_syst)
-                    call reactive_zones(num_gas_rz+i*ndtype+j)%set_gas_phase(reactive_zones(i)%gas_phase)
-                    call reactive_zones(num_gas_rz+i*ndtype+j)%set_cat_exch_zone(init_cat_exch_zones(i)%reactive_zone%cat_exch_zone)
+                    call this%reactive_zones(num_gas_rz+i*ndtype+j)%set_chem_syst_react_zone(this%chem_syst)
+                    call this%reactive_zones(num_gas_rz+i*ndtype+j)%set_gas_phase(this%reactive_zones(i)%gas_phase)
+                    call this%reactive_zones(num_gas_rz+i*ndtype+j)%set_cat_exch_zone(init_cat_exch_zones(i)%reactive_zone%cat_exch_zone)
                 end do
             end do
         else
-            allocate(reactive_zones(ndtype))
+            allocate(this%reactive_zones(ndtype))
             do i=1,ndtype
-                call reactive_zones(i)%assign_react_zone(init_cat_exch_zones(i)%reactive_zone)
+                call this%reactive_zones(i)%assign_react_zone(init_cat_exch_zones(i)%reactive_zone)
+                call init_cat_exch_zones(i)%set_reactive_zone(this%reactive_zones(i))
             end do
         end if
-    end if
+    !end if
 end subroutine

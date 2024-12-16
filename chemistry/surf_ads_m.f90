@@ -36,6 +36,7 @@ module surf_compl_m
     !> Compute
         procedure, public :: compute_log_act_coeffs_ads_cats
         procedure, public :: compute_log_Jacobian_act_coeffs_ads_cats
+        procedure, public :: compute_num_surf_compl
     end type
 !>************************************************************************************************!
 !> CHEPROO:
@@ -133,7 +134,6 @@ module surf_compl_m
     
     contains
         subroutine compute_log_act_coeffs_ads_cats(this,valences,CEC,log_act_coeffs)
-            import cat_exch_c
             implicit none
             class(cat_exch_c), intent(in) :: this
             integer(kind=4), intent(in) :: valences(:) !> valences of exchangeable cations (dim=num_exch_cats)
@@ -148,7 +148,6 @@ module surf_compl_m
         end subroutine
         
         subroutine compute_log_Jacobian_act_coeffs_ads_cats(this,log_act_coeffs,log_Jacobian_act_coeffs)
-            import cat_exch_c
             implicit none
             class(cat_exch_c) :: this
             real(kind=8), intent(in) :: log_act_coeffs(:)
@@ -156,7 +155,13 @@ module surf_compl_m
             log_Jacobian_act_coeffs=0d0
         end subroutine
     
-    
+        subroutine compute_num_surf_compl(this)
+            implicit none
+            class(cat_exch_c) :: this
+            if (this%num_exch_cats>0) then
+                this%num_surf_compl=this%num_exch_cats+1
+            end if
+        end subroutine
       
         subroutine set_num_exch_cats(this,num_exch_cats)
             implicit none

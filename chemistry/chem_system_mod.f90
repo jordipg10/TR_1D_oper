@@ -24,7 +24,7 @@ module chem_system_m
         integer(kind=4), allocatable :: var_act_sp_indices(:) !> variable activity species indices in "species" attribute
         integer(kind=4) :: num_minerals=0 !> number of minerals
         integer(kind=4) :: num_minerals_eq=0 !> number of minerals in equilibrium
-        integer(kind=4) :: num_minerals_cst_act=0 !> number of minerals with constant activity
+        integer(kind=4) :: num_minerals_eq_cst_act=0 !> number of minerals in equilibrium with constant activity
         type(mineral_c), allocatable :: minerals(:) !> minerals (first kinetic, then equilibrium)
         integer(kind=4) :: num_cst_act_species !> number of constant activity species
         integer(kind=4), allocatable :: cst_act_sp_indices(:) !> constant activity species indices in "species" attribute
@@ -53,7 +53,7 @@ module chem_system_m
         procedure, public :: set_num_species
         procedure, public :: set_num_minerals
         procedure, public :: set_num_minerals_eq
-        procedure, public :: set_num_minerals_cst_act
+        procedure, public :: set_num_minerals_eq_cst_act
         procedure, public :: set_num_eq_reacts
         procedure, public :: set_num_kin_reacts
         procedure, public :: set_num_lin_kin_reacts
@@ -345,13 +345,13 @@ module chem_system_m
             this%num_minerals_eq=num_minerals_eq
         end subroutine
         
-        subroutine set_num_minerals_cst_act(this,num_minerals_cst_act)
-        !> This subroutine sets the "num_minerals_cst_act" attribute
+        subroutine set_num_minerals_eq_cst_act(this,num_minerals_eq_cst_act)
+        !> This subroutine sets the "num_minerals_eq_cst_act" attribute
             implicit none
             class(chem_system_c) :: this
-            integer(kind=4), intent(in) :: num_minerals_cst_act
-            if (num_minerals_cst_act>this%num_minerals .AND. allocated(this%minerals)) error stop "Number of minerals with constant activity cannot be greater than number of minerals"
-            this%num_minerals_cst_act=num_minerals_cst_act
+            integer(kind=4), intent(in) :: num_minerals_eq_cst_act
+            if (num_minerals_eq_cst_act>this%num_minerals_eq .AND. allocated(this%minerals)) error stop "Number of minerals in equilibrium with constant activity cannot be greater than number of minerals in equilibrium"
+            this%num_minerals_eq_cst_act=num_minerals_eq_cst_act
         end subroutine
         
         subroutine set_eq_reacts(this,eq_reacts)
@@ -695,11 +695,11 @@ module chem_system_m
             allocate(this%eq_reacts(this%num_eq_reacts))
         !> we initialise counters
             ind_min_cst_act=1                                                                               !> constant activity minerals in equilibrium
-            ind_gas_cst_act=ind_min_cst_act+MIN(THIS%num_minerals_eq,this%num_minerals_cst_act)             !> constant activity gases in equilibrium
-            ind_redox=ind_gas_cst_act+MIN(THIS%gas_phase%num_gases_eq,this%gas_phase%num_cst_act_species)   !> redox equilibrium reactions
+            ind_gas_cst_act=ind_min_cst_act+this%num_minerals_eq_cst_act                                    !> constant activity gases in equilibrium
+            ind_redox=ind_gas_cst_act+THIS%gas_phase%num_gases_eq_cst_act                                   !> redox equilibrium reactions
             ind_aq=ind_redox+this%num_redox_eq_reacts                                                       !> aqueous complexes
             ind_min_var_act=ind_aq+this%aq_phase%num_aq_complexes                                           !> variable activity minerals
-            ind_surf=ind_min_var_act+MIN(THIS%num_minerals_eq,this%num_minerals-this%num_minerals_cst_act)  !> cation exchange
+            ind_surf=ind_min_var_act+THIS%num_minerals_eq-this%num_minerals_eq_cst_act                      !> cation exchange
             ind_gas_var_act=ind_surf+this%cat_exch%num_exch_cats                                            !> variable activity gases
             do i=1,this%num_eq_reacts
                 if (aux_eq_reacts(i)%react_type==2) then !> mineral dissolution/precipitation

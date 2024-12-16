@@ -26,7 +26,7 @@ program main
     character(len=:), allocatable :: root_trim !> root of problem to solve trimmed
 !**************************************************************************************************
 !> Name of path containing chemical and transport information
-    path_DB = 'C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\BBDD\' !> must be written by the user
+    path_DB = 'C:\Users\Jordi\source\repos\jordipg10\TR_1D_oper\BBDD\' !> must be written by the user
     path_DB_trim = trim(path_DB)
 !> File units (arbitrary)
     unit_chem_syst=1
@@ -39,15 +39,15 @@ program main
 !> Choose problem
     problem=2
     if (problem==1) then
-        root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\gypsum_eq\gypsum_eq' !> name of path containing user input (must be written by the user)
+        root='C:\Users\Jordi\source\repos\jordipg10\TR_1D_oper\examples\gypsum_eq\gypsum_eq' !> name of path containing user input (must be written by the user)
     else if (problem==2) then
-        root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\cc_anh_eq\cc_anh' !> name of path containing user input (must be written by the user)
+        root='C:\Users\Jordi\source\repos\jordipg10\TR_1D_oper\examples\cc_anh_eq\cc_anh' !> name of path containing user input (must be written by the user)
     else if (problem==3) then
-        root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\cc_anh_kin\cc_anh' !> name of path containing user input (must be written by the user)
+        root='C:\Users\Jordi\source\repos\jordipg10\TR_1D_oper\examples\cc_anh_kin\cc_anh' !> name of path containing user input (must be written by the user)
     else if (problem==4) then
-        root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\denit\denit' !> name of path containing user input (must be written by the user)
+        root='C:\Users\Jordi\source\repos\jordipg10\TR_1D_oper\examples\denit\denit' !> name of path containing user input (must be written by the user)
     else if (problem==5) then
-        root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\intercambio\' !> name of path containing user input (must be written by the user)
+        root='C:\Users\Jordi\source\repos\jordipg10\TR_1D_oper\examples\intercambio\' !> name of path containing user input (must be written by the user)
     else
         error stop "Problem not implemented yet"
     end if
