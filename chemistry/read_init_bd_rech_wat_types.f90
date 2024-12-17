@@ -17,21 +17,18 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
     logical :: CV_flag,flag,flag_surf,flag_comp,flag_Se
     
     type(reactive_zone_c) :: react_zone !> default object
-    !type(gas_chemistry_c) :: gas_chem
+    type(reactive_zone_c), allocatable :: react_zones(:) !> default objects
     type(solid_chemistry_c) :: solid_chem !> default object
+    type(solid_chemistry_c), allocatable :: solid_chems(:) !> default objects
     type(aq_species_c) :: aq_species
     type(mineral_c) :: mineral
     type(aq_phase_c) :: old_aq_phase
-    
-    call react_zone%set_CV_params(this%CV_params)
-    call react_zone%set_chem_syst_react_zone(this%chem_syst)
-    call solid_chem%set_reactive_zone(react_zone)
     
     read(unit,*) this%act_coeffs_model
     
     read(unit,*) nwtype
         
-    allocate(wat_types(nwtype))
+    allocate(wat_types(nwtype),react_zones(nwtype),solid_chems(nwtype))
     allocate(cols(2))
     allocate(num_aq_prim_array(nwtype),num_cstr_array(nwtype),ind_wat_type(nwtype))
     
@@ -257,13 +254,16 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
             do i=1,nwtype
                 read(unit,*) j, temp !> we read index water type and temperature (in Celsius)
                 read(unit,*) name
-                call wat_types(j)%set_solid_chemistry(solid_chem)
+                call react_zones(j)%set_CV_params(this%CV_params)
+                call react_zones(j)%set_chem_syst_react_zone(this%chem_syst)
+                call solid_chems(j)%set_reactive_zone(react_zones(j))
+                call wat_types(j)%set_solid_chemistry(solid_chems(j)) !> chapuza
                 if (SIZE(init_cat_exch_zones)==1) then
                     call wat_types(j)%read_wat_type_CHEPROO(num_aq_prim_array(j),num_cstr_array(j),this%act_coeffs_model,this%Jac_flag,unit,niter,CV_flag,init_cat_exch_zones(1))
                 else
                     call wat_types(j)%read_wat_type_CHEPROO(num_aq_prim_array(j),num_cstr_array(j),this%act_coeffs_model,this%Jac_flag,unit,niter,CV_flag)
                 end if
-                nullify(wat_types(j)%solid_chemistry)
+                !nullify(wat_types(j)%solid_chemistry)
             end do
             !
             !read(unit,*) this%num_init_wat_types, this%num_bd_wat_types, this%num_rech_wat_types
@@ -344,8 +344,4 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
         !> indices inhibitors/electron acceptor & donor
         call this%chem_syst%redox_kin_reacts(i)%rearrange_indices_aq_phase_Monod(old_aq_phase,this%chem_syst%aq_phase)
     end do 
-!> chapuza denit
-    !call this%chem_syst%eq_reacts(this%chem_syst%num_minerals_eq+1)%set_eq_cst(1.860081d11)
-    !call this%chem_syst%eq_reacts(this%chem_syst%num_minerals_eq+2)%set_eq_cst(3.953393d3)
-    !call this%chem_syst%eq_reacts(this%chem_syst%num_minerals_eq+3)%set_eq_cst(3.445514d4)
 end subroutine

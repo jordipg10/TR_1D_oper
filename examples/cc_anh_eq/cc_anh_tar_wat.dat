@@ -2,9 +2,7 @@
 '----------------------------------------------------------------------------'
 'TARGET WATERS'
 31					! number of target waters
-'external waters'
 0					! number of external target waters (recharge, boundary, etc)
-'initial target waters'
 1	1	1	0		! target water index, water type index, solid zone index, gas zone index
 2	1	1	0
 3	1	1	0

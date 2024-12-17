@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Sat Dec 14 17:08:08 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Tue Dec 17 11:54:17 2024
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPUTE_LUMPED_A_MAT__genmod

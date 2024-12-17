@@ -166,8 +166,12 @@ module reactive_zone_Lagr_m
         subroutine set_num_non_flowing_species(this,num_non_flowing_species)
             implicit none
             class(reactive_zone_c) :: this
-            integer(kind=4), intent(in) :: num_non_flowing_species
-            this%num_non_flowing_species=num_non_flowing_species
+            integer(kind=4), intent(in), optional :: num_non_flowing_species
+            if (present(num_non_flowing_species)) then
+                this%num_non_flowing_species=num_non_flowing_species
+            else
+                this%num_non_flowing_species=this%num_minerals+this%cat_exch_zone%num_surf_compl+this%gas_phase%num_gases_eq
+            end if
         end subroutine
         
         subroutine set_num_solids(this,num_solids)
@@ -217,7 +221,7 @@ module reactive_zone_Lagr_m
             if (present(num_non_flowing_species)) then
                 call this%set_num_non_flowing_species(num_non_flowing_species)
             else
-                !call this%set_num_non_flowing_species()
+                call this%set_num_non_flowing_species()
             end if
             if (allocated(this%non_flowing_species)) then
                 deallocate(this%non_flowing_species)

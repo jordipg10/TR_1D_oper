@@ -1712,10 +1712,10 @@ module aqueous_chemistry_m
             
             allocate(conc_nc(this%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species))
             do i=1,this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species
-                conc_nc(i)=this%concentrations(this%indices_aq_phase(i))
+                conc_nc(i)=this%concentrations(i)
             end do
             do i=1,this%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species
-                conc_nc(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species+i)=this%concentrations(this%indices_aq_phase(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species+i))
+                conc_nc(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species+i)=this%concentrations(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species+i)
             end do
                 if (this%solid_chemistry%reactive_zone%speciation_alg%flag_cat_exch==.true.) then
                     conc_nc(this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species)=this%solid_chemistry%concentrations(this%solid_chemistry%reactive_zone%num_minerals+1)

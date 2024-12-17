@@ -87,7 +87,7 @@ module chem_system_m
         procedure, public :: compute_z2
         procedure, public :: compute_num_solids
     !> Read
-        procedure, public :: read_chem_system
+        !procedure, public :: read_chem_system
         procedure, public :: read_chem_system_CHEPROO
         procedure, public :: read_chem_system_PFLOTRAN
         procedure, public :: read_master25

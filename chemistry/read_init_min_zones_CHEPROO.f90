@@ -1,22 +1,22 @@
-subroutine read_init_min_zones_CHEPROO(this,unit,init_min_zones,reactive_zones)
+subroutine read_init_min_zones_CHEPROO(this,unit,init_min_zones)
     use chemistry_Lagr_m
     implicit none
     class(chemistry_c) :: this
     integer(kind=4), intent(in) :: unit !> file
     type(solid_chemistry_c), intent(out), allocatable :: init_min_zones(:)
-    type(reactive_zone_c), intent(inout), allocatable, optional :: reactive_zones(:)
+    !type(reactive_zone_c), intent(inout), allocatable, optional :: this%reactive_zones(:)
     
     integer(kind=4) :: num_surf_rz,num_gas_rz,num_rz_old,i,j,k,nmtype,nrwtype,icon,num_min_zones,num_mins_rz,num_mins_glob,num_mins_loc,num_mins_loc_eq,ind_rz,imtype,num_rz,min_ind,num_mins_var_eq,num_mins_cst_eq
     integer(kind=4), allocatable :: init_min_zones_indices(:),min_indices(:,:)
     character(len=256) :: str,constrain,label,min_name
     real(kind=8) :: guess,c_tot,temp,vol_frac,react_surf,conc
-    logical :: min_flag
+    logical :: min_flag,flag_comp
     type(mineral_c) :: mineral
     type(reactive_zone_c) :: aux_react_zone
     type(reactive_zone_c), allocatable :: react_zones(:),aux_react_zones(:)
     
 
-    
+    flag_comp=.true.
 
     read(unit,*) nmtype
     
@@ -58,9 +58,11 @@ subroutine read_init_min_zones_CHEPROO(this,unit,init_min_zones,reactive_zones)
                             call react_zones(imtype)%set_CV_params(this%CV_params)
                             call react_zones(imtype)%allocate_minerals_react_zone(num_mins_loc_eq)
                             call react_zones(imtype)%allocate_non_flowing_species()
+                            !call react_zones(imtype)%set_non_flowing_species()
                             call react_zones(imtype)%set_num_solids()
                             call react_zones(imtype)%set_num_mins_cst_act(num_mins_cst_eq)
                             call react_zones(imtype)%set_num_mins_var_act(num_mins_var_eq)
+                            call react_zones(imtype)%set_speciation_alg_dimensions(flag_comp)
                             !> aqui habria que comprobar si se estan repitiendo zonas reactivas
                             call init_min_zones(imtype)%set_reactive_zone(react_zones(imtype))
                             call init_min_zones(imtype)%allocate_vol_fracts()
@@ -124,12 +126,16 @@ subroutine read_init_min_zones_CHEPROO(this,unit,init_min_zones,reactive_zones)
                                 if (min_indices(num_mins_loc,num_min_zones)>this%chem_syst%num_min_kin_reacts) then
                                     init_min_zones(imtype)%reactive_zone%minerals(num_mins_loc)=this%chem_syst%minerals(min_indices(num_mins_loc,num_min_zones)) !> we set mineral
                                 end if
-                                init_min_zones(imtype)%vol_fracts(min_indices(num_mins_loc,num_min_zones))=vol_frac !> we set volumetric fraction
-                                init_min_zones(imtype)%react_surfaces(min_indices(num_mins_loc,num_min_zones))=react_surf !> we set reactive surface
-                                init_min_zones(imtype)%concentrations(min_indices(num_mins_loc,num_min_zones))=1d0 !> we assume minerals are pure phases
-                                init_min_zones(imtype)%activities(min_indices(num_mins_loc,num_min_zones))=1d0 !> we assume minerals are pure phases
+                                init_min_zones(imtype)%vol_fracts(num_mins_loc)=vol_frac !> we set volumetric fraction
+                                init_min_zones(imtype)%react_surfaces(num_mins_loc)=react_surf !> we set reactive surface
+                                init_min_zones(imtype)%concentrations(num_mins_loc)=1d0 !> we assume minerals are pure phases
+                                init_min_zones(imtype)%activities(num_mins_loc)=1d0 !> we assume minerals are pure phases
                             end if
                         end do
+                        call init_min_zones(imtype)%reactive_zone%set_non_flowing_species()
+                        call init_min_zones(imtype)%reactive_zone%set_eq_reactions()
+                        call init_min_zones(imtype)%reactive_zone%set_stoich_mat_react_zone()
+                        call init_min_zones(imtype)%reactive_zone%set_stoich_mat_sol_rz()
                         if (num_min_zones==nmtype) then
                             exit
                         end if
@@ -142,50 +148,59 @@ subroutine read_init_min_zones_CHEPROO(this,unit,init_min_zones,reactive_zones)
                 continue
             end if
         end do
-        if (present(reactive_zones)) then
-            if (allocated(reactive_zones)) then
-                num_rz_old=size(reactive_zones)
+        !if (present(this%reactive_zones)) then
+            if (allocated(this%reactive_zones)) then
+                num_rz_old=size(this%reactive_zones)
                 allocate(aux_react_zones(num_rz_old))
                 num_gas_rz=0
                 do i=1,num_rz_old
-                    call aux_react_zones(i)%assign_react_zone(reactive_zones(i))
-                    if (reactive_zones(i)%gas_phase%num_gases_eq>0 .and. reactive_zones(i)%num_solids==0) then
+                    call aux_react_zones(i)%assign_react_zone(this%reactive_zones(i))
+                    if (this%reactive_zones(i)%gas_phase%num_gases_eq>0 .and. this%reactive_zones(i)%num_solids==0) then
                         num_gas_rz=num_gas_rz+1
                     end if
                 end do
                 num_surf_rz=(num_rz_old-num_gas_rz)/(1+num_gas_rz)
                 num_rz=num_rz_old+nmtype*(1+num_gas_rz)
-                deallocate(reactive_zones)
-                allocate(reactive_zones(num_rz))
+                !deallocate(this%reactive_zones)
+                call this%allocate_reactive_zones(num_rz)
                 do i=1,num_gas_rz+num_surf_rz
-                    call reactive_zones(i)%assign_react_zone(aux_react_zones(i))
+                    call this%reactive_zones(i)%assign_react_zone(aux_react_zones(i))
                 end do
                 do i=1,nmtype
-                    call reactive_zones(num_gas_rz+num_surf_rz+i)%set_chem_syst_react_zone(this%chem_syst)
-                    call reactive_zones(num_gas_rz+num_surf_rz+i)%allocate_minerals_react_zone(init_min_zones(i)%reactive_zone%num_minerals)
-                    reactive_zones(num_gas_rz+num_surf_rz+i)%minerals=init_min_zones(i)%reactive_zone%minerals
-                    call reactive_zones(num_gas_rz+num_surf_rz+i)%set_num_mins_cst_act(init_min_zones(i)%reactive_zone%num_minerals_cst_act)
-                    call reactive_zones(num_gas_rz+num_surf_rz+i)%set_num_mins_var_act(init_min_zones(i)%reactive_zone%num_minerals_var_act)
+                    call this%reactive_zones(i)%assign_react_zone(init_min_zones(i)%reactive_zone)
+                    !call this%reactive_zones(num_gas_rz+num_surf_rz+i)%set_chem_syst_react_zone(this%chem_syst)
+                    !call this%reactive_zones(num_gas_rz+num_surf_rz+i)%set_CV_params(this%CV_params)
+                    !call this%reactive_zones(num_gas_rz+num_surf_rz+i)%allocate_minerals_react_zone(init_min_zones(i)%reactive_zone%num_minerals)
+                    !this%reactive_zones(num_gas_rz+num_surf_rz+i)%minerals=init_min_zones(i)%reactive_zone%minerals
+                    !call this%reactive_zones(num_gas_rz+num_surf_rz+i)%set_num_mins_cst_act(init_min_zones(i)%reactive_zone%num_minerals_cst_act)
+                    !call this%reactive_zones(num_gas_rz+num_surf_rz+i)%set_num_mins_var_act(init_min_zones(i)%reactive_zone%num_minerals_var_act)
                 end do
                 do i=1,num_gas_rz
                     do j=1,num_surf_rz
-                        call reactive_zones(num_gas_rz+nmtype+i*num_surf_rz+j)%assign_react_zone(aux_react_zones(num_gas_rz+num_surf_rz+(i-1)*num_surf_rz+j))
+                        call this%reactive_zones(num_gas_rz+nmtype+i*num_surf_rz+j)%assign_react_zone(aux_react_zones(num_gas_rz+num_surf_rz+(i-1)*num_surf_rz+j))
                     end do
                     do j=1,nmtype
-                        call reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%set_chem_syst_react_zone(this%chem_syst)
-                        call reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%set_gas_phase(reactive_zones(i)%gas_phase)
-                        call reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%allocate_minerals_react_zone(init_min_zones(i)%reactive_zone%num_minerals)
-                        reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%minerals=init_min_zones(i)%reactive_zone%minerals
-                        call reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%set_num_mins_cst_act(init_min_zones(i)%reactive_zone%num_minerals_cst_act)
-                        call reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%set_num_mins_var_act(init_min_zones(i)%reactive_zone%num_minerals_var_act)
+                        !call this%reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%set_chem_syst_react_zone(this%chem_syst)
+                        call this%reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%assign_react_zone(init_min_zones(i)%reactive_zone)
+                        call this%reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%set_gas_phase(this%reactive_zones(i)%gas_phase)
+                        call this%reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%set_non_flowing_species()
+                        call this%reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%set_speciation_alg_dimensions()
+                        call this%reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%set_eq_reactions()
+                        call this%reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%set_stoich_mat_react_zone()
+                        call this%reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%set_stoich_mat_sol_rz()
+                        !call this%reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%allocate_minerals_react_zone(init_min_zones(i)%reactive_zone%num_minerals)
+                        !this%reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%minerals=init_min_zones(i)%reactive_zone%minerals
+                        !call this%reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%set_num_mins_cst_act(init_min_zones(i)%reactive_zone%num_minerals_cst_act)
+                        !call this%reactive_zones(num_rz-num_gas_rz*nmtype+(i-1)*nmtype+j)%set_num_mins_var_act(init_min_zones(i)%reactive_zone%num_minerals_var_act)
                     end do
                 end do
             else
-                allocate(reactive_zones(nmtype))
+                !allocate(this%reactive_zones(nmtype))
+                call this%allocate_reactive_zones(nmtype)
                 do i=1,nmtype
-                    call reactive_zones(i)%assign_react_zone(init_min_zones(i)%reactive_zone)
+                    call this%reactive_zones(i)%assign_react_zone(init_min_zones(i)%reactive_zone)
                 end do
             end if
-        end if
+        !end if
     end if
  end subroutine

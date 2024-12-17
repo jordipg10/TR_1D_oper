@@ -132,8 +132,9 @@ subroutine read_init_gas_zones_CHEPROO(this,unit,gas_zones)
                 call aux_react_zones(i)%assign_react_zone(this%reactive_zones(i))
             end do
             num_rz=num_surf_rz+ngtype*(1+num_surf_rz)
-            deallocate(this%reactive_zones)
-            allocate(this%reactive_zones(num_rz))
+            !deallocate(this%reactive_zones)
+            !allocate(this%reactive_zones(num_rz))
+            call this%allocate_reactive_zones(num_rz)
             do i=1,num_surf_rz
                 call this%reactive_zones(ngtype+i)%assign_react_zone(aux_react_zones(i))
             end do
@@ -150,7 +151,8 @@ subroutine read_init_gas_zones_CHEPROO(this,unit,gas_zones)
                 end do
             end do
         else
-            allocate(this%reactive_zones(ngtype))
+            !allocate(this%reactive_zones(ngtype))
+            call this%allocate_reactive_zones(ngtype)
             do i=1,ngtype
                 call this%reactive_zones(i)%assign_react_zone(gas_zones(i)%reactive_zone)
                 call gas_zones(i)%set_reactive_zone(this%reactive_zones(i))

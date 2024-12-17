@@ -613,6 +613,9 @@ module chemistry_Lagr_m
             if (present(num_reactive_zones)) then
                 this%num_reactive_zones=num_reactive_zones
             end if
+            if (allocated(this%reactive_zones)) then
+                deallocate(this%reactive_zones)
+            end if
             allocate(this%reactive_zones(this%num_reactive_zones))
        end subroutine
        

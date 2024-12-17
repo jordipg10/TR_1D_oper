@@ -90,7 +90,7 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
                 call this%read_init_bd_rech_wat_types_CHEPROO(unit_loc_chem_file,ind_wat_type,num_aq_prim_array,num_cstr_array,init_cat_exch_zones,wat_types)
             end if
         else if (label=='INITIAL MINERAL ZONES') then
-            call this%read_init_min_zones_CHEPROO(unit_loc_chem_file,init_min_zones,reactive_zones)
+            call this%read_init_min_zones_CHEPROO(unit_loc_chem_file,init_min_zones)
         !else if (label=='INITIAL GAS ZONES') then
             !call this%read_init_gas_zones_CHEPROO(unit_loc_chem_file,init_gas_zones,reactive_zones)
         else
@@ -133,16 +133,16 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
     do i=1,size(init_cat_exch_zones)
         init_sol_zones(i)=init_cat_exch_zones(i)
     end do
-!> Chapuza
-    do i=1,size(reactive_zones)
-        call reactive_zones(i)%set_num_solids()
-        call reactive_zones(i)%set_non_flowing_species()
-        call reactive_zones(i)%set_speciation_alg_dimensions(flag_comp)
-        call reactive_zones(i)%set_eq_reactions()
-        call reactive_zones(i)%set_stoich_mat_react_zone()
-        call reactive_zones(i)%set_stoich_mat_sol_rz()
-        call reactive_zones(i)%set_CV_params(this%CV_params) !> chapuza
-    end do
+!!> Chapuza
+!    do i=1,size(reactive_zones)
+!        call reactive_zones(i)%set_num_solids()
+!        call reactive_zones(i)%set_non_flowing_species()
+!        call reactive_zones(i)%set_speciation_alg_dimensions(flag_comp)
+!        call reactive_zones(i)%set_eq_reactions()
+!        call reactive_zones(i)%set_stoich_mat_react_zone()
+!        call reactive_zones(i)%set_stoich_mat_sol_rz()
+!        call reactive_zones(i)%set_CV_params(this%CV_params) !> chapuza
+!    end do
 !> We verify pointers (chapuza)
     !if (size(reactive_zones)>0) then
     !    do i=1,size(init_sol_zones)
@@ -161,7 +161,7 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
     !    end do
     !end if
 !> We set reactive zones attribute
-    call this%set_reactive_zones(reactive_zones)
+    !call this%set_reactive_zones(reactive_zones)
 !> Target waters
     open(unit_target_waters_init_file,file=root//'_tar_wat.dat',status='old',action='read')
     call this%read_target_waters_init(unit_target_waters_init_file,wat_types,init_sol_zones,init_gas_zones,niter,CV_flag)

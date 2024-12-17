@@ -33,7 +33,7 @@ subroutine solve_reactive_mixing_ideal(this,root,unit,mixing_ratios,mixing_water
     REAL(KIND=8), allocatable :: c_tilde(:) !> concentrations after mixing
     REAL(KIND=8), allocatable :: conc_old(:,:) !> concentrations before mixing
     REAL(KIND=8), allocatable :: conc_nc(:) !> concentrations variable activity species
-    REAL(KIND=8), allocatable :: conc_comp(:) !> concentrations components
+    !REAL(KIND=8), allocatable :: conc_comp(:) !> concentrations components
     type(aqueous_chemistry_c), allocatable :: target_waters_new(:) !> target waters time step k+1
     type(aqueous_chemistry_c), allocatable :: target_waters_old(:) !> target waters time step k
     type(aqueous_chemistry_c), allocatable :: target_waters_old_old(:) !> target waters time step k-1
@@ -86,7 +86,7 @@ subroutine solve_reactive_mixing_ideal(this,root,unit,mixing_ratios,mixing_water
                         p_solver=>mixing_iter_comp_exch_ideal !> only equilibrium reactions
                     end if
                     allocate(conc_nc(n_nc))
-                    allocate(conc_comp(n_p))
+                    !allocate(conc_comp(n_p))
                     allocate(conc_old(n_nc,mixing_ratios%cols(i)%dim)) !> chapuza
                     do j=1,mixing_waters_indices%cols(i)%dim
                         conc_old(:,j)=target_waters_old(mixing_waters_indices%cols(i)%col_1(j))%get_conc_nc() !> chapuza
