@@ -1,10 +1,14 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Dec 17 11:54:35 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Jun 12 16:50:41 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE WRITE_DIFFUSION_TRANSIENT__genmod
           INTERFACE 
             SUBROUTINE WRITE_DIFFUSION_TRANSIENT(THIS,TIME_OUT,OUTPUT)
-              USE DIFFUSION_TRANSIENT_M
+              USE VECTORS_M
+              USE CHAR_PARAMS_M
+              USE BCS_M
+              USE DIFFUSION_TRANSIENT_M, ONLY :                         &
+     &          DIFFUSION_1D_TRANSIENT_C
               CLASS (DIFFUSION_1D_TRANSIENT_C), INTENT(IN) :: THIS
               REAL(KIND=8), INTENT(IN) :: TIME_OUT(:)
               REAL(KIND=8), INTENT(IN) :: OUTPUT(:,:)

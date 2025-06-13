@@ -1,10 +1,16 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Dec 17 11:53:56 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Jun 12 16:51:38 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPUTE_K_RKF45__genmod
           INTERFACE 
             FUNCTION COMPUTE_K_RKF45(THIS,DELTA_T,CONC_RK4) RESULT(K)
-              USE TRANSPORT_TRANSIENT_M
+              USE CHAR_PARAMS_M
+              USE TIME_DISCR_M
+              USE BCS_M
+              USE SPATIAL_DISCR_M
+              USE PDE_TRANSIENT_M, ONLY :                               &
+     &          PDE_1D_TRANSIENT_C,                                     &
+     &          PROD_MAT_VEC
               CLASS (PDE_1D_TRANSIENT_C), INTENT(IN) :: THIS
               REAL(KIND=8), INTENT(IN) :: DELTA_T
               REAL(KIND=8), INTENT(IN) :: CONC_RK4(:)

@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Sat Dec 14 17:07:19 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Jun 12 16:51:04 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE QR_HOUSEHOLDER__genmod

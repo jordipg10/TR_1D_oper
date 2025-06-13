@@ -1,19 +1,17 @@
-'TITLE OF THE PROBLEM: Calcita y anhidrita cinéticos'
+'TITLE OF THE PROBLEM: Calcita y anhidrita en equilibrio'
 '-----------------------------------------------------------------------------------------------------'
 'DEFINITION OF THE GEOCHEMICAL SYSTEM'
 'PRIMARY AQUEOUS SPECIES'
 'h2o'
 'ca+2'
 'so4-2'
-'h+'
-'hco3-'
+'co3-2(p)'
 '*'
 'AQUEOUS COMPLEXES'
-'co3-2'
 '*'
 'MINERALS'
-'anhydrite' .false. .true. 		! name of mineral, flag equilibrium, flag constant activity 
-'calcite4' .false. .true.
+'anhydrite' .true. .true. 		! name of mineral, flag equilibrium, flag constant activity 
+'calcite3' .true. .true.
 '*' .true. .true.         
 '------------------------------------------------------------------------------------------------------'
 'end'

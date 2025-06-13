@@ -1,11 +1,16 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Dec 17 11:54:10 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Jun 12 16:50:49 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE WRITE_TRANSPORT_1D_TRANSIENT__genmod
           INTERFACE 
             SUBROUTINE WRITE_TRANSPORT_1D_TRANSIENT(THIS,TIME_OUT,OUTPUT&
      &)
-              USE ANALYTICAL_SOLUTIONS_TRANSPORT_M
+              USE TRANSPORT_STAB_PARAMS_M
+              USE TRANSPORT_PROPERTIES_HETEROG_M
+              USE CHAR_PARAMS_M
+              USE BCS_M
+              USE TRANSPORT_TRANSIENT_M, ONLY :                         &
+     &          TRANSPORT_1D_TRANSIENT_C
               CLASS (TRANSPORT_1D_TRANSIENT_C), INTENT(IN) :: THIS
               REAL(KIND=8), INTENT(IN) :: TIME_OUT(:)
               REAL(KIND=8), INTENT(IN) :: OUTPUT(:,:)

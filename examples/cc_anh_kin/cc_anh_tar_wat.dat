@@ -1,10 +1,9 @@
-'TITLE OF THE PROBLEM: Calcita y anhidrita cineticas'
+'TITLE OF THE PROBLEM: Calcita y anhidrita cinéticas'
 '----------------------------------------------------------------------------'
 'TARGET WATERS'
-31					! number of target waters
-'external waters'
-0					! number of external target waters (recharge, boundary, etc)
-'domain waters'
+30					! number of target waters
+0					! number of recharge target waters
+0					! number of boundary target waters
 1	1	1	0		! target water index, water type index, solid zone index, gas zone index
 2	1	1	0
 3	1	1	0
@@ -35,7 +34,6 @@
 28	3	3	0
 29	3	3	0
 30	3	3	0
-31	3	3	0
 '----------------------------------------------------------------------------'
 'end'
 

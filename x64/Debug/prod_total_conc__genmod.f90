@@ -1,10 +1,14 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Dec 17 11:53:55 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Jun 12 16:51:17 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE PROD_TOTAL_CONC__genmod
           INTERFACE 
             SUBROUTINE PROD_TOTAL_CONC(THIS,A_MAT,TIME)
-              USE DIFFUSION_TRANSIENT_M
+              USE CHAR_PARAMS_M
+              USE BCS_M
+              USE DIFFUSION_TRANSIENT_M, ONLY :                         &
+     &          DIFFUSION_1D_TRANSIENT_C,                               &
+     &          TRIDIAG_MATRIX_C
               CLASS (DIFFUSION_1D_TRANSIENT_C) :: THIS
               CLASS (TRIDIAG_MATRIX_C), INTENT(IN) :: A_MAT
               REAL(KIND=8) ,OPTIONAL, INTENT(IN) :: TIME

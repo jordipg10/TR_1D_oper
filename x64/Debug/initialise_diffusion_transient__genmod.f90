@@ -1,10 +1,15 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Dec 17 11:54:13 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Jun 12 16:51:29 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE INITIALISE_DIFFUSION_TRANSIENT__genmod
           INTERFACE 
             SUBROUTINE INITIALISE_DIFFUSION_TRANSIENT(THIS)
-              USE BCS_SUBROUTINES_M
+              USE BCS_M, ONLY :                                         &
+     &          BCS_T
+              USE CHAR_PARAMS_M, ONLY :                                 &
+     &          CHAR_PARAMS_DIFF_C
+              USE DIFFUSION_TRANSIENT_M, ONLY :                         &
+     &          DIFFUSION_1D_TRANSIENT_C
               CLASS (DIFFUSION_1D_TRANSIENT_C) :: THIS
             END SUBROUTINE INITIALISE_DIFFUSION_TRANSIENT
           END INTERFACE 

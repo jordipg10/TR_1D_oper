@@ -1,13 +1,16 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Dec 17 11:54:00 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Jun 12 16:51:31 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE WRITE_TRANSPORT_1D__genmod
           INTERFACE 
-            SUBROUTINE WRITE_TRANSPORT_1D(THIS,TIME_OUT,OUTPUT)
-              USE ANALYTICAL_SOLUTIONS_TRANSPORT_M
+            SUBROUTINE WRITE_TRANSPORT_1D(THIS)
+              USE TRANSPORT_PROPERTIES_HETEROG_M
+              USE BCS_M
+              USE SPATIAL_DISCR_M
+              USE TRANSPORT_M, ONLY :                                   &
+     &          TRANSPORT_1D_C,                                         &
+     &          MESH_1D_EULER_HOMOG_C
               CLASS (TRANSPORT_1D_C), INTENT(IN) :: THIS
-              REAL(KIND=8), INTENT(IN) :: TIME_OUT(:)
-              REAL(KIND=8), INTENT(IN) :: OUTPUT(:,:)
             END SUBROUTINE WRITE_TRANSPORT_1D
           END INTERFACE 
         END MODULE WRITE_TRANSPORT_1D__genmod

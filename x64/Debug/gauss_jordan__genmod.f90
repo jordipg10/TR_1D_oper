@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Thu Dec 12 11:10:50 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Jun 12 16:51:57 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE GAUSS_JORDAN__genmod

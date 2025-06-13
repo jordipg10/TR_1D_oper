@@ -1,11 +1,17 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Dec 17 11:54:41 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Jun 12 16:50:44 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPUTE_LOG_JACOBIAN_ACT_COEFFS_AQ_PHASE__genmod
           INTERFACE 
             SUBROUTINE COMPUTE_LOG_JACOBIAN_ACT_COEFFS_AQ_PHASE(THIS,   &
      &OUT_PROD,CONC,LOG_JACOBIAN_ACT_COEFFS)
-              USE AQ_PHASE_M
+              USE PARAMS_SPEC_VOL_M
+              USE PARAMS_ACT_COEFF_M
+              USE SPECIES_M
+              USE AQ_SPECIES_M
+              USE PHASE_M
+              USE AQ_PHASE_M, ONLY :                                    &
+     &          AQ_PHASE_C
               CLASS (AQ_PHASE_C) :: THIS
               REAL(KIND=8), INTENT(IN) :: OUT_PROD(:,:)
               REAL(KIND=8), INTENT(IN) :: CONC(:)

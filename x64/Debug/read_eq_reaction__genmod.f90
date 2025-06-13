@@ -1,10 +1,15 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Dec 17 11:53:53 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Jun 12 16:50:38 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE READ_EQ_REACTION__genmod
           INTERFACE 
             SUBROUTINE READ_EQ_REACTION(THIS,SPECIES,FILENAME)
-              USE EQ_REACTION_M
+              USE PARAMS_SPEC_VOL_M
+              USE PARAMS_ACT_COEFF_M
+              USE SPECIES_M
+              USE EQ_REACTION_M, ONLY :                                 &
+     &          EQ_REACTION_C,                                          &
+     &          SPECIES_C
               CLASS (EQ_REACTION_C) :: THIS
               CLASS (SPECIES_C), INTENT(IN) :: SPECIES
               CHARACTER(*), INTENT(IN) :: FILENAME

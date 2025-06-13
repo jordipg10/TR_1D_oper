@@ -1,11 +1,13 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Dec 17 11:54:01 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Jun 12 16:51:49 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE READ_EXCHANGE_REACT_PHREEQC__genmod
           INTERFACE 
             SUBROUTINE READ_EXCHANGE_REACT_PHREEQC(THIS,STRING,PRIM_FLAG&
      &,DEFINED_SPECIES)
-              USE EQ_REACTION_M
+              USE AQ_SPECIES_M
+              USE EQ_REACTION_M, ONLY :                                 &
+     &          EQ_REACTION_C
               CLASS (EQ_REACTION_C) :: THIS
               CHARACTER(*), INTENT(IN) :: STRING
               LOGICAL(KIND=4), INTENT(OUT) :: PRIM_FLAG
