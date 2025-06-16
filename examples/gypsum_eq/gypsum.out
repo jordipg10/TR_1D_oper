@@ -77,7 +77,11 @@
 
   Chemical input option:                        1
 
-  WMA option:          Lumped
+  WMA option:          Consistent
+
+  Consistent WMA option:                        2
+
+  rk downstream waters option:                        1
 
   rk average option:                        2
 
@@ -114,14 +118,14 @@
                   1.00000        0.00000       -1.00000
                   0.00000        1.00000        0.00000
 
-  Concentration of external waters (in molalities): (rows -> aqueous species in the same order as before, columns -> targets)
+  Concentration of recharge waters (in molalities): (rows -> aqueous species in the same order as before, columns -> targets)
 
 
 
 
 
 
-  Activities of external waters:
+  Activities of recharge waters:
 
 
 

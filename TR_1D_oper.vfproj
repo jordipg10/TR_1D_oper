@@ -54,8 +54,6 @@
 		<Filter Name="Header Files" Filter="fi;fd;h;inc"/>
 		<Filter Name="Resource Files" Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"/>
 		<Filter Name="Source Files" Filter="f90;for;f;fpp;ftn;def;odl;idl">
-		<File RelativePath=".\src\append_phase.f90"/>
-		<File RelativePath=".\src\append_reaction.f90"/>
 		<File RelativePath=".\src\aq_phase_m.f90"/>
 		<File RelativePath=".\src\aq_species_m.f90"/>
 		<File RelativePath=".\src\aqueous_chemistry_m.f90"/>
@@ -68,11 +66,8 @@
 		<File RelativePath=".\src\check_eigenvectors.f90"/>
 		<File RelativePath=".\src\check_eigenvectors_tridiag_sym_matrix.f90"/>
 		<File RelativePath=".\src\check_new_reactive_zones.f90"/>
-		<File RelativePath=".\src\check_reactive_zones.f90"/>
-		<File RelativePath=".\src\check_solid_chemistry.f90"/>
 		<File RelativePath=".\src\chem_out_options_m.f90"/>
 		<File RelativePath=".\src\chem_system_m.f90"/>
-		<File RelativePath=".\src\chem_type_m.f90"/>
 		<File RelativePath=".\src\chemistry_Lagr_m.f90"/>
 		<File RelativePath=".\src\Cholesky.f90"/>
 		<File RelativePath=".\src\compare_react_zones.f90"/>
@@ -103,11 +98,7 @@
 		<File RelativePath=".\src\compute_c_nc_from_u_Newton_ideal.f90"/>
 		<File RelativePath=".\src\compute_c_tilde_aq_chem.f90"/>
 		<File RelativePath=".\src\compute_char_params.f90"/>
-		<File RelativePath=".\src\compute_conc_biomass.f90"/>
 		<File RelativePath=".\src\compute_conc_imm_MRMT.f90"/>
-		<File RelativePath=".\src\compute_conc_minerals.f90"/>
-		<File RelativePath=".\src\compute_conc_minerals_iter.f90"/>
-		<File RelativePath=".\src\compute_conc_solids_iter_EE.f90"/>
 		<File RelativePath=".\src\compute_conc_surf_ideal.f90"/>
 		<File RelativePath=".\src\compute_conc_surf_ideal_Newton.f90"/>
 		<File RelativePath=".\src\compute_conc_surf_ideal_Picard.f90"/>
@@ -135,15 +126,10 @@
 		<File RelativePath=".\src\compute_drk_dc_Monod.f90"/>
 		<File RelativePath=".\src\compute_drk_dcj_mineral.f90"/>
 		<File RelativePath=".\src\compute_E_mat.f90"/>
-		<File RelativePath=".\src\compute_E_mat_diff.f90"/>
-		<File RelativePath=".\src\compute_E_mat_tpt.f90"/>
 		<File RelativePath=".\src\compute_eigenvalues.f90"/>
-		<File RelativePath=".\src\compute_ext_mat_PDE.f90"/>
 		<File RelativePath=".\src\compute_F_mat_diff.f90"/>
 		<File RelativePath=".\src\compute_F_mat_tpt.f90"/>
-		<File RelativePath=".\src\compute_f_RKF45_RT_kin.f90"/>
 		<File RelativePath=".\src\compute_f_vec.f90"/>
-		<File RelativePath=".\src\compute_grad_conc_comp_mob.f90"/>
 		<File RelativePath=".\src\compute_inverse_tridiag_matrix.f90"/>
 		<File RelativePath=".\src\compute_Jacobian_rk_anal.f90"/>
 		<File RelativePath=".\src\compute_Jacobian_rk_chemistry.f90"/>
@@ -161,12 +147,13 @@
 		<File RelativePath=".\src\compute_mass_bal_mins.f90"/>
 		<File RelativePath=".\src\compute_mixing_ratios_Delta_t_homog.f90"/>
 		<File RelativePath=".\src\compute_r_eq.f90"/>
-		<File RelativePath=".\src\compute_r_eq_aq_chem_De_Simoni.f90"/>
 		<File RelativePath=".\src\compute_r_eq_lump.f90"/>
 		<File RelativePath=".\src\compute_R_eq_mean_lump.f90"/>
-		<File RelativePath=".\src\compute_r_eq_tilde_aq_chem.f90"/>
 		<File RelativePath=".\src\compute_Re_mean.f90"/>
 		<File RelativePath=".\src\compute_Re_mean_lump.f90"/>
+		<File RelativePath=".\src\compute_Re_mean_rk.f90"/>
+		<File RelativePath=".\src\compute_Re_mean_rk_lump.f90"/>
+		<File RelativePath=".\src\compute_rech_mat_PDE.f90"/>
 		<File RelativePath=".\src\compute_res_init.f90"/>
 		<File RelativePath=".\src\compute_res_Jac_res_anal.f90"/>
 		<File RelativePath=".\src\compute_res_Jac_res_anal_exch.f90"/>
@@ -211,13 +198,9 @@
 		<File RelativePath=".\src\gas_phase_m.f90"/>
 		<File RelativePath=".\src\gas_zone_m.f90"/>
 		<File RelativePath=".\src\Gauss-Jordan.f90"/>
-		<File RelativePath=".\src\Gauss-Seidel.f90"/>
 		<File RelativePath=".\src\get_indices_reaction.f90"/>
 		<File RelativePath=".\src\get_mixing_ratios_vec.f90"/>
-		<File RelativePath=".\src\get_mixing_waters_indices.f90"/>
-		<File RelativePath=".\src\get_solid_chem_mineral.f90"/>
 		<File RelativePath=".\src\Gram_Schmidt_mat.f90"/>
-		<File RelativePath=".\src\Gram_Schmidt_vec.f90"/>
 		<File RelativePath=".\src\Householder.f90"/>
 		<File RelativePath=".\src\id_matrix.f90"/>
 		<File RelativePath=".\src\imm_zone_m.f90"/>
@@ -229,11 +212,8 @@
 		<File RelativePath=".\src\initialise_conc_incr_coeff.f90"/>
 		<File RelativePath=".\src\initialise_diffusion_1D.f90"/>
 		<File RelativePath=".\src\initialise_diffusion_1D_transient.f90"/>
-		<File RelativePath=".\src\initialise_ext_waters.f90"/>
-		<File RelativePath=".\src\initialise_iterative_method.f90"/>
 		<File RelativePath=".\src\initialise_target_solids.f90"/>
 		<File RelativePath=".\src\initialise_target_waters.f90"/>
-		<File RelativePath=".\src\initialise_transport.f90"/>
 		<File RelativePath=".\src\initialise_transport_1D.f90"/>
 		<File RelativePath=".\src\initialise_transport_1D_transient.f90"/>
 		<File RelativePath=".\src\initialise_transport_1D_transient_RT.f90"/>

@@ -7,7 +7,7 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
     class(chemistry_c) :: this
     integer(kind=4), intent(in) :: unit !> file
     type(aqueous_chemistry_c), intent(in) :: water_types(:) !> water types
-    type(solid_chemistry_c), intent(in) :: init_sol_types(:) !> includes adsorption & mineral zones (in that order)
+    type(solid_chemistry_c), intent(in) :: init_sol_types(:) !> initial solid zones
     type(gas_chemistry_c), intent(in) :: init_gas_types(:) !> initial gas zones
     integer(kind=4), intent(in) :: nsrz !> number of solid reactive zones
     integer(kind=4), intent(in) :: ngrz !> number of gas reactive zones
@@ -27,8 +27,16 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
     type(mineral_zone_c), target :: min_zone   !> default mineral zone object
     
     nwtype=size(water_types)
-    nstype=size(init_sol_types)
-    ngzns=size(init_gas_types)
+    if (nsrz>0) then
+        nstype=size(init_sol_types)
+    else
+        nstype=0 !> chapuza
+    end if
+    if (ngrz>0) then
+        ngzns=size(init_gas_types)
+    else
+        ngzns=0 !> chapuza
+    end if
     
     !flag_comp=.true. !> by default
 

@@ -565,10 +565,18 @@ this%concentrations=solid_chemistry%concentrations
 this%activities=solid_chemistry%activities
 this%log_act_coeffs=solid_chemistry%log_act_coeffs
 this%name=solid_chemistry%name
-this%r_eq=solid_chemistry%r_eq
-this%rk=solid_chemistry%rk
-this%vol_fracts=solid_chemistry%vol_fracts
-this%react_surfaces=solid_chemistry%react_surfaces
+if (allocated(solid_chemistry%r_eq)) then
+    this%r_eq=solid_chemistry%r_eq
+end if
+if (allocated(solid_chemistry%rk)) then
+    this%rk=solid_chemistry%rk
+end if
+if (allocated(solid_chemistry%vol_fracts)) then
+    this%vol_fracts=solid_chemistry%vol_fracts
+end if
+if (allocated(solid_chemistry%react_surfaces)) then
+    this%react_surfaces=solid_chemistry%react_surfaces
+end if
 this%equivalents=solid_chemistry%equivalents
 this%CEC=solid_chemistry%CEC
 end subroutine

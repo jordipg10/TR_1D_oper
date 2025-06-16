@@ -94,7 +94,9 @@ module aqueous_chemistry_m
         procedure, public :: compute_conc_comp_cst_act
         procedure, public :: compute_r_eq
         procedure, public :: compute_Re_mean_lump
+        procedure, public :: compute_Re_mean_rk_lump
         procedure, public :: compute_Re_mean
+        procedure, public :: compute_Re_mean_rk
         procedure, public :: compute_rk
         procedure, public :: compute_Jacobian_rk_anal
         procedure, public :: compute_rk_Jac_rk_anal
@@ -1436,7 +1438,17 @@ module aqueous_chemistry_m
             real(kind=8), intent(in) :: rk_tilde(:)
         end subroutine
 
-        subroutine compute_Re_mean(this,c2nc_tilde,Delta_t,theta,rk_tilde)
+        subroutine compute_Re_mean(this,c2nc_tilde,Delta_t,theta)
+            import aqueous_chemistry_c
+            implicit none
+            class(aqueous_chemistry_c) :: this
+            real(kind=8), intent(in) :: c2nc_tilde(:) !> concentrations secondary variable activity species after mixing at time step k
+            real(kind=8), intent(in) :: Delta_t !> time step
+            real(kind=8), intent(in) :: theta !> time weighting factor for kinetic reactions
+            !real(kind=8), intent(in) :: rk_tilde(:)
+        end subroutine
+
+        subroutine compute_Re_mean_rk(this,c2nc_tilde,Delta_t,theta,rk_tilde)
             import aqueous_chemistry_c
             implicit none
             class(aqueous_chemistry_c) :: this
@@ -1447,6 +1459,16 @@ module aqueous_chemistry_m
         end subroutine
         
         subroutine compute_Re_mean_lump(this,c2nc_tilde,Delta_t,theta)
+            import aqueous_chemistry_c
+            implicit none
+            class(aqueous_chemistry_c) :: this
+            real(kind=8), intent(in) :: c2nc_tilde(:) !> concentrations secondary variable activity species after mixing at time step k
+            real(kind=8), intent(in) :: Delta_t !> time step
+            real(kind=8), intent(in) :: theta !> time weighting factor for kinetic reactions
+            !real(kind=8), intent(in) :: porosity
+        end subroutine
+
+        subroutine compute_Re_mean_rk_lump(this,c2nc_tilde,Delta_t,theta)
             import aqueous_chemistry_c
             implicit none
             class(aqueous_chemistry_c) :: this

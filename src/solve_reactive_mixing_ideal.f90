@@ -256,18 +256,20 @@ subroutine solve_reactive_mixing_ideal(this,root,mixing_ratios_conc,mixing_ratio
                 call target_waters_new(ind_non_can_vec(i))%update_conc_old() !> 
                 call target_waters_new(ind_non_can_vec(i))%solid_chemistry%update_conc_old() !> 
                 !call initialise_iterative_method()
-                !call target_waters_new(ind_non_can_vec(i))%update_rk_old()
+                call target_waters_new(ind_non_can_vec(i))%update_rk_old()
                 call target_waters_new(ind_non_can_vec(i))%solid_chemistry%update_rk_old()
             end do
             !> Domain target waters loop
             do i=1,num_non_can_vec
-                n_p=this%target_waters(ind_non_can_vec(i))%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
-                n_nc=this%target_waters(ind_non_can_vec(i)&
-                    )%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species
-                n_nc_aq=this%target_waters(ind_non_can_vec(i)&
-                    )%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species
-                n_nc_aq_2=this%target_waters(ind_non_can_vec(i)&
-                    )%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species
+                n_p=this%target_waters(&
+                    this%dom_tar_wat_indices(ind_non_can_vec(i)))%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
+                n_nc=this%target_waters(&
+                    this%dom_tar_wat_indices(ind_non_can_vec(i)))%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species
+                n_nc_aq=this%target_waters(&
+                   this%dom_tar_wat_indices(ind_non_can_vec(i)))%solid_chemistry%reactive_zone%speciation_alg%num_aq_var_act_species
+                n_nc_aq_2=this%target_waters(&
+                    this%dom_tar_wat_indices(&
+                    ind_non_can_vec(i)))%solid_chemistry%reactive_zone%speciation_alg%num_aq_sec_var_act_species
                 !print *, this%target_waters(ind_non_can_vec(i))%solid_chemistry%reactive_zone%num_solids
                 
                 !if (num_can_vec>0 .and. ind_non_can_vec(i)==ind_can_vec(cntr_can_vec)) then
@@ -279,7 +281,8 @@ subroutine solve_reactive_mixing_ideal(this,root,mixing_ratios_conc,mixing_ratio
                 !    !target_waters_new(ind_non_can_vec(i))%solid_chemistry%Rk_est=0d0
                 !    continue
                 !else
-                    if (this%target_waters(ind_non_can_vec(i))%solid_chemistry%reactive_zone%cat_exch_zone%num_surf_compl &
+                    if (this%target_waters(&
+                        this%dom_tar_wat_indices(ind_non_can_vec(i)))%solid_chemistry%reactive_zone%cat_exch_zone%num_surf_compl &
                         >0) then !> variable activity species are aqueous and solid
                         !p_solver=>mixing_iter_comp_exch_ideal !> only equilibrium reactions
                     end if
@@ -328,21 +331,23 @@ subroutine solve_reactive_mixing_ideal(this,root,mixing_ratios_conc,mixing_ratio
                     !    if (j==
                     !    mix_waters(j)=target_waters_new(mixing_waters_indices%cols(i)%col_1(&
                     !    mix_ind+j-1))
-                    mix_waters=target_waters_new(mixing_waters_indices_dom%cols(ind_non_can_vec(i))%col_1(&
-                        mix_ind:mixing_waters_indices_dom%cols(ind_non_can_vec(i))%dim-2))
-                    call compute_rk_tilde(mix_waters,mixing_ratios_Rk_init%cols(ind_non_can_vec(i))%col_1(mix_ind:),&
-                        mixing_waters_indices_dom%cols(ind_non_can_vec(i))%col_1(mixing_waters_indices_dom%cols(&
-                        ind_non_can_vec(i))%dim-1),&
-                        mixing_waters_indices_dom%cols(ind_non_can_vec(i))%col_1(mixing_waters_indices_dom%cols(&
-                        ind_non_can_vec(i))%dim),theta,Delta_t,rk_tilde)
-                    !> chapuza
-                    target_waters_new(mixing_waters_indices_dom%cols(ind_non_can_vec(i))%col_1(mix_ind:&
-                        mixing_waters_indices_dom%cols(ind_non_can_vec(i))%dim-2))=mix_waters
-                    call target_waters_new(this%dom_tar_wat_indices(ind_non_can_vec(i)))%solid_chemistry%modify_mix_ratios_rk(&
-                        mixing_ratios_Rk_init%cols(ind_non_can_vec(i))%col_1(1),c_tilde,Delta_t,rk_tilde,&
-                        mixing_ratios_Rk%cols(ind_non_can_vec(i))%col_1(1),num_lump)
-                    !> chapuza
-                    this%num_lump=this%num_lump+num_lump !> we update number of lumpings
+                    if (target_waters_new(this%dom_tar_wat_indices(ind_non_can_vec(i)))%indices_rk%num_cols>0) then
+                        mix_waters=target_waters_new(mixing_waters_indices_dom%cols(ind_non_can_vec(i))%col_1(&
+                            mix_ind:mixing_waters_indices_dom%cols(ind_non_can_vec(i))%dim-2))
+                        call compute_rk_tilde(mix_waters,mixing_ratios_Rk_init%cols(ind_non_can_vec(i))%col_1(mix_ind:),&
+                            mixing_waters_indices_dom%cols(ind_non_can_vec(i))%col_1(mixing_waters_indices_dom%cols(&
+                            ind_non_can_vec(i))%dim-1),&
+                            mixing_waters_indices_dom%cols(ind_non_can_vec(i))%col_1(mixing_waters_indices_dom%cols(&
+                            ind_non_can_vec(i))%dim),theta,Delta_t,rk_tilde)
+                        !> chapuza
+                        target_waters_new(mixing_waters_indices_dom%cols(ind_non_can_vec(i))%col_1(mix_ind:&
+                            mixing_waters_indices_dom%cols(ind_non_can_vec(i))%dim-2))=mix_waters
+                        call target_waters_new(this%dom_tar_wat_indices(ind_non_can_vec(i)))%solid_chemistry%modify_mix_ratios_rk(&
+                            mixing_ratios_Rk_init%cols(ind_non_can_vec(i))%col_1(1),c_tilde,Delta_t,rk_tilde,&
+                            mixing_ratios_Rk%cols(ind_non_can_vec(i))%col_1(1),num_lump)
+                        !> chapuza
+                        this%num_lump=this%num_lump+num_lump !> we update number of lumpings
+                    end if
                     !y=sum(mixing_ratios_Rk%cols(i)%col_1(2:1+mixing_waters_indices%cols(i)%col_1(mixing_waters_indices%cols(i)%dim-1)))
                     !print *, y*Delta_t
                     !do j=1,n_nc_aq
@@ -360,10 +365,16 @@ subroutine solve_reactive_mixing_ideal(this,root,mixing_ratios_conc,mixing_ratio
                         ind_non_can_vec(i))%col_1(1),Delta_t,theta,conc_nc)
                     !> We compute equilibrium reaction rates from mass balance equation
                     if (this%target_waters(this%dom_tar_wat_indices(ind_non_can_vec(i))&
+                        )%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions>0 .and. &
+                        this%target_waters(this%dom_tar_wat_indices(ind_non_can_vec(i)))%indices_rk%num_cols>0) then
+                        call target_waters_new(this%dom_tar_wat_indices(ind_non_can_vec(i)))%compute_Re_mean_rk(&
+                            c_tilde(n_p+1:n_p+n_nc_aq_2),Delta_t,&
+                            theta,rk_tilde(n_p+1:n_p+n_nc_aq_2)) !> chapuza
+                    else if (this%target_waters(this%dom_tar_wat_indices(ind_non_can_vec(i))&
                         )%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions>0) then
                         call target_waters_new(this%dom_tar_wat_indices(ind_non_can_vec(i)))%compute_Re_mean(&
                             c_tilde(n_p+1:n_p+n_nc_aq_2),Delta_t,&
-                            theta,rk_tilde(n_p+1:n_p+n_nc_aq_2)) !> chapuza
+                            theta) !> chapuza
                     end if
                     ! call target_waters_new(ind_non_can_vec(i))%compute_r_eq(c_tilde(n_p+1:n_p+n_nc_aq_2),Delta_t,&
                     !     rk_tilde)
@@ -417,15 +428,6 @@ subroutine solve_reactive_mixing_ideal(this,root,mixing_ratios_conc,mixing_ratio
         end do
 !> We set the new target waters to the chemistry object
     this%target_waters=target_waters_new
-!> Chapuza
-    !do i=1,this%num_target_waters_dom
-    !    allocate(rk(this%target_waters(ind_non_can_vec(i))%indices_rk%num_cols))
-    !    call this%target_waters(ind_non_can_vec(i))%compute_rk(rk)
-    !    deallocate(rk)
-    !end do
     close(unit)
-    !deallocate(rk_tilde)
-    !print *, this%target_waters(5)%rk-this%target_waters(5)%rk_old
-    !print *, this%target_waters(5)%rk
     write(*,*) "Number of lumpings: ", this%num_lump
  end subroutine

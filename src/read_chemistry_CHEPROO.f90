@@ -15,7 +15,7 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
     integer(kind=4), intent(in) :: unit_output_file
     !character(len=*), intent(in) :: output_file
     
-    integer(kind=4) :: i,ngrz,nmrz
+    integer(kind=4) :: i,ngrz,nmrz,nsrz
     integer(kind=4), allocatable :: ind_wat_type(:),num_aq_prim_array(:),num_cstr_array(:)
     character(len=256) :: label
     
@@ -66,7 +66,8 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
         !    call this%read_init_min_zones_CHEPROO(unit_loc_chem_file,init_min_zones,rz_mins)
         else if (label=='INITIAL SURFACE ADSORPTION ZONES') then
             call this%read_init_cat_exch_zones_CHEPROO(unit_loc_chem_file,init_cat_exch_zones)
-            print *, init_cat_exch_zones(1)%reactive_zone%num_non_flowing_species
+            nsrz=size(init_cat_exch_zones)
+            !print *, init_cat_exch_zones(1)%reactive_zone%num_non_flowing_species
         else if (label=='INITIAL AND BOUNDARY GAS ZONES') then
             call this%read_init_gas_zones_CHEPROO(unit_loc_chem_file,init_gas_zones,ngrz)
         else
@@ -74,8 +75,8 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
         end if
     end do
 !> Chapuza
-    print*, size(init_gas_zones)
-    print *, allocated(init_gas_zones)
+    !print*, size(init_gas_zones)
+    !print *, allocated(init_gas_zones)
     if (allocated(init_gas_zones)) then
         do i=1,size(init_gas_zones) 
             call init_gas_zones(i)%set_reactive_zone(this%reactive_zones(i))
@@ -85,10 +86,10 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
         deallocate(init_gas_zones)
         !call init_gas_zones(1)%set_reactive_zone(this%reactive_zones(1))
     end if
-    print *, size(init_cat_exch_zones)
-    print *, allocated(init_cat_exch_zones)
+    !print *, size(init_cat_exch_zones)
+    !print *, allocated(init_cat_exch_zones)
     if (allocated(init_cat_exch_zones)) then
-        print *, init_cat_exch_zones(1)%reactive_zone%num_non_flowing_species
+        !print *, init_cat_exch_zones(1)%reactive_zone%num_non_flowing_species
         do i=1,size(init_cat_exch_zones)
             call init_cat_exch_zones(i)%set_reactive_zone(this%reactive_zones(i))
         end do
@@ -110,8 +111,12 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
                 init_cat_exch_zones,wat_types)
             end if
         else if (label=='INITIAL MINERAL ZONES') then
-            call this%read_init_min_zones_CHEPROO(unit_loc_chem_file,init_min_zones,nmrz)
-        !> Chapuza
+            if (size(init_cat_exch_zones)==1) then
+                call this%read_init_min_zones_CHEPROO(unit_loc_chem_file,init_min_zones,nmrz,init_cat_exch_zones(1))
+            else
+                call this%read_init_min_zones_CHEPROO(unit_loc_chem_file,init_min_zones,nmrz)
+            end if
+            !> Chapuza
             if (allocated(init_gas_zones)) then
                 do i=1,size(init_gas_zones)
                     call init_gas_zones(i)%set_reactive_zone(this%reactive_zones(i))
@@ -164,17 +169,28 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
     !    do i=1,size(init_cat_exch_zones)
     !        init_sol_zones(i)=init_cat_exch_zones(i)
     !    end do
-    !else if (allocated(init_cat_exch_zones)) then
-    !    allocate(init_sol_zones(size(init_cat_exch_zones)))
-    !    do i=1,size(init_cat_exch_zones)
-    !        init_sol_zones(i)=init_cat_exch_zones(i)
-    !    end do
-    if (allocated(init_min_zones)) then
+    if (allocated(init_cat_exch_zones) .and. (.not. allocated(init_min_zones))) then
+       allocate(init_sol_zones(size(init_cat_exch_zones)))
+       do i=1,size(init_cat_exch_zones)
+           init_sol_zones(i)=init_cat_exch_zones(i)
+       end do
+       !nsrz=size(init_cat_exch_zones)
+    else if (allocated(init_min_zones) .and. (.not. allocated(init_cat_exch_zones))) then
         allocate(init_sol_zones(size(init_min_zones)))
         do i=1,size(init_min_zones)
             init_sol_zones(i)=init_min_zones(i)
         end do
-    end if
+        nsrz=nmrz
+    else if (allocated(init_cat_exch_zones) .and. allocated(init_min_zones)) then
+        allocate(init_sol_zones(size(init_min_zones)))
+        do i=1,size(init_min_zones)
+            init_sol_zones(i)=init_min_zones(i)
+        end do
+        nsrz=nmrz
+    else
+        allocate(init_sol_zones(0)) !> Chapuza
+        nsrz=0
+    end if  
     
     
 !!> Chapuza
@@ -208,7 +224,7 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
     !call this%set_reactive_zones(reactive_zones)
 !> Target waters
     open(unit_target_waters_init_file,file=root//'_tar_wat.dat',status='old',action='read')
-    call this%read_target_waters_init(unit_target_waters_init_file,wat_types,init_sol_zones,init_gas_zones,nmrz,ngrz)
+    call this%read_target_waters_init(unit_target_waters_init_file,wat_types,init_sol_zones,init_gas_zones,nsrz,ngrz)
     close(unit_target_waters_init_file)
 !> Output data
     call this%chem_out_options%read_chem_out_options(root,unit_output_file,this%target_waters)

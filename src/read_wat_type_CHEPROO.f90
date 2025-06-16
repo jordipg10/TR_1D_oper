@@ -50,10 +50,10 @@ subroutine read_wat_type_CHEPROO(this,n_p_aq,num_cstr,model,Jac_opt,unit,niter,C
         call this%solid_chemistry%reactive_zone%allocate_non_flowing_species(num_cstr)
     end if
     
-    if (this%solid_chemistry%reactive_zone%chem_syst%num_minerals>0) then
+    !if (this%solid_chemistry%reactive_zone%chem_syst%num_minerals>0) then
         call min_zone%set_chem_syst_min_zone(this%solid_chemistry%reactive_zone%chem_syst)
         call this%solid_chemistry%set_mineral_zone(min_zone)
-    end if
+    !end if
     
     allocate(ind_mins(num_cstr)) !> chapuza
     

@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Fri Jun 13 19:58:26 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Mon Jun 16 12:10:08 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPUTE_DFK_DC_AQ_EFI__genmod

@@ -59,13 +59,13 @@ subroutine write_chemistry(this,unit)
         write(unit,"(10x,*(F15.5))") (this%chem_syst%speciation_alg%comp_mat(i,j), &
         j=1,this%chem_syst%speciation_alg%num_var_act_species)
     end do
-    write(unit,"(/,2x,'Concentration of external waters (in molalities): &
+    write(unit,"(/,2x,'Concentration of recharge waters (in molalities): &
         (rows -> aqueous species in the same order as before, columns -> targets)'/)")
     do i=1,this%chem_syst%aq_phase%num_species
         write(unit,"(10x,*(ES15.5))") (this%target_waters(this%ext_waters_indices(j))%concentrations(&
             this%target_waters(this%ext_waters_indices(j))%indices_aq_species(i)), j=1,this%num_ext_waters)
     end do
-    write(unit,"(/,2x,'Activities of external waters:'/)")
+    write(unit,"(/,2x,'Activities of recharge waters:'/)")
     do i=1,this%chem_syst%aq_phase%num_species
         write(unit,"(10x,*(ES15.5))") (this%target_waters(this%ext_waters_indices(j))%activities(&
             this%target_waters(this%ext_waters_indices(j))%indices_aq_species(i)), j=1,this%num_ext_waters)

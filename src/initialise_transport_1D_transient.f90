@@ -1,4 +1,4 @@
-subroutine initialise_transport_1D_transient(this)
+subroutine initialise_transport_1D_transient(this,root)
     use time_discr_m, only: time_discr_homog_c, time_discr_heterog_c, time_discr_c
     use vectors_m, only: inf_norm_vec_real
     use transport_transient_m, only: transport_1D_transient_c
@@ -7,6 +7,7 @@ subroutine initialise_transport_1D_transient(this)
     implicit none
 
     class(transport_1D_transient_c) :: this
+    character(len=*), intent(in) :: root
     !character(len=*), intent(in) :: path
     !character(len=*), intent(in) :: file_BCs
     !character(len=*), intent(in) :: file_spatial_discr
@@ -36,25 +37,25 @@ subroutine initialise_transport_1D_transient(this)
     dimless=.false.
     this%dimensionless=dimless
 !> Boundary conditions
-    call my_BCs%read_BCs("C:\Users\user2319\source\repos\user2319pg10\RT_Lagrange\input\BCs.dat")
+    call my_BCs%read_BCs(root//'_BCs.dat')
     if (my_BCs%BCs_label(1) == 1 .and. my_BCs%BCs_label(2) == 1) then
-        call my_BCs%read_Dirichlet_BCs("C:\Users\user2319\source\repos\user2319pg10\RT_Lagrange\input\Dirichlet_BCs.dat")
-        call my_BCs%read_flux_inf("C:\Users\user2319\source\repos\user2319pg10\RT_Lagrange\input\flux_inflow.dat")
+        call my_BCs%read_Dirichlet_BCs(root//'_Dirichlet_BCs.dat')
+        call my_BCs%read_flux_inf(root//'_flux_inflow.dat')
     else if (my_BCs%BCs_label(1).eq.3) then
-        call my_BCs%read_Robin_BC_inflow("C:\Users\user2319\source\repos\user2319pg10\RT_Lagrange\input\Robin_BC_inflow.dat")
+        call my_BCs%read_Robin_BC_inflow(root//'_Robin_BC_inflow.dat')
     end if
-    call my_BCs%read_BCs("C:\Users\user2319\source\repos\user2319pg10\RT_Lagrange\input\BCs.dat")
+    call my_BCs%read_BCs(root//'_BCs.dat')
     if (my_BCs%BCs_label(1).eq.1 .and. my_BCs%BCs_label(2).eq.1) then
-        call my_BCs%read_Dirichlet_BCs("C:\Users\user2319\source\repos\user2319pg10\RT_Lagrange\input\Dirichlet_BCs.dat")
-        call my_BCs%read_flux_inf("C:\Users\user2319\source\repos\user2319pg10\RT_Lagrange\input\flux_inflow.dat")
+        call my_BCs%read_Dirichlet_BCs(root//'_Dirichlet_BCs.dat')
+        call my_BCs%read_flux_inf(root//'_flux_inflow.dat')
     else if (my_BCs%BCs_label(1).eq.3) then
-        call my_BCs%read_Robin_BC_inflow("C:\Users\user2319\source\repos\user2319pg10\RT_Lagrange\input\Robin_BC_inflow.dat")
+        call my_BCs%read_Robin_BC_inflow(root//'_Robin_BC_inflow.dat')
     end if
     call this%set_BCs(my_BCs)
  !> Uniform mesh
     !my_mesh=>my_homog_mesh
     allocate(mesh_1D_Euler_homog_c :: my_mesh)
-    call my_mesh%read_mesh("C:\Users\user2319\source\repos\user2319pg10\RT_Lagrange\input\Delta_x_homog.dat")
+    call my_mesh%read_mesh(root//'_discr_esp.dat')
     call this%set_spatial_discr(my_mesh)
     Num_cells=this%spatial_discr%Num_targets-this%spatial_discr%targets_flag !> Number of cells (chapuza)
 !> Uniform time discretisation
@@ -74,7 +75,7 @@ subroutine initialise_transport_1D_transient(this)
     call this%set_time_discr(my_time_discr)
 !****************************************************************************************************************************************************
 !> Transport properties
-    call my_props_tpt%read_props("C:\Users\user2319\source\repos\user2319pg10\RT_Lagrange\input\tpt_props.dat",this%spatial_discr)
+    call my_props_tpt%read_props(root//'_tpt_props.dat',this%spatial_discr)
     if (my_props_tpt%source_term_order.eq.0) then
         if (inf_norm_vec_real(my_props_tpt%source_term)<eps) then
             call this%BCs%set_cst_flux_boundary(my_props_tpt%flux(1))

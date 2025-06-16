@@ -323,17 +323,17 @@ module PDE_transient_m
             select type (time_discr=>this%time_discr)
             type is (time_discr_homog_c)
                 !E_mat%sub=E_mat%sub*time_discr%Delta_t
-                this%Y_mat%diag=this%ext_mat%diag*time_discr%Delta_t
+                this%Y_mat%diag=this%rech_mat%diag*time_discr%Delta_t
                 !E_mat%super=E_mat%super*time_discr%Delta_t
             type is (time_discr_heterog_c)
                 !E_mat%sub=E_mat%sub*time_discr%Delta_t(k)
-                this%Y_mat%diag=this%ext_mat%diag*time_discr%Delta_t(k)
+                this%Y_mat%diag=this%rech_mat%diag*time_discr%Delta_t(k)
                 !E_mat%super=E_mat%super*time_discr%Delta_t(k)
             end select
-            this%Y_mat%diag=this%ext_mat%diag/this%F_mat%diag
+            this%Y_mat%diag=this%rech_mat%diag/this%F_mat%diag
             !call this%X_mat%allocate_array(n)
-            !this%Y_mat%sub=(1d0-theta)*this%ext_mat%sub
-            !this%Y_mat%diag=1d0+(1d0-theta)*this%ext_mat%diag
+            !this%Y_mat%sub=(1d0-theta)*this%rech_mat%sub
+            !this%Y_mat%diag=1d0+(1d0-theta)*this%rech_mat%diag
             !this%Y_mat%super=(1d0-theta)*E_mat%super
         end subroutine
        
@@ -362,8 +362,8 @@ module PDE_transient_m
             this%Z_mat(1)=this%Z_mat(1)/this%F_mat%diag(1)
             this%Z_mat(2)=this%Z_mat(2)/this%F_mat%diag(this%spatial_discr%num_targets)
             !call this%X_mat%allocate_array(n)
-            !this%Y_mat%sub=(1d0-theta)*this%ext_mat%sub
-            !this%Y_mat%diag=1d0+(1d0-theta)*this%ext_mat%diag
+            !this%Y_mat%sub=(1d0-theta)*this%rech_mat%sub
+            !this%Y_mat%diag=1d0+(1d0-theta)*this%rech_mat%diag
             !this%Y_mat%super=(1d0-theta)*E_mat%super
         end subroutine
 

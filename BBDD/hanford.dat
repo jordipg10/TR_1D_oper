@@ -1,5 +1,5 @@
 'temperature points' 8 0. 25. 60. 100. 150. 200. 250. 300.
-'H2O' 3.0 0.0 18.0153	! name, Debye-Huckel radius parameter, charge, gram formula weight
+'H2O' 3.0 0.0 18.0153	! name, Debye-Huckel radius parameter, charge, gram formula weight [g/mol]
 'Ag+' 2.5 1.0 107.8682
 'Al+++' 9.0 3.0 26.9815
 'Am+++' 5.0 3.0 243.0000

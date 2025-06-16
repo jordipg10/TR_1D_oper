@@ -20,25 +20,24 @@ program main
     character(len=:), allocatable :: path_DB_trim !> path for database trimmed
     character(len=256) :: root !> root of problem to solve
     character(len=:), allocatable :: root_trim !> root of problem to solve trimmed
-    logical :: lump_flag !> lumping flag
 !****************************************************************************************************************************
 !> Name of path containing chemical and transport information
-    path_DB = 'C:\Users\user2319\OneDrive\Documentos\IDAEA\fortran\codigo\vscode\BBDD\' !> must be written by the user
+    path_DB = 'C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\BBDD\' !> must be written by the user
     path_DB_trim = trim(path_DB)
 !> Choose problem
-    problem=1
+    problem=4
     if (problem.eq.1) then
-        root='C:\Users\user2319\OneDrive\Documentos\IDAEA\fortran\codigo\vscode\examples\gypsum_eq\gypsum' !> name of path containing user input (must be written by the user)
+        root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\gypsum_eq\gypsum' !> name of path containing user input (must be written by the user)
     else if (problem.eq.2) then
-        root='C:\Users\user2319\OneDrive\Documentos\IDAEA\fortran\codigo\vscode\examples\gypsum_kin\gypsum' !> name of path containing user input (must be written by the user)
+        root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\gypsum_kin\gypsum' !> name of path containing user input (must be written by the user)
     else if (problem.eq.3) then
-        root='C:\Users\user2319\OneDrive\Documentos\IDAEA\fortran\codigo\vscode\examples\denit_JW\denit' !> name of path containing user input (must be written by the user)
+        root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\denit_JW\denit' !> name of path containing user input (must be written by the user)
     else if (problem.eq.4) then
-        root='C:\Users\user2319\OneDrive\Documentos\IDAEA\fortran\codigo\vscode\examples\cc_anh_kin\cc_anh' !> name of path containing user input (must be written by the user)
+        root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\denit_2reacts\denit' !> name of path containing user input (must be written by the user)
     else if (problem.eq.5) then
-        root='C:\Users\user2319\OneDrive\Documentos\IDAEA\fortran\codigo\vscode\examples\cc_anh_eq\cc_anh' !> name of path containing user input (must be written by the user)
+        root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\cc_anh_kin\cc_anh' !> name of path containing user input (must be written by the user)
     else if (problem.eq.6) then
-        root='C:\Users\user2319\OneDrive\Documentos\IDAEA\fortran\codigo\vscode\examples\intercambio\cc_anh' !> name of path containing user input (must be written by the user)
+        root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\cc_anh_eq\cc_anh' !> name of path containing user input (must be written by the user)
     else
         error stop "Problem not implemented yet"
     end if
@@ -58,7 +57,7 @@ program main
             call my_RT_trans%set_transport_trans(my_tpt_trans)
         !> we choose and set integration method for chemical reactions
             !! 1: Euler explicit, 2: Euler fully implicit, 3: Crank-Nicolson
-            int_method_chem=3
+            int_method_chem=2
             call my_RT_trans%set_int_method_chem_reacts(int_method_chem)
     else if (option_tpt.eq.1) then
     !> we set transport attribute in reactive transport object

@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Thu Jun 12 16:50:54 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Mon Jun 16 12:10:24 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE POTENCIA__genmod

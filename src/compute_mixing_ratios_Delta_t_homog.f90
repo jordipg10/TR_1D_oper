@@ -64,7 +64,7 @@ subroutine compute_mixing_ratios_Delta_t_homog(this,A_mat_lumped)
     !Delta_t=this%time_discr%get_Delta_t()
 !> We compute PDE arrays
     call this%compute_trans_mat_PDE()
-    call this%compute_ext_mat_PDE()
+    call this%compute_rech_mat_PDE()
     call this%compute_source_term_PDE()
     call this%compute_F_mat_PDE()
     !> We impose the boundary conditions

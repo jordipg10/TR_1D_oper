@@ -1,6 +1,6 @@
 !> PDE module
 !> $Tc_D+g=0$
-!> $g=Ec_ext+Bc_BD$
+!> $g=Ec_rech+Bc_BD$
 module PDE_m
     use BCs_m, only: BCs_t
     use metodos_sist_lin_m
@@ -12,10 +12,10 @@ module PDE_m
         class(spatial_discr_c), pointer :: spatial_discr !> spatial discretisation (polymorphic variable)
         type(BCs_t) :: BCs !> Boundary conditions
         type(tridiag_matrix_c) :: trans_mat !> Transition matrix (T) (tridiagonal)
-        type(diag_matrix_c) :: ext_mat !> External matrix (E) (diagonal)
+        type(diag_matrix_c) :: rech_mat !> Recharge matrix (E) (diagonal)
         real(kind=8), allocatable :: bd_mat(:) !> Boundary matrix (B) (dim<=2)
         real(kind=8), allocatable :: source_term_PDE(:) !> g
-        logical :: dimensionless
+        logical :: dimensionless !> Dimensionless PDE
         integer(kind=4) :: sol_method   !> 1: Numerical
                                         !> 2: Eigendecomposition
     contains
@@ -25,7 +25,7 @@ module PDE_m
         procedure, public :: set_sol_method
     !> Allocate
         procedure, public :: allocate_trans_mat
-        procedure, public :: allocate_ext_mat
+        procedure, public :: allocate_rech_mat
         procedure, public :: allocate_bd_mat
         procedure, public :: allocate_source_term_PDE
         procedure, public :: allocate_arrays_PDE_1D=>allocate_arrays_PDE_1D_stat
@@ -37,7 +37,7 @@ module PDE_m
         procedure(compute_trans_mat_PDE), public, deferred :: compute_trans_mat_PDE
         procedure(write_PDE_1D), public, deferred :: write_PDE_1D
         procedure, public :: compute_source_term_PDE
-        procedure, public :: compute_ext_mat_PDE
+        procedure, public :: compute_rech_mat_PDE
         procedure, public :: solve_PDE_1D
         procedure, public :: solve_write_PDE_1D
         procedure, public :: main_PDE
@@ -71,7 +71,7 @@ module PDE_m
             integer(kind=4), intent(in), optional :: k
         end subroutine
         
-        subroutine compute_ext_mat_PDE(this)
+        subroutine compute_rech_mat_PDE(this)
             import PDE_1D_c
             class(PDE_1D_c) :: this
             !integer(kind=4), intent(in), optional :: k
@@ -122,11 +122,11 @@ module PDE_m
             call this%trans_mat%allocate_array(this%spatial_discr%Num_targets)
         end subroutine
         
-        subroutine allocate_ext_mat(this)
+        subroutine allocate_rech_mat(this)
             implicit none
             class(PDE_1D_c) :: this
-            call this%ext_mat%allocate_array(this%spatial_discr%Num_targets)
-            this%ext_mat%diag=0d0 !> Initialize external matrix to zero
+            call this%rech_mat%allocate_array(this%spatial_discr%Num_targets)
+            this%rech_mat%diag=0d0 !> Initialize external matrix to zero
         end subroutine
         
         subroutine allocate_bd_mat(this)
@@ -162,7 +162,7 @@ module PDE_m
             implicit none
             class(PDE_1D_c) :: this
             call this%allocate_trans_mat()
-            call this%allocate_ext_mat()
+            call this%allocate_rech_mat()
             call this%allocate_bd_mat()
             call this%allocate_source_term_PDE()
         end subroutine

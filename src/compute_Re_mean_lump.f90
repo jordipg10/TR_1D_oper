@@ -17,20 +17,20 @@ subroutine compute_Re_mean_lump(this,c2nc_tilde,Delta_t,theta)
 !> Process
     !> Linear least squares
     c2nc=this%get_c2nc()
-    rk=this%get_rk()
-    rk_old=this%get_rk_old()
-    Sk_nc=this%get_Sk_nc()
+    ! rk=this%get_rk()
+    ! rk_old=this%get_rk_old()
+    ! Sk_nc=this%get_Sk_nc()
     A=matmul(this%solid_chemistry%reactive_zone%stoich_mat(:,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species+1:&
         this%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species),transpose(&
         this%solid_chemistry%reactive_zone%stoich_mat(:,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species+1:&
         this%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species)))
     b=matmul(this%solid_chemistry%reactive_zone%stoich_mat(:,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species+1:&
-        this%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species),c2nc-c2nc_tilde) - &
-        matmul(this%solid_chemistry%reactive_zone%stoich_mat(:,&
-        this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species+1:&
-        this%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species),matmul(transpose(Sk_nc(:,&
-        this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species+1:&
-        this%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species)),theta*rk+(1d0-theta)*rk_old))
+        this%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species),c2nc-c2nc_tilde)
+        ! matmul(this%solid_chemistry%reactive_zone%stoich_mat(:,&
+        ! this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species+1:&
+        ! this%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species),matmul(transpose(Sk_nc(:,&
+        ! this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species+1:&
+        ! this%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species)),theta*rk+(1d0-theta)*rk_old))
     if (inf_norm_vec_real(b)<this%solid_chemistry%reactive_zone%CV_params%zero) then
         R_eq=0d0
     else

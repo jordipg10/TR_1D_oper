@@ -906,28 +906,14 @@ module chemistry_Lagr_m
             integer(kind=4), allocatable :: swap(:),aux_swap(:) !> indices of species to swap
             real(kind=8), allocatable :: rk(:) !> NO NECESARIA
             type(solid_chemistry_c), target :: aux_solid_chem !> auxiliary solid chemistry object
-            
-            allocate(swap(2),aux_swap(2)) !> chapuza
-            !allocate(rk(2)) !> chapuza
-            
+            allocate(swap(2),aux_swap(2)) !> chapuza        
             this%target_waters(tar_wat_ind)=water_types(wtype)
-            ! if (counter_swap==0) then
-            !     call this%target_waters(tar_wat_ind)%set_aq_phase(this%chem_syst%aq_phase)
-            !     !call this%target_waters(tar_wat_ind)%set_indices_aq_species_aq_chem()
-            ! end if
             if (istype>0) then
                 this%target_solids(tar_wat_ind)=init_sol_types(istype)
-                !> chapuza intercambio
-                !if (this%reactive_zones(ngrz+nsrz*igzn+1)%cat_exch_zone%num_surf_compl>0) then
-                !    call this%target_solids(tar_wat_ind)%set_reactive_zone(this%reactive_zones(ngrz+nsrz*igzn+1))
-                !else
-                !    call this%target_solids(tar_wat_ind)%set_reactive_zone(this%reactive_zones(ngrz+nsrz*igzn+istype))
-                !end if
                 if (igzn>0) then
-                    call this%target_solids(tar_wat_ind)%set_reactive_zone(this%reactive_zones(ngrz+nsrz+istype))
-                    !print *, init_gas_types(igzn)%activities
+                    call this%target_solids(tar_wat_ind)%set_reactive_zone(this%reactive_zones(ngrz+istype))
                     this%target_gases(tar_wat_ind)=init_gas_types(igzn)
-                    call this%target_gases(tar_wat_ind)%set_reactive_zone(this%reactive_zones(ngrz+nsrz+istype))
+                    call this%target_gases(tar_wat_ind)%set_reactive_zone(this%reactive_zones(ngrz+istype))
                     call this%target_waters(tar_wat_ind)%set_gas_chemistry(this%target_gases(tar_wat_ind))
                 else
                     call this%target_solids(tar_wat_ind)%set_reactive_zone(this%reactive_zones(ngrz+istype))

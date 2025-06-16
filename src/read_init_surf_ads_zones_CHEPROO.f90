@@ -46,11 +46,11 @@ use chemistry_Lagr_m, only: chemistry_c, solid_chemistry_c, reactive_zone_c, &
         call init_cat_exch_zones(idtype)%allocate_log_act_coeffs_solid_chem()
         valences=this%chem_syst%aq_phase%get_valences()
         call init_cat_exch_zones(idtype)%reactive_zone%cat_exch_zone%compute_log_act_coeffs_ads_cats(valences(&
-            init_cat_exch_zones(idtype)%reactive_zone%cat_exch_zone%exch_cat_indices),CEC,init_cat_exch_zones(idtype)%log_act_coeffs(&
-            2:init_cat_exch_zones(idtype)%reactive_zone%cat_exch_zone%num_surf_compl))
+            init_cat_exch_zones(idtype)%reactive_zone%cat_exch_zone%exch_cat_indices),CEC,&
+            init_cat_exch_zones(idtype)%log_act_coeffs(2:init_cat_exch_zones(idtype)%reactive_zone%cat_exch_zone%num_surf_compl))
         call init_cat_exch_zones(idtype)%allocate_activities()
         call init_cat_exch_zones(idtype)%set_conc_free_site() !> 'x-'
-        !call init_cat_exch_zones(idtype)%compute_activities_solids() !> 
+        call init_cat_exch_zones(idtype)%compute_num_solids_solid_chem() !> 
         !init_cat_exch_zones(idtype)%activities(1)=1d0-SUM(init_cat_exch_zones(idtype)%activities(2:init_cat_exch_zones(idtype)%reactive_zone%cat_exch_zone%num_surf_compl))
         num_ads_zones=num_ads_zones+1
         if (num_ads_zones==ndtype) exit

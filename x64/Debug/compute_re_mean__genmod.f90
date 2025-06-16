@@ -1,10 +1,9 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Fri Jun 13 19:58:39 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Mon Jun 16 12:10:25 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPUTE_RE_MEAN__genmod
           INTERFACE 
-            SUBROUTINE COMPUTE_RE_MEAN(THIS,C2NC_TILDE,DELTA_T,THETA,   &
-     &RK_TILDE)
+            SUBROUTINE COMPUTE_RE_MEAN(THIS,C2NC_TILDE,DELTA_T,THETA)
               USE VECTORS_M
               USE MATRICES_M
               USE GAS_CHEMISTRY_M
@@ -45,7 +44,6 @@
               REAL(KIND=8), INTENT(IN) :: C2NC_TILDE(:)
               REAL(KIND=8), INTENT(IN) :: DELTA_T
               REAL(KIND=8), INTENT(IN) :: THETA
-              REAL(KIND=8), INTENT(IN) :: RK_TILDE(:)
             END SUBROUTINE COMPUTE_RE_MEAN
           END INTERFACE 
         END MODULE COMPUTE_RE_MEAN__genmod

@@ -10,9 +10,9 @@ subroutine compute_source_term_PDE(this)
     !this%source_term_PDE=0d0 !> $g=0$ chapuza
     select type (this)
     class is (diffusion_1D_c)
-        this%source_term_PDE=this%ext_mat%diag*this%conc_ext
+        this%source_term_PDE=this%rech_mat%diag*this%conc_ext
     class is (diffusion_1D_transient_c)
-        this%source_term_PDE=this%ext_mat%diag*this%conc_ext
+        this%source_term_PDE=this%rech_mat%diag*this%conc_ext
     end select
     this%source_term_PDE(1)=this%bd_mat(1)*this%BCs%conc_inf
     this%source_term_PDE(this%spatial_discr%Num_targets)=this%bd_mat(2)*this%BCs%conc_out
