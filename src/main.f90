@@ -77,7 +77,7 @@ program main
              my_RT_trans%transport%mixing_waters_indices,my_RT_trans%transport%mixing_waters_indices_dom,&
              my_RT_trans%transport%time_discr,my_RT_trans%int_method_chem_reacts)
     else if (my_chem%act_coeffs_model==0 .and. my_chem%lump_flag .eqv. .false.) then !> ideal without lumping
-        call my_chem%solve_reactive_mixing_ideal(root_trim,my_RT_trans%transport%mixing_ratios_conc,&
+        call my_chem%solve_reactive_mixing_ideal_cons(root_trim,my_RT_trans%transport%mixing_ratios_conc,&
             my_RT_trans%transport%mixing_ratios_Rk_init,my_RT_trans%transport%mixing_waters_indices,&
             my_RT_trans%transport%mixing_waters_indices_dom,&
             my_RT_trans%transport%time_discr,my_RT_trans%int_method_chem_reacts,my_RT_trans%transport%mixing_ratios_Rk)

@@ -85,7 +85,7 @@ module chemistry_Lagr_m
         procedure, public :: write_chemistry
     !> Solve
         procedure, public :: solve_reactive_mixing_lump !> main solver
-        procedure, public :: solve_reactive_mixing_ideal !> main solver
+        procedure, public :: solve_reactive_mixing_ideal_cons !> main solver
         procedure, public :: solve_reactive_mixing !> main solver
         procedure, public :: solve_reactive_mixing_ideal_lump !> main solver
         procedure, public :: solve_reactive_mixing_bis !> main solver
@@ -146,7 +146,7 @@ module chemistry_Lagr_m
             integer(kind=4), intent(in) :: int_method_chem_reacts !> integration method for chemical reactions
         end subroutine
         
-        subroutine solve_reactive_mixing_ideal(this,root,mixing_ratios_conc,mixing_ratios_Rk_init,mixing_waters_indices,&
+        subroutine solve_reactive_mixing_ideal_cons(this,root,mixing_ratios_conc,mixing_ratios_Rk_init,mixing_waters_indices,&
                 mixing_waters_indices_dom,&
             time_discr,int_method_chem_reacts,mixing_ratios_Rk)
             import chemistry_c
