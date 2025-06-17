@@ -58,7 +58,7 @@ program main
             call my_tpt_trans%allocate_arrays_PDE_1D()
             call my_tpt_trans%allocate_conc()
         !> we compute transport arrays, including mixing ratios, and we impose BCs
-            call my_tpt_trans%compute_mixing_ratios_Delta_t_homog()
+            call my_tpt_trans%compute_mixing_ratios_Delta_t_homog() !> missing the case of heterogenous time steps
         !> we set transport attribute in reactive transport object
             call my_RT_trans%set_transport_trans(my_tpt_trans)
         !> we choose and set integration method for chemical reactions
