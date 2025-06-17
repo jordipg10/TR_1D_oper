@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Mon Jun 16 12:10:24 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Tue Jun 17 13:12:02 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE NEWTON_EI_RK_EQ_KIN_AQ_ANAL_IDEAL_OPT2__genmod

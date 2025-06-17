@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Mon Jun 16 12:10:25 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Tue Jun 17 13:13:01 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPUTE_R_EQ_LUMP__genmod
