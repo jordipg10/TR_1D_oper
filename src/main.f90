@@ -22,7 +22,6 @@ program main
     character(len=:), allocatable :: root_trim !> root of problem to solve trimmed
 !****************************************************************************************************************************
 !> Name of path containing chemical and transport information
-    !path_DB = 'C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\BBDD\' !> must be written by the user
     write(*,*) "Path to databases?"
     read(*,*) path_DB !> must be written by the user
     path_DB_trim = trim(path_DB)
@@ -30,27 +29,11 @@ program main
     !problem=4
     write(*,*) "Root of problem to be solved?"
     read(*,*) root !> must be written by the user
-    !if (problem.eq.1) then
-    !    root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\gypsum_eq\gypsum' !> name of path containing user input (must be written by the user)
-    !else if (problem.eq.2) then
-    !    root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\gypsum_kin\gypsum' !> name of path containing user input (must be written by the user)
-    !else if (problem.eq.3) then
-    !    root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\denit_JW\denit' !> name of path containing user input (must be written by the user)
-    !else if (problem.eq.4) then
-    !    root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\denit_2reacts\denit' !> name of path containing user input (must be written by the user)
-    !else if (problem.eq.5) then
-    !    root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\cc_anh_kin\cc_anh' !> name of path containing user input (must be written by the user)
-    !else if (problem.eq.6) then
-    !    root='C:\Users\user2319\source\repos\jordipg10\TR_1D_oper\examples\cc_anh_eq\cc_anh' !> name of path containing user input (must be written by the user)
-    !else
-    !    error stop "Problem not implemented yet"
-    !end if
     root_trim=trim(root)
-!> Initialise transport (este bloque podr�a estar dentro de 1 subrutina)
-    !option_tpt=0 !> 0: compute lambdas, 1: read lambdas
+!> Initialise transport
     write(*,*) "Choose transport option (0: compute lambdas, 1: read lambdas):"
     read(*,*) option_tpt !> must be written by the user
-    if (option_tpt.eq.0) then
+    if (option_tpt.eq.0) then !> compute lambdas
     !> we read transport data, BCs and discretisations
         !> in the explicit case, we also compute stability parameters
             call my_tpt_trans%initialise_transport_1D_transient_RT(root_trim)
@@ -65,9 +48,8 @@ program main
             !! 1: Euler explicit, 2: Euler fully implicit, 3: Crank-Nicolson
             write(*,*) "Choose integration method for chemical reactions (1: Euler explicit, 2: Euler fully implicit, 3:Crank-Nicolson):"
             read(*,*) int_method_chem !> must be written by the user
-            !int_method_chem=2
             call my_RT_trans%set_int_method_chem_reacts(int_method_chem)
-    else if (option_tpt.eq.1) then
+    else if (option_tpt.eq.1) then !> read lambdas
     !> we set transport attribute in reactive transport object
         call my_RT_trans%set_transport_trans(my_tpt_trans) !> esto es un create en realidad
     !> we read temporal discretisation
