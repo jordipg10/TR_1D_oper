@@ -529,7 +529,6 @@ subroutine modify_mix_ratios_Rk(this,mix_ratio_Rk_init,c_tilde,Delta_t,rk_tilde,
                 !R_tilde_up=R_tilde_up*(1d0-Delta_t*alpha*mix_ratio_Rk_new)/(1d0-Delta_t*mix_ratio_Rk_new) !> we reduce contributions of reaction amounts in this target (chapuza)
                 R_tilde=R_tilde*(1d0-Delta_t*alpha*mix_ratio_Rk_new)/(1d0-Delta_t*mix_ratio_Rk_new) !> we reduce contributions of reaction amounts in this target (chapuza)
                 mix_ratio_Rk_new=mix_ratio_Rk_new*alpha !> we increase mixing ratio in this target (chapuza)
-                print *, mix_ratio_Rk_new*Delta_t
                 if (Delta_t*mix_ratio_Rk_new>1d0) then
                     !> chapuza
                     mix_ratio_Rk_new=1d0/Delta_t

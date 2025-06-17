@@ -37,10 +37,6 @@ subroutine compute_drk_dc_mineral(this,conc_sp,act_sp,log_act_coeffs_sp,act_cat,
                 saturation**this%params%theta(j))-1d0)**(this%params%eta(j)-1d0) !> sum of parallel reactions
         end do
         drk_dc(l)=sum*(-this%stoichiometry(l)) !> gradient of reaction rate
-        !drk_dc(l)=sum*(-this%stoichiometry(l))/conc(l) !> gradient of reaction rate
-        !if (abs(drk_dc(l))<1d-12) then
-        !    print *, l, drk_dc(l)
-        !end if
     end do
 !> Flag for dissolution or precipitation
     if (saturation<1d0) then !> dissolution
@@ -48,6 +44,5 @@ subroutine compute_drk_dc_mineral(this,conc_sp,act_sp,log_act_coeffs_sp,act_cat,
     else if (saturation>1d0) then !> precipitation
         zeta=1
     end if
-    !drk_dc=drk_dc*zeta !> multiply by flag
     drk_dc=drk_dc*react_surf*exp(-this%params%act_energy/(R*temp)) !> multiply by reactive surface and Arrhenius
 end subroutine

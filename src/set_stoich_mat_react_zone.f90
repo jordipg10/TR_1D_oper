@@ -18,11 +18,9 @@ subroutine set_stoich_mat_react_zone(this)
         allocate(this%stoich_mat(this%speciation_alg%num_eq_reactions,this%speciation_alg%num_species))
         this%stoich_mat=0d0 !> initialisation
         do
-            !print *, this%chem_syst%species(i)%name
             if (this%chem_syst%species(i)%name==this%chem_syst%eq_reacts(this%ind_eq_reacts(j))%species(k)%name) then
                 flag=.true. !> species is involved in reactive zone
                 this%stoich_mat(j,l)=this%chem_syst%eq_reacts(this%ind_eq_reacts(j))%stoichiometry(k)
-                print *, this%chem_syst%species(i)%name
                 if (j<this%speciation_alg%num_eq_reactions) then
                     j=j+1 
                     k=1

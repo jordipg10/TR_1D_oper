@@ -73,8 +73,6 @@ subroutine Newton_EI_rk_kin_aq_anal_ideal_opt2(this,c_tilde,rk_old,Rk_tilde,mix_
         !> We compute the ponderated average of kinetic reaction rates
             rk_avg=theta*rk+(1d0-theta)*rk_old
         !> Newton residual
-            !print *, this%solid_chemistry%reactive_zone%U_SkT_prod
-            !fk=conc_nc-c_tilde-Rk_tilde_up-Rk_tilde_down-Delta_t*mix_ratio_Rk_new*matmul(this%solid_chemistry%reactive_zone%U_SkT_prod,rk_avg)
             fk=conc_nc-c_tilde-Rk_tilde-Delta_t*mix_ratio_Rk_new*matmul(this%solid_chemistry%reactive_zone%U_SkT_prod,rk_avg)
         !> Check convergence
             if (inf_norm_vec_real(fk)<this%solid_chemistry%reactive_zone%CV_params%abs_tol) then !> CV reached
@@ -92,15 +90,6 @@ subroutine Newton_EI_rk_kin_aq_anal_ideal_opt2(this,c_tilde,rk_old,Rk_tilde,mix_
                     call this%update_conc_nc(conc_nc,Delta_c,zero_flag,sp_ind) !> updates conc_nc and Delta_c
                     if (zero_flag) then
                         return
-                        !Rk_tilde_down=Rk_tilde_down*(1d0-Delta_t*(y+alpha*mix_ratio_Rk_new))/(1d0-Delta_t*(y+mix_ratio_Rk_new)) !> we reduce contributions of reaction amounts in this target (chapuza)
-                        !mix_ratio_Rk_new=mix_ratio_Rk_new*alpha !> we increase mixing ratio in this target (chapuza)
-                        !print *, mix_ratio_Rk_new*Delta_t
-                        !if (Delta_t*(y+mix_ratio_Rk_new)>1d0) then
-                        !    error stop
-                        !end if
-                        !conc_nc=conc_nc_old !> we restore old variable activity species concentrations
-                        !call this%set_conc_var_act_species(conc_nc) !> we update variable activity species concentrations
-                        !niter=0 !> we reset number of iterations
                     end if
                     !call this%compute_molalities() !> we change units to compute activities
                     call this%set_act_aq_species() !> we update aqueous activities (chapuza)

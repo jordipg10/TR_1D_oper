@@ -68,7 +68,6 @@ module spatial_discr_1D_m
             character(len=*), intent(in) :: filename
             open(unit=1,file=filename,status='old',action='read')
             read(1,*) this%scheme
-            print *, this%scheme
             read(1,*) this%targets_flag
             read(1,*) this%measure
             read(1,*) this%Num_targets

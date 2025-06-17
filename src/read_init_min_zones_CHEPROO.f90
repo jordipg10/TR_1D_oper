@@ -100,9 +100,6 @@ subroutine read_init_min_zones_CHEPROO(this,unit,init_min_zones,nmrz,surf_chem)
                                 call init_min_zones(imtype)%allocate_var_act_species_indices(num_mins_var_eq+num_mins_var_kin)
                                 call init_min_zones(imtype)%allocate_cst_act_species_indices(num_mins_cst_eq+num_mins_cst_kin)
                                 call init_min_zones(imtype)%set_indices_solids()
-                                ! print *, this%mineral_zones(imtype)%num_minerals
-                                ! print *, this%mineral_zones(imtype)%num_minerals_kin
-                                ! print *, this%mineral_zones(imtype)%num_minerals_eq
                                 exit
                             else
                                 !> We check if mineral exists in the chemical system

@@ -170,7 +170,7 @@ subroutine read_PHREEQC_DB_opc2(this,unit,filename)
                     str_trim=trim(str)
                     !print *, str_trim
                     if (index(str_trim,'#')==1 .or. index(str_trim,'#')==2) then
-                        print *, str_trim
+                        !print *, str_trim
                         cycle
                     else if (index(str_trim,this%minerals(min_counter)%name)/=0 .or. &
                         index(str_trim,this%gas_phase%gases(gas_counter)%name)/=0) then

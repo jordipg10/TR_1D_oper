@@ -4,17 +4,17 @@
 !> It assumes there are both equilibrium and kinetic reactions
 !> It uses Euler explicit and applies lumping to the kinetic mixing ratios
 !> It reads the concentrations after conservative transport in a file, and writes the concentrations after reactive mixing in a different file
-subroutine interfaz_comps_arch(this,num_comps,file_in,unit_in,Delta_t,file_out,unit_out)
+subroutine interfaz_comps_arch(this,num_comps,file_in,Delta_t,file_out)
     use chemistry_Lagr_m, only: chemistry_c
     implicit none
 !> Arguments
     class(chemistry_c) :: this !> chemistry object
     integer(kind=4), intent(in) :: num_comps !> number of components
     character(len=*), intent(in) :: file_in !> name of file containing component concentrations after solving conservative transport
-    integer(kind=4), intent(in) :: unit_in !> file unit
+    !integer(kind=4), intent(in) :: unit_in !> file unit
     real(kind=8), intent(in) :: Delta_t !> time step
     character(len=*), intent(in) :: file_out !> name of file containing component concentrations after solving conservative transport
-    integer(kind=4), intent(in) :: unit_out !> file unit
+    !integer(kind=4), intent(in) :: unit_out !> file unit
 !> Variables
     integer(kind=4) :: i,j !> loop variables
     real(kind=8), allocatable :: u_tilde(:,:) !> concentration components after solving conservative transport
@@ -25,22 +25,22 @@ subroutine interfaz_comps_arch(this,num_comps,file_in,unit_in,Delta_t,file_out,u
     allocate(u_react(num_comps))
 !> Process
     !> We read the component concentrations after solving conservative transport
-    open(unit=unit_in,file=file_in,status='old',action='read')
+    open(unit=1,file=file_in,status='old',action='read')
     do i=1,num_comps
-        read(unit_in,*) (u_tilde(i,j), j=1,this%num_target_waters_dom)
+        read(1,*) (u_tilde(i,j), j=1,this%num_target_waters_dom)
     end do
-    close(unit_in)
+    close(1)
     !> We solve reactive mixing for each target water
     do j=1,this%num_target_waters_dom
         call this%target_waters(this%dom_tar_wat_indices(j))%reaction_iteration_EE_eq_kin_lump(Delta_t,u_react) !> chemical part of components
         u_new(:,j)=u_tilde(:,j)+u_react !> we sum transport and reaction parts
     end do
     !> We write the component concentrations after solving reactive mixing
-    open(unit=unit_out,file=file_out,status='unknown',form='formatted')
+    open(unit=2,file=file_out,status='unknown',form='formatted')
     do i=1,num_comps
-        write(unit_out,*) (u_new(i,j), j=1,this%num_target_waters_dom)
+        write(2,*) (u_new(i,j), j=1,this%num_target_waters_dom)
     end do
-    close(unit_out)
+    close(2)
 !> Post-process
     deallocate(u_tilde,u_react,u_new)
 end subroutine

@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Jun 17 13:12:57 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Tue Jun 17 15:01:51 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPUTE_SOURCE_TERM_PDE__genmod

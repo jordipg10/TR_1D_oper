@@ -37,14 +37,12 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
     read(unit,*) nwtype
     
     if (size(init_cat_exch_zones)==1) then
-        print *, init_cat_exch_zones(1)%reactive_zone%num_non_flowing_species
         allocate(cat_exch_zones(nwtype)) !> we allocate cat exch zones
         do i=1,nwtype
             call cat_exch_zones(i)%assign_solid_chemistry(init_cat_exch_zones(1)) !> chapuza
         end do
         deallocate(init_cat_exch_zones)
         allocate(init_cat_exch_zones(nwtype))
-        print *, cat_exch_zones(1)%reactive_zone%num_non_flowing_species
     end if
         
     allocate(wat_types(nwtype),react_zones(nwtype),solid_chems(nwtype),min_zones(nwtype))

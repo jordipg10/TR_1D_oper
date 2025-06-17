@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Jun 17 13:12:23 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Tue Jun 17 16:20:42 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE INTERFAZ_COMPS_VARS__genmod

@@ -171,7 +171,7 @@ subroutine read_PHREEQC_DB_opc1(this,unit,filename)
                     str_trim=trim(str)
                     !print *, str_trim
                     if (index(str_trim,'#')==1 .or. index(str_trim,'#')==2) then
-                        print *, str_trim
+                        !print *, str_trim
                         cycle
                     else if (index(str_trim,'=')/=0) then
                         if (eq_react%num_species>1) then

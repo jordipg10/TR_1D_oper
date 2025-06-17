@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Jun 17 13:12:30 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Tue Jun 17 15:01:44 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE REARRANGE_SPECIES__genmod

@@ -86,7 +86,7 @@ module chemistry_Lagr_m
     !> Solve
         procedure, public :: solve_reactive_mixing_lump !> main solver
         procedure, public :: solve_reactive_mixing_ideal_cons !> main solver
-        procedure, public :: solve_reactive_mixing !> main solver
+        procedure, public :: solve_reactive_mixing_cons !> main solver
         procedure, public :: solve_reactive_mixing_ideal_lump !> main solver
         procedure, public :: solve_reactive_mixing_bis !> main solver
         procedure, public :: solve_reactive_mixing_BCs_dep_t !> main solver
@@ -109,7 +109,7 @@ module chemistry_Lagr_m
     
     interface
         
-        subroutine solve_reactive_mixing_bis(this,root,unit,mixing_ratios,mixing_waters_indices,F_mat,time_discr,&
+        subroutine solve_reactive_mixing_bis(this,root,mixing_ratios,mixing_waters_indices,F_mat,time_discr,&
             int_method_chem_reacts)
             import chemistry_c
             import real_array_c
@@ -119,7 +119,7 @@ module chemistry_Lagr_m
             implicit none
             class(chemistry_c) :: this
             character(len=*), intent(in) :: root
-            integer(kind=4), intent(in) :: unit
+            !integer(kind=4), intent(in) :: unit
             class(real_array_c), intent(in) :: mixing_ratios
             class(int_array_c), intent(in) :: mixing_waters_indices
             !class(diag_matrix_c), intent(in) :: F_mat !> storage matrix
@@ -128,7 +128,7 @@ module chemistry_Lagr_m
             integer(kind=4), intent(in) :: int_method_chem_reacts !> integration method for chemical reactions
         end subroutine
         
-        subroutine solve_reactive_mixing_lump(this,root,mixing_ratios,mixing_waters_indices,time_discr,&
+        subroutine solve_reactive_mixing_lump(this,root,mixing_ratios,mixing_waters_indices,mixing_waters_indices_dom,time_discr,&
                 int_method_chem_reacts)
             import chemistry_c
             import real_array_c
@@ -140,6 +140,7 @@ module chemistry_Lagr_m
             !integer(kind=4), intent(in) :: unit
             class(real_array_c), intent(in) :: mixing_ratios
             class(int_array_c), intent(in) :: mixing_waters_indices
+            class(int_array_c), intent(in) :: mixing_waters_indices_dom
             !class(diag_matrix_c), intent(in) :: F_mat !> storage matrix
             !real(kind=8), intent(in) :: F_mat(:) !> storage matrix (diagonal)
             class(time_discr_c), intent(in) :: time_discr !> time discretisation object
@@ -169,8 +170,8 @@ module chemistry_Lagr_m
             class(real_array_c), intent(inout) :: mixing_ratios_Rk
         end subroutine
 
-        subroutine solve_reactive_mixing(this,root,unit,mixing_ratios_conc,mixing_ratios_Rk,mixing_waters_indices,time_discr,&
-            int_method_chem_reacts)
+        subroutine solve_reactive_mixing_cons(this,root,mixing_ratios_conc,mixing_ratios_Rk_init,mixing_waters_indices,mixing_waters_indices_dom,time_discr,&
+            int_method_chem_reacts,mixing_ratios_Rk)
             import chemistry_c
             import real_array_c
             import int_array_c
@@ -179,14 +180,16 @@ module chemistry_Lagr_m
             implicit none
             class(chemistry_c) :: this
             character(len=*), intent(in) :: root
-            integer(kind=4), intent(in) :: unit
+            !integer(kind=4), intent(in) :: unit
             class(real_array_c), intent(in) :: mixing_ratios_conc
-            class(real_array_c), intent(in) :: mixing_ratios_Rk
+            class(real_array_c), intent(in) :: mixing_ratios_Rk_init
             class(int_array_c), intent(in) :: mixing_waters_indices
+            class(int_array_c), intent(in) :: mixing_waters_indices_dom
             !class(diag_matrix_c), intent(in) :: F_mat !> storage matrix
             !real(kind=8), intent(in) :: F_mat(:) !> storage matrix (diagonal)
             class(time_discr_c), intent(in) :: time_discr !> time discretisation object
             integer(kind=4), intent(in) :: int_method_chem_reacts !> integration method for chemical reactions
+            class(real_array_c), intent(inout) :: mixing_ratios_Rk
         end subroutine
             
         subroutine solve_reactive_mixing_ideal_lump(this,root,mixing_ratios,mixing_waters_indices,mixing_waters_indices_dom,&
@@ -539,15 +542,15 @@ module chemistry_Lagr_m
             integer(kind=4), intent(out) :: ngrz !> number of gas reactive zones
         end subroutine
         
-        subroutine interfaz_comps_arch(this,num_comps,file_in,unit_in,Delta_t,file_out,unit_out)
+        subroutine interfaz_comps_arch(this,num_comps,file_in,Delta_t,file_out)
             import chemistry_c
             class(chemistry_c) :: this
             integer(kind=4), intent(in) :: num_comps !> number of components
             character(len=*), intent(in) :: file_in !> name of file containing component concentrations after solving conservative transport
-            integer(kind=4), intent(in) :: unit_in !> file unit
+            !integer(kind=4), intent(in) :: unit_in !> file unit
             real(kind=8), intent(in) :: Delta_t !> time step
             character(len=*), intent(in) :: file_out !> name of file containing component concentrations after solving conservative transport
-            integer(kind=4), intent(in) :: unit_out !> file unit
+            !integer(kind=4), intent(in) :: unit_out !> file unit
         end subroutine
         
             subroutine interfaz_comps_vars(this,u_tilde,Delta_t,u_new)
@@ -949,15 +952,8 @@ module chemistry_Lagr_m
                 if (flag_Se.eqv..true.) then !> we swap indices of species
                     aux_swap(1)=this%target_waters(tar_wat_ind)%ind_var_act_species(swap(1))
                     aux_swap(2)=this%target_waters(tar_wat_ind)%ind_var_act_species(swap(2))
-                    !     this%target_waters(tar_wat_ind)%solid_chemistry%reactive_zone%speciation_alg%num_prim_species)
-                    !print *, this%target_waters(tar_wat_ind)%ind_var_act_species
-                    !print *, this%target_waters(tar_wat_ind)%ind_sec_species
                     this%target_waters(tar_wat_ind)%ind_var_act_species(swap(1))=aux_swap(2)
                     this%target_waters(tar_wat_ind)%ind_var_act_species(swap(2))=aux_swap(1)
-                    ! this%target_waters(tar_wat_ind)%ind_prim_species(swap(1))=aux_swap(2) !> index of primary species
-                    ! this%target_waters(tar_wat_ind)%ind_sec_species(swap(2)-&
-                    !     this%target_waters(tar_wat_ind)%solid_chemistry%reactive_zone%speciation_alg%num_prim_species)=&
-                    !     aux_swap(1) !> index of secondary species
                 end if
             else if (aux_istype>0 .or. aux_igzn>0) then !> indices remain the same because reactive zone is the same
                 this%target_waters(tar_wat_ind)%ind_var_act_species=this%target_waters(tar_wat_ind-1)%ind_var_act_species

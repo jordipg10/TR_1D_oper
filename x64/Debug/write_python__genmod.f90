@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Jun 17 13:12:09 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Tue Jun 17 16:20:47 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE WRITE_PYTHON__genmod

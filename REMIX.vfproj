@@ -381,7 +381,7 @@
 		<File RelativePath=".\src\solve_PDE_EI_Delta_t_homog.f90"/>
 		<File RelativePath=".\src\solve_PDE_EI_Delta_t_homog_MRMT.f90"/>
 		<File RelativePath=".\src\solve_PDE_RKF45.f90"/>
-		<File RelativePath=".\src\solve_reactive_mixing.f90"/>
+		<File RelativePath=".\src\solve_reactive_mixing_cons.f90"/>
 		<File RelativePath=".\src\solve_reactive_mixing_BCs_dep_t.f90"/>
 		<File RelativePath=".\src\solve_reactive_mixing_bis.f90"/>
 		<File RelativePath=".\src\solve_reactive_mixing_EE_tpt.f90"/>

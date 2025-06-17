@@ -59,11 +59,6 @@ subroutine read_kinetics_DB(this,path,unit)
                     end do
                 end do
                 call this%min_kin_reacts(mineral_ind)%set_mineral_params(min_params)
-                !call min_kin_reacts(mineral_ind)%set_mineral_params(min_params)
-                !call this%kin_reacts(this%num_lin_kin_reacts+this%num_redox_kin_reacts+i)%set_kin_reaction(this%min_kin_reacts(i))
-                !call this%kin_reacts(this%num_lin_kin_reacts+this%num_redox_kin_reacts+i)%kin_reaction(min_kin_reacts(i))
-                !print *, this%kin_reacts(this%num_lin_kin_reacts+this%num_redox_kin_reacts+i)%kin_reaction%name
-                !print *, this%kin_reacts(this%num_lin_kin_reacts+this%num_redox_kin_reacts+i)%kin_reaction%react_type
                 if (i<this%num_minerals_kin) then
                     i=i+1
                 else
