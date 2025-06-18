@@ -104,10 +104,10 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
             exit
         else if (label=='INITIAL AND BOUNDARY WATER TYPES') then
             if (size(init_gas_zones)==1) then !> Chapuza
-                call this%read_init_bd_rech_wat_types_CHEPROO(unit_loc_chem_file,ind_wat_type,num_aq_prim_array,num_cstr_array,&
+                call this%read_init_bd_wat_types_CHEPROO(unit_loc_chem_file,ind_wat_type,num_aq_prim_array,num_cstr_array,&
                 init_cat_exch_zones,wat_types,init_gas_zones(1))
             else
-                call this%read_init_bd_rech_wat_types_CHEPROO(unit_loc_chem_file,ind_wat_type,num_aq_prim_array,num_cstr_array,&
+                call this%read_init_bd_wat_types_CHEPROO(unit_loc_chem_file,ind_wat_type,num_aq_prim_array,num_cstr_array,&
                 init_cat_exch_zones,wat_types)
             end if
         else if (label=='INITIAL MINERAL ZONES') then

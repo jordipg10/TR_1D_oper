@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Jun 17 15:13:16 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Wed Jun 18 16:57:43 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE MIXING_ITER_COMP_EXCH_IDEAL__genmod

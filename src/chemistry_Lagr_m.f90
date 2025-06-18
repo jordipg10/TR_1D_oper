@@ -19,17 +19,23 @@ module chemistry_Lagr_m
         integer(kind=4) :: rk_down_opt !> estimation of downstream waters rk, either 1, 2 or 3 (see documentation for more details)
         integer(kind=4) :: rk_avg_opt !> average rk, either 1 (concentrations) or 2 (reaction rates) (see documentation for more details)
         type(chem_system_c) :: chem_syst !> chemical system object
+        integer(kind=4) :: num_wat_types=0 !> number of water types
         integer(kind=4) :: num_target_waters=0 !> number of target waters
-        type(aqueous_chemistry_c), allocatable :: target_waters(:) !> target waters
+        type(aqueous_chemistry_c), allocatable :: wat_types(:) !> initial water types
+        type(aqueous_chemistry_c), allocatable :: target_waters(:) !> target waters initial
         type(aqueous_chemistry_c), allocatable :: target_waters_init(:) !> target waters initial
         integer(kind=4) :: num_target_waters_dom=0 !> number of initial target waters
         integer(kind=4) :: num_ext_waters=0 !> number of external waters
+        integer(kind=4) :: num_rech_waters=0 !> number of recharge waters
         integer(kind=4) :: num_bd_waters=0 !> number of boundary waters
         integer(kind=4), allocatable :: ext_waters_indices(:) !> external waters indices
+        integer(kind=4), allocatable :: rech_waters_indices(:) !> recharge waters indices
         integer(kind=4), allocatable :: bd_waters_indices(:) !> boundary waters indices
         integer(kind=4), allocatable :: dom_tar_wat_indices(:) !> domain target waters indices
         integer(kind=4) :: num_target_solids=0 !> number of target solids (<= num_target_waters)
         integer(kind=4) :: num_target_solids_dom=0 !> number of target solids init (<= num_target_waters_dom)
+        integer(kind=4) :: num_materials=0 !> number of materials (<= num_target_solids)
+        type(solid_chemistry_c), allocatable :: materials(:) !> materials
         type(solid_chemistry_c), allocatable :: target_solids(:) !> target solids
         type(solid_chemistry_c), allocatable :: target_solids_init(:) !> initial target solids
         integer(kind=4) :: num_target_gases=0 !> number of target gases
@@ -49,16 +55,23 @@ module chemistry_Lagr_m
         procedure, public :: set_rk_avg_opt
         procedure, public :: set_rk_down_opt
         procedure, public :: set_chem_syst
-        procedure, public :: set_num_target_waters_dom
+        procedure, public :: set_num_tar_wat
+        procedure, public :: set_num_tar_wat_dom
         procedure, public :: set_num_target_solids
         procedure, public :: set_num_ext_waters
+        procedure, public :: set_num_rech_waters
         procedure, public :: set_num_bd_waters
-        procedure, public :: set_target_waters
-        procedure, public :: set_target_solids
+        procedure, public :: set_target_waters_wat_types
+        procedure, public :: set_target_waters_target_solids
+        procedure, public :: set_target_solids_materials
         procedure, public :: set_target_gases
         procedure, public :: set_read_opt
         procedure, public :: set_reactive_zones
         procedure, public :: set_Jac_opt
+    !> Get
+        procedure, public :: get_num_aq_comps
+        procedure, public :: get_num_wat_types
+        procedure, public :: get_aq_comps_wat_types
     !> Allocate
         procedure, public :: allocate_target_waters
         procedure, public :: allocate_dom_tar_wat_indices
@@ -68,13 +81,14 @@ module chemistry_Lagr_m
         procedure, public :: allocate_target_gases
         procedure, public :: allocate_reactive_zones
         procedure, public :: allocate_mineral_zones
+        procedure, public :: allocate_wat_types
     !> Read
         procedure, public :: read_target_waters_init
         procedure, public :: read_init_min_zones_CHEPROO
         procedure, public :: read_chemistry
         procedure, public :: read_chemistry_CHEPROO
         !procedure, public :: read_chemistry_PHREEQC
-        procedure, public :: read_init_bd_rech_wat_types_CHEPROO
+        procedure, public :: read_init_bd_wat_types_CHEPROO
         procedure, public :: read_init_cat_exch_zones_CHEPROO
         procedure, public :: read_gas_bd_zones_CHEPROO
         procedure, public :: read_init_gas_zones_CHEPROO
@@ -101,7 +115,7 @@ module chemistry_Lagr_m
         procedure, public :: check_new_reactive_zones
     !> Others
         procedure, public :: loop_read_tar_wat_init !> nombre muy malo
-        !> Mixing
+    !> Mixing
         procedure, public :: interfaz_comps_arch
         procedure, public :: interfaz_comps_vars
     end type
@@ -460,7 +474,7 @@ module chemistry_Lagr_m
         
        
         
-        subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_prim_array,num_cstr_array,init_cat_exch_zones,&
+        subroutine read_init_bd_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_prim_array,num_cstr_array,init_cat_exch_zones,&
             wat_types,gas_chem)
             import chemistry_c
             import aqueous_chemistry_c
@@ -633,12 +647,12 @@ module chemistry_Lagr_m
         
        
         
-        subroutine set_num_target_waters_dom(this,num_target_waters_dom)
+        subroutine set_num_tar_wat_dom(this,num_tar_wat_dom)
             implicit none
             class(chemistry_c) :: this
-            integer(kind=4), intent(in), optional :: num_target_waters_dom
-            if (present(num_target_waters_dom)) then
-                this%num_target_waters_dom=num_target_waters_dom
+            integer(kind=4), intent(in), optional :: num_tar_wat_dom
+            if (present(num_tar_wat_dom)) then
+                this%num_target_waters_dom=num_tar_wat_dom
             else
                 this%num_target_waters_dom=this%num_target_waters-this%num_ext_waters
             end if
@@ -673,12 +687,12 @@ module chemistry_Lagr_m
             !end if
         end subroutine
         
-        !subroutine set_ext_waters(this,ext_waters)
-        !    implicit none
-        !    class(chemistry_c) :: this
-        !    class(aqueous_chemistry_c), intent(in) :: ext_waters(:)
-        !    this%ext_waters=ext_waters
-        !end subroutine
+        subroutine set_num_rech_waters(this,num_rech_waters)
+            implicit none
+            class(chemistry_c) :: this
+            integer(kind=4), intent(in) :: num_rech_waters
+            this%num_rech_waters=num_rech_waters
+        end subroutine
         
         subroutine set_target_solids(this,target_solids)
             implicit none
@@ -1022,4 +1036,102 @@ module chemistry_Lagr_m
         end do
         close(unit)
         end subroutine
+        
+        subroutine set_num_tar_wat(this,num_tar_wat)
+        implicit none
+        class(chemistry_c) :: this
+        integer(kind=4), intent(in) :: num_tar_wat
+        this%num_target_waters=num_tar_wat
+        end subroutine
+        
+        subroutine set_target_waters_wat_types(this,ind_wat_types)
+        implicit none
+        class(chemistry_c) :: this
+        integer(kind=4), intent(in) :: ind_wat_types(:) !> indices of water types (dim=nº target waters)
+        integer(kind=4) :: i !> loop index
+        do i=1,this%num_target_waters
+            this%target_waters(i)=this%wat_types(ind_wat_types(i))
+        end do
+        end subroutine
+        
+        subroutine allocate_wat_types(this,num_wat_types)
+        implicit none
+        class(chemistry_c) :: this
+        integer(kind=4), intent(in) :: num_wat_types !> number of water types
+        if (allocated(this%wat_types)) deallocate(this%wat_types)
+        if (num_wat_types<1) then
+            error stop "Number of water types must be greater than 0"
+        end if
+        allocate(this%wat_types(num_wat_types))
+        !this%num_target_waters=n
+        end subroutine
+        
+        subroutine set_target_waters_target_solids(this,ind_tar_sol)
+        implicit none
+        class(chemistry_c) :: this
+        integer(kind=4), intent(in) :: ind_tar_sol(:) !> indices of target solids (dim=nº target waters)
+        
+        integer(kind=4) :: i !> loop index
+        
+        do i=1,this%num_target_waters
+            if (ind_tar_sol(i)>0) then
+                call this%target_waters(i)%set_solid_chemistry(this%target_solids(ind_tar_sol(i)))
+            else
+                call this%target_waters(i)%set_solid_chemistry(this%target_solids(1)) !> we set the default solid chemistry object
+            end if
+        end do
+        end subroutine
+        
+        subroutine set_target_solids_materials(this,ind_materials)
+        implicit none
+        class(chemistry_c) :: this
+        integer(kind=4), intent(in) :: ind_materials(:) !> indices of materials (dim=nº target solids)
+
+        integer(kind=4) :: i !> loop index
+
+        do i=1,this%num_target_solids
+            if (ind_materials(i)>0) then
+                call this%target_waters(i)%set_solid_chemistry(this%target_solids(ind_materials(i)))
+            else
+                call this%target_waters(i)%set_solid_chemistry(this%target_solids(1)) !> we set the default solid chemistry object
+            end if
+        end do
+        end subroutine
+        
+        function get_num_aq_comps(this,ind_rz) result(num_aq_comps)
+        implicit none
+        class(chemistry_c) :: this
+        integer(kind=4), intent(in), optional :: ind_rz !> index of reactive zone
+        integer(kind=4) :: num_aq_comps !> number of aqueous components in reactive zone
+        if (present(ind_rz)) then
+            if (ind_rz>0 .and. ind_rz<=this%num_reactive_zones) then
+                num_aq_comps=this%reactive_zones(ind_rz)%speciation_alg%num_aq_prim_species
+            else
+                error stop "Index of reactive zone out of bounds"
+            end if
+        else
+            num_aq_comps=this%reactive_zones(1)%speciation_alg%num_aq_prim_species !> we assume all reactive zones have the same number of aqueous components
+        end if
+        end function
+        
+        function get_num_wat_types(this) result(num_wat_types)
+        implicit none
+        class(chemistry_c) :: this
+        integer(kind=4) :: num_wat_types !> number of water types
+        num_wat_types=this%num_wat_types
+        end function
+        
+        function get_aq_comps_wat_types(this) result(aq_comps_wat_types)
+        implicit none
+        class(chemistry_c) :: this
+        real(kind=8), allocatable :: aq_comps_wat_types(:,:) !> aqueous components of water types
+        integer(kind=4) :: num_aq_comps !> number of aqueous components in the chemical system
+        
+        integer(kind=4) :: i !> loop index
+        num_aq_comps=this%get_num_aq_comps() !> we get the number of aqueous components in the chemical system
+        allocate(aq_comps_wat_types(num_aq_comps,this%num_wat_types))
+        do i=1,this%num_wat_types
+            aq_comps_wat_types(:,i)=this%wat_types(i)%get_u_aq() !> we get the aqueous components of each water type
+        end do
+        end function
 end module

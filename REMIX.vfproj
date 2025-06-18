@@ -326,7 +326,6 @@
 		<File RelativePath=".\src\read_exchange_react_PHREEQC.f90"/>
 		<File RelativePath=".\src\read_gas_bd_zone_CHEPROO.f90"/>
 		<File RelativePath=".\src\read_gas_bd_zones_CHEPROO.f90"/>
-		<File RelativePath=".\src\read_init_bd_rech_wat_types.f90"/>
 		<File RelativePath=".\src\read_init_bd_rech_wat_types_CHEPROO.f90"/>
 		<File RelativePath=".\src\read_init_gas_zones_CHEPROO.f90"/>
 		<File RelativePath=".\src\read_init_min_zones_CHEPROO.f90"/>
@@ -381,9 +380,9 @@
 		<File RelativePath=".\src\solve_PDE_EI_Delta_t_homog.f90"/>
 		<File RelativePath=".\src\solve_PDE_EI_Delta_t_homog_MRMT.f90"/>
 		<File RelativePath=".\src\solve_PDE_RKF45.f90"/>
-		<File RelativePath=".\src\solve_reactive_mixing_cons.f90"/>
 		<File RelativePath=".\src\solve_reactive_mixing_BCs_dep_t.f90"/>
 		<File RelativePath=".\src\solve_reactive_mixing_bis.f90"/>
+		<File RelativePath=".\src\solve_reactive_mixing_cons.f90"/>
 		<File RelativePath=".\src\solve_reactive_mixing_EE_tpt.f90"/>
 		<File RelativePath=".\src\solve_reactive_mixing_EfI_tpt.f90"/>
 		<File RelativePath=".\src\solve_reactive_mixing_ideal_cons.f90"/>

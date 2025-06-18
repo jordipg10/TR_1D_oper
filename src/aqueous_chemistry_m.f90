@@ -128,6 +128,7 @@ module aqueous_chemistry_m
         procedure, public :: get_conc
         procedure, public :: get_log_gamma2nc
         procedure, public :: get_log_gamma2
+        procedure, public :: get_u_aq
     !> Speciation
         procedure, public :: compute_c2_from_c1_aq_ideal
         procedure, public :: compute_c2_from_a1_ideal
@@ -4756,7 +4757,13 @@ end subroutine
         end do
     end subroutine
     
-
+    function get_u_aq(this) result(u_aq)
+    !!> This function returns the aqueous component concentrations
+    class(aqueous_chemistry_c) :: this
+    real(kind=8), allocatable :: u_aq(:)
+    u_aq=matmul(this%solid_chemistry%reactive_zone%speciation_alg%comp_mat_aq,&
+        this%concentrations(this%ind_var_act_species))
+    end function get_u_aq
     
 
     

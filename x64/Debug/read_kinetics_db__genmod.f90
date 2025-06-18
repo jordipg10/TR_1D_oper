@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Jun 17 15:12:48 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Wed Jun 18 16:51:20 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE READ_KINETICS_DB__genmod

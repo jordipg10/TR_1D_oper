@@ -1,20 +1,22 @@
-subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_prim_array,num_cstr_array,init_cat_exch_zones,&
-        wat_types,gas_chem)
+subroutine read_init_bd_wat_types_CHEPROO(this,unit,init_cat_exch_zones,&
+        gas_chem)
     use chemistry_Lagr_m, only: chemistry_c
     use aqueous_chemistry_m, only: aqueous_chemistry_c, aq_species_c, aq_phase_c, gas_chemistry_c, & 
         reactive_zone_c, mineral_zone_c, solid_chemistry_c, mineral_c, chem_system_c
     implicit none
     class(chemistry_c) :: this !> chemistry object
     integer(kind=4), intent(in) :: unit !> file unit
-    integer(kind=4), intent(out), allocatable :: ind_wat_type(:)
-    integer(kind=4), intent(out), allocatable :: num_aq_prim_array(:)
-    integer(kind=4), intent(out), allocatable :: num_cstr_array(:)
+    !integer(kind=4), intent(out), allocatable :: ind_wat_type(:)
+    !integer(kind=4), intent(out), allocatable :: num_aq_prim_array(:)
+    !integer(kind=4), intent(out), allocatable :: num_cstr_array(:)
     type(solid_chemistry_c), intent(inout), allocatable :: init_cat_exch_zones(:)
-    type(aqueous_chemistry_c), intent(out), allocatable :: wat_types(:)
+    !type(aqueous_chemistry_c), intent(out), allocatable :: this%wat_types(:)
     type(gas_chemistry_c), intent(in), optional :: gas_chem(:) !> chapuza
     
     integer(kind=4) :: i,j,k,l,nwtype,icon,n_p_aq,gas_ind,min_ind,model,niter,sp_ind
     integer(kind=4), allocatable :: cols(:)
+    integer(kind=4), allocatable :: num_aq_prim_array(:)
+    integer(kind=4), allocatable :: num_cstr_array(:)
     character(len=256) :: prim_sp_name,constrain,label,name
     real(kind=8) :: guess,c_tot,temp,conc
     real(kind=8), allocatable :: eq_csts(:)
@@ -45,9 +47,10 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
         allocate(init_cat_exch_zones(nwtype))
     end if
         
-    allocate(wat_types(nwtype),react_zones(nwtype),solid_chems(nwtype),min_zones(nwtype))
+    call this%allocate_wat_types(nwtype) !> we allocate water types
+    allocate(react_zones(nwtype),solid_chems(nwtype),min_zones(nwtype))
     allocate(cols(2))
-    allocate(num_aq_prim_array(nwtype),num_cstr_array(nwtype),ind_wat_type(nwtype))
+    allocate(num_aq_prim_array(nwtype),num_cstr_array(nwtype))
     
     num_aq_prim_array=0
     num_cstr_array=0
@@ -55,18 +58,18 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
      do i=1,nwtype
         read(unit,*) j, temp !> we read index water type and temperature (in Celsius)
         if (j<1 .or. j>nwtype) error stop
-        ind_wat_type(i)=j
-        call wat_types(j)%set_aq_phase(this%chem_syst%aq_phase)
-        call wat_types(j)%set_indices_aq_species_aq_chem() !> we set default indices
-        !call wat_types(j)%set_ind_diss_solids_aq_chem() !> we set default indices dissolved solids
-        call wat_types(j)%set_temp(temp+273.18) !> Kelvin
-        call wat_types(j)%set_density()
-        !call wat_types(j)%set_solid_chemistry(solid_chem)
-        call wat_types(j)%allocate_conc_aq_species()
-        call wat_types(j)%allocate_log_act_coeffs_aq_chem()
-        call wat_types(j)%allocate_activities_aq_species()
+        !ind_wat_type(i)=j
+        call this%wat_types(j)%set_aq_phase(this%chem_syst%aq_phase)
+        call this%wat_types(j)%set_indices_aq_species_aq_chem() !> we set default indices
+        !call this%wat_types(j)%set_ind_diss_solids_aq_chem() !> we set default indices dissolved solids
+        call this%wat_types(j)%set_temp(temp+273.18) !> Kelvin
+        call this%wat_types(j)%set_density()
+        !call this%wat_types(j)%set_solid_chemistry(solid_chem)
+        call this%wat_types(j)%allocate_conc_aq_species()
+        call this%wat_types(j)%allocate_log_act_coeffs_aq_chem()
+        call this%wat_types(j)%allocate_activities_aq_species()
         read(unit,*) name !> we read name of water type
-        call wat_types(j)%set_name(trim(name))
+        call this%wat_types(j)%set_name(trim(name))
         read(unit,*) label
         if (index(label,'icon')/=0) then !> 'icon, guess, ctot, constrain'
             k=0 !> counter primary aqueous species
@@ -76,20 +79,20 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
                 if (aq_species%name=='*') then
                     exit
                 else
-                    call wat_types(j)%aq_phase%is_species_in_aq_phase(aq_species,flag,sp_ind)
+                    call this%wat_types(j)%aq_phase%is_species_in_aq_phase(aq_species,flag,sp_ind)
                     if (flag .eqv. .true.) then
                         k=k+1
                         if (sp_ind/=k) then
-                            wat_types(j)%indices_aq_species(sp_ind)=k
-                            wat_types(j)%indices_aq_phase(k)=sp_ind
+                            this%wat_types(j)%indices_aq_species(sp_ind)=k
+                            this%wat_types(j)%indices_aq_phase(k)=sp_ind
                         end if
                         ! if (aq_species%name=='h2o') then
-                        !     !call wat_types(j)%set_ind_wat_aq_chem(k)
+                        !     !call this%wat_types(j)%set_ind_wat_aq_chem(k)
                         ! else
                         !     l=l+1
-                        !     !wat_types(j)%ind_diss_solids(l)=k
+                        !     !this%wat_types(j)%ind_diss_solids(l)=k
                         !     ! if (aq_species%name=='h+') then
-                        !     !     call wat_types(j)%set_ind_prot_aq_chem(k)
+                        !     !     call this%wat_types(j)%set_ind_prot_aq_chem(k)
                         !     ! !> aqui faltan especies
                         !     ! end if
                         ! end if
@@ -151,16 +154,16 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
                 call solid_chems(j)%set_reactive_zone(react_zones(j)) !> we set default reactive zone
                 call solid_chems(j)%set_mineral_zone(min_zones(j)) !> we set default mineral zone
                 !if (present(gas_chem)) then
-                !    call wat_types(j)%set_gas_chemistry(gas_chem)
+                !    call this%wat_types(j)%set_gas_chemistry(gas_chem)
                 !end if
                 if (size(init_cat_exch_zones)>1) then
-                    call wat_types(j)%set_solid_chemistry(cat_exch_zones(j)) !> chapuza
-                    call wat_types(j)%read_wat_type_CHEPROO(num_aq_prim_array(j),num_cstr_array(j),this%act_coeffs_model,&
+                    call this%wat_types(j)%set_solid_chemistry(cat_exch_zones(j)) !> chapuza
+                    call this%wat_types(j)%read_wat_type_CHEPROO(num_aq_prim_array(j),num_cstr_array(j),this%act_coeffs_model,&
                         this%Jac_opt,unit,niter,CV_flag)
-                    call init_cat_exch_zones(j)%assign_solid_chemistry(wat_types(j)%solid_chemistry) !> chapuza
+                    call init_cat_exch_zones(j)%assign_solid_chemistry(this%wat_types(j)%solid_chemistry) !> chapuza
                 else
-                    call wat_types(j)%set_solid_chemistry(solid_chems(j)) !> chapuza
-                    call wat_types(j)%read_wat_type_CHEPROO(num_aq_prim_array(j),num_cstr_array(j),this%act_coeffs_model,&
+                    call this%wat_types(j)%set_solid_chemistry(solid_chems(j)) !> chapuza
+                    call this%wat_types(j)%read_wat_type_CHEPROO(num_aq_prim_array(j),num_cstr_array(j),this%act_coeffs_model,&
                         this%Jac_opt,unit,niter,CV_flag)
                 end if
             end do
@@ -199,15 +202,15 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
 !> Chapuza
     ! do i=1,nwtype
     !     !> rearrange indices
-    !     ! print *, wat_types(i)%indices_aq_species
-    !     ! print *, wat_types(i)%ind_prim_species
-    !     ! print *, wat_types(i)%ind_diss_solids
-    !     ! call wat_types(i)%set_ind_prim_sec_species()
-    !     !call wat_types(i)%set_indices_aq_species_aq_chem()
-    !     !call wat_types(i)%set_ind_diss_solids_aq_chem()
+    !     ! print *, this%wat_types(i)%indices_aq_species
+    !     ! print *, this%wat_types(i)%ind_prim_species
+    !     ! print *, this%wat_types(i)%ind_diss_solids
+    !     ! call this%wat_types(i)%set_ind_prim_sec_species()
+    !     !call this%wat_types(i)%set_indices_aq_species_aq_chem()
+    !     !call this%wat_types(i)%set_ind_diss_solids_aq_chem()
     ! end do
-    !do i=1,this%num_bd_wat_types
-    !    call this%bd_wat_types(i)%rearrange_state_vars(old_aq_phase)
+    !do i=1,this%num_bd_this%wat_types
+    !    call this%bd_this%wat_types(i)%rearrange_state_vars(old_aq_phase)
     !end do
 !> Chapuza
     do i=1,this%chem_syst%num_minerals_kin
@@ -221,7 +224,7 @@ subroutine read_init_bd_rech_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_pri
     end do
 !> Post-processing
     do i=1,nwtype
-        !call wat_types(i)%set_indices_rk()
-        nullify(wat_types(i)%solid_chemistry) !> we deallocate solid chemistry pointer
+        !call this%wat_types(i)%set_indices_rk()
+        nullify(this%wat_types(i)%solid_chemistry) !> we deallocate solid chemistry pointer
      end do
 end subroutine

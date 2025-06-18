@@ -25,6 +25,7 @@ module speciation_algebra_m
         real(kind=8), allocatable :: logK_tilde(:) !> =inv_Se_2*log(K)
         real(kind=8), allocatable :: comp_mat_cst_act(:,:) !> component matrix with constant activity species (Saaltink et al, 1998)
         real(kind=8), allocatable :: comp_mat(:,:) !> component matrix without constant activity species (De Simoni et al, 2005)
+        real(kind=8), allocatable :: comp_mat_aq(:,:) !> aqueous component matrix without constant activity species (De Simoni et al, 2005)
     contains
     !> Set
         procedure, public :: set_flag_comp
@@ -40,6 +41,7 @@ module speciation_algebra_m
         procedure, private :: compute_Se_1_star
         procedure, private :: compute_Se_nc_1_star
         procedure, private :: compute_comp_mat
+        procedure, private :: compute_comp_mat_aq
         procedure, private :: compute_comp_mat_cst_act
         procedure, public :: compute_logK_star
         procedure, public :: compute_logK_tilde
@@ -95,6 +97,17 @@ module speciation_algebra_m
             allocate(this%comp_mat(this%num_prim_species,this%num_var_act_species))
             this%comp_mat(:,1:this%num_prim_species)=id_matrix(this%num_prim_species)
             this%comp_mat(:,this%num_prim_species+1:this%num_var_act_species)=transpose(this%Se_nc_1_star)
+        end subroutine
+        
+        subroutine compute_comp_mat_aq(this) !> see De Simoni et al (2005) for defintion of component matrix
+            implicit none
+            class(speciation_algebra_c) :: this
+            if (allocated(this%comp_mat_aq)) then
+                deallocate(this%comp_mat_aq)
+            end if
+            allocate(this%comp_mat_aq(this%num_aq_prim_species,this%num_aq_var_act_species))
+            this%comp_mat_aq(:,1:this%num_aq_prim_species)=id_matrix(this%num_aq_prim_species)
+            this%comp_mat_aq(:,this%num_aq_prim_species+1:this%num_aq_var_act_species)=this%comp_mat(:,this%num_prim_species+1:this%num_prim_species+this%num_aq_sec_var_act_species)
         end subroutine
         
         subroutine compute_comp_mat_cst_act(this) !> computes component matrix with constant activity species (Saaltink et al, 1998)
@@ -181,6 +194,7 @@ module speciation_algebra_m
                         call this%compute_Se_nc_1_star(Se(:,1:this%num_prim_species))
                         call this%compute_logK_star(K)
                         call this%compute_comp_mat()
+                        call this%compute_comp_mat_aq()
                         exit
                     end if
                 end do
