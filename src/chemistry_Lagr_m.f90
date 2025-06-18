@@ -542,9 +542,10 @@ module chemistry_Lagr_m
             integer(kind=4), intent(out) :: ngrz !> number of gas reactive zones
         end subroutine
         
-        subroutine interfaz_comps_arch(this,num_comps,file_in,Delta_t,file_out)
+        subroutine interfaz_comps_arch(this,path,num_comps,file_in,Delta_t,file_out)
             import chemistry_c
             class(chemistry_c) :: this
+            character(len=*), intent(in) :: path !> path for input and output files
             integer(kind=4), intent(in) :: num_comps !> number of components
             character(len=*), intent(in) :: file_in !> name of file containing component concentrations after solving conservative transport
             !integer(kind=4), intent(in) :: unit_in !> file unit

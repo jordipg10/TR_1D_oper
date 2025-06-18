@@ -27,7 +27,7 @@ program main
     path_DB_trim = trim(path_DB)
 !> Choose problem
     !problem=4
-    write(*,*) "Root of problem to be solved?"
+    write(*,*) "Path and root of problem to be solved?"
     read(*,*) root !> must be written by the user
     root_trim=trim(root)
 !> Initialise transport

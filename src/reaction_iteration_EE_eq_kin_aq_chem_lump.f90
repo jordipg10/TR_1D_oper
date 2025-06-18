@@ -13,6 +13,7 @@ subroutine reaction_iteration_EE_eq_kin_lump(this,Delta_t,conc_comp_react)
 !> Process
     allocate(rk(this%indices_rk%num_cols)) !> we initialise kinetic reaction rates
     call this%compute_rk(rk) !> we compute kinetic reaction rates
+    !print *, rk !> we print kinetic reaction rates for debugging purposes
     conc_comp_react=Delta_t*matmul(this%solid_chemistry%reactive_zone%U_SkT_prod,rk) !> we compute reaction part of new component concentrations
     !conc_comp_react=Delta_t*matmul(this%solid_chemistry%reactive_zone%U_SkT_prod,rk_tilde)/porosity !> we compute reaction part of new component concentrations
     deallocate(rk) !> we deallocate kinetic reaction rates
