@@ -378,7 +378,7 @@ module chemistry_Lagr_m
             class(aqueous_chemistry_c), intent(in) :: initial_water_types(:)
         end subroutine
         
-        subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas_types,nsrz,ngrz)
+        subroutine read_target_waters_init(this,unit,init_sol_types,init_gas_types,nsrz,ngrz)
             import chemistry_c
             import aqueous_chemistry_c
             import solid_chemistry_c
@@ -390,7 +390,7 @@ module chemistry_Lagr_m
             integer(kind=4), intent(in) :: unit !> file
             !class(aqueous_chemistry_c), intent(in) :: init_water_types(:)
             !class(aqueous_chemistry_c), intent(in) :: bd_water_types(:)
-            type(aqueous_chemistry_c), intent(in) :: water_types(:)
+            !type(aqueous_chemistry_c), intent(in) :: water_types(:)
             type(solid_chemistry_c), intent(in) :: init_sol_types(:)
             type(gas_chemistry_c), intent(in) :: init_gas_types(:)
             integer(kind=4), intent(in) :: nsrz !> number of solid reactive zones
@@ -474,8 +474,8 @@ module chemistry_Lagr_m
         
        
         
-        subroutine read_init_bd_wat_types_CHEPROO(this,unit,ind_wat_type,num_aq_prim_array,num_cstr_array,init_cat_exch_zones,&
-            wat_types,gas_chem)
+        subroutine read_init_bd_wat_types_CHEPROO(this,unit,init_cat_exch_zones,&
+            gas_chem)
             import chemistry_c
             import aqueous_chemistry_c
             import solid_chemistry_c
@@ -490,11 +490,11 @@ module chemistry_Lagr_m
             !real(kind=8), intent(in) :: rel_tolerance
             !real(kind=8), intent(in) :: control_factor
             !integer(kind=4), intent(in) :: niter_max
-            integer(kind=4), intent(out), allocatable :: ind_wat_type(:)
-            integer(kind=4), intent(out), allocatable :: num_aq_prim_array(:)
-            integer(kind=4), intent(out), allocatable :: num_cstr_array(:)
+            !integer(kind=4), intent(out), allocatable :: ind_wat_type(:)
+            !integer(kind=4), intent(out), allocatable :: num_aq_prim_array(:)
+            !integer(kind=4), intent(out), allocatable :: num_cstr_array(:)
             type(solid_chemistry_c), intent(inout) :: init_cat_exch_zones(:)
-            type(aqueous_chemistry_c), intent(out), allocatable :: wat_types(:)
+            !type(aqueous_chemistry_c), intent(out), allocatable :: wat_types(:)
             type(gas_chemistry_c), intent(in),optional :: gas_chem !> chapuza
             !logical, intent(out) :: CV_flag !> TRUE if converges, FALSE otherwise 
         end subroutine

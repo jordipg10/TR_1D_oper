@@ -104,11 +104,11 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
             exit
         else if (label=='INITIAL AND BOUNDARY WATER TYPES') then
             if (size(init_gas_zones)==1) then !> Chapuza
-                call this%read_init_bd_wat_types_CHEPROO(unit_loc_chem_file,ind_wat_type,num_aq_prim_array,num_cstr_array,&
-                init_cat_exch_zones,wat_types,init_gas_zones(1))
+                call this%read_init_bd_wat_types_CHEPROO(unit_loc_chem_file,&
+                init_cat_exch_zones,init_gas_zones(1))
             else
-                call this%read_init_bd_wat_types_CHEPROO(unit_loc_chem_file,ind_wat_type,num_aq_prim_array,num_cstr_array,&
-                init_cat_exch_zones,wat_types)
+                call this%read_init_bd_wat_types_CHEPROO(unit_loc_chem_file,&
+                init_cat_exch_zones)
             end if
         else if (label=='INITIAL MINERAL ZONES') then
             if (size(init_cat_exch_zones)==1) then
@@ -224,7 +224,7 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
     !call this%set_reactive_zones(reactive_zones)
 !> Target waters
     open(unit_target_waters_init_file,file=root//'_tar_wat.dat',status='old',action='read')
-    call this%read_target_waters_init(unit_target_waters_init_file,wat_types,init_sol_zones,init_gas_zones,nsrz,ngrz)
+    call this%read_target_waters_init(unit_target_waters_init_file,init_sol_zones,init_gas_zones,nsrz,ngrz)
     close(unit_target_waters_init_file)
 !> Output data
     call this%chem_out_options%read_chem_out_options(root,unit_output_file,this%target_waters)

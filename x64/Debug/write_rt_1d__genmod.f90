@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Wed Jun 18 16:57:49 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Wed Jun 18 17:23:36 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE WRITE_RT_1D__genmod

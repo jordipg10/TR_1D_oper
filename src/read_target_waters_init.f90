@@ -1,12 +1,12 @@
 !> Reads initial target waters and their associated target solids and/or gases
 !> We assume file has already been opened
-subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas_types,nsrz,ngrz)
+subroutine read_target_waters_init(this,unit,init_sol_types,init_gas_types,nsrz,ngrz)
     use chemistry_Lagr_m, only: chemistry_c, aqueous_chemistry_c, solid_chemistry_c, gas_chemistry_c, reactive_zone_c, &
         mineral_zone_c
     implicit none
     class(chemistry_c) :: this
     integer(kind=4), intent(in) :: unit !> file
-    type(aqueous_chemistry_c), intent(in) :: water_types(:) !> water types
+    !type(aqueous_chemistry_c), intent(in) :: water_types(:) !> water types
     type(solid_chemistry_c), intent(in) :: init_sol_types(:) !> initial solid zones
     type(gas_chemistry_c), intent(in) :: init_gas_types(:) !> initial gas zones
     integer(kind=4), intent(in) :: nsrz !> number of solid reactive zones
@@ -26,7 +26,7 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
     type(reactive_zone_c), allocatable :: aux_react_zones(:) !> auxiliary reactive zones (chapuza)
     type(mineral_zone_c), target :: min_zone   !> default mineral zone object
     
-    nwtype=size(water_types)
+    nwtype=this%num_wat_types !> number of water types
     if (nsrz>0) then
         nstype=size(init_sol_types)
     else
@@ -106,7 +106,7 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
                     else
                         error stop "Water type flag out of bounds"
                     end if
-                    call this%loop_read_tar_wat_init(flag,water_types,init_sol_types,init_gas_types,nsrz,ngrz,tar_wat_ind,wtype,&
+                    call this%loop_read_tar_wat_init(flag,this%wat_types,init_sol_types,init_gas_types,nsrz,ngrz,tar_wat_ind,wtype,&
                         istype,igzn,aux_istype,aux_igzn,solid_chem)
                     !allocate(rk(this%target_waters(tar_wat_ind)%indices_rk%num_cols)) !> chapuza
                     !call this%target_waters(tar_wat_ind)%compute_rk(rk)
@@ -212,7 +212,7 @@ subroutine read_target_waters_init(this,unit,water_types,init_sol_types,init_gas
                         ind_dom=ind_dom+1
                         this%dom_tar_wat_indices(ind_dom)=tar_wat_ind
                     end if
-                    call this%loop_read_tar_wat_init(.false.,water_types,init_sol_types,init_gas_types,nsrz,ngrz,tar_wat_ind,&
+                    call this%loop_read_tar_wat_init(.false.,this%wat_types,init_sol_types,init_gas_types,nsrz,ngrz,tar_wat_ind,&
                         wtype,istype,igzn,aux_istype,aux_igzn,solid_chem)
                 !    !aux_istype=istype
                 !    this%target_waters(tar_wat_ind)=water_types(wtype)
