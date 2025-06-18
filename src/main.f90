@@ -26,7 +26,6 @@ program main
     read(*,*) path_DB !> must be written by the user
     path_DB_trim = trim(path_DB)
 !> Choose problem
-    !problem=4
     write(*,*) "Path and root of problem to be solved?"
     read(*,*) root !> must be written by the user
     root_trim=trim(root)
