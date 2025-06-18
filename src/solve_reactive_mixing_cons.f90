@@ -415,5 +415,5 @@ subroutine solve_reactive_mixing_cons(this,root,mixing_ratios_conc,mixing_ratios
 !> We set the new target waters to the chemistry object
     this%target_waters=target_waters_new
     close(unit)
-    write(*,*) "Number of lumpings: ", this%num_lump
+    !write(*,*) "Number of lumpings: ", this%num_lump
  end subroutine
