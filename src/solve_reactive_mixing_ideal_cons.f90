@@ -192,7 +192,7 @@ subroutine solve_reactive_mixing_ideal_cons(this,root,mixing_ratios_conc,mixing_
                 else if (this%rk_down_opt==3) then
                    compute_rk_tilde=>compute_rk_tilde_impl_opt3
                 else if (this%rk_down_opt==4) then
-                    !compute_rk_tilde=>compute_rk_tilde_impl_opt4
+                    compute_rk_tilde=>compute_rk_tilde_impl_opt4
                 else
                     error stop "rk down option not implemented yet"
                 end if
@@ -429,5 +429,5 @@ subroutine solve_reactive_mixing_ideal_cons(this,root,mixing_ratios_conc,mixing_
 !> We set the new target waters to the chemistry object
     this%target_waters=target_waters_new
     close(unit)
-    !write(*,*) "Number of lumpings: ", this%num_lump
+    write(*,*) "Number of lumpings: ", this%num_lump
  end subroutine

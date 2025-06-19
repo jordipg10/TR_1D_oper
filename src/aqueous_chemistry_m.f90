@@ -2117,6 +2117,8 @@ module aqueous_chemistry_m
                 this%solid_chemistry%reactive_zone%chem_syst%num_redox_kin_reacts))
                 allocate(this%rk_old_old(this%solid_chemistry%reactive_zone%chem_syst%num_lin_kin_reacts+&
                 this%solid_chemistry%reactive_zone%chem_syst%num_redox_kin_reacts))
+                allocate(this%rk_old_old_old(this%solid_chemistry%reactive_zone%chem_syst%num_lin_kin_reacts+&
+                this%solid_chemistry%reactive_zone%chem_syst%num_redox_kin_reacts))
                 allocate(this%Rk_mean(this%solid_chemistry%reactive_zone%chem_syst%num_lin_kin_reacts+&
                 this%solid_chemistry%reactive_zone%chem_syst%num_redox_kin_reacts))
                 allocate(this%Rk_est(this%solid_chemistry%reactive_zone%chem_syst%num_lin_kin_reacts+&
@@ -2125,6 +2127,7 @@ module aqueous_chemistry_m
                 this%Rk_est=0d0 !> by default
                 this%rk_old=0d0 !> by default
                 this%rk_old_old=0d0 !> by default
+                this%rk_old_old_old=0d0 !> by default
                 this%Rk_mean=0d0 !> by default
             else
                 error stop "Chemical system not associated to reactive zone"
@@ -2149,12 +2152,14 @@ module aqueous_chemistry_m
                     allocate(this%solid_chemistry%rk(this%solid_chemistry%mineral_zone%num_minerals_kin))
                     allocate(this%solid_chemistry%rk_old(this%solid_chemistry%mineral_zone%num_minerals_kin))
                     allocate(this%solid_chemistry%rk_old_old(this%solid_chemistry%mineral_zone%num_minerals_kin))
+                    allocate(this%solid_chemistry%rk_old_old_old(this%solid_chemistry%mineral_zone%num_minerals_kin))
                     allocate(this%solid_chemistry%Rk_mean(this%solid_chemistry%mineral_zone%num_minerals_kin))
                     allocate(this%solid_chemistry%Rk_est(this%solid_chemistry%mineral_zone%num_minerals_kin))
                     this%solid_chemistry%rk=0d0 !> by default
                     this%solid_chemistry%Rk_est=0d0 !> by default
                     this%solid_chemistry%rk_old=0d0 !> by default
                     this%solid_chemistry%rk_old_old=0d0 !> by default
+                    this%solid_chemistry%rk_old_old_old=0d0 !> by default
                     this%solid_chemistry%Rk_mean=0d0 !> by default
                 end if
             else
@@ -3970,7 +3975,7 @@ end subroutine
 
 !> This subroutine computes the kinetic reaction rate contributions after water mixing, implicitly for upstream waters and explicitly for downstream waters
 !> The estimation of the downstream waters reaction rates is done by assuming there is no mixing
-subroutine compute_rk_tilde_impl_opt3(mix_waters,mixing_ratios_Rk,num_up,num_down,theta,Delta_t,rk_tilde)
+subroutine compute_rk_tilde_impl_opt4(mix_waters,mixing_ratios_Rk,num_up,num_down,theta,Delta_t,rk_tilde)
     implicit none
 !> Argumnets
     type(aqueous_chemistry_c), intent(inout) :: mix_waters(:) !> waters that mix with each other
@@ -4057,13 +4062,13 @@ subroutine compute_rk_tilde_impl_opt3(mix_waters,mixing_ratios_Rk,num_up,num_dow
 end subroutine
 
 !> This subroutine computes the kinetic reaction rate contributions after water mixing implicitly for both upstream and downstream waters
-!> The estimation of the downstream waters reaction amoutns is done by extrapolation with the time derivative of the reaction rates
+!> The estimation of the downstream waters reaction amoutns is done by extrapolation with the second time derivative of the reaction rates
 !> We assume uniform time step
-subroutine compute_rk_tilde_impl_opt4(mix_waters,c_tilde,mixing_ratios_Rk,num_up,num_down,theta,Delta_t,rk_tilde)
+subroutine compute_rk_tilde_impl_opt3(mix_waters,mixing_ratios_Rk,num_up,num_down,theta,Delta_t,rk_tilde)
     implicit none
 !> Argumnets
-    type(aqueous_chemistry_c), intent(in) :: mix_waters(:) !> waters that mix with each other
-    real(kind=8), intent(in) :: c_tilde(:)  !> same order as "mix_waters"
+    type(aqueous_chemistry_c), intent(inout) :: mix_waters(:) !> waters that mix with each other
+    !real(kind=8), intent(in) :: c_tilde(:)  !> same order as "mix_waters"
     real(kind=8), intent(in) :: mixing_ratios_Rk(:)  !> ordered in upstream & downstream waters, respectively
     integer(kind=4), intent(in) :: num_up  !> number of upstream waters
     integer(kind=4), intent(in) :: num_down  !> number of downstream waters
@@ -4117,35 +4122,30 @@ subroutine compute_rk_tilde_impl_opt4(mix_waters,c_tilde,mixing_ratios_Rk,num_up
     !> Downstream waters (we estimate them)
         do j=1,num_down
             if (mix_waters(num_up+j)%indices_rk%num_cols>0) then
-                allocate(Rk_est(mix_waters(num_up+j)%indices_rk%num_cols))
-                allocate(conc_nc(mix_waters(num_up+j)%solid_chemistry%reactive_zone%speciation_alg%num_var_act_species))
                 Sk_nc=mix_waters(num_up+j)%get_Sk_nc() !> we get the kinetic stoichiometric matrix in j-th upstream water (chapuza)
-                call mix_waters(num_up+j)%initialise_conc_nc_iterative_method_ideal(&
-                    mix_waters(num_up+j)%solid_chemistry%reactive_zone%CV_params%mu,conc_nc) !> we estimate the concentration of aqueous variable activity species in j-th downstream water (chapuza)
-                !conc_nc=mix_waters(num_up+j)%get_conc_nc()
-                !conc_nc_old=mix_waters(num_up+j)%get_conc_nc_old() !> we get the old concentration of aqueous variable activity species in j-th downstream water (chapuza)
-                call LU_lin_syst(matmul(Sk_nc,transpose(Sk_nc)),matmul(Sk_nc,conc_nc-c_tilde),tol,Rk_est) !> we compute the estimated mean reaction amount with ordianry least squares in j-th downstream water
-                call mix_waters(num_up+j)%set_Rk_est(Rk_est) !> we set the estimated reaction rate in j-th downstream water
-                rk_tilde=rk_tilde+mixing_ratios_Rk(num_up+j)*matmul(transpose(Sk_nc),Rk_est/Delta_t) !> we update the reaction rate contributiuons
-                !call mix_waters(num_up+j)%set_conc_var_act_species(conc_nc_old) !> we set the estimated reaction rate in j-th downstream water
-                !     mix_waters(num_up+j)%rk(i)=(Rk_mean(i)-Delta_t*(1d0-theta)*mix_waters(num_up+j)%rk_old(i))/(Delta_t*theta)
-                ! end do
-                ! do i=1,mix_waters(num_up+j)%solid_chemistry%reactive_zone%chem_syst%num_redox_kin_reacts
-                !     mix_waters(num_up+j)%rk(mix_waters(num_up+j)%solid_chemistry%reactive_zone%chem_syst%num_lin_kin_reacts+i)=&
-                !         (Rk_mean(mix_waters(num_up+j)%solid_chemistry%reactive_zone%chem_syst%num_lin_kin_reacts+&
-                !         mix_waters(num_up+j)%solid_chemistry%mineral_zone%num_minerals_kin+i)-Delta_t*(1d0-theta)*mix_waters(num_up+j)%rk_old(&
-                !         mix_waters(num_up+j)%solid_chemistry%reactive_zone%chem_syst%num_lin_kin_reacts+i))/(Delta_t*theta)
-                ! end do
-                !if (allocated(mix_waters(num_up+j)%solid_chemistry%mineral_zone%ind_min_chem_syst)) then
-                    !rk_tilde_down=rk_tilde_down+mixing_ratios_Rk(num_up+j)*matmul(transpose(Sk_nc),Rk_mean/Delta_t)
-                    ! do i=1,mix_waters(num_up+j)%solid_chemistry%mineral_zone%num_minerals_kin
-                    !     mix_waters(num_up+j)%solid_chemistry%rk(i)=(Rk_mean(&
-                    !         mix_waters(num_up+j)%solid_chemistry%reactive_zone%chem_syst%num_lin_kin_reacts+i)-Delta_t*(1d0-theta)*&
-                    !         mix_waters(num_up+j)%solid_chemistry%rk_old(i))/(Delta_t*theta)
-                    ! end do
-                !end if
+                if (mix_waters(num_up+j)%solid_chemistry%reactive_zone%chem_syst%num_aq_kin_reacts>0) then
+                    !Sk_nc=mix_waters(j)%get_Sk_nc() !> we get the kinetic stoichiometric matrix in j-th upstream water (chapuza)
+                    !if (allocated(Sk_nc_old) .and. norm_mat_inf(Sk_nc_old-Sk_nc)<eps) then
+                    !    rk_tilde=rk_tilde+mixing_ratios_Rk(num_up+j)*matmul(transpose(Sk_nc),mix_waters(num_up)%rk)
+                    !else
+                    mix_waters(num_up+j)%Rk_est=Delta_t*((1d0+&
+                        2d0*theta)*mix_waters(num_up+j)%rk_old-3d0*theta*mix_waters(num_up+j)%rk_old_old+theta*&
+                        mix_waters(num_up+j)%rk_old_old_old)
+                    rk_tilde=rk_tilde+mixing_ratios_Rk(num_up+j)*matmul(transpose(Sk_nc),mix_waters(num_up+j)%Rk_est/Delta_t)
+                    !end if
+                    !deallocate(Sk_nc)
+                end if
+                if (allocated(mix_waters(num_up+j)%solid_chemistry%mineral_zone%ind_min_chem_syst)) then
+                    mix_waters(num_up+j)%solid_chemistry%Rk_est=Delta_t*(&
+                        (1d0+2d0*theta)*&
+                        mix_waters(num_up+j)%solid_chemistry%rk_old-3d0*theta*&
+                        mix_waters(num_up+j)%solid_chemistry%rk_old_old+theta*&
+                        mix_waters(num_up+j)%solid_chemistry%rk_old_old_old)
+                    rk_tilde=rk_tilde+mixing_ratios_Rk(num_up+j)*matmul(transpose(Sk_nc),&
+                        mix_waters(num_up+j)%solid_chemistry%Rk_est/Delta_t)
+                end if
                 !Sk_nc_old=Sk_nc !> chapuza
-                deallocate(Sk_nc,conc_nc,Rk_est)
+                deallocate(Sk_nc)
             end if
         end do
 end subroutine 

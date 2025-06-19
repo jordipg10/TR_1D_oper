@@ -15,7 +15,7 @@ subroutine read_target_waters_init(this,unit,init_sol_types,init_gas_types,nsrz,
     !logical, intent(out) :: CV_flag !> TRUE if converges, FALSE otherwise
     
     integer(kind=4) :: ind_ext,ind_dom,counter_swap,ind,i,j,k,m,nwtype,num_tar_wat,tar_wat_ind,wtype,istype,nstype,nbwtype,bwtype,&
-        mix_wat_ind,ngzns,igzn,num_tar_wat_ext,aux_col,flag_wat_type,num_tar_wat_bd,ind_bd
+        mix_wat_ind,ngzns,igzn,num_tar_wat_rech,aux_col,flag_wat_type,num_tar_wat_bd,ind_bd
     real(kind=8), allocatable :: c_nc(:),u_init(:,:),c1_init(:),c2_init(:),c2_ig(:),gamma_2aq(:)
     integer(kind=4) :: aux_istype, aux_igzn
     character(len=256) :: label,str
@@ -76,14 +76,14 @@ subroutine read_target_waters_init(this,unit,init_sol_types,init_gas_types,nsrz,
             !if (ngzns>0) then
                 call this%allocate_target_gases(this%num_target_waters) !> we assume bijection with target waters (chapuza)
             !end if
-            read(unit,*) num_tar_wat_ext
-            call this%allocate_ext_waters_indices(num_tar_wat_ext)            
+            read(unit,*) num_tar_wat_rech
+            call this%allocate_rech_waters_indices(num_tar_wat_rech)            
             read(unit,*) num_tar_wat_bd
             call this%allocate_bd_waters_indices(num_tar_wat_bd)
-            call this%allocate_dom_tar_wat_indices(this%num_target_waters-this%num_ext_waters-this%num_bd_waters)
+            call this%allocate_dom_tar_wat_indices(this%num_target_waters-this%num_rech_waters-this%num_bd_waters)
             aux_istype=0
             aux_igzn=0
-            if (num_tar_wat_ext>0 .or. num_tar_wat_bd>0) then
+            if (num_tar_wat_rech>0 .or. num_tar_wat_bd>0) then
                 do i=1,this%num_target_waters
                     read(unit,*) tar_wat_ind, wtype, istype, igzn, flag_wat_type
                     if (tar_wat_ind<1 .or. tar_wat_ind>this%num_target_waters) then

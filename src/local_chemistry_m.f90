@@ -20,6 +20,7 @@ module local_chemistry_m
         real(kind=8), allocatable :: Re_mean(:) !> mean equilibrium reaction amount during a time step
         real(kind=8), allocatable :: rk_old(:) !> kinetic reaction rates in previous time step
         real(kind=8), allocatable :: rk_old_old(:) !> kinetic reaction rates in two previous time step (chapuza)
+        real(kind=8), allocatable :: rk_old_old_old(:) !> kinetic reaction rates in three previous time step (chapuza)
         real(kind=8), allocatable :: r_eq(:) !> equilibrium reaction rates
         real(kind=8) :: volume=1d0 !> volume of solution or volumetric fraction (1 by default)
         integer(kind=4), allocatable :: var_act_species_indices(:)
@@ -129,6 +130,7 @@ module local_chemistry_m
         subroutine update_rk_old(this)
         implicit none
         class(local_chemistry_c) :: this
+        this%rk_old_old_old=this%rk_old_old
         this%rk_old_old=this%rk_old
         this%rk_old=this%rk
         end subroutine

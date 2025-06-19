@@ -55,6 +55,7 @@ module chemistry_Lagr_m
         procedure, public :: set_rk_avg_opt
         procedure, public :: set_rk_down_opt
         procedure, public :: set_chem_syst
+        procedure, public :: set_num_wat_types
         procedure, public :: set_num_tar_wat
         procedure, public :: set_num_tar_wat_dom
         procedure, public :: set_num_target_solids
@@ -75,7 +76,7 @@ module chemistry_Lagr_m
     !> Allocate
         procedure, public :: allocate_target_waters
         procedure, public :: allocate_dom_tar_wat_indices
-        procedure, public :: allocate_ext_waters_indices
+        procedure, public :: allocate_rech_waters_indices
         procedure, public :: allocate_bd_waters_indices
         procedure, public :: allocate_target_solids
         procedure, public :: allocate_target_gases
@@ -645,7 +646,16 @@ module chemistry_Lagr_m
             this%chem_syst=chem_syst_obj
         end subroutine
         
-       
+        subroutine set_num_wat_types(this,num_wat_types)
+            implicit none
+            class(chemistry_c) :: this
+            integer(kind=4), intent(in) :: num_wat_types
+            if (num_wat_types<1) then
+                error stop "Chemistry attribute 'num_wat_types' must be greater than 0"
+            else
+                this%num_wat_types=num_wat_types
+            end if
+        end subroutine
         
         subroutine set_num_tar_wat_dom(this,num_tar_wat_dom)
             implicit none
@@ -751,14 +761,14 @@ module chemistry_Lagr_m
             allocate(this%target_gases(this%num_target_gases),this%target_gases_init(this%num_target_gases))
         end subroutine
         
-        subroutine allocate_ext_waters_indices(this,num_ext_waters)
+        subroutine allocate_rech_waters_indices(this,num_rech_waters)
             implicit none
             class(chemistry_c) :: this
-            integer(kind=4), intent(in), optional :: num_ext_waters
-            if (present(num_ext_waters)) then
-                this%num_ext_waters=num_ext_waters
+            integer(kind=4), intent(in), optional :: num_rech_waters
+            if (present(num_rech_waters)) then
+                this%num_rech_waters=num_rech_waters
             end if
-            allocate(this%ext_waters_indices(this%num_ext_waters))
+            allocate(this%rech_waters_indices(this%num_rech_waters))
         end subroutine
         
         subroutine allocate_bd_waters_indices(this,num_bd_waters)
@@ -1062,7 +1072,8 @@ module chemistry_Lagr_m
         if (num_wat_types<1) then
             error stop "Number of water types must be greater than 0"
         end if
-        allocate(this%wat_types(num_wat_types))
+        call this%set_num_wat_types(num_wat_types) !> we set the number of water types
+        allocate(this%wat_types(this%num_wat_types))
         !this%num_target_waters=n
         end subroutine
         
