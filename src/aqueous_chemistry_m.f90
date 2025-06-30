@@ -4761,6 +4761,7 @@ end subroutine
     !!> This function returns the aqueous component concentrations
     class(aqueous_chemistry_c) :: this
     real(kind=8), allocatable :: u_aq(:)
+    allocate(u_aq(this%solid_chemistry%reactive_zone%speciation_alg%num_aq_prim_species))
     u_aq=matmul(this%solid_chemistry%reactive_zone%speciation_alg%comp_mat_aq,&
         this%concentrations(this%ind_var_act_species))
     end function get_u_aq

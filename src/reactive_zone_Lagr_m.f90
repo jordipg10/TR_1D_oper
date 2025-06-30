@@ -953,7 +953,7 @@ module reactive_zone_Lagr_m
                     call this%speciation_alg%compute_logK_tilde(K)
                 else
                     this%speciation_alg%comp_mat=id_matrix(this%speciation_alg%num_prim_species)
-                    !call this%speciation_alg%compute_logK_star(K)
+                    this%speciation_alg%comp_mat_aq=id_matrix(this%speciation_alg%num_aq_prim_species)
                     call this%speciation_alg%compute_inv_Se_nc_2(Se(&
                         :,this%speciation_alg%num_prim_species+1:this%speciation_alg%num_var_act_species),&
                         this%CV_params%zero)
