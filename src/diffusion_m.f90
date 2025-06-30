@@ -1,13 +1,15 @@
 !> 1D steady-state diffusion equation:
 !> 0 = D*c'' + r*(c_r-c)
 module diffusion_m
-    use PDE_m
-    use diff_props_heterog_m
+    use PDE_m, only: PDE_1D_c
+    use diff_props_heterog_m, only: diff_props_heterog_c, props_c
     implicit none
     save
     type, public, extends(PDE_1D_c) :: diffusion_1D_c !> 1D diffusion equation class
         real(kind=8), allocatable :: conc(:) !> concentrations (c)
-        real(kind=8), allocatable :: conc_ext(:) !> (c_e)
+        real(kind=8), allocatable :: conc_ext(:) !> (c_ext) external concentrations (include recharge & boundary)
+        real(kind=8), allocatable :: conc_r(:) !> (c_r) recharge concentrations (c_r>0)
+        real(kind=8), allocatable :: conc_bd(:) !> (c_bd) boundary concentrations (c_bd>0)
         integer(kind=4), allocatable :: conc_r_flag(:)      !> 1 if r>0
                                                             !> 0 otherwistoich_mat_react_zone
         type(diff_props_heterog_c) :: diff_props_heterog
@@ -18,15 +20,20 @@ module diffusion_m
         procedure, public :: set_conc_r_flag=>set_conc_r_flag_diff
     !> Computations
         procedure, public :: compute_trans_mat_PDE=>compute_trans_mat_diff
+        procedure, public :: compute_source_term_PDE=>compute_source_term_diff
+        procedure, public :: compute_rech_mat_PDE=>compute_rech_mat_diff
         procedure, public :: initialise_PDE=>initialise_diffusion_1D
         procedure, public :: write_PDE_1D=>write_diffusion_1D
+        procedure, public :: allocate_conc
+        procedure, public :: solve_PDE_1D=>solve_diff_1D
     end type
 !*****************************************************************************************************************************
     interface
         
-        subroutine initialise_diffusion_1D(this)
+        subroutine initialise_diffusion_1D(this,root)
             import diffusion_1D_c
             class(diffusion_1D_c) :: this
+            character(len=*), intent(in) :: root !> root name for input files
         end subroutine
         
         subroutine compute_trans_mat_diff(this)
@@ -43,7 +50,12 @@ module diffusion_m
             real(kind=8), intent(in) :: output(:,:)
         end subroutine
       
-      
+        subroutine solve_diff_1D(this,Time_out,output)
+        import diffusion_1D_c
+        class(diffusion_1D_c) :: this
+        real(kind=8), intent(in) :: Time_out(:)
+        real(kind=8), intent(out) :: output(:,:)
+        end subroutine
         
         
         
@@ -79,4 +91,52 @@ module diffusion_m
                 end if
             end do
         end subroutine 
+        
+        subroutine compute_source_term_diff(this)
+            !> $g=E*c_ext$
+            !use PDE_m, only: PDE_1D_c
+            !use transport_m, only: transport_1D_c, diffusion_1D_c
+            !use transport_transient_m, only: transport_1D_transient_c, diffusion_1D_transient_c
+            implicit none
+            class(diffusion_1D_c) :: this
+    
+            !allocate(this%source_term_PDE(this%spatial_discr%Num_targets))
+            !this%source_term_PDE=0d0 !> $g=0$ chapuza
+            !select type (this)
+            !class is (diffusion_1D_c)
+            !    this%source_term_PDE=this%rech_mat%diag*this%conc_ext
+            !class is (diffusion_1D_transient_c)
+            !    this%source_term_PDE=this%rech_mat%diag*this%conc_ext
+            !end select
+            this%source_term_PDE=this%rech_mat%diag*this%conc_ext
+            this%source_term_PDE(1)=this%bd_mat(1)*this%BCs%conc_inf
+            this%source_term_PDE(this%spatial_discr%Num_targets)=this%bd_mat(2)*this%BCs%conc_out
+            ! select type (this)
+            ! type is (transport_1D_c)
+            !     this%source_term_PDE=this%conc_r_flag*this%tpt_props_heterog%source_term*this%conc_ext
+            ! type is (transport_1D_transient_c)
+            !     this%source_term_PDE=this%conc_r_flag*this%tpt_props_heterog%source_term*this%conc_ext
+            ! type is (diffusion_1D_c)
+            !     this%source_term_PDE=this%diff_props_heterog%source_term*this%conc_ext
+            ! type is (diffusion_1D_transient_c)
+            !     this%source_term_PDE=this%diff_props_heterog%source_term*this%conc_ext
+            ! end select
+
+        end subroutine
+        
+        subroutine allocate_conc(this)
+            implicit none
+            class(diffusion_1D_c) :: this
+            allocate(this%conc(this%spatial_discr%Num_targets), this%conc_ext(this%spatial_discr%Num_targets), &
+                this%conc_r(this%spatial_discr%Num_targets), this%conc_bd(this%spatial_discr%Num_targets), &
+                this%conc_r_flag(this%spatial_discr%Num_targets))
+        end subroutine
+        
+        subroutine compute_rech_mat_diff(this)
+        implicit none
+        class(diffusion_1D_c) :: this
+        !> $R$ matrix for recharge
+        !> $R=diag(r)$
+        this%rech_mat%diag=this%diff_props_heterog%source_term
+        end subroutine
 end module 

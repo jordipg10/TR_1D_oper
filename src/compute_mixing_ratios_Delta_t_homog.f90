@@ -5,7 +5,7 @@ subroutine compute_mixing_ratios_Delta_t_homog(this,A_mat_lumped)
         time_discr_homog_c, prod_tridiag_mat_mat, compute_inverse_tridiag_matrix
     implicit none
     
-    class(PDE_1D_transient_c) :: this
+    class(transport_1D_transient_c) :: this
     type(diag_matrix_c), intent(out), optional :: A_mat_lumped
     
     integer(kind=4) :: i,j

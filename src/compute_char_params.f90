@@ -8,6 +8,6 @@
 !>    type is (tpt_props_homog_c)
 !>        !this%char_params%disp_time=(this%spatial_discr%measure**2)/props%dispersion
 !>        this%char_params%char_time=props%dispersion*props%porosity/(props%flux**2)
-!>        this%char_params%char_length=props%dispersion/props%flux
+!>        this%char_params%char_measure=props%dispersion/props%flux
 !>    end select
 !end subroutine

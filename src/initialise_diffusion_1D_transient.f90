@@ -6,7 +6,7 @@ subroutine initialise_diffusion_transient(this)
     use diff_props_heterog_m, only: diff_props_heterog_c, props_c
     use BCs_m, only: BCs_t
     use diff_stab_params_m, only: stab_params_diff_c, stab_params_c
-    use char_params_m, only: char_params_diff_c
+    use char_params_diff_m, only: char_params_diff_c
     !use eigenvalues_eigenvectors_m
     !use prob_dens_fcts_m
     implicit none
@@ -46,7 +46,7 @@ subroutine initialise_diffusion_transient(this)
 !****************************************************************************************************************************************************
 !> Dimensionless form flag
     dimless=.false.
-    this%dimensionless=dimless
+    this%dimless=dimless
 !> Boundary conditions
     call my_BCs%read_BCs("BCs.dat")
     if (my_BCs%BCs_label(1).eq.1 .and. my_BCs%BCs_label(2).eq.1) then
@@ -79,16 +79,16 @@ subroutine initialise_diffusion_transient(this)
 !> Diffusion properties
     call my_props_diff%read_props("diff_props.dat",this%spatial_discr)
     call my_props_diff%set_source_term_flag(this%BCs)
-    call this%set_diff_props_heterog(my_props_diff)
+    call this%diff%set_diff_props_heterog(my_props_diff)
 !****************************************************************************************************************************************************
 !> Stability parameters
-    call my_stab_params_diff%compute_stab_params(this%diff_props_heterog,minval(my_radial_mesh%Delta_r),Delta_t(1))
+    call my_stab_params_diff%compute_stab_params(this%diff%diff_props_heterog,minval(my_radial_mesh%Delta_r),Delta_t(1))
     call this%set_stab_params_diff(my_stab_params_diff)
 !****************************************************************************************************************************************************
 !> External concentration
     allocate(c_e(Num_cells))
     c_e=0d0
-    call this%set_conc_ext(c_e)
+    call this%diff%set_conc_ext(c_e)
 !> Initial concentration
     allocate(c0(Num_cells))
     c0=0d0

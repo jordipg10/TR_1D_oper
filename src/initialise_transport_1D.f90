@@ -1,10 +1,12 @@
-subroutine initialise_transport_1D(this)
+subroutine initialise_transport_1D(this,root)
     use BCs_subroutines_m, only: Dirichlet_BCs_PDE, Neumann_homog_BCs, Robin_Neumann_homog_BCs
-    use transport_m, only: transport_1D_c, tpt_props_heterog_c, mesh_1D_Euler_homog_c, mesh_1D_Euler_heterog_c, BCs_t, & 
+    use transport_m, only: transport_1D_c, tpt_props_heterog_c, mesh_1D_Euler_homog_c, mesh_1D_Euler_heterog_c, & 
                             spatial_discr_c
+    use BCs_m, only: BCs_t
     implicit none
 
     class(transport_1D_c) :: this
+    character(len=*), intent(in) :: root !> root name for input files
     
     type(tpt_props_heterog_c) :: my_props_tpt
     class(spatial_discr_c), pointer :: my_mesh=>null()
@@ -22,7 +24,7 @@ subroutine initialise_transport_1D(this)
 !****************************************************************************************************************************************************
 !> Dimensionless form flag
     dimless=.false.
-    this%dimensionless=dimless
+    this%dimless=dimless
 !> Boundary conditions
     call my_BCs%read_BCs("BCs.dat")
     if (my_BCs%BCs_label(1).eq.1 .and. my_BCs%BCs_label(2).eq.1) then

@@ -11,7 +11,8 @@ subroutine initialise_transport_1D_transient_RT(this,root)
     use spatial_discr_1D_m, only: mesh_1D_Euler_homog_c, mesh_1D_Euler_heterog_c, spatial_discr_c
     use transport_transient_m, only: transport_1D_transient_c
     use transport_properties_heterog_m, only: tpt_props_heterog_c
-    use char_params_m, only: char_params_tpt_c
+    use char_params_m, only: char_params_c
+    use char_params_tpt_m, only: char_params_tpt_c
     use vectors_m, only: inf_norm_vec_real
     implicit none
 
@@ -39,7 +40,7 @@ subroutine initialise_transport_1D_transient_RT(this,root)
 !****************************************************************************************************************************************************
 !> Dimensionless form flag
     dimless=.false. !> esto habria que leerlo
-    this%dimensionless=dimless
+    this%dimless=dimless
  !> Uniform mesh
     !my_mesh=>my_homog_mesh
     allocate(mesh_1D_Euler_homog_c :: my_mesh)

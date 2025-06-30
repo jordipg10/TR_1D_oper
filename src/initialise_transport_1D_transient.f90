@@ -3,7 +3,7 @@ subroutine initialise_transport_1D_transient(this,root)
     use vectors_m, only: inf_norm_vec_real
     use transport_transient_m, only: transport_1D_transient_c
     use transport_stab_params_m
-    use char_params_m, only: char_params_tpt_c
+    use char_params_tpt_m, only: char_params_tpt_c
     implicit none
 
     class(transport_1D_transient_c) :: this
@@ -35,7 +35,7 @@ subroutine initialise_transport_1D_transient(this,root)
 !****************************************************************************************************************************************************
 !> Dimensionless form flag
     dimless=.false.
-    this%dimensionless=dimless
+    this%dimless=dimless
 !> Boundary conditions
     call my_BCs%read_BCs(root//'_BCs.dat')
     if (my_BCs%BCs_label(1) == 1 .and. my_BCs%BCs_label(2) == 1) then
@@ -113,7 +113,7 @@ subroutine initialise_transport_1D_transient(this,root)
 !> External concentration
     allocate(c_e(this%spatial_discr%Num_targets))
     c_e=0d0
-    call this%set_conc_ext(c_e)
+    call this%diff%set_conc_ext(c_e)
     call this%set_conc_r_flag()
 !> Initial concentration
     allocate(c0(this%spatial_discr%Num_targets))

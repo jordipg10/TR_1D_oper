@@ -15,8 +15,8 @@ subroutine prod_total_conc(this,A_mat,time)
     y0=sqrt(this%F_mat%diag)*this%conc_init
     b=this%source_term_PDE/sqrt(this%F_mat%diag)
     
-    if (.not. allocated(this%conc)) then
-        allocate(this%conc(n))
+    if (.not. allocated(this%diff%conc)) then
+        allocate(this%diff%conc(n))
     end if
     
     if (present(time)) then
@@ -34,7 +34,7 @@ subroutine prod_total_conc(this,A_mat,time)
                 sumj=sumj+A_mat%eigenvectors(i,j)*(exp(-A_mat%eigenvalues(j)*time)*sumk1+((1d0-exp(-A_mat%eigenvalues(j)*time))/&
                 A_mat%eigenvalues(j))*sumk2)
             end do
-            this%conc(i)=sumj/sqrt(this%F_mat%diag(i))
+            this%diff%conc(i)=sumj/sqrt(this%F_mat%diag(i))
         end do
     else
         do i=1,n
@@ -46,7 +46,7 @@ subroutine prod_total_conc(this,A_mat,time)
                 end do
                 sumj=sumj+A_mat%eigenvectors(i,j)*sumk/A_mat%eigenvalues(j)
             end do
-            this%conc(i)=sumj/sqrt(this%F_mat%diag(i))
+            this%diff%conc(i)=sumj/sqrt(this%F_mat%diag(i))
         end do
     end if
 end subroutine

@@ -7,7 +7,7 @@ module spatial_discr_m
         logical :: Num_targets_defined      !> TRUE if Num_targets defined, FALse otherwise
         integer(kind=4) :: targets_flag     !> 0: cells
                                             !> 1: interfaces
-        real(kind=8) :: measure
+        real(kind=8) :: measure             !> length in 1D, area in 2D, volume in 3D
         real(kind=8) :: init_point          !> initial point
         integer(kind=4) :: scheme           !> Spatial discretisation scheme:
                                                 !> 1: CFD
@@ -21,7 +21,7 @@ module spatial_discr_m
         procedure, public :: set_scheme
         procedure(read_mesh), public, deferred :: read_mesh
         procedure(get_mesh_size), public, deferred :: get_mesh_size
-        !procedure(get_init_point), public, deferred :: get_init_point
+        procedure(compute_dimless_mesh), public, deferred :: compute_dimless_mesh
         procedure(get_dim), public, deferred :: get_dim
         procedure(compute_measure), public, deferred :: compute_measure
         !procedure(compute_Num_targets), public, deferred :: compute_Num_targets
@@ -29,12 +29,11 @@ module spatial_discr_m
     end type
         
     abstract interface
-        !subroutine set_mesh_1D(this,Delta_x)
-        !>    import spatial_discr_c
-        !>    implicit none
-        !>    class(spatial_discr_c) :: this
-        !>    real(kind=8), intent(in) :: Delta_x
-        !end subroutine
+        subroutine compute_dimless_mesh(this,char_measure)
+        import spatial_discr_c
+        class(spatial_discr_c) :: this
+        real(kind=8), intent(in) :: char_measure !> characteristic measure (length, area, volume)
+        end subroutine
         
         subroutine read_mesh(this,filename)
             import spatial_discr_c

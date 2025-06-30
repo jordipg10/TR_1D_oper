@@ -55,10 +55,10 @@ subroutine write_chemistry(this,unit)
         write(unit,"(10x,*(ES15.5))") this%chem_syst%eq_reacts(i)%eq_cst
     end do
     write(unit,"(/,2x,'Global component matrix:'/)")
-    do i=1,this%chem_syst%speciation_alg%num_prim_species
-        write(unit,"(10x,*(F15.5))") (this%chem_syst%speciation_alg%comp_mat(i,j), &
-        j=1,this%chem_syst%speciation_alg%num_var_act_species)
-    end do
+    ! do i=1,this%chem_syst%speciation_alg%num_prim_species
+    !     write(unit,"(10x,*(F15.5))") (this%chem_syst%speciation_alg%comp_mat(i,j), &
+    !     j=1,this%chem_syst%speciation_alg%num_var_act_species)
+    ! end do
     write(unit,"(/,2x,'Concentration of recharge waters (in molalities): &
         (rows -> aqueous species in the same order as before, columns -> targets)'/)")
     do i=1,this%chem_syst%aq_phase%num_species

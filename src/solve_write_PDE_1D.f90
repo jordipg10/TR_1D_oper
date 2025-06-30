@@ -1,6 +1,6 @@
 subroutine solve_write_PDE_1D(this,Time_out)
 !> Calls subroutines that perform computations and writes results
-    use transport_transient_m, only: PDE_1D_c
+    use PDE_m, only: PDE_1D_c
     implicit none
     !> Variables
     class(PDE_1D_c) :: this !> PDE object

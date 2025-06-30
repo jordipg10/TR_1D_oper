@@ -22,7 +22,7 @@ subroutine write_diffusion_transient_1D(this,Time_out,output)
     Num_output=size(Time_out)
     write(file_out,"('diffusion_transient_dim',I1,'_n',I2,'.out')") this%spatial_discr%get_dim(), n
     open(unit=1,file=file_out,status='unknown')
-    if (this%dimensionless.eqv..true.) then
+    if (this%dimless.eqv..true.) then
         write(1,"(2x,'Dimensionless equation:',5x,'F*dc_D/dt_D = T*c_D + g_D',/)")
         select type (mesh=>this%spatial_discr)
         type is (spatial_discr_rad_c)
@@ -31,7 +31,8 @@ subroutine write_diffusion_transient_1D(this,Time_out,output)
             if (mesh%dim == 1) then
                 write(1,"(2x,'Length of domain:',F15.5/)") mesh%measure
             else
-                write(1,"(2x,'Radius:',F15.5/)") mesh%radius
+                write(1,"(2x,'R_max:',F15.5/)") mesh%r_max
+                write(1,"(2x,'R_min:',F15.5/)") mesh%r_min
             end if
         end select
         write(1,"(2x,'Number of cells:',I5/)") n
@@ -50,8 +51,8 @@ subroutine write_diffusion_transient_1D(this,Time_out,output)
             write(1,"(2x,'Scheme:',10x,'IFD'/)")
         end if
         write(1,"(2x,'Properties:'/)")
-        write(1,"(10x,'Porosity:',ES15.5,10x,'Dispersion:',ES15.5/)") this%diff_props_heterog%porosity(1), &
-        this%diff_props_heterog%dispersion(1)
+        write(1,"(10x,'Porosity:',ES15.5,10x,'Dispersion:',ES15.5/)") this%diff%diff_props_heterog%porosity(1), &
+        this%diff%diff_props_heterog%dispersion(1)
         if (this%sol_method == 1) then
             write(1,"(2x,'Method:',10x,'Numerical in space and time',/)")
             write(1,"(2x,'Dimensionless time step:'/)")
@@ -73,7 +74,7 @@ subroutine write_diffusion_transient_1D(this,Time_out,output)
         select type (mesh=>this%spatial_discr)
         type is (spatial_discr_rad_c)
             write(1,"(2x,'Characteristic parameters:'/)")
-            write(1,"(10x,'t_c:',ES15.5,10x,'r_c:',ES15.5/)") this%char_params%char_time, this%char_params%char_length
+            write(1,"(10x,'t_c:',ES15.5,10x,'r_c:',ES15.5/)") this%char_params%char_time, this%char_params%char_measure
         end select
     
         write(1,"(2x,'F:'/)") 
@@ -128,7 +129,7 @@ subroutine write_diffusion_transient_1D(this,Time_out,output)
             call this%prod_total_conc(A_mat)
             write(1,"(/,2x,'Cell',*(ES15.5),15x,'Limit'/)") (Time_out(k), k=1,Num_output)
             do i=1,n
-                write(1,"(2x,I4,*(F15.5),F15.5)") i,(output(i,k), k=1,Num_output), this%conc(i)
+                write(1,"(2x,I4,*(F15.5),F15.5)") i,(output(i,k), k=1,Num_output), this%diff%conc(i)
             end do
             allocate(bd_flux(Num_output))
             do k=1,Num_output
@@ -136,12 +137,13 @@ subroutine write_diffusion_transient_1D(this,Time_out,output)
                 do j=1,n
                     sum_flux=sum_flux+(A_mat%eigenvectors(n,j)**2)*exp(-A_mat%eigenvalues(j)*Time_out(k))/A_mat%eigenvalues(j)
                 end do
-                bd_flux(k)=(this%BCs%conc_inf*this%diff_props_heterog%dispersion(1)/this%char_params%char_length)*sum_flux*4d0/(&
-                Delta_r(n)**2)
+                bd_flux(k)=(this%BCs%conc_inf*this%diff%diff_props_heterog%dispersion(1)/this%char_params%char_measure)*&
+                    sum_flux*4d0/(&
+                    Delta_r(n)**2)
             end do
             write(1,"(/,2x,'Dimensionless boundary flux:',/)")
-            write(1,"(6x,*(ES15.5)/)") (bd_flux(k)*this%char_params%char_length/(this%BCs%conc_inf*&
-            this%diff_props_heterog%dispersion(1)), k=1,Num_output)
+            write(1,"(6x,*(ES15.5)/)") (bd_flux(k)*this%char_params%char_measure/(this%BCs%conc_inf*&
+            this%diff%diff_props_heterog%dispersion(1)), k=1,Num_output)
             c_m=this%BCs%conc_inf
             allocate(F_im(Num_output))
             do k=1,Num_output
@@ -149,7 +151,7 @@ subroutine write_diffusion_transient_1D(this,Time_out,output)
                 do j=1,n
                     sum_MRMT=sum_MRMT+((A_mat%eigenvectors(n,j)**2)/A_mat%eigenvalues(j))*exp(-A_mat%eigenvalues(j)*Time_out(k))
                 end do
-                F_im(k)=sum_MRMT*this%BCs%conc_inf*4d0*this%diff_props_heterog%dispersion(1)/(this%char_params%char_length*&
+                F_im(k)=sum_MRMT*this%BCs%conc_inf*4d0*this%diff%diff_props_heterog%dispersion(1)/(this%char_params%char_measure*&
                 Delta_r(n)**2)
             end do
             if (inf_norm_vec_real(F_im-bd_flux)>=tol) error stop "Fluxes are not equal"
@@ -157,13 +159,13 @@ subroutine write_diffusion_transient_1D(this,Time_out,output)
             do i=1,n
                 write(1,"(ES15.5)") A_mat%eigenvalues(i)/this%char_params%char_time
             end do
-            imm_por=4d0*this%diff_props_heterog%porosity(1)*this%char_params%char_length*sum((A_mat%eigenvectors(n,:)**2)/(&
+            imm_por=4d0*this%diff%diff_props_heterog%porosity(1)*this%char_params%char_measure*sum((A_mat%eigenvectors(n,:)**2)/(&
             A_mat%eigenvalues**2))/(Delta_r(n)**2)
             !write(1,"(/,2x,'Porosidad inmovil para que probabilidades sumen 1:'/)")
             !write(1,"(ES15.5)") imm_por
             write(1,"(/,2x,'Probabilities:'/)")
             do i=1,n
-                write(1,"(ES15.5)") 4d0*this%diff_props_heterog%porosity(1)*this%char_params%char_length*(&
+                write(1,"(ES15.5)") 4d0*this%diff%diff_props_heterog%porosity(1)*this%char_params%char_measure*(&
                 A_mat%eigenvectors(n,i)**2)/(imm_por*(Delta_r(n)**2)*(A_mat%eigenvalues(i)**2))
             end do
         end if

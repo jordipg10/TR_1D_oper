@@ -3,8 +3,8 @@ subroutine solve_PDE_1D_stat(this)
     
     !> this: 1D PDE object
         
-    use transport_m, only: transport_1D_c, PDE_1D_c, diffusion_1D_c, mass_balance_error_ADE_stat_Dirichlet_discharge,&
-         tridiag_matrix_c, Thomas
+    use transport_m, only: transport_1D_c, PDE_1D_c, diffusion_1D_c, mass_balance_error_ADE_stat_Dirichlet_discharge
+    use metodos_sist_lin_m, only: tridiag_matrix_c, Thomas
     implicit none
     
     !> Variables

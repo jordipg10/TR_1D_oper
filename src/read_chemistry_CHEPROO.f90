@@ -223,9 +223,7 @@ subroutine read_chemistry_CHEPROO(this,root,path_DB,unit_chem_syst_file,unit_loc
 !> We set reactive zones attribute
     !call this%set_reactive_zones(reactive_zones)
 !> Target waters
-    open(unit_target_waters_init_file,file=root//'_tar_wat.dat',status='old',action='read')
-    call this%read_target_waters_init(unit_target_waters_init_file,init_sol_zones,init_gas_zones,nsrz,ngrz)
-    close(unit_target_waters_init_file)
+    call this%read_target_waters_init(root,init_sol_zones,init_gas_zones,nsrz,ngrz)
 !> Output data
     call this%chem_out_options%read_chem_out_options(root,unit_output_file,this%target_waters)
 end subroutine

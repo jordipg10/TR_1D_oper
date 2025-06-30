@@ -22,7 +22,7 @@ function mass_balance_error_ADE_trans_PMF_recharge(this,conc_old,conc_new,Delta_
     
     sum_r=0d0
     do i=1,n
-        sum_r=sum_r+this%tpt_props_heterog%source_term(i)*this%conc_ext(i)
+        sum_r=sum_r+this%tpt_props_heterog%source_term(i)*this%diff%conc_ext(i)
     end do
     sum_r=sum_r*Delta_x*Delta_t
     

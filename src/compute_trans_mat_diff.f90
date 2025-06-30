@@ -15,7 +15,7 @@ subroutine compute_trans_mat_diff(this)
     call this%allocate_trans_mat()
     select type (mesh=>this%spatial_discr)
     type is (spatial_discr_rad_c)
-        if (this%dimensionless.eqv..true.) then
+        if (this%dimless.eqv..true.) then
             do i=1,n-1
                 r_i_12=sum(mesh%Delta_r(1:i))
                 this%trans_mat%sub(i)=(r_i_12**(mesh%dim-1))/(0.5*(mesh%Delta_r(i)+mesh%Delta_r(i+1)))

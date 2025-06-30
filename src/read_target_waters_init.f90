@@ -1,11 +1,11 @@
 !> Reads initial target waters and their associated target solids and/or gases
 !> We assume file has already been opened
-subroutine read_target_waters_init(this,unit,init_sol_types,init_gas_types,nsrz,ngrz)
+subroutine read_target_waters_init(this,root,init_sol_types,init_gas_types,nsrz,ngrz)
     use chemistry_Lagr_m, only: chemistry_c, aqueous_chemistry_c, solid_chemistry_c, gas_chemistry_c, reactive_zone_c, &
         mineral_zone_c
     implicit none
     class(chemistry_c) :: this
-    integer(kind=4), intent(in) :: unit !> file
+    character(len=*), intent(in) :: root !> root name of the file
     !type(aqueous_chemistry_c), intent(in) :: water_types(:) !> water types
     type(solid_chemistry_c), intent(in) :: init_sol_types(:) !> initial solid zones
     type(gas_chemistry_c), intent(in) :: init_gas_types(:) !> initial gas zones
@@ -15,7 +15,7 @@ subroutine read_target_waters_init(this,unit,init_sol_types,init_gas_types,nsrz,
     !logical, intent(out) :: CV_flag !> TRUE if converges, FALSE otherwise
     
     integer(kind=4) :: ind_ext,ind_dom,counter_swap,ind,i,j,k,m,nwtype,num_tar_wat,tar_wat_ind,wtype,istype,nstype,nbwtype,bwtype,&
-        mix_wat_ind,ngzns,igzn,num_tar_wat_rech,aux_col,flag_wat_type,num_tar_wat_bd,ind_bd
+        mix_wat_ind,ngzns,igzn,num_tar_wat_rech,aux_col,flag_wat_type,num_tar_wat_bd,ind_bd,unit
     real(kind=8), allocatable :: c_nc(:),u_init(:,:),c1_init(:),c2_init(:),c2_ig(:),gamma_2aq(:)
     integer(kind=4) :: aux_istype, aux_igzn
     character(len=256) :: label,str
@@ -63,6 +63,9 @@ subroutine read_target_waters_init(this,unit,init_sol_types,init_gas_types,nsrz,
     ind_Ext=0 !> counter recharge waters
     ind_bd=0 !> counter boundary waters
     ind_dom=0 !> counter domain waters
+
+    unit=5 !> arbitrary unit number
+    open(unit, file=root//'_tar_wat.dat', status='old', action='read') !> we open the file with target waters associated with their solids and/or gases
     do
         read(unit,*) label
         if (label=='end') then
@@ -314,9 +317,11 @@ subroutine read_target_waters_init(this,unit,init_sol_types,init_gas_types,nsrz,
             continue
         end if
     end do
+    close(unit) !> we close the file with target waters associated with their solids and/or gases
     this%target_waters_init=this%target_waters
     this%target_solids_init=this%target_solids
     if (allocated(this%target_gases)) then
         this%target_gases_init=this%target_gases
     end if
+    call this%write_aq_comps_init(root) !> write aqueous components of initial target waters
 end subroutine

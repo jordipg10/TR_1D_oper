@@ -1,10 +1,14 @@
-subroutine initialise_diffusion_1D(this)
+subroutine initialise_diffusion_1D(this,root)
     use BCs_subroutines_m, only: Dirichlet_BCs_PDE, Neumann_homog_BCs, Robin_Neumann_homog_BCs
-    use diffusion_m, only: diffusion_1D_c, diff_props_heterog_c, spatial_discr_c, mesh_1D_Euler_homog_c, mesh_1D_Euler_heterog_c,&
-    spatial_discr_rad_c, BCs_t
+    use diffusion_m, only: diffusion_1D_c
+    use diff_props_heterog_m, only: diff_props_heterog_c
+    use spatial_discr_rad_m, only: spatial_discr_rad_c, spatial_discr_c
+    use spatial_discr_1D_m, only: mesh_1D_Euler_homog_c, mesh_1D_Euler_heterog_c
+    use BCs_m, only: BCs_t
     implicit none
 
     class(diffusion_1D_c) :: this
+    character(len=*), intent(in) :: root !> root name for input files
     
     type(diff_props_heterog_c) :: my_props_diff
     class(spatial_discr_c), pointer :: my_mesh=>null()
@@ -24,23 +28,23 @@ subroutine initialise_diffusion_1D(this)
 !****************************************************************************************************************************************************
 !> Dimensionless form flag
     dimless=.false.
-    this%dimensionless=dimless
+    this%dimless=dimless
 !> Boundary conditions
-    call my_BCs%read_BCs("BCs.dat")
+    call my_BCs%read_BCs(root//"_BCs.dat")
     if (my_BCs%BCs_label(1).eq.1 .and. my_BCs%BCs_label(2).eq.1) then
-        call my_BCs%read_Dirichlet_BCs("Dirichlet_BCs.dat")
-        call my_BCs%read_flux_inf("flux_inflow.dat")
+        call my_BCs%read_Dirichlet_BCs(root//"_Dirichlet_BCs.dat")
+        call my_BCs%read_flux_inf(root//"_flux_inflow.dat")
     else if (my_BCs%BCs_label(1).eq.3) then
-        call my_BCs%read_Robin_BC_inflow("Robin_BC_inflow.dat")
+        call my_BCs%read_Robin_BC_inflow(root//"_Robin_BC_inflow.dat")
     end if
     call this%set_BCs(my_BCs)
  !> Uniform mesh
     my_mesh=>my_radial_mesh
-    call my_mesh%read_mesh("Delta_r_homog.dat")
+    call my_mesh%read_mesh(root//"_Delta_r_homog.dat")
     call this%set_spatial_discr(my_mesh)
     Num_cells=this%spatial_discr%Num_targets-this%spatial_discr%targets_flag
 !> Diffusion properties
-        call my_props_diff%read_props("diff_props.dat",this%spatial_discr)
+        call my_props_diff%read_props(root//"_diff_props.dat",this%spatial_discr)
         call my_props_diff%set_source_term_flag(this%BCs)
         call this%set_diff_props_heterog(my_props_diff)
 !****************************************************************************************************************************************************

@@ -122,15 +122,16 @@ module MRMT_m
             if (abs(prob_tot-1d0)>=epsilon) error stop "Probabilities must sum 1"
         end subroutine
         
-        subroutine run_PDE_MRMT(this)
+        subroutine run_PDE_MRMT(this,root)
             implicit none
             class(MRMT_c) :: this
+            character(len=*), intent(in) :: root
             
             integer(kind=4) :: i
             real(kind=8) :: theta
             real(kind=8), allocatable :: MRMT_output(:,:)
             
-            call this%PDE%main_PDE()
+            call this%PDE%main_PDE(root)
             select type (PDE=>this%PDE)
             class is (PDE_1D_transient_c)
                 !select type (time_discr=>PDE%time_discr)
@@ -152,7 +153,7 @@ module MRMT_m
                 !end select
                 allocate(MRMT_output(PDE%spatial_discr%Num_targets,2))
                 call this%solve_PDE_EI_Delta_t_homog_MRMT(theta,[0d0,PDE%time_discr%Final_time],MRMT_output)
-                open(unit=46,file='MRMT.out',status='unknown')
+                open(unit=46,file=root//'_MRMT.out',status='unknown')
                 write(46,"(2x,'Mobile concentrations:',/)")
                 do i=1,PDE%spatial_discr%Num_targets
                     write(46,*) this%conc_mob(i)

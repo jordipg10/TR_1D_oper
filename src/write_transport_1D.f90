@@ -14,13 +14,13 @@ subroutine write_transport_1D(this)
     n=this%spatial_discr%Num_targets-this%spatial_discr%targets_flag !> number of cells
     
     if (this%spatial_discr%scheme.eq.1) then
-        if (this%dimensionless.eqv..true.) then
+        if (this%dimless.eqv..true.) then
             write(file_out,"('transport_1D_CFDS_adim.out')")
         else
             write(file_out,"('transport_1D_CFDS.out')")
         end if
     else if (this%spatial_discr%scheme.eq.2) then
-        if (this%dimensionless.eqv..true.) then
+        if (this%dimless.eqv..true.) then
             write(file_out,"('transport_1D_IFDS_adim.out')")
         else
             write(file_out,"('transport_1D_IFDS.out')")
@@ -49,7 +49,7 @@ subroutine write_transport_1D(this)
         write(1,"(/,2x,'Scheme:',10x,'Upwind',/)")
     end if
 
-    if (this%dimensionless.eqv..false.) then
+    if (this%dimless.eqv..false.) then
         write(1,"(2x,'Properties:'/)")
         write(1,"(10x,'Dispersion:',/)")
         do i=1,n

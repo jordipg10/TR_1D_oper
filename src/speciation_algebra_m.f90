@@ -107,7 +107,8 @@ module speciation_algebra_m
             end if
             allocate(this%comp_mat_aq(this%num_aq_prim_species,this%num_aq_var_act_species))
             this%comp_mat_aq(:,1:this%num_aq_prim_species)=id_matrix(this%num_aq_prim_species)
-            this%comp_mat_aq(:,this%num_aq_prim_species+1:this%num_aq_var_act_species)=this%comp_mat(:,this%num_prim_species+1:this%num_prim_species+this%num_aq_sec_var_act_species)
+            this%comp_mat_aq(:,this%num_aq_prim_species+1:this%num_aq_var_act_species)=this%comp_mat(:,this%num_prim_species+1:&
+                this%num_prim_species+this%num_aq_sec_var_act_species)
         end subroutine
         
         subroutine compute_comp_mat_cst_act(this) !> computes component matrix with constant activity species (Saaltink et al, 1998)

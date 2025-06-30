@@ -26,6 +26,8 @@ module transport_transient_m
         procedure, public :: read_transport_data_WMA
         procedure, public :: write_transport_data_WMA
         procedure, public :: fund_sol_tpt_eqn_1D
+        procedure, public :: compute_mixing_ratios_Delta_t_homog
+        procedure, public :: solve_tpt_EE_Delta_t_homog
     end type
     
     interface
@@ -41,10 +43,11 @@ module transport_transient_m
             class(transport_1D_transient_c) :: this
         end subroutine
         
-        subroutine initialise_transport_1D_transient(this)
+        subroutine initialise_transport_1D_transient(this,root)
             import transport_1D_transient_c
             implicit none
             class(transport_1D_transient_c) :: this
+            character(len=*), intent(in) :: root !> root name for input files
         end subroutine
         
         subroutine initialise_transport_1D_transient_RT(this,root)
@@ -166,6 +169,33 @@ module transport_transient_m
             class(transport_1D_transient_c), intent(in) :: this                 !> 1D transient transport object                         
             integer(kind=4), intent(in) :: unit                                 !> unit of output file
         end subroutine
+        
+        subroutine compute_mixing_ratios_Delta_t_homog(this,A_mat_lumped)
+            import transport_1D_transient_c
+            import diag_matrix_c
+            implicit none
+            class(transport_1D_transient_c) :: this
+            !real(kind=8), intent(in) :: theta
+            type(diag_matrix_c), intent(out), optional :: A_mat_lumped
+        end subroutine
+        
+        subroutine solve_tpt_EE_Delta_t_homog(this,Time_out,output)
+            !> Solves 1D transient PDE with homogeneous time step using Lagr explicit method 
+    
+            !> this: transient PDE object
+            !> Time_out: output time values
+            !> output: concentration vs time output
+    
+            !> Results at all intermediate steps are written in binary mode in file conc_binary_EE.txt
+    
+            !use BCs_subroutines_m, only: Dirichlet_BCs_PDE, Neumann_homog_BCs, Robin_Neumann_homog_BCs
+            import transport_1D_transient_c
+    
+            !> Variables
+            class(transport_1D_transient_c) :: this
+            real(kind=8), intent(in) :: Time_out(:)
+            real(kind=8), intent(out) :: output(:,:)
+        end subroutine
     end interface
     
     contains
@@ -190,11 +220,11 @@ module transport_transient_m
             
             integer(kind=4) :: i
             
-            allocate(this%conc_r_flag(this%spatial_discr%Num_targets))
-            this%conc_r_flag=0
+            allocate(this%diff%conc_r_flag(this%spatial_discr%Num_targets))
+            this%diff%conc_r_flag=0
             do i=1,this%spatial_discr%Num_targets-this%spatial_discr%targets_flag
                 if (this%tpt_props_heterog%source_term(i)>0) then
-                    this%conc_r_flag(i)=1
+                    this%diff%conc_r_flag(i)=1
                 end if
             end do
         end subroutine

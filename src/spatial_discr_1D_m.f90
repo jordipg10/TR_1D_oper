@@ -14,6 +14,7 @@ module spatial_discr_1D_m
         procedure, private :: compute_Num_targets
         procedure, public :: get_dim=>get_dim_1D_homog
         procedure, public :: refine_mesh=>refine_mesh_homog
+        procedure, public :: compute_dimless_mesh=>compute_dimless_mesh_1D_homog
     end type
     
     type, public, extends(spatial_discr_c) :: mesh_1D_Euler_heterog_c
@@ -25,6 +26,7 @@ module spatial_discr_1D_m
         procedure, public :: compute_measure=>compute_measure_heterog
         procedure, public :: get_dim=>get_dim_1D_heterog
         procedure, public :: refine_mesh=>refine_mesh_heterog
+        procedure, public :: compute_dimless_mesh=>compute_dimless_mesh_1D_heterog
     end type
     
     interface
@@ -150,5 +152,23 @@ module spatial_discr_1D_m
             dim=1
         end function
         
+        subroutine compute_dimless_mesh_1D_homog(this,char_measure)
+        implicit none
+        class(mesh_1D_Euler_homog_c) :: this
+        real(kind=8), intent(in) :: char_measure !> Characteristic measure for dimensionless form
+        !if (this%dimless) then
+            this%Delta_x=this%Delta_x/char_measure
+            this%measure=this%measure/char_measure
+            this%init_point=this%init_point/char_measure
+        !end if
+        end subroutine
         
+        subroutine compute_dimless_mesh_1D_heterog(this,char_measure)
+        implicit none
+        class(mesh_1D_Euler_heterog_c) :: this
+        real(kind=8), intent(in) :: char_measure !> Characteristic measure for dimensionless form
+        this%Delta_x=this%Delta_x/char_measure
+        this%measure=this%measure/char_measure
+        this%init_point=this%init_point/char_measure
+        end subroutine
 end module

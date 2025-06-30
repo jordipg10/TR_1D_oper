@@ -5,6 +5,7 @@ module BCs_subroutines_m
     use spatial_discr_1D_m, only: mesh_1D_Euler_homog_c
     use transport_m, only: transport_1D_c
     use transport_transient_m, only: transport_1D_transient_c, diffusion_1D_transient_c
+    use flow_transient_m, only: flow_transient_c
     implicit none
     save
     contains
@@ -127,7 +128,16 @@ module BCs_subroutines_m
             type is (diffusion_1D_transient_c)
                 select type (mesh=>this%spatial_discr)
                 type is (spatial_discr_rad_c)
-                    if (this%dimensionless.eqv..true.) then
+                    if (this%dimless.eqv..true.) then
+                        this%trans_mat%diag(n)=this%trans_mat%diag(n)-2d0/mesh%Delta_r(n) !> dimensionless
+                        this%source_term_PDE(n)=2d0/mesh%Delta_r(n) !> dimensionless
+                        this%bd_mat(2)=2d0/mesh%Delta_r(n) !> dimensionless
+                    end if
+                end select
+            type is (flow_transient_c)
+                select type (mesh=>this%spatial_discr)
+                type is (spatial_discr_rad_c)
+                    if (this%dimless.eqv..true.) then
                         this%trans_mat%diag(n)=this%trans_mat%diag(n)-2d0/mesh%Delta_r(n) !> dimensionless
                         this%source_term_PDE(n)=2d0/mesh%Delta_r(n) !> dimensionless
                         this%bd_mat(2)=2d0/mesh%Delta_r(n) !> dimensionless

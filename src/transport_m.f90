@@ -1,9 +1,9 @@
 ﻿!> 1D steady-state transport equation:
 !> 0 = -q*c' + D*c'' + r*(c_r-c)
 module transport_m
-    use diffusion_m
+    use diffusion_m, only: diffusion_1D_c, PDE_1D_c
     use transport_properties_heterog_m, only: tpt_props_heterog_c
-    use spatial_discr_1D_m, only: mesh_1D_Euler_homog_c, mesh_1D_Euler_heterog_c
+    use spatial_discr_1D_m, only: mesh_1D_Euler_homog_c, mesh_1D_Euler_heterog_c, spatial_discr_c
     implicit none
     save
     type, public, extends(diffusion_1D_c) :: transport_1D_c
@@ -27,10 +27,11 @@ module transport_m
             class(transport_1D_c) :: this
         end subroutine
         
-        subroutine initialise_transport_1D(this)
+        subroutine initialise_transport_1D(this,root)
             import transport_1D_c
             implicit none
             class(transport_1D_c) :: this
+            character(len=*), intent(in) :: root !> root name for input files
         end subroutine
         
         subroutine write_transport_1D(this,Time_out,output)

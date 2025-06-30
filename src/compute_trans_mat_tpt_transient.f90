@@ -21,7 +21,7 @@ subroutine compute_trans_mat_tpt_transient(this)
     
     select type (mesh=>this%spatial_discr)
     type is (mesh_1D_Euler_homog_c)
-        if (mesh%targets_flag.eq.0 .and. this%dimensionless.eqv..true.) then
+        if (mesh%targets_flag.eq.0 .and. this%dimless.eqv..true.) then
             if (mesh%scheme.eq.1) then
                 this%trans_mat%sub=1d0/(mesh%Delta_x**2) + 1d0/(2*mesh%Delta_x)
                 this%trans_mat%super=1d0/(mesh%Delta_x**2) - 1d0/(2*mesh%Delta_x)
@@ -41,7 +41,7 @@ subroutine compute_trans_mat_tpt_transient(this)
             else
                 error stop "Scheme not implemented yet"
             end if
-        else if (mesh%targets_flag.eq.0 .and. this%dimensionless.eqv..false.) then !> non-dimensionless cells
+        else if (mesh%targets_flag.eq.0 .and. this%dimless.eqv..false.) then !> non-dimensionless cells
             if (mesh%scheme.eq.1) then !> centered finite differences
                 this%trans_mat%sub=this%tpt_props_heterog%dispersion(2:n)/(mesh%Delta_x**2) + this%tpt_props_heterog%flux(2:n)/&
                 (2*mesh%Delta_x)
@@ -69,7 +69,7 @@ subroutine compute_trans_mat_tpt_transient(this)
             else
                 error stop "Scheme not implemented yet"
             end if
-        else if (mesh%targets_flag.eq.1 .and. this%dimensionless.eqv..false. .and. this%tpt_props_heterog%homog_flag.eqv..true.) &
+        else if (mesh%targets_flag.eq.1 .and. this%dimless.eqv..false. .and. this%tpt_props_heterog%homog_flag.eqv..true.) &
             then
             this%trans_mat%sub=this%tpt_props_heterog%dispersion(1)/(mesh%Delta_x**2) + &
             this%tpt_props_heterog%flux(1)/(2*mesh%Delta_x)

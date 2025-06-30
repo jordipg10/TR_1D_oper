@@ -181,12 +181,12 @@ subroutine initialise_conc_anal(this,icon,n_icon,indices_constrains,ctot,niter,C
     call this%compute_alkalinity()
 !> We write initial concentrations Python
     !if (present(path_py)) then
-        open(999,file='C:\Users\user2319\OneDrive\Documentos\IDAEA\python\c1_init_wt_anal.dat')
+        open(999,file='C:\Users\jordi\OneDrive\Documentos\IDAEA\python\c1_init_wt_anal.dat')
         do i=1,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
             write(999,"(ES15.5)") c1(i)
         end do
         close(999)
-        open(9999,file='C:\Users\user2319\OneDrive\Documentos\IDAEA\python\c2_init_wt_anal.dat')
+        open(9999,file='C:\Users\jordi\OneDrive\Documentos\IDAEA\python\c2_init_wt_anal.dat')
         do i=1,this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions
             write(9999,"(ES15.5)") c2_new(i)
         end do

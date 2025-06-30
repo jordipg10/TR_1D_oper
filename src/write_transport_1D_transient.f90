@@ -18,13 +18,13 @@ subroutine write_transport_1D_transient(this,Time_out,output)
     n=this%spatial_discr%Num_targets
     Num_output=size(Time_out)
     if (this%spatial_discr%scheme.eq.1) then
-        if (this%dimensionless.eqv..true.) then
+        if (this%dimless.eqv..true.) then
             write(file_out,"('transport_1D_trans_CFDS_adim.out')")
         else
             write(file_out,"('transport_1D_trans_CFDS.out')")
         end if
     else if (this%spatial_discr%scheme.eq.2) then
-        if (this%dimensionless.eqv..true.) then
+        if (this%dimless.eqv..true.) then
             write(file_out,"('transport_1D_trans_IFDS_adim.out')")
         else
             write(file_out,"('transport_1D_trans_IFDS.out')")
@@ -74,7 +74,7 @@ subroutine write_transport_1D_transient(this,Time_out,output)
         write(1,"(2x,'Integration method:',10x,'RKF45',/)")
     end if
     write(1,"(2x,'Linear system:',5x,'A*c^(k+1) = B*c^k + f',/)")
-    if (this%dimensionless.eqv..false.) then
+    if (this%dimless.eqv..false.) then
         write(1,"(2x,'Properties:'/)")
         write(1,"(10x,'Porosity:',/)")
         do i=1,n-this%spatial_discr%targets_flag
@@ -144,7 +144,7 @@ subroutine write_transport_1D_transient(this,Time_out,output)
         else
             write(1,"(/,2x,'Cell',2ES20.5/)") Time_out(1), this%time_discr%Final_time
             do i=1,this%spatial_discr%Num_targets-this%spatial_discr%targets_flag
-                write(1,"(2x,I5,2ES20.10)") i, this%conc_init(i), this%conc(i)
+                write(1,"(2x,I5,2ES20.10)") i, this%conc_init(i), this%diff%conc(i)
             end do
         end if
     else

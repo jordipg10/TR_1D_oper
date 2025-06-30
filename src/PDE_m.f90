@@ -12,10 +12,11 @@ module PDE_m
         class(spatial_discr_c), pointer :: spatial_discr !> spatial discretisation (polymorphic variable)
         type(BCs_t) :: BCs !> Boundary conditions
         type(tridiag_matrix_c) :: trans_mat !> Transition matrix (T) (tridiagonal)
-        type(diag_matrix_c) :: rech_mat !> Recharge matrix (E) (diagonal)
+        type(diag_matrix_c) :: rech_mat !> Recharge matrix (R) (diagonal)
+        type(real_array_c) :: ext_mat !> external matrix (E) (non-square)
         real(kind=8), allocatable :: bd_mat(:) !> Boundary matrix (B) (dim<=2)
         real(kind=8), allocatable :: source_term_PDE(:) !> g
-        logical :: dimensionless !> Dimensionless PDE
+        logical :: dimless !> Dimensionless PDE flag
         integer(kind=4) :: sol_method   !> 1: Numerical
                                         !> 2: Eigendecomposition
     contains
@@ -36,12 +37,13 @@ module PDE_m
     !> Computations
         procedure(compute_trans_mat_PDE), public, deferred :: compute_trans_mat_PDE
         procedure(write_PDE_1D), public, deferred :: write_PDE_1D
-        procedure, public :: compute_source_term_PDE
-        procedure, public :: compute_rech_mat_PDE
-        procedure, public :: solve_PDE_1D
+        procedure(compute_source_term_PDE), public, deferred :: compute_source_term_PDE
+        procedure(compute_rech_mat_PDE), public, deferred :: compute_rech_mat_PDE
+        !procedure, public :: compute_rech_mat_PDE
+        procedure(solve_PDE_1D), public, deferred :: solve_PDE_1D
         procedure, public :: solve_write_PDE_1D
         procedure, public :: main_PDE
-        procedure, public :: solve_PDE_1D_stat
+        !procedure, public :: solve_PDE_1D_stat
     end type
 !****************************************************************************************************************************************************
     abstract interface
@@ -50,9 +52,10 @@ module PDE_m
             class(PDE_1D_c) :: this
         end subroutine
         
-        subroutine initialise_PDE(this)
+        subroutine initialise_PDE(this,root)
             import PDE_1D_c
             class(PDE_1D_c) :: this
+            character(len=*), intent(in) :: root
         end subroutine
         
         
@@ -62,13 +65,11 @@ module PDE_m
             real(kind=8), intent(in) :: Time_out(:)
             real(kind=8), intent(in) :: output(:,:)
         end subroutine
-    end interface
-!****************************************************************************************************************************************************
-    interface
-        subroutine compute_source_term_PDE(this,k)
+        
+        subroutine compute_source_term_PDE(this)
             import PDE_1D_c
             class(PDE_1D_c) :: this
-            integer(kind=4), intent(in), optional :: k
+            !integer(kind=4), intent(in), optional :: k
         end subroutine
         
         subroutine compute_rech_mat_PDE(this)
@@ -83,6 +84,14 @@ module PDE_m
             real(kind=8), intent(in) :: Time_out(:)
             real(kind=8), intent(out) :: output(:,:)
         end subroutine
+    end interface
+!****************************************************************************************************************************************************
+    interface
+        
+        
+        
+        
+        
         
         subroutine solve_PDE_1D_stat(this)
             import PDE_1D_c
@@ -95,9 +104,10 @@ module PDE_m
             real(kind=8), intent(in) :: Time_out(:)
         end subroutine
         
-        subroutine main_PDE(this)
+        subroutine main_PDE(this,root)
             import PDE_1D_c
             class(PDE_1D_c) :: this
+            character(len=*), intent(in) :: root
         end subroutine
     end interface
 !****************************************************************************************************************************************************

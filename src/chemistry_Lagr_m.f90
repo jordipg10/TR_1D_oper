@@ -98,6 +98,7 @@ module chemistry_Lagr_m
         procedure, public :: initialise_chemistry
     !> Write
         procedure, public :: write_chemistry
+        procedure, public :: write_aq_comps_init
     !> Solve
         procedure, public :: solve_reactive_mixing_lump !> main solver
         procedure, public :: solve_reactive_mixing_ideal_cons !> main solver
@@ -185,7 +186,8 @@ module chemistry_Lagr_m
             class(real_array_c), intent(inout) :: mixing_ratios_Rk
         end subroutine
 
-        subroutine solve_reactive_mixing_cons(this,root,mixing_ratios_conc,mixing_ratios_Rk_init,mixing_waters_indices,mixing_waters_indices_dom,time_discr,&
+        subroutine solve_reactive_mixing_cons(this,root,mixing_ratios_conc,mixing_ratios_Rk_init,mixing_waters_indices,&
+            mixing_waters_indices_dom,time_discr,&
             int_method_chem_reacts,mixing_ratios_Rk)
             import chemistry_c
             import real_array_c
@@ -379,7 +381,7 @@ module chemistry_Lagr_m
             class(aqueous_chemistry_c), intent(in) :: initial_water_types(:)
         end subroutine
         
-        subroutine read_target_waters_init(this,unit,init_sol_types,init_gas_types,nsrz,ngrz)
+        subroutine read_target_waters_init(this,root,init_sol_types,init_gas_types,nsrz,ngrz)
             import chemistry_c
             import aqueous_chemistry_c
             import solid_chemistry_c
@@ -388,7 +390,8 @@ module chemistry_Lagr_m
             !import aq_phase_c
             implicit none
             class(chemistry_c) :: this
-            integer(kind=4), intent(in) :: unit !> file
+            character(len=*), intent(in) :: root
+            !integer(kind=4), intent(in) :: unit !> file
             !class(aqueous_chemistry_c), intent(in) :: init_water_types(:)
             !class(aqueous_chemistry_c), intent(in) :: bd_water_types(:)
             !type(aqueous_chemistry_c), intent(in) :: water_types(:)
@@ -1057,7 +1060,7 @@ module chemistry_Lagr_m
         subroutine set_target_waters_wat_types(this,ind_wat_types)
         implicit none
         class(chemistry_c) :: this
-        integer(kind=4), intent(in) :: ind_wat_types(:) !> indices of water types (dim=nº target waters)
+        integer(kind=4), intent(in) :: ind_wat_types(:) !> indices of water types (dim=nï¿½ target waters)
         integer(kind=4) :: i !> loop index
         do i=1,this%num_target_waters
             this%target_waters(i)=this%wat_types(ind_wat_types(i))
@@ -1080,7 +1083,7 @@ module chemistry_Lagr_m
         subroutine set_target_waters_target_solids(this,ind_tar_sol)
         implicit none
         class(chemistry_c) :: this
-        integer(kind=4), intent(in) :: ind_tar_sol(:) !> indices of target solids (dim=nº target waters)
+        integer(kind=4), intent(in) :: ind_tar_sol(:) !> indices of target solids (dim=nï¿½ target waters)
         
         integer(kind=4) :: i !> loop index
         
@@ -1096,7 +1099,7 @@ module chemistry_Lagr_m
         subroutine set_target_solids_materials(this,ind_materials)
         implicit none
         class(chemistry_c) :: this
-        integer(kind=4), intent(in) :: ind_materials(:) !> indices of materials (dim=nº target solids)
+        integer(kind=4), intent(in) :: ind_materials(:) !> indices of materials (dim=nï¿½ target solids)
 
         integer(kind=4) :: i !> loop index
 
@@ -1145,4 +1148,29 @@ module chemistry_Lagr_m
             aq_comps_wat_types(:,i)=this%wat_types(i)%get_u_aq() !> we get the aqueous components of each water type
         end do
         end function
-end module
+
+        subroutine write_aq_comps_init(this,root)
+        implicit none
+        class(chemistry_c) :: this
+        character(len=*), intent(in) :: root !> root of the file name
+
+        real(kind=8), allocatable :: u_aq_init(:,:) !> aqueous components of initial target waters
+        integer(kind=4) :: i !> loop index
+        integer(kind=4) :: num_aq_comps !> number of aqueous components in the chemical system
+        character(len=256) :: filename !> file name
+
+        num_aq_comps=this%get_num_aq_comps() !> we get the number of aqueous components in the chemical system
+        allocate(u_aq_init(num_aq_comps,this%num_target_waters)) !> we allocate the aqueous components of initial target waters
+        filename = trim(root) // "_u_aq_init.dat"
+        open(unit=10, file=filename, status='unknown', action='write', form='formatted')
+        !> Deberias usar solo 1 bucle en vez de 2
+        do i=1,this%num_target_waters
+            u_aq_init(:,i)=this%target_waters_init(i)%get_u_aq() !> we get the aqueous components of each water type
+            !write(10,"(2x,*(ES15.5))") u_aq_init(:,i) !> we write the aqueous components of each water type
+        end do
+        do i=1,num_aq_comps
+            write(10,"(*(ES15.5))") u_aq_init(i,:) !> we write the aqueous components of each water type
+        end do
+        close(10)
+        end subroutine
+end module chemistry_Lagr_m
