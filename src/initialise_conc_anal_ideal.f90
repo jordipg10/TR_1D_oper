@@ -118,18 +118,6 @@ subroutine initialise_conc_anal_ideal(this,icon,n_icon,indices_constrains,ctot,n
     !call this%compute_molarities() !> we change units to molarities
     call this%compute_alkalinity()
     !call this%compute_activities_diss_solids()
-!> We write initial concentrations Python in molalities
-    open(999,file='C:\Users\user2319\OneDrive\Documentos\IDAEA\python\c1_init_wt_anal.dat')
-    do i=1,this%solid_chemistry%reactive_zone%speciation_alg%num_prim_species
-        write(999,"(ES15.5)") c1(i)
-    end do
-    close(999)
-    open(9999,file='C:\Users\user2319\OneDrive\Documentos\IDAEA\python\c2_init_wt_anal.dat')
-    do i=1,this%solid_chemistry%reactive_zone%speciation_alg%num_eq_reactions
-        write(9999,"(ES15.5)") c2(i)
-    end do
-    close(9999)
-    !call this%compute_molalities()
 !> Post-process
     if (associated(this%gas_chemistry)) then
         nullify(this%gas_chemistry)
