@@ -38,14 +38,15 @@ program main
             call my_tpt_trans%initialise_transport_1D_transient_RT(root_trim)
         !> we allocate transport arrays
             call my_tpt_trans%allocate_arrays_PDE_1D()
-            call my_tpt_trans%allocate_conc()
+            !call my_tpt_trans%allocate_conc()
         !> we compute transport arrays, including mixing ratios, and we impose BCs
             call my_tpt_trans%compute_mixing_ratios_Delta_t_homog() !> missing the case of heterogenous time steps
         !> we set transport attribute in reactive transport object
             call my_RT_trans%set_transport_trans(my_tpt_trans)
         !> we choose and set integration method for chemical reactions
             !! 1: Euler explicit, 2: Euler fully implicit, 3: Crank-Nicolson
-            write(*,*) "Choose integration method for chemical reactions (1: Euler explicit, 2: Euler fully implicit, 3:Crank-Nicolson):"
+            write(*,*) "Choose integration method for chemical reactions (1: Euler explicit, & 
+                2: Euler fully implicit, 3:Crank-Nicolson):"
             read(*,*) int_method_chem !> must be written by the user
             call my_RT_trans%set_int_method_chem_reacts(int_method_chem)
     else if (option_tpt.eq.1) then !> read lambdas

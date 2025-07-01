@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Thu Jun 19 16:55:53 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Tue Jul  1 14:45:17 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE MIXING_ITER_COMP_IDEAL_LUMP__genmod

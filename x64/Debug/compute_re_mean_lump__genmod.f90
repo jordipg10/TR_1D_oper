@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Thu Jun 19 16:56:11 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Tue Jul  1 14:44:34 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPUTE_RE_MEAN_LUMP__genmod

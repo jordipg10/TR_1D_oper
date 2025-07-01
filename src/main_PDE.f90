@@ -19,7 +19,7 @@ subroutine main_PDE(this,root)
 !> Process
     !select type (this)
     !class is (diffusion_1D_transient_c)
-    !    ! open(unit=5,file='C:\Users\jordi\source\repos\jordipg10\1D-Transport-Code\input\time_out.dat',status='old',action='read')
+    !    ! open(unit=5,file='C:\Users\user2319\source\repos\jordipg10\1D-Transport-Code\input\time_out.dat',status='old',action='read')
     !    ! read(5,*) N_t !> number of output times
     !    ! allocate(Time_out(N_t))
     !    ! read(5,*) Time_out !> output times

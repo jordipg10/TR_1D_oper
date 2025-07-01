@@ -231,7 +231,7 @@ end subroutine
         x=x(n:1:-1)
     end subroutine Thomas_Toeplitz
     
-    subroutine Thomas_induction(A,b,i,x_i,tol,x_k)    
+    subroutine Thomas_induction(A,b,i,x_i,tol,x_k)  !> to be developed
         !> A: tridiagonal matrix
         !> b: independent term
         !> x: solution of linear system

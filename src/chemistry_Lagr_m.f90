@@ -104,8 +104,8 @@ module chemistry_Lagr_m
         procedure, public :: solve_reactive_mixing_ideal_cons !> main solver
         procedure, public :: solve_reactive_mixing_cons !> main solver
         procedure, public :: solve_reactive_mixing_ideal_lump !> main solver
-        procedure, public :: solve_reactive_mixing_bis !> main solver
-        procedure, public :: solve_reactive_mixing_BCs_dep_t !> main solver
+        !procedure, public :: solve_reactive_mixing_bis !> main solver
+        !procedure, public :: solve_reactive_mixing_BCs_dep_t !> main solver
     !> Link
         procedure, public :: link_target_waters_target_solids
         procedure, public :: link_target_waters_target_gases

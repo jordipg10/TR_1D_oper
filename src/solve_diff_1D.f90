@@ -1,11 +1,12 @@
-!> Calls subroutines that perform 1D PDE computations
+!> Calls subroutines that perform 1D diffusion equation computations
+    !> To be developed 
 subroutine solve_diff_1D(this,Time_out,output)
     !use BCs_subroutines_m, only: Dirichlet_BCs_PDE, Neumann_homog_BCs
     !use PDE_transient_m, only: PDE_1D_transient_c, PDE_1D_c
     use diffusion_m, only: diffusion_1D_c
     !use diffusion_m, only: diffusion_1D_c
     use time_discr_m, only: time_discr_homog_c, time_discr_c, time_discr_heterog_c
-    use matrices_m, only: tridiag_matrix_c  
+    use matrices_m, only: tridiag_matrix_c
     implicit none
 !> Variables
     class(diffusion_1D_c) :: this !> 1D diffusion object

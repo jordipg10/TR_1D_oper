@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Jun 17 15:00:14 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Tue Jul  1 14:43:50 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE INF_NORM_MAT__genmod
