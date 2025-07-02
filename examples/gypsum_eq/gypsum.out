@@ -115,8 +115,6 @@
 
   Global component matrix:
 
-                  1.00000        0.00000       -1.00000
-                  0.00000        1.00000        0.00000
 
   Concentration of recharge waters (in molalities): (rows -> aqueous species in the same order as before, columns -> targets)
 
@@ -242,7 +240,7 @@
           Component matrix:
 
                   1.00000        0.00000       -1.00000
-                  0.00000        1.00000        0.00000
+                  0.00000        1.00000       -0.00000
 
           Initial concentration of components:
 
@@ -319,7 +317,7 @@
 
           Mineral mean equilibrium reaction amounts:
 
-              0.00000E+00    2.31938E-10    2.01140E-09    1.72484E-08    1.47775E-07    1.26531E-06    1.08254E-05    9.24821E-05    7.86743E-04    6.47701E-03
+              0.00000E+00    0.00000E+00    2.01140E-09    1.72484E-08    1.47775E-07    1.26531E-06    1.08254E-05    9.24821E-05    7.86743E-04    6.47701E-03
 
           Exchange equilibrium reaction rates:
 
