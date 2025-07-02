@@ -91,7 +91,7 @@ module chemistry_Lagr_m
         !procedure, public :: read_chemistry_PHREEQC
         procedure, public :: read_init_bd_wat_types_CHEPROO
         procedure, public :: read_init_cat_exch_zones_CHEPROO
-        procedure, public :: read_gas_bd_zones_CHEPROO
+        !procedure, public :: read_gas_bd_zones_CHEPROO
         procedure, public :: read_init_gas_zones_CHEPROO
         procedure, public :: read_chem_opts
     !> Initialisation
