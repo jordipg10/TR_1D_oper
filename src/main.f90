@@ -20,22 +20,27 @@ program main
     character(len=:), allocatable :: path_DB_trim !> path for database trimmed
     character(len=256) :: root !> root of problem to solve
     character(len=:), allocatable :: root_trim !> root of problem to solve trimmed
+    character(len=256) :: path_pb !> path of problem to solve
+    character(len=:), allocatable :: path_pb_trim !> path of problem to solve trimmed
 !****************************************************************************************************************************
-!> Name of path containing chemical and transport information
+!> Choose databases
     write(*,*) "Path to databases?"
     read(*,*) path_DB !> must be written by the user
-    path_DB_trim = trim(path_DB)
+    path_DB_trim = trim(path_DB) !> we trim the path
 !> Choose problem
-    write(*,*) "Path and root of problem to be solved?"
+    write(*,*) "Path of problem to be solved?"
+    read(*,*) path_pb !> must be written by the user
+    path_pb_trim= trim(path_pb) !> we trim the path
+    write(*,*) "Root of problem to be solved?"
     read(*,*) root !> must be written by the user
-    root_trim=trim(root)
+    root_trim=trim(root) !> we trim the root
 !> Initialise transport
     write(*,*) "Choose transport option (0: compute lambdas, 1: read lambdas):"
     read(*,*) option_tpt !> must be written by the user
     if (option_tpt.eq.0) then !> compute lambdas
     !> we read transport data, BCs and discretisations
         !> in the explicit case, we also compute stability parameters
-            call my_tpt_trans%initialise_transport_1D_transient_RT(root_trim)
+            call my_tpt_trans%initialise_transport_1D_transient_RT(path_pb_trim//root_trim)
         !> we allocate transport arrays
             call my_tpt_trans%allocate_arrays_PDE_1D()
             !call my_tpt_trans%allocate_conc()
@@ -53,31 +58,31 @@ program main
     !> we set transport attribute in reactive transport object
         call my_RT_trans%set_transport_trans(my_tpt_trans) !> esto es un create en realidad
     !> we read temporal discretisation
-        call my_RT_trans%read_time_discretisation(root_trim)
+        call my_RT_trans%read_time_discretisation(path_pb_trim//root_trim)
     !> we read transport data for WMA
-        call my_RT_trans%transport%read_transport_data_WMA(root_trim)
+        call my_RT_trans%transport%read_transport_data_WMA(path_pb_trim//root_trim)
     else
         error stop "This option is not implemented yet"
     end if
 !> we read chemistry
-    call my_chem%read_chemistry(root_trim,path_DB_trim)
+    call my_chem%read_chemistry(path_pb_trim//root_trim,path_DB_trim)
 !> We call the main solver
     if (my_chem%act_coeffs_model==0 .and. my_chem%lump_flag .eqv. .true.) then !> ideal with lumping
-        call my_chem%solve_reactive_mixing_ideal_lump(root_trim,my_RT_trans%transport%mixing_ratios_conc,&
+        call my_chem%solve_reactive_mixing_ideal_lump(path_pb_trim//root_trim,my_RT_trans%transport%mixing_ratios_conc,&
              my_RT_trans%transport%mixing_waters_indices,my_RT_trans%transport%mixing_waters_indices_dom,&
              my_RT_trans%transport%time_discr,my_RT_trans%int_method_chem_reacts)
     else if (my_chem%act_coeffs_model==0 .and. my_chem%lump_flag .eqv. .false.) then !> ideal without lumping
-        call my_chem%solve_reactive_mixing_ideal_cons(root_trim,my_RT_trans%transport%mixing_ratios_conc,&
+        call my_chem%solve_reactive_mixing_ideal_cons(path_pb_trim//root_trim,my_RT_trans%transport%mixing_ratios_conc,&
             my_RT_trans%transport%mixing_ratios_Rk_init,my_RT_trans%transport%mixing_waters_indices,&
             my_RT_trans%transport%mixing_waters_indices_dom,&
             my_RT_trans%transport%time_discr,my_RT_trans%int_method_chem_reacts,my_RT_trans%transport%mixing_ratios_Rk)
     else if (my_chem%act_coeffs_model>0 .and. my_chem%lump_flag .eqv. .false.) then !> non-ideal with lumping
-        call my_chem%solve_reactive_mixing_lump(root_trim,my_RT_trans%transport%mixing_ratios_conc,&
+        call my_chem%solve_reactive_mixing_lump(path_pb_trim//root_trim,my_RT_trans%transport%mixing_ratios_conc,&
             my_RT_trans%transport%mixing_waters_indices,my_RT_trans%transport%mixing_waters_indices_dom,&
             my_RT_trans%transport%time_discr,&
             my_RT_trans%int_method_chem_reacts)
     else !> non-ideal without lumping
-        call my_chem%solve_reactive_mixing_cons(root_trim,my_RT_trans%transport%mixing_ratios_conc,&
+        call my_chem%solve_reactive_mixing_cons(path_pb_trim//root_trim,my_RT_trans%transport%mixing_ratios_conc,&
             my_RT_trans%transport%mixing_ratios_Rk_init,my_RT_trans%transport%mixing_waters_indices,&
             my_RT_trans%transport%mixing_waters_indices_dom,&
             my_RT_trans%transport%time_discr,my_RT_trans%int_method_chem_reacts,my_RT_trans%transport%mixing_ratios_Rk)
@@ -85,5 +90,5 @@ program main
 !> We set chemistry attribute in reactive transport object
     call my_RT_trans%set_chemistry(my_chem)
 !> We write data and results
-    call my_RT_trans%write_RT_1D(root_trim)
+    call my_RT_trans%write_RT_1D(path_pb_trim//root_trim)
 end program

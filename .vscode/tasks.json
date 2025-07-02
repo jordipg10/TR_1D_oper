@@ -2,12 +2,12 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "create-build-dir",
+            "label": "create-obj-dir",
             "type": "shell",
             "command": "powershell",
             "args": [
                 "-Command",
-                "if (!(Test-Path 'build')) { New-Item -ItemType Directory -Path 'build' }"
+                "if (!(Test-Path 'obj')) { New-Item -ItemType Directory -Path 'obj' }"
             ],
             "group": {
                 "kind": "build",
@@ -15,7 +15,20 @@
             }
         },
         {
-            "label": "compile-to-build-dir-cwd",
+            "label": "create-mod-dir",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-Command",
+                "if (!(Test-Path 'mod')) { New-Item -ItemType Directory -Path 'mod' }"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            }
+        },
+        {
+            "label": "compile-to-obj-dir-cwd",
             "type": "shell",
             "command": "gfortran",
             "args": [
@@ -25,9 +38,9 @@
                 "../src/vectors_m.f90"
             ],
             "options": {
-                "cwd": "${workspaceFolder}/build"
+                "cwd": "${workspaceFolder}/obj"
             },
-            "dependsOn": "create-build-dir",
+            "dependsOn": "create-obj-dir",
             "group": {
                 "kind": "build",
                 "isDefault": false
@@ -37,7 +50,7 @@
             ]
         },
         {
-            "label": "compile-to-build-dir",
+            "label": "compile-to-obj-dir",
             "type": "shell",
             "command": "gfortran",
             "args": [
@@ -45,13 +58,13 @@
                 "-c",
                 "-O0",
                 "-J",
-                "build/",
+                "mod/",
                 //"../src/array_ops_m.f90",
                 //"../src/strings_m.f90",
                 "src/vectors_m.f90"
             ],
             "options": {
-                "cwd": "${workspaceFolder}/build"
+                "cwd": "${workspaceFolder}/obj"
             },
             "group": {
                 "kind": "build",
@@ -67,7 +80,7 @@
             "command": "gfortran",
             "args": [
                 "-o",
-                "main.exe",
+                "../exe/REMIX.exe",
                 "array_ops_m.o",
                 "strings_m.o",
                 "vectors_m.o",
@@ -90,7 +103,8 @@
                 "char_params_flow_m.o",
                 "char_params_tpt_m.o",
                 "compute_A_lin_syst.o",
-                "compute_A_mat_lin_syst.o",
+                //"compute_A_mat_lin_syst.o",
+                "compute_A_mat.o",
                 "compute_A_mat_ODE.o",
                 "compute_A_mat_ODE_diff.o",
                 "compute_A_mat_ODE_tpt.o",
@@ -124,7 +138,7 @@
                 "initialise_diffusion_1D.o",
                 "initialise_diffusion_1D_transient.o",
                 "initialise_flow_transient.o",
-                "initialise_transport.o",
+                //"initialise_transport.o",
                 "initialise_transport_1D.o",
                 "initialise_transport_1D_transient.o",
                 "initialise_transport_1D_transient_RT.o",
@@ -268,7 +282,7 @@
                 "link_target_waters_mineral_zone.o",
                 "link_target_waters_reactive_zone.o",
                 "link_target_waters_target_gases.o",
-                "link_target_waters_target_solid.o",
+                //"link_target_waters_target_solid.o",
                 "link_target_waters_target_solids.o",
                 "local_chemistry_m.o",
                 "mineral_m.o",
@@ -377,7 +391,7 @@
                 "main.o"
             ],
             "options": {
-                "cwd": "${workspaceFolder}/build"
+                "cwd": "${workspaceFolder}/obj"
             },
             "group": {
                 "kind": "build",
@@ -398,6 +412,8 @@
                 "-g",
                 "-c",
                 "-O0",
+                "-J",
+                "../mod",
                 "../src/array_ops_m.f90",
                 "../src/strings_m.f90",
                 "../src/vectors_m.f90",
@@ -421,6 +437,7 @@
                 "../src/char_params_tpt_m.f90",
                 "../src/compute_A_lin_syst.f90",
                 //"../src/compute_A_mat_lin_syst.f90",
+                "../src/compute_A_mat.f90",
                 "../src/compute_A_mat_ODE.f90",
                 "../src/compute_A_mat_ODE_diff.f90",
                 "../src/compute_A_mat_ODE_tpt.f90",
@@ -705,7 +722,7 @@
                 "../src/main.f90"
             ],
             "options": {
-                "cwd": "${workspaceFolder}/build"
+                "cwd": "${workspaceFolder}/obj"
             },
             "group": {
                 "kind": "build",
@@ -725,8 +742,8 @@
                 "-O0",
                 //"-o",
                 //"build/time_discr_m.o",
-                //"-J",
-                //"../build/mod",
+                "-J",
+                "../mod",
                 "../src/time_discr_m.f90",
                 "../src/read_time_discretisation.f90",
                 "../src/spatial_discr_m.f90",
@@ -737,7 +754,8 @@
                 "../src/refine_mesh_rad.f90"
             ],
             "options": {
-                "cwd": "${workspaceFolder}/build"
+                "cwd": "${workspaceFolder}/obj"
+                //"cwd": "../build/obj"
             },
             "group": {
                 "kind": "build",
@@ -755,6 +773,8 @@
                 "-g",
                 "-c",
                 "-O0",
+                "-J",
+                "../mod",
                 "../src/aq_phase_m.f90",
                 "../src/aq_species_m.f90",
                 "../src/aqueous_chemistry_m.f90",
@@ -944,7 +964,7 @@
                 "../src/write_chemistry.f90"
             ],
             "options": {
-                "cwd": "${workspaceFolder}/build"
+                "cwd": "${workspaceFolder}/obj"
             },
             "group": {
                 "kind": "build",
@@ -962,6 +982,8 @@
                 "-g",
                 "-c",
                 "-O0",
+                "-J",
+                "../mod",
                 "../src/RT_1D_Lagr_m.f90",
                 "../src/compute_Delta_t_crit.f90",
                 "../src/solve_RT_1D.f90",
@@ -971,7 +993,7 @@
                 "../src/main.f90"
             ],
             "options": {
-                "cwd": "${workspaceFolder}/build"
+                "cwd": "${workspaceFolder}/obj"
             },
             "problemMatcher": []
         },
@@ -983,6 +1005,8 @@
                 "-g",
                 "-c",
                 "-O0",
+                "-J",
+                "../mod",
                 "../src/BCs_m.f90",
                 "../src/BCs_subroutines_m.f90",
                 "../src/char_params_m.f90",
@@ -1081,7 +1105,7 @@
                 "../src/solve_PDE_EI_Delta_t_homog_MRMT.f90",
             ],
             "options": {
-                "cwd": "${workspaceFolder}/build"
+                "cwd": "${workspaceFolder}/obj"
             },
             "problemMatcher": []
         },
