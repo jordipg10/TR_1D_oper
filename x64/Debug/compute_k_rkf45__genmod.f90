@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Jul  1 14:45:29 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Jul  3 12:49:21 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPUTE_K_RKF45__genmod
@@ -6,6 +6,7 @@
             FUNCTION COMPUTE_K_RKF45(THIS,DELTA_T,CONC_RK4) RESULT(K)
               USE CHAR_PARAMS_M
               USE TIME_DISCR_M
+              USE TIME_FCT_M
               USE BCS_M
               USE SPATIAL_DISCR_M
               USE PDE_TRANSIENT_M, ONLY :                               &

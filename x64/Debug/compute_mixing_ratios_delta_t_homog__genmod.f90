@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Jul  1 14:44:34 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Jul  3 12:49:36 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPUTE_MIXING_RATIOS_DELTA_T_HOMOG__genmod
@@ -16,6 +16,7 @@
               USE TIME_DISCR_M
               USE VECTORS_M
               USE MATRICES_M
+              USE TIME_FCT_M
               USE BCS_M
               USE SPATIAL_DISCR_M
               USE PDE_M

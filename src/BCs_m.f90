@@ -1,6 +1,7 @@
 !> Boundary conditions type:
 !>   contains information of boundary conditions
 module BCs_m
+use time_fct_m
     implicit none
     save
     type, public :: BCs_t
@@ -8,16 +9,17 @@ module BCs_m
                                                 !> second element: outflow
                                                 !> 1: Dirichlet
                                                 !> 2: Neumann homogeneous
-                                                !> 3: Robin inflow
+                                                !> 3: Robin
         logical :: evap                         !> evaporation flag
         real(kind=8) :: conc_inf                !> concentration at inflow
         real(kind=8) :: conc_out                !> concentration at outflow
         real(kind=8) :: flux_inf                !> flux at inflow
         real(kind=8) :: flux_out                !> flux at outflow
+        type(time_fct_real_c) :: flow_inf       !> inflow (Q) time function
     contains
         procedure, public :: set_BCs_label
         procedure, public :: set_evap
-        !procedure, public :: set_Neumann_homog_BCs
+        procedure, public :: set_flow_inf
         procedure, public :: read_BCs
         procedure, public :: read_Dirichlet_BCs
         procedure, public :: read_Robin_BC_inflow
@@ -95,5 +97,12 @@ module BCs_m
             open(unit=1,file=filename,status='old',action='read')
             read(1,*) this%flux_inf
             close(1)
+        end subroutine
+        
+        subroutine set_flow_inf(this,flow_inf)
+        implicit none
+        class(BCs_t) :: this
+        type(time_fct_real_c), intent(in) :: flow_inf
+        this%flow_inf=flow_inf
         end subroutine
 end module

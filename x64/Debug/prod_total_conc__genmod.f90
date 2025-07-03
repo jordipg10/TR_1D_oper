@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Jul  1 14:44:44 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Jul  3 12:50:30 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE PROD_TOTAL_CONC__genmod
@@ -11,6 +11,7 @@
               USE DIFFUSION_M
               USE CHAR_PARAMS_M
               USE TIME_DISCR_M
+              USE TIME_FCT_M
               USE BCS_M
               USE SPATIAL_DISCR_M
               USE PDE_M

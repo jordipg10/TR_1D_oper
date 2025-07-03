@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Jul  1 14:45:07 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Jul  3 12:49:10 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE SOLVE_FLOW_TRANSIENT__genmod
@@ -16,6 +16,7 @@
               USE VECTORS_M
               USE MATRICES_M, ONLY :                                    &
      &          TRIDIAG_MATRIX_C
+              USE TIME_FCT_M
               USE BCS_M
               USE SPATIAL_DISCR_M
               USE PDE_M

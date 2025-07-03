@@ -1,10 +1,11 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Jul  1 14:44:26 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Jul  3 12:50:02 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPUTE_CONC_IMM_MRMT__genmod
           INTERFACE 
             SUBROUTINE COMPUTE_CONC_IMM_MRMT(THIS,THETA,CONC_IMM_OLD,   &
      &CONC_MOB_OLD,CONC_MOB_NEW,DELTA_T,CONC_IMM_NEW)
+              USE TIME_FCT_M
               USE BCS_M
               USE SPATIAL_DISCR_M
               USE PDE_M

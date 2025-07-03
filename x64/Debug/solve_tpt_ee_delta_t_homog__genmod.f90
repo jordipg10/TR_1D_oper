@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Jul  1 14:45:24 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Jul  3 12:49:33 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE SOLVE_TPT_EE_DELTA_T_HOMOG__genmod
@@ -13,6 +13,7 @@
               USE DIFFUSION_M
               USE CHAR_PARAMS_M
               USE TIME_DISCR_M
+              USE TIME_FCT_M
               USE BCS_M
               USE SPATIAL_DISCR_M
               USE PDE_M

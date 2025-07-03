@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Jul  1 14:44:58 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Jul  3 12:50:13 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPUTE_DI_DC1__genmod
