@@ -2,7 +2,6 @@ module transport_stab_params_m
     use diff_stab_params_m
     use transport_properties_heterog_m
     use spatial_discr_1D_m
-    
     implicit none
     save
     type, public, extends(stab_params_diff_c) :: stab_params_tpt_c !> 1D transport stability parameters subclass

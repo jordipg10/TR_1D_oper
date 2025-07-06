@@ -1,7 +1,7 @@
 !> Boundary conditions type:
 !>   contains information of boundary conditions
 module BCs_m
-use time_fct_m
+    use time_fct_m
     implicit none
     save
     type, public :: BCs_t
@@ -15,7 +15,8 @@ use time_fct_m
         real(kind=8) :: conc_out                !> concentration at outflow
         real(kind=8) :: flux_inf                !> flux at inflow
         real(kind=8) :: flux_out                !> flux at outflow
-        type(time_fct_real_c) :: flow_inf       !> inflow (Q) time function
+        type(time_fct_real_c) :: flow_inf       !> inflow (Q) time function 
+                                                !> (Q=Q(t))
     contains
         procedure, public :: set_BCs_label
         procedure, public :: set_evap
